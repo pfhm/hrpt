@@ -49,10 +49,9 @@
 
 	</head>
 
-	<body{% spaceless %}{% block add_body %}{% endblock add_body %}{% endspaceless %}>
-
+	<body{% spaceless %}{% block add_body %}{% endblock add_body %}{% endspaceless %} onLoad="determineDevice()">
+    <div id="device_used" style="display: none">Type not determined</div>
 	<div id="page">
-		
 		<div id="influenzabar">
 			{% block masthead %}
 				<p class="_toggle influenzanet">Influenzanet is a system to monitor the activity of influenza-like-illness (ILI) with the aid of volunteers via the internet</p>

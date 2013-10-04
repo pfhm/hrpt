@@ -135,7 +135,7 @@ def thanks(request):
         person.health_status, person.diag = _get_person_health_status(request, survey, person.global_id)
         person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
 
-    return render_to_response('survey/thanks.html', {'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,'person': survey_user, 'persons': persons, 'history': history},
+    return render_to_response('survey/thanks.html', {'mobile': isMobile(request),'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,'person': survey_user, 'persons': persons, 'history': history},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -216,6 +216,25 @@ def select_user(request, template='survey/select_user.html'):
         'next': next,
     }, context_instance=RequestContext(request))
 
+def isMobile(request):
+    print("###Check if user is using mobile###")
+    x = request.META['HTTP_USER_AGENT']
+    x = x.lower()
+    print(x)
+    
+    mobDevices = ['android','iphone']
+    
+    retVal = False
+    
+    for device in mobDevices:
+        if x.find(device) > -1:
+            retVal =  True
+            break
+      
+    print "Mobile user=",retVal      
+            
+    return retVal
+            
 @login_required
 def index(request):
     try:
@@ -247,10 +266,6 @@ def index(request):
     if 'next' not in request.GET:
         next = reverse(thanks)
 
-    #Pekka
-    mobile = request.GET.get('mobile')
-    print("mobile=" + str(mobile))
-    #print("id_kod=" + str(survey_user.idkod))
     idcode = None
     try:
         idcode = models.SurveyIdCode.objects.get(surveyuser_global_id=survey_user.global_id)
@@ -260,7 +275,7 @@ def index(request):
     if idcode == None:
         print("no idkod!!!")
         messages.add_message(request, messages.ERROR, ("Du har inte angett en idkod!"))
-        return render_to_response('survey/id_code.html', {'person': survey_user,'mobile': mobile},context_instance=RequestContext(request))
+        return render_to_response('survey/id_code.html', {'person': survey_user},context_instance=RequestContext(request))
 
     senaste = survey_user.get_last_weekly_survey_date_text()
     idag = datetime.date.today().strftime('%W')
@@ -274,40 +289,11 @@ def index(request):
         messages.add_message(request, messages.ERROR,_(u'Redan raporterat för vecka ' + senaste))
         return HttpResponseRedirect(reverse(thanks))
     
-    if mobile == None or mobile == "0":
-        return pollster_views.survey_run(request, survey.shortname, next=next)
-    elif mobile == "1":
-        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True)
-    elif mobile == "2":
+    if isMobile(request):
         return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
-            
-@login_required
-def profile_index_mobile(request):
-    # this renders an 'intake' survey
-    # it expects gid to be part of the request.
-    print("runnning profile_index_mobile")
-    #Pekka
-    mobile = request.GET.get('mobile')
-    if mobile != None:
-        print("mobile=" + mobile)
-    try:
-        survey_user = get_active_survey_user(request)
-    except ValueError:
-        raise Http404()
-    if survey_user is None:
-        
-        url = '%s?next=%s' % (reverse(select_user), reverse(profile_index))
-        return HttpResponseRedirect(url)
-
-    try:
-        survey = pollster.models.Survey.get_by_shortname('intake')
-    except:
-        raise Exception("The survey application requires a published survey with the shortname 'intake'")
-
-    
-    
-    return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
-            
+    else:
+        return pollster_views.survey_run(request, survey.shortname, next=next)
+                        
 @login_required
 def profile_index(request):
     try:
@@ -327,12 +313,8 @@ def profile_index(request):
     if 'next' not in request.GET:
         next = reverse(thanks_profile)
 
-    #Pekka
-    mobile = request.GET.get('mobile')
-    if mobile != None:
-        print("mobile=" + mobile)
-
-    if mobile == "2":
+    
+    if isMobile(request):
         return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
     else:
         return pollster_views.survey_run(request, survey.shortname, next=next)

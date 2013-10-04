@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = patterns('',
     url(r'^profile/$', views.profile_index, name='survey_profile'),
-    url(r'^profile/mobile/$', views.profile_index_mobile, name='survey_profile_mobile'),
     url(r'^thanks/$', views.thanks, name='survey_thanks'),
    # url(r'^utvardering/$', views.utvardering, name='survey_thanks'),
     url(r'^thanks_profile/$', views.thanks_profile, name='profile_thanks'),
