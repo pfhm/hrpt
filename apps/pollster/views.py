@@ -156,7 +156,7 @@ def survey_test(request, id, language=None):
         "form": form
     })
 
-def survey_run(request, shortname, next=None, clean_template=False):
+def survey_run(request, shortname, next=None, clean_template=False,bootstrap=False):
     if 'login_key' in request.GET:
         user = authenticate(key=request.GET['login_key'])
         if user is not None:
@@ -207,6 +207,18 @@ def survey_run(request, shortname, next=None, clean_template=False):
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
     last_participation_data_json = encoder.encode(last_participation_data)
 
+    if bootstrap:
+        return request_render_to_response(request, "pollster/survey_run_bootstrap.html", {
+        "language": language,
+        "locale_code": locale_code,
+        "survey": survey,
+        "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
+        "last_participation_data_json": last_participation_data_json,
+        "form": form,
+        "person": survey_user
+    })
+        
+    
     return request_render_to_response(request, "pollster/survey_run_clean.html" if clean_template else 'pollster/survey_run.html', {
         "language": language,
         "locale_code": locale_code,

@@ -94,6 +94,7 @@ virtualenv .
 
 source ./bin/activate
 
+#pip uninstall -r requirements.txt
 pip install -r requirements.txt
 
 if [ -n "$exe_mysql" ] ; then
@@ -336,8 +337,10 @@ python manage.py virtual_option_type_register --title 'Regular expression' --que
 python manage.py createcachetable django_cache 2>/dev/null || echo 'Cache table errors ignored'
 
 if [ "$DB_ENGINE" = "postgresql" -a -n "$exe_psql" ] ; then
-    postgis=$(ls /usr/share/postgresql/*/contrib/postgis-*/postgis.sql)
-    srefsys=$(ls /usr/share/postgresql/*/contrib/postgis-*/spatial_ref_sys.sql)
+    #postgis=$(ls /usr/share/postgresql/*/contrib/postgis-*/postgis.sql)
+    #srefsys=$(ls /usr/share/postgresql/*/contrib/postgis-*/spatial_ref_sys.sql)
+    postgis=$(ls /usr/share/postgresql/*/contrib/postgis.sql)
+    srefsys=$(ls /usr/share/postgresql/*/contrib/spatial_ref_sys.sql)
     if [ -n "$postgis" -a -n "$srefsys" ] ; then
         echo "Setting up PostGIS"
         args="--username=$root_username $DB_NAME"

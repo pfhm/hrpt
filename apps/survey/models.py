@@ -12,6 +12,17 @@ from times import epoch
 def create_global_id():
     return str(uuid.uuid4())
 
+#Pekka
+class SurveyIdCode(models.Model):
+    
+    surveyuser_global_id = models.CharField(max_length=36,unique=True,blank=True,null=True)
+    idcode = models.CharField(max_length=10,unique=True)
+    #used = models.CharField(max_length=1)
+    
+    def __unicode__(self):
+        return self.idcode
+    
+
 class SurveyUser(models.Model):
     user = models.ForeignKey(User, null=True) # null=True: only so because this happens 'in the wild', i.e.
                                               # in already existing data. Other than that there is no good
@@ -63,6 +74,26 @@ class SurveyUser(models.Model):
 
         if result is None:
             return self.user.date_joined
+       
+        return result
+    
+    def get_last_weekly_survey_date_text(self):
+        try:
+            cursor = connection.cursor()
+            cursor.execute("select to_char(max(timestamp),'YYYY-MM-DD') from pollster_results_weekly where global_id = %s", [self.global_id])
+        except:
+            # (Klaas) not sure if this is still used in the actual app; it's used here at least for testing
+            # The regular flow uses the pollster_results_weekly table
+            if self.last_participation_date:
+                return self.last_participation_date
+            return self.user.date_joined
+
+        row = cursor.fetchone()
+        result = row[0]
+        print(row[0])
+        #if result is None:
+        #    return self.user.date_joined
+       
         return result
 
 class Survey(models.Model):

@@ -25,6 +25,7 @@
 {% trans "Here is a summary of the information you entered for you and the members of your group or family:" %}
 </p>-->
 <p>
+{% if multi_profile_allowed == 'true' %}
 På den här sidan kan du se alla profiler som du redan skapat under ditt användarkonto, 
 uppdatera bakgrundsinformation för varje profil, och välja vilket profilnamn du vill rapportera för. 
 Du kan även lägga till nya profiler. <a href="/flera-profiler/"> Här</a> kan du läsa mer om att hantera fler profiler. 
@@ -37,6 +38,13 @@ Samma sak gäller alla profiler - all information hjälper oss att få koll på 
 <p>
 <a href="/survey/people/add/"> Lägg till profil </a>
 </p>
+{% else %}
+På den här sidan kan du uppdatera bakgrundsinformation för din profil. 
+<br>
+När du har skapat en profil och fyllt i bakgrundsinformationen kan du rapportera direkt för den profilen. 
+Vi hoppas att du kan rapportera varje vecka, oavsett om du är frisk eller sjuk. 
+All information hjälper oss att få koll på influensaläget i Sverige!
+{% endif %}
 
 <table class="imagetable">
 <tr>
@@ -72,6 +80,14 @@ Samma sak gäller alla profiler - all information hjälper oss att få koll på 
 
 {% endfor %}
 </table>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 <br/>
 

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from django import forms
 from django.template import Context, loader, RequestContext
@@ -22,6 +23,13 @@ from .survey import ( Specification,
                       get_survey_context, )
 import apps.pollster as pollster
 import pickle
+
+#Pekka
+import sys
+import datetime
+#import time
+from django.conf import settings
+#Pekka
 
 survey_form_helper = None
 profile_form_helper = None
@@ -127,7 +135,7 @@ def thanks(request):
         person.health_status, person.diag = _get_person_health_status(request, survey, person.global_id)
         person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
 
-    return render_to_response('survey/thanks.html', {'person': survey_user, 'persons': persons, 'history': history},
+    return render_to_response('survey/thanks.html', {'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,'person': survey_user, 'persons': persons, 'history': history},
                               context_instance=RequestContext(request))
 
 @login_required
@@ -139,6 +147,49 @@ def thanks_profile(request):
     return render_to_response('survey/thanks_profile.html', {'person': survey_user},
         context_instance=RequestContext(request))
 
+@login_required
+def idcode_save(request):
+    
+    idcode_id = request.POST['idkod']
+    gid = request.POST['global_id']
+    #print("pekka_save:" + id)
+    print("pekka_save person:" + gid)
+    idcode = None
+    survey_user = models.SurveyUser.objects.get(global_id=gid)
+    error = False
+    
+    if idcode_id == None or idcode_id == '':
+        error = True
+        messages.add_message(request, messages.ERROR, ("Du måste ange en idkod!"))
+    
+    if error == False:
+        try:
+            idcode = models.SurveyIdCode.objects.get(idcode=idcode_id)
+        except:
+            error = True
+            print("Hittade inte idkod med varde" + idcode_id)
+            messages.add_message(request, messages.ERROR, ("Hittade inte idkod med vardet " + idcode_id))
+     
+        if idcode != None and idcode.surveyuser_global_id!=None:
+            error = True
+            print("Idkod med varde" + idcode_id + "ar redan upptaget")
+            messages.add_message(request, messages.ERROR, ("Idkoden " + idcode_id + " ar redan upptagen"))
+        
+    if error:
+        return render_to_response('survey/id_code.html', {'person': survey_user},context_instance=RequestContext(request))
+    
+    #survey_user.idkod = id
+    #idcode.used= 'Y'
+    idcode.surveyuser_global_id = gid
+    #survey_user.save()
+    idcode.save()
+    #print(request)
+    return thanks(request)
+
+@login_required
+def bootstraptest(request):
+    return render_to_response('survey/bootstrap_test.html', {},context_instance=RequestContext(request))
+   
 @login_required
 def select_user(request, template='survey/select_user.html'):
     next = request.GET.get('next', None)
@@ -196,8 +247,67 @@ def index(request):
     if 'next' not in request.GET:
         next = reverse(thanks)
 
-    return pollster_views.survey_run(request, survey.shortname, next=next)
+    #Pekka
+    mobile = request.GET.get('mobile')
+    print("mobile=" + str(mobile))
+    #print("id_kod=" + str(survey_user.idkod))
+    idcode = None
+    try:
+        idcode = models.SurveyIdCode.objects.get(surveyuser_global_id=survey_user.global_id)
+    except:
+        print("Survey user has no id code")
+    
+    if idcode == None:
+        print("no idkod!!!")
+        messages.add_message(request, messages.ERROR, ("Du har inte angett en idkod!"))
+        return render_to_response('survey/id_code.html', {'person': survey_user,'mobile': mobile},context_instance=RequestContext(request))
 
+    senaste = survey_user.get_last_weekly_survey_date_text()
+    idag = datetime.date.today().strftime('%W')
+    
+    if senaste != None:
+        dt = datetime.datetime.strptime(senaste, '%Y-%m-%d')
+        senaste = dt.strftime('%W')
+        print("compare senaste with idag:" + senaste + " and " + idag)
+
+    if senaste != None and senaste == idag:
+        messages.add_message(request, messages.ERROR,_(u'Redan raporterat för vecka ' + senaste))
+        return HttpResponseRedirect(reverse(thanks))
+    
+    if mobile == None or mobile == "0":
+        return pollster_views.survey_run(request, survey.shortname, next=next)
+    elif mobile == "1":
+        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True)
+    elif mobile == "2":
+        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
+            
+@login_required
+def profile_index_mobile(request):
+    # this renders an 'intake' survey
+    # it expects gid to be part of the request.
+    print("runnning profile_index_mobile")
+    #Pekka
+    mobile = request.GET.get('mobile')
+    if mobile != None:
+        print("mobile=" + mobile)
+    try:
+        survey_user = get_active_survey_user(request)
+    except ValueError:
+        raise Http404()
+    if survey_user is None:
+        
+        url = '%s?next=%s' % (reverse(select_user), reverse(profile_index))
+        return HttpResponseRedirect(url)
+
+    try:
+        survey = pollster.models.Survey.get_by_shortname('intake')
+    except:
+        raise Exception("The survey application requires a published survey with the shortname 'intake'")
+
+    
+    
+    return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
+            
 @login_required
 def profile_index(request):
     try:
@@ -217,7 +327,15 @@ def profile_index(request):
     if 'next' not in request.GET:
         next = reverse(thanks_profile)
 
-    return pollster_views.survey_run(request, survey.shortname, next=next)
+    #Pekka
+    mobile = request.GET.get('mobile')
+    if mobile != None:
+        print("mobile=" + mobile)
+
+    if mobile == "2":
+        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
+    else:
+        return pollster_views.survey_run(request, survey.shortname, next=next)
 
 @login_required
 def people_edit(request):

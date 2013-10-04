@@ -1,0 +1,29 @@
+{% extends "survey/base.html" %}
+{% load i18n %}
+
+{% block col1 %}
+
+Du kommer till denna sida eftersom du inte angivit någon id-kod. Var god ange den kod du fått på din inbjudan!
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form action="{% url apps.survey.views.idcode_save %}" method="post">
+{% csrf_token %}
+Id-kod: <input name="idkod" id="idkod" value=""/><br/>
+<input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
+<input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>
+</form>
+
+{% endblock %}
+
+{% block col2 %}
+{# Not compatible with this version #}
+{# include "accounts/partials/usermenu.html" #}
+
+{% endblock %}
