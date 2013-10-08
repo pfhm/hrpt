@@ -111,6 +111,14 @@ class Migration(SchemaMigration):
             ('data', self.gf('django.db.models.fields.TextField')(default=None, null=True, blank=True)),
         ))
         db.send_create_signal('survey', ['ExtraResponse'])
+        
+        # Adding model 'SurveyIdCode'
+        db.create_table('survey_surveyidcode', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('surveyuser_global_id', models.CharField(max_length=36,unique=True,blank=True,null=True)),
+            ('idcode', models.CharField(max_length=10,unique=True))
+        ))
+        db.send_create_signal('survey', ['SurveyIdCode'])
 
 
     def backwards(self, orm):
@@ -144,6 +152,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'ExtraResponse'
         db.delete_table('survey_extraresponse')
+        
+        # Removing table survey_surveyidcode
+        db.delete_table('survey_surveyidcode')
 
 
     models = {
