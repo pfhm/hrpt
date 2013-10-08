@@ -216,8 +216,11 @@ def select_user(request, template='survey/select_user.html'):
         'next': next,
     }, context_instance=RequestContext(request))
 
+def specialPrint(msg):
+    print >> sys.stderr,msg
+
 def isMobile(request):
-    print("###Check if user is using mobile###")
+    specialPrint("###Check if user is using mobile###")
     x = request.META['HTTP_USER_AGENT']
     x = x.lower()
     print(x)
