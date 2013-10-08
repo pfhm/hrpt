@@ -26,7 +26,7 @@ class SurveyIdCodeAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         
         if(obj.surveyuser_global_id == ''):
-            print("Setting gid to None!")
+            #print("Setting gid to None!")
             obj.surveyuser_global_id = None
         obj.save()
     
