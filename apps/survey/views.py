@@ -153,7 +153,7 @@ def idcode_save(request):
     idcode_id = request.POST['idkod']
     gid = request.POST['global_id']
     #print("pekka_save:" + id)
-    print("pekka_save person:" + gid)
+    specialPrint("idcode_save person:" + gid)
     idcode = None
     survey_user = models.SurveyUser.objects.get(global_id=gid)
     error = False
@@ -167,12 +167,12 @@ def idcode_save(request):
             idcode = models.SurveyIdCode.objects.get(idcode=idcode_id)
         except:
             error = True
-            print("Hittade inte idkod med varde" + idcode_id)
+            specialPrint("Hittade inte idkod med varde" + idcode_id)
             messages.add_message(request, messages.ERROR, ("Hittade inte idkod med vardet " + idcode_id))
      
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
-            print("Idkod med varde" + idcode_id + "ar redan upptaget")
+            specialPrint("Idkod med varde" + idcode_id + "ar redan upptaget")
             messages.add_message(request, messages.ERROR, ("Idkoden " + idcode_id + " ar redan upptagen"))
         
     if error:
@@ -220,10 +220,9 @@ def specialPrint(msg):
     print >> sys.stderr,msg
 
 def isMobile(request):
-    specialPrint("###Check if user is using mobile###")
     x = request.META['HTTP_USER_AGENT']
     x = x.lower()
-    print(x)
+    specialPrint("Check if this user is using mobile: " + x)
     
     mobDevices = ['android','iphone']
     
@@ -234,7 +233,7 @@ def isMobile(request):
             retVal =  True
             break
       
-    print "Mobile user=",retVal      
+    specialPrint ("Mobile user=" + str(retVal))      
             
     return retVal
             
@@ -273,10 +272,10 @@ def index(request):
     try:
         idcode = models.SurveyIdCode.objects.get(surveyuser_global_id=survey_user.global_id)
     except:
-        print("Survey user has no id code")
+        specialPrint("Survey user has no id code")
     
     if idcode == None:
-        print("no idkod!!!")
+        specialPrint("no idkod!!!")
         messages.add_message(request, messages.ERROR, ("Du har inte angett en idkod!"))
         return render_to_response('survey/id_code.html', {'person': survey_user},context_instance=RequestContext(request))
 
@@ -286,7 +285,7 @@ def index(request):
     if senaste != None:
         dt = datetime.datetime.strptime(senaste, '%Y-%m-%d')
         senaste = dt.strftime('%W')
-        print("compare senaste with idag:" + senaste + " and " + idag)
+        specialPrint("compare senaste with idag:" + senaste + " and " + idag)
 
     if senaste != None and senaste == idag:
         messages.add_message(request, messages.ERROR,_(u'Redan raporterat för vecka ' + senaste))
