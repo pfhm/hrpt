@@ -90,7 +90,6 @@ class SurveyUser(models.Model):
 
         row = cursor.fetchone()
         result = row[0]
-        print(row[0])
         #if result is None:
         #    return self.user.date_joined
        
