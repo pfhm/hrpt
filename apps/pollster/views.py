@@ -14,10 +14,16 @@ from django.contrib.auth import authenticate, login
 from django.conf import settings
 
 from cms import settings as cms_settings
-from apps.survey.models import SurveyUser
+from apps.survey.models import SurveyUser, SurveyIdCode
 from .utils import get_user_profile
 from . import models, forms, fields, parser, json
 import re, datetime, locale, csv, urlparse, urllib
+
+#For remote debugging
+#import sys
+#sys.path.append('/opt/eclipse_juno2/plugins/org.python.pydev_2.7.5.2013052819/pysrc/')
+#import pydevd
+#pydevd.settrace()
 
 def request_render_to_response(req, *args, **kwargs):
     kwargs['context_instance'] = RequestContext(req)
@@ -156,7 +162,7 @@ def survey_test(request, id, language=None):
         "form": form
     })
 
-def survey_run(request, shortname, next=None, clean_template=False,bootstrap=False):
+def survey_run(request, shortname, next=None, clean_template=False,bootstrap=False,update=False):
     if 'login_key' in request.GET:
         user = authenticate(key=request.GET['login_key'])
         if user is not None:
@@ -185,12 +191,21 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
     user_id = request.user.id
     global_id = survey_user and survey_user.global_id
     last_participation_data = survey.get_last_participation_data(user_id, global_id)
+    
+    idcode = get_object_or_404(SurveyIdCode, surveyuser_global_id=global_id)
+    
     if request.method == 'POST':
         data = request.POST.copy()
         data['user'] = user_id
         data['global_id'] = global_id
         data['timestamp'] = datetime.datetime.now()
+        
+        if survey.shortname == 'intake' or update:
+            data['id'] = last_participation_data.get('id')
+            survey.as_form_update()
+            
         form = survey.as_form()(data)
+        
         if form.is_valid():
             form.save()
             next_url = next or _get_next_url(request, reverse(survey_run, kwargs={'shortname': shortname}))
@@ -205,6 +220,10 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         else:
             survey.set_form(form)
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
+    
+    if update == False:
+        last_participation_data = None
+    
     last_participation_data_json = encoder.encode(last_participation_data)
 
     if bootstrap:
@@ -218,13 +237,13 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         "person": survey_user
     })
         
-    
     return request_render_to_response(request, "pollster/survey_run_clean.html" if clean_template else 'pollster/survey_run.html', {
         "language": language,
         "locale_code": locale_code,
         "survey": survey,
         "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
         "last_participation_data_json": last_participation_data_json,
+        "idcode": idcode,
         "form": form,
         "person": survey_user
     })

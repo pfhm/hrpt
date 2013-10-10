@@ -224,6 +224,12 @@ class Survey(models.Model):
         ('global_id', models.CharField(max_length=36, null=True, blank=True, verbose_name="Person")),
         ('channel', models.CharField(max_length=36, null=True, blank=True, verbose_name="Channel"))
     ]
+    
+    _id_existing_field =[
+        ('id', models.BigIntegerField(primary_key=True))
+    ]
+    
+    update = False
 
     @staticmethod
     def get_by_shortname(shortname):
@@ -285,12 +291,20 @@ class Survey(models.Model):
 
     def as_model(self):
         fields = []
+        
+        if self.update:
+            fields.extend(Survey._id_existing_field)
+        
         fields.extend(Survey._standard_result_fields)
+        
         for question in self.questions:
             fields += question.as_fields()
         model = dynamicmodels.create(self.get_table_name(), fields=dict(fields), app_label='pollster')
         return model
-
+    
+    def as_form_update(self):
+        self.update = True
+    
     def as_form(self):
         model = self.as_model()
         questions = list(self.questions)

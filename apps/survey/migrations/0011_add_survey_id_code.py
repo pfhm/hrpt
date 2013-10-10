@@ -13,7 +13,8 @@ class Migration(SchemaMigration):
         db.create_table('survey_surveyidcode', (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('surveyuser_global_id', models.CharField(max_length=36,unique=True,blank=True,null=True)),
-            ('idcode', models.CharField(max_length=10,unique=True))
+            ('idcode', models.CharField(max_length=10,unique=True)),
+            ('fodelsedatum', models.CharField(max_length=10,blank=True,null=True))
         ))
 
 

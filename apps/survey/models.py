@@ -12,12 +12,11 @@ from times import epoch
 def create_global_id():
     return str(uuid.uuid4())
 
-#Pekka
 class SurveyIdCode(models.Model):
     
     surveyuser_global_id = models.CharField(max_length=36,unique=True,blank=True,null=True)
     idcode = models.CharField(max_length=10,unique=True)
-    #used = models.CharField(max_length=1)
+    fodelsedatum = models.CharField(max_length=10)
     
     def __unicode__(self):
         return self.idcode
@@ -57,7 +56,7 @@ class SurveyUser(models.Model):
     def get_remove_url(self):
         from . import views
         return '%s?gid=%s' % (reverse(views.people_remove), self.global_id)
-
+    
     def get_last_weekly_survey_date(self):
         try:
             cursor = connection.cursor()

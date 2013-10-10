@@ -3,7 +3,8 @@
 
 {% block col1 %}
 
-Du kommer till denna sida eftersom du inte angivit någon id-kod. Var god ange den kod du fått på din inbjudan!
+Du kommer till denna sida eftersom du inte angivit någon id-kod. Var god ange den kod du fått på din inbjudan! 
+Ange även ditt födelsedatum i formatet YYYY-MM!
 
 {% if messages %}
 <ul class="messages">
@@ -15,7 +16,8 @@ Du kommer till denna sida eftersom du inte angivit någon id-kod. Var god ange d
 
 <form action="{% url apps.survey.views.idcode_save %}" method="post">
 {% csrf_token %}
-Id-kod: <input name="idkod" id="idkod" value=""/><br/>
+Id-kod:<br><input name="idkod" id="idkod" value=""/><br/>
+Födelsedatum(YYYY-MM):<br><input name="fodelsedatum" id="fodelsedatum" value=""/><br/>
 <input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
 <input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>
 </form>
