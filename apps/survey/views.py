@@ -323,8 +323,10 @@ def index(request):
         specialPrint("compare senaste with idag:" + senaste + " and " + idag)
 
     if senaste != None and senaste == idag:
-        messages.add_message(request, messages.INFO,_(u'Redan raporterat för vecka ' + senaste))
+        messages.add_message(request, messages.INFO,_(u'Du har redan rapporterat för vecka ' + senaste + '. Den kommer uppdateras med dina nya svar.'))
         upd = True
+    else:
+        messages.add_message(request, messages.INFO,_(u'Ange svar för vecka ' + idag + '.'))
     #    return HttpResponseRedirect(reverse(thanks))
     
     if isMobile(request):
@@ -353,9 +355,9 @@ def profile_index(request):
 
     
     if isMobile(request):
-        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True)
+        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True,update=True)
     else:
-        return pollster_views.survey_run(request, survey.shortname, next=next)
+        return pollster_views.survey_run(request, survey.shortname, next=next,update=True)
 
 @login_required
 def people_edit(request):

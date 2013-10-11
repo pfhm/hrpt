@@ -66,7 +66,7 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 <a href="{{ person.get_survey_url }}">{% trans "Enter symptoms" %}</a></td>
 </tr>
 {% else %}
-<table class="imagetable" style="width:400px;">
+<table class="imagetable" style="width:500px;">
 <tr>
 <!--<th colspan="2">{% trans "Health status" %}</th>-->
    <th colspan="2">{% trans "Group members" %}</th>
@@ -100,14 +100,6 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 {% endif %}
 </table>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
 <br/>
 
 <p>{% trans "The flu status of each participant is based on the symptoms you reported. <strong>This is not a medical diagnosis</strong>. We only ask for symptoms indicative of influenza-like illness, common colds, gastric flu. If you have other symptoms, or you are at all worried, we recommend that you contact your doctor or telephone NHS Direct / NHS 24."%}</p>
@@ -117,7 +109,7 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 {% if mobile %}
 <table class="table table-striped table-bordered table-condensed">
 {% else %}
-<table class="imagetable" style="width:400px;">
+<table class="imagetable" style="width:500px;">
 {% endif %}
 <thead>
 <tr>

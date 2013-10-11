@@ -200,7 +200,8 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         data['global_id'] = global_id
         data['timestamp'] = datetime.datetime.now()
         
-        if survey.shortname == 'intake' or update:
+        #if survey.shortname == 'intake' or update:
+        if update and last_participation_data != None:
             data['id'] = last_participation_data.get('id')
             survey.as_form_update()
             
@@ -221,7 +222,7 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
             survey.set_form(form)
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
     
-    if update == False:
+    if survey.shortname == 'weekly' and update == False:
         last_participation_data = None
     
     last_participation_data_json = encoder.encode(last_participation_data)
