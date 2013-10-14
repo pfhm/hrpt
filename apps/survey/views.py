@@ -167,11 +167,11 @@ def idcode_save(request):
     
     if idcode_id == None or idcode_id == '':
         error = True
-        messages.add_message(request, messages.ERROR, ("Du måste ange en idkod!"))
+        messages.add_message(request, messages.ERROR, ("Du maste ange en idkod!"))
     
     if fodelsedatum == None or fodelsedatum == '':
         error = True
-        messages.add_message(request, messages.ERROR, ("Du måste ange ett födelsedatum!"))    
+        messages.add_message(request, messages.ERROR, ("Du maste ange ett fodelsedatum!"))    
         
     if error == False:
         try:
@@ -179,16 +179,16 @@ def idcode_save(request):
         except:
             error = True
             specialPrint("Hittade inte idkod med varde" + idcode_id)
-            messages.add_message(request, messages.ERROR, ("Hittade inte idkod med värdet " + idcode_id))
+            messages.add_message(request, messages.ERROR, ("Hittade inte idkod med vardet " + idcode_id))
      
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
             specialPrint("Idkod med varde" + idcode_id + "ar redan upptaget")
-            messages.add_message(request, messages.ERROR, ("Idkoden " + idcode_id + " är redan upptagen"))
+            messages.add_message(request, messages.ERROR, ("Idkoden " + idcode_id + " ar redan upptagen"))
         
         if idcode != None and idcode.fodelsedatum!=None and idcode.fodelsedatum != fodelsedatum:
             error = True
-            messages.add_message(request, messages.ERROR, ("Angivet födelsedatum verkar inte stämma"))
+            messages.add_message(request, messages.ERROR, ("Angivet fodelsedatum verkar inte stamma"))
         
     if error:
         url = reverse('apps.survey.views.idcode_open')
