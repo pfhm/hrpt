@@ -321,11 +321,13 @@ def index(request):
         specialPrint("compare senaste with idag:" + senaste + " and " + idag)
 
     if senaste != None and senaste == idag:
-        messages.add_message(request, messages.INFO,_(u'Du har redan rapporterat för vecka ' + senaste + '. Den kommer uppdateras med dina nya svar.'))
+        #Removed messages since it seems they are not being removed correctly.
+        #if not messages.get_messages(request):
+        #    messages.add_message(request, messages.INFO,_(u'Du har redan rapporterat för vecka ' + senaste + '. Den kommer uppdateras med dina nya svar.'))
         upd = True
-    else:
-        messages.add_message(request, messages.INFO,_(u'Ange svar för vecka ' + idag + '.'))
-    #    return HttpResponseRedirect(reverse(thanks))
+    #else:
+        #if not messages.get_messages(request):
+        #    messages.add_message(request, messages.INFO,_(u'Ange svar för vecka ' + idag + '.'))
     
     if isMobile(request):
         return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True,update=upd)
