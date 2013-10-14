@@ -105,7 +105,7 @@ def _get_health_history(request, survey):
                AND W.user = :user_id
              ORDER BY W.timestamp""",
         'postgresql':"""
-            SELECT W.timestamp, W.global_id, S.status, W.id
+            SELECT W.timestamp, W.global_id, S.status
               FROM pollster_health_status S, pollster_results_weekly W
              WHERE S.pollster_results_weekly_id = W.id
                AND W.user = %(user_id)s
@@ -114,8 +114,8 @@ def _get_health_history(request, survey):
     cursor.execute(queries[utils.get_db_type(connection)], params)
     results = cursor.fetchall()
     for ret in results:
-        timestamp, global_id, status, id = ret
-        yield {'global_id': global_id, 'timestamp': timestamp, 'status': status, 'diag':_decode_person_health_status(status), 'id': id}
+        timestamp, global_id, status = ret
+        yield {'global_id': global_id, 'timestamp': timestamp, 'status': status, 'diag':_decode_person_health_status(status)}
 
 @login_required
 def thanks(request):
@@ -139,12 +139,10 @@ def thanks(request):
         person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
     if isMobile(request):
         base_template= "base/mobile_bootstrap.html"
-        base_block = "content"
     else:
         base_template= "base/twocol.html"
-        base_block = "col1"
 
-    return render_to_response('survey/thanks.html', {'base_block': base_block, 'base_template': base_template, 'mobile': isMobile(request),'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,'person': survey_user, 'persons': persons, 'history': history},
+    return render_to_response('survey/thanks.html', {'base_template': base_template, 'mobile': isMobile(request),'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,'person': survey_user, 'persons': persons, 'history': history},
                               context_instance=RequestContext(request))
 
 @login_required
