@@ -2,6 +2,7 @@
 
 <form class="survey {% if survey.form.errors %}error{% endif %}" id="survey-{{ survey.id }}" method="POST">    
     {% csrf_token %}
+    <input style ="display:none;" name="fodelsedatum" id="fodelsedatum" disabled value="{{ idcode.fodelsedatum }}"/>
     <!--<div class="survey-message">
         {% trans "Questionnaire for participant" %} {{ person }}
     </div>-->

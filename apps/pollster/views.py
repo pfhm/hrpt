@@ -200,7 +200,7 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         data['global_id'] = global_id
         data['timestamp'] = datetime.datetime.now()
         
-        #Force merge behaviour instead of add if prev data exists
+        #if survey.shortname == 'intake' or update:
         if update and last_participation_data != None:
             data['id'] = last_participation_data.get('id')
             survey.as_form_update()
@@ -222,27 +222,11 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
             survey.set_form(form)
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
     
-    #Clear data if new week...
     if survey.shortname == 'weekly' and update == False:
         last_participation_data = None
     
-    #...then inject birthdate from id code
-    last_participation_data_json = None
-    qname = ''
-    if survey.shortname == 'weekly':
-        qname = 'Q0'
-    elif survey.shortname == 'intake':
-        qname = 'Q2'
-    
-    if last_participation_data is None:
-        last_participation_data_json = '{\"'+qname+'\": \"'+idcode.fodelsedatum+'\"};'
-    else:
-        last_participation_data[qname]=idcode.fodelsedatum
-    
-    if last_participation_data_json is None:
-        last_participation_data_json = encoder.encode(last_participation_data)
-    
-    
+    last_participation_data_json = encoder.encode(last_participation_data)
+
     if bootstrap:
         return request_render_to_response(request, "pollster/survey_run_bootstrap.html", {
         "language": language,
@@ -260,6 +244,7 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         "survey": survey,
         "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
         "last_participation_data_json": last_participation_data_json,
+        "idcode": idcode,
         "form": form,
         "person": survey_user
     })

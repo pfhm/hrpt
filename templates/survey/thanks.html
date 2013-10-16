@@ -18,11 +18,13 @@
 </script>
 {% endblock %}
 
+
 {% if mobile %}
 
 {% else %}
 
 {% endif %}
+
 
 {% block col1 %}
 
@@ -131,9 +133,7 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 {% endfor %}
 </tbody>
 </table>
-{% if mobile %}
-<a href="/accounts/logout">{% trans "Logout" %}</a>|<a href="/">{% trans "Start" %}</a>
-{% endif %}
+
 <!--
 <ul class="diag">
 {% for person in persons %}
@@ -168,6 +168,8 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 <!--<p>{% trans "Regions in which we currently have reports of influenza-like illness are red, and ones in which none of our participants currently report influenza-like illness are blue."%}<br>
 <strong>{% trans "Map updated hourly."%}</strong></p>-->
 
+
 <br/>
+
 {% endblock %}
 

@@ -44,7 +44,7 @@ def get_active_survey_user(request):
     else:
         try:
             return models.SurveyUser.objects.get(global_id=gid,
-                                                user=request.user) 
+                                                 user=request.user)
         except models.SurveyUser.DoesNotExist:
             raise ValueError()
 
@@ -124,20 +124,10 @@ def thanks(request):
     except:
         raise Exception("The survey application requires a published survey with the shortname 'weekly'")
     #Weekly = survey.as_model()
-    
     try:
         survey_user = get_active_survey_user(request)
-        if(survey_user is None):
-            specialPrint('No gid in url go to select page!')
-            url = '%s?next=%s' % (reverse(select_user), reverse(thanks))
-            return HttpResponseRedirect(url)
     except ValueError:
         pass
-
-    #Check idcode
-    redirect = checkIdCode('apps.survey.views.thanks',survey_user)
-    if redirect != None:
-        return HttpResponseRedirect(redirect)
 
     history = list(_get_health_history(request, survey))
     persons = models.SurveyUser.objects.filter(user=request.user, deleted=False)
@@ -161,13 +151,7 @@ def thanks_profile(request):
         survey_user = get_active_survey_user(request)
     except ValueError:
         pass
-
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-    
-    return render_to_response('survey/thanks_profile.html', {'base_template': base_template, 'person': survey_user},
+    return render_to_response('survey/thanks_profile.html', {'person': survey_user},
         context_instance=RequestContext(request))
 
 @login_required
@@ -183,11 +167,11 @@ def idcode_save(request):
     
     if idcode_id == None or idcode_id == '':
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange en idkod!'))
+        messages.add_message(request, messages.ERROR, ("Du maste ange en idkod!"))
     
     if fodelsedatum == None or fodelsedatum == '':
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum!'))    
+        messages.add_message(request, messages.ERROR, ("Du maste ange ett fodelsedatum!"))    
         
     if error == False:
         try:
@@ -195,28 +179,33 @@ def idcode_save(request):
         except:
             error = True
             specialPrint("Hittade inte idkod med varde" + idcode_id)
-            messages.add_message(request, messages.ERROR, ('Hittade inte idkod med värdet ' + str(idcode_id)))
+            messages.add_message(request, messages.ERROR, ("Hittade inte idkod med vardet " + idcode_id))
      
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
             specialPrint("Idkod med varde" + idcode_id + "ar redan upptaget")
-            messages.add_message(request, messages.ERROR, ('Idkoden ' + str(idcode_id) + ' är redan upptagen'))
+            messages.add_message(request, messages.ERROR, ("Idkoden " + idcode_id + " ar redan upptagen"))
         
         if idcode != None and idcode.fodelsedatum!=None and idcode.fodelsedatum != fodelsedatum:
             error = True
-            messages.add_message(request, messages.ERROR, ('Angivet födelsedatum verkar inte stämma'))
+            messages.add_message(request, messages.ERROR, ("Angivet fodelsedatum verkar inte stamma"))
         
     if error:
         url = reverse('apps.survey.views.idcode_open')
         url_next = reverse('apps.survey.views.index')
         url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
         return HttpResponseRedirect(url)
+        
+        #return render_to_response('survey/id_code.html', {'person': survey_user},context_instance=RequestContext(request))
     
+    #survey_user.idkod = id
+    #idcode.used= 'Y'
     idcode.surveyuser_global_id = gid
+    #survey_user.save()
     if idcode.fodelsedatum == None:
         idcode.fodelsedatum = fodelsedatum
     idcode.save()
-    return thanks(request)
+    return index(request)
 
 @login_required
 def bootstraptest(request):
@@ -275,32 +264,8 @@ def idcode_open(request):
         survey_user = get_active_survey_user(request)
     except ValueError:
         raise Http404()
-    
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-    
-    return render_to_response('survey/id_code.html', {'base_template': base_template,'person': survey_user},context_instance=RequestContext(request))    
-
-def checkIdCode(str_url_next,survey_user):
-    idcode = None
-    try:
-        idcode = models.SurveyIdCode.objects.get(surveyuser_global_id=survey_user.global_id)
-    except:
-        pass
-        specialPrint("Survey user has no id code!!")
-    
-    if idcode == None:
-        specialPrint("redirect to idcode page!!")
-        url = reverse('apps.survey.views.idcode_open')
-        url_next = reverse(str_url_next)
-        url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
-        specialPrint(url)
-        return url
-    else:
-        return None
-      
+    return render_to_response('survey/id_code.html', {'person': survey_user},context_instance=RequestContext(request))    
+            
 @login_required
 def index(request):
     try:
@@ -314,10 +279,19 @@ def index(request):
         return HttpResponseRedirect(url)
 
     #Check idcode
-    redirect = checkIdCode('apps.survey.views.index',survey_user)
-    if redirect != None:
-        return HttpResponseRedirect(redirect)
-    
+    idcode = None
+    try:
+        idcode = models.SurveyIdCode.objects.get(surveyuser_global_id=survey_user.global_id)
+    except:
+        specialPrint("Survey user has no id code!!")
+    #
+    if idcode == None:
+        #messages.add_message(request, messages.ERROR, ("Du har inte angett en idkod!"))
+        url = reverse('apps.survey.views.idcode_open')
+        url_next = reverse('apps.survey.views.index')
+        url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
+        return HttpResponseRedirect(url)
+
     # Check if the user has filled user profile
     profile = pollster_utils.get_user_profile(request.user.id, survey_user.global_id)
     if profile is None:
@@ -370,11 +344,6 @@ def profile_index(request):
         url = '%s?next=%s' % (reverse(select_user), reverse(profile_index))
         return HttpResponseRedirect(url)
 
-    #Check idcode
-    redirect = checkIdCode('apps.survey.views.profile_index',survey_user)
-    if redirect != None:
-        return HttpResponseRedirect(redirect)
-
     try:
         survey = pollster.models.Survey.get_by_shortname('intake')
     except:
@@ -413,12 +382,7 @@ def people_edit(request):
     else:
         form = forms.AddPeople(initial={'name': survey_user.name})
 
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-    
-    return render_to_response('survey/people_edit.html', {'base_template': base_template,'form': form},
+    return render_to_response('survey/people_edit.html', {'form': form},
                               context_instance=RequestContext(request))
     #return render_to_response('survey/thanks.html', {'form': form},
      #                         context_instance=RequestContext(request))
