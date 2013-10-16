@@ -1,3 +1,4 @@
+#dummy
 from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import redirect_to
