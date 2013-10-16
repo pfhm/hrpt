@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^bootstraptest/$', views.bootstraptest, name='bootstrap_test'),
     url(r'^idcode_save/$', views.idcode_save, name='survey_idcode_save'),
     url(r'^idcode_open/$', views.idcode_open, name='survey_idcode_open'),
+    
 )
 
