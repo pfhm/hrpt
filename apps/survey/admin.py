@@ -24,12 +24,11 @@ class SurveyIdCodeAdmin(admin.ModelAdmin):
     search_fields = ('idcode',)
     
     def save_model(self, request, obj, form, change):
-        
         if(obj.surveyuser_global_id == ''):
-            #print("Setting gid to None!")
             obj.surveyuser_global_id = None
+        if(obj.fodelsedatum == ''):
+            obj.fodelsedatum = None
         obj.save()
-    
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Participation, ParticipationAdmin)
