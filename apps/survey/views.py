@@ -72,15 +72,15 @@ def _get_person_health_status(request, survey, global_id):
         queries = {
             'sqlite':"""
             SELECT S.status
-              FROM pollster_health_status S
+              FROM pollster_health_status_hrpt20131 S
              WHERE S.pollster_results_weekly_id = :weekly_id""",
             'mysql':"""
             SELECT S.status
-              FROM pollster_health_status S
+              FROM pollster_health_status_hrpt20131 S
              WHERE S.pollster_results_weekly_id = :weekly_id""",
             'postgresql':"""
             SELECT S.status
-              FROM pollster_health_status S
+              FROM pollster_health_status_hrpt20131 S
              WHERE S.pollster_results_weekly_id = %(weekly_id)s"""
         }
         cursor.execute(queries[utils.get_db_type(connection)], params)
@@ -94,19 +94,19 @@ def _get_health_history(request, survey):
     queries = {
         'sqlite':"""
             SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status S, pollster_results_weekly W
+              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
              WHERE S.pollster_results_weekly_id = W.id
                AND W.user = :user_id
              ORDER BY W.timestamp""",
         'mysql':"""
             SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status S, pollster_results_weekly W
+              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
              WHERE S.pollster_results_weekly_id = W.id
                AND W.user = :user_id
              ORDER BY W.timestamp""",
         'postgresql':"""
             SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status S, pollster_results_weekly W
+              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
              WHERE S.pollster_results_weekly_id = W.id
                AND W.user = %(user_id)s
              ORDER BY W.timestamp""",
