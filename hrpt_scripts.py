@@ -1,7 +1,8 @@
-DB_NAME="epiwork"
-DB_USER="epiwork"
-DB_PASSWORD="password"
-DB_HOST="localhost"
+#Same functionality exists in /apps/survey/management/commands/hrpt20131install.py
+DB_NAME="dbname"
+DB_USER="dbuser"
+DB_PASSWORD="dbpassword"
+DB_HOST="dbhost"
 
 ERR_MSG = "error: usage hrpt_scripts.py [-options] where options is: import_scb_data <path to filename> and/or deactivate_survey_user and/or create_id_code_table. "
 ERR_MSG += "Note that create_id_code_table is a requirement for import_scb_data"
