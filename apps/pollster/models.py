@@ -372,7 +372,20 @@ class Survey(models.Model):
     @staticmethod
     def get_by_shortname(shortname):
         return Survey.objects.all().get(shortname=shortname, status="PUBLISHED")
-
+    
+    @staticmethod
+    def getUser(user_id):
+        user = User.objects.get(id=user_id)
+        return user
+    
+    @staticmethod
+    def getHealthStatus(id):
+        cursor = connection.cursor()
+        sql = "SELECT status FROM pollster_health_status_hrpt20131 WHERE pollster_results_weekly_id ="+str(id)+""
+        cursor.execute(sql)
+        status = cursor.fetchone()[0]
+        return status
+    
     @property
     def translated_title(self):
         if self.translation and self.translation.title:
@@ -516,7 +529,16 @@ class Survey(models.Model):
     def write_csv(self, writer):
         model = self.as_model()
         fields = model._meta.fields
-        writer.writerow([field.verbose_name or field.name for field in fields])
+        addExtra = self.shortname == 'weekly'
+        
+        fieldNames = []
+        for field in fields:
+            fieldNames += [field.verbose_name or field.name]
+        if addExtra:                                      
+            fieldNames += ["status","email"]
+        
+        #writer.writerow([field.verbose_name or field.name for field in fields])
+        writer.writerow(fieldNames)
         for result in model.objects.all():
             row = []
             for field in fields:
@@ -526,6 +548,10 @@ class Survey(models.Model):
                 if type(val) is unicode:
                     val = val.encode('utf-8')
                 row.append(val)
+            if addExtra:
+                #Add extra fields
+                row.append(Survey.getHealthStatus(result.id))
+                row.append(Survey.getUser(result.user).email)
             writer.writerow(row)
 
 class RuleType(models.Model):
