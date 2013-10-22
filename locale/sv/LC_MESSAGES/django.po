@@ -210,7 +210,7 @@ msgstr ""
 "ett mellanslag i användarnamn eller lösenord. Bokstäver, siffror, och "
 "symboler (till exempel, @ eller bindestreck) ska accepteras i både "
 "användarnamn och lösenord. Om problemet fortsätter ber vi dig skicka ett "
-"meddelande till influenskoll@smi.se. "
+"meddelande till halsorapport@smi.se. "
 
 #: apps/pollster/db/models/fields.py:9
 msgid "Year and month (in YYYY-MM format)"
@@ -482,9 +482,9 @@ msgid "User activation failed."
 msgstr ""
 "Aktiveringen verkar ha misslyckats. Har det gått mer än 7 dagar sedan du "
 "registrerade dig? Om inte, prova då att <a "
-"href=\"www.influensakoll.se/sv/accounts/login\">logga in</a>. Det är möljigt "
+"href=\"www.halsorapport.se/sv/accounts/login\">logga in</a>. Det är möljigt "
 "att det fungerat även om du fått detta meddelande. Skriv annars till oss på "
-"influensakoll@smi.se. "
+"halsorapport@smi.se. "
 
 #: templates/registration/activate.html:9
 #: templates/registration/activation_complete.html:9
@@ -581,7 +581,7 @@ msgstr "Återställningen fungerade"
 #: templates/registration/password_reset_complete.html:10
 msgid "Your password has been set.  You may go ahead and log in now."
 msgstr ""
-"Ditt lösenord har ändrats. Du kan gå vidare till www.influensakoll.se och "
+"Ditt lösenord har ändrats. Du kan gå vidare till www.halsorapport.se och "
 "logga in nu."
 
 #: templates/registration/password_reset_confirm.html:4
@@ -607,9 +607,9 @@ msgid "The password reset link was invalid, possibly because it has already been
 msgstr ""
 "Länken för återställning av lösenordet är ogiltigt, möjligen eftersom den "
 "redan har använts eller att det gått för lång tid. Försök igen genom att "
-"klicka på <a href=\"http://www.influensakoll.se/sv/accounts/password/reset/\">"
+"klicka på <a href=\"http://www.halsorapport.se/sv/accounts/password/reset/\">"
 "glömt lösenord</a>. Om det fortfarande inte fungerar, skicka ett meddelande "
-"till influensakoll@smi.se. "
+"till halsorapport@smi.se. "
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:8
@@ -627,7 +627,7 @@ msgstr ""
 msgid "You're receiving this e-mail because you requested a password reset"
 msgstr ""
 "Du har fått detta e-postmeddelande eftersom du begärt en återställning av "
-"ditt lösenord för ditt användarkonto på Influensakoll"
+"ditt lösenord för ditt användarkonto på Hälsorapport"
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
@@ -644,7 +644,7 @@ msgstr "Ditt användarnamn är:"
 
 #: templates/registration/password_reset_email.html:12
 msgid "Thanks for using our site!"
-msgstr "Tack för att du är med i Influensakoll."
+msgstr "Tack för att du är med i Hälsorapport."
 
 #: templates/registration/password_reset_email.html:14
 #, python-format
@@ -763,7 +763,7 @@ msgstr "Välj profil"
 
 #: templates/survey/thanks.html:6
 msgid "Thanks for taking the time to fill out this survey."
-msgstr "Tack för att du är med i Influensakoll."
+msgstr "Tack för att du är med i Hälsorapport."
 
 #: templates/survey/thanks.html:6
 msgid "Here is a summary of the information you entered for you and the members of your group or family:"
@@ -809,18 +809,18 @@ msgid "This account is inactive."
 msgstr ""
 "Detta konto har inte aktiverats. Klicka på länken i det e-postmeddelande du "
 "fått angående aktivering av ditt konto. Om du inte fått någon e-post, kolla "
-"dina spamfilter. Skriv annars till oss på influensakoll@smi.se."
+"dina spamfilter. Skriv annars till oss på halsorapport@smi.se."
 
 msgid "Activate your account:\n\nClick the following URL or copy and paste it to the browser's address bar.\n\nhttp://%(site)s/accounts/activate/%(activation_key)s/\n\nThis activation URL will expire in %(expiration_days)s days."
 msgstr ""
-"Aktivera ditt konto:\n\nTack för att du vill gå med i Influensakoll!\n\nFör "
+"Aktivera ditt konto:\n\nTack för att du vill gå med i Hälsorapport!\n\nFör "
 "att aktivera ditt konto enkelklicka på länken nedan eller kopiera och klistra "
 "in den i din webbläsare.\n%(site)s/accounts/activate/%(activation_key)"
 "s/\n\nLänken är giltig i %(expiration_days)s dagar.\n\nNär du har aktiverat "
 "ditt konto kan du logga in.\n\nFörsta gången du loggar in på ditt "
 "användarkonto behöver du skapa din profil och fylla i en bakgrundsenkät. "
 "Först när du fyllt i bakgrundsenkäten kan du rapportera sjukdom.\n\nBästa "
-"hälsningar\n\nVi som jobbar med Influensakoll\ninfluensakoll@smi.se"
+"hälsningar\n\nVi som jobbar med Hälsorapport\nhalsorapport@smi.se"
 
 msgid "Activate your account! %(site)s"
 msgstr "Aktivera ditt konto! %(site)s"
@@ -838,11 +838,11 @@ msgstr "Hantera profiler"
 msgid "You have received this email because you are registered with %(site_name)s. Your contribution helps us track the spread of flu. If you do not wish to receive this weekly reminder any longer, please <a href=\"%(unsubscribe_url)s\">unsubscribe</a> from our mailings."
 msgstr ""
 "Du har fått detta meddelande för att du är registrerad som deltagare i "
-"Influensakoll. Tack för att du är med - du bidrar till att hålla koll på "
+"Hälsorapport. Tack för att du är med - du bidrar till att hålla koll på "
 "influensan i Sverige. Om du har frågor eller synpunkter är du välkommen att "
-"höra av dig till influensakoll@smi.se. \n\nInfluensakoll skickar nyhetsbrev "
-"en gång i veckan. <a href=\"http://www.influensakoll.se/sv/reminder/unsubscrib"
-"e/\">Klicka här</a> för att avbeställa nyhetsbreven. Influensakoll pågår för "
+"höra av dig till halsorapport@smi.se. \n\nHälsorapport skickar nyhetsbrev "
+"en gång i veckan. <a href=\"http://www.halsorapport.se/sv/reminder/unsubscrib"
+"e/\">Klicka här</a> för att avbeställa nyhetsbreven. Hälsorapport pågår för "
 "denna säsong till vecka 20. "
 
 msgid "Below is the list of participants currently managed by you. Click the corresponding option next to the participant to complete the background or symptoms questionnaire for that person, or to remove a participant."
@@ -874,7 +874,7 @@ msgstr "Symptomenkäten"
 
 msgid "The flu status of each participant is based on the symptoms you reported. <strong>This is not a medical diagnosis</strong>. We only ask for symptoms indicative of influenza-like illness, common colds, gastric flu. If you have other symptoms, or you are at all worried, we recommend that you contact your doctor or telephone NHS Direct / NHS 24."
 msgstr ""
-"Influensakoll kan inte ge deltagarna någon diagnos. Var vändlig kontakta "
+"Hälsorapport kan inte ge deltagarna någon diagnos. Var vändlig kontakta "
 "vårdcentral eller sjukvårdsrådgivningen om du behöver råd eller vård."
 
 msgid "Unknown"
@@ -891,17 +891,17 @@ msgstr ""
 "Något som du skrivit in accepterades inte. Var vänlig försök igen. Bokstäver, "
 "siffror, och symboler (till exempel, @ eller bindestreck) ska accepteras, men "
 "kom ihåg att skilja på stora och små bokstäver. Om problemet fortsätter ber "
-"vi dig skicka ett meddelande till influenskoll@smi.se. "
+"vi dig skicka ett meddelande till halsorapport@smi.se. "
 
 msgid "Please try to copy and paste the link from the activation email, making sure you've got all letters copied. If this fails, please try to log in using the username and password you provided during registration. If this still fails, please try to register with a different username. If everything else fails, please do not hesitate to Kontakta oss."
 msgstr " "
 
 msgid "You've got feedback!"
-msgstr "Influensakoll"
+msgstr "Hälsorapport"
 
 
 msgid "register"
-msgstr ""
+msgstr "För att delta i Hälsorapport behöver du skapa ett användarkonto. Skriv in ett användarnamn, din e-postadress och ett lösenord. Det går inte att använda mellanslag i vare sig användarnamn eller lösenord. Däremot ska det fungera att använda bindestreck, underscore (_), å, ä, ö, @, och en rad andra tecken. Du kan till exempel använda en hel e-postadress som användarnamn om du vill. Har du frågor om undersökningen eller tekniska problem, vänligen kontakta oss på <a href=\"mailto:halsorapport@smi.se\">halsorapport@smi.se</a>"
 
 msgid "with a different username. If everything else fails, please do not hesitate to"
 msgstr ""
