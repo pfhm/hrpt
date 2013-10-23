@@ -26,7 +26,7 @@
 
 {% block col1 %}
 
-<p>{% trans "Thanks for taking the time to fill out this survey." %}</p>
+<h2>{% trans "Thanks for taking the time to fill out this survey." %}</h2>
 <!--<p>
 {% trans "Here is a summary of the information you entered for you and the members of your group or family:" %}
 </p>-->
@@ -45,18 +45,14 @@ Samma sak gäller alla profiler - all information hjälper oss att få koll på 
 <a href="/survey/people/add/"> Lägg till profil </a>
 </p>
 {% else %}
-På den här sidan kan du uppdatera bakgrundsinformation för din profil. 
-<br>
-När du har skapat en profil och fyllt i bakgrundsinformationen kan du rapportera direkt för den profilen. 
-Vi hoppas att du kan rapportera varje vecka, oavsett om du är frisk eller sjuk. 
-All information hjälper oss att få koll på influensaläget i Sverige!
+På denna sida kan du rapportera för veckan som varit, uppdatera bakgrundsenkäten, och ändra kontonamn. Nedanför i din hälsologg kan du också se hur du rapporterat.
 {% endif %}
 
 {% if mobile %}
 <table class="table table-striped table-bordered table-condensed">
 <tr>
 <th>{% trans "Group members" %}</th>
-<td>{{ person.name }}<br/><a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a></td>
+<td>{{ person.name }}<br/><!--<a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a>--></td>
 </tr>
 <tr>
 <th>{% trans "Manage " %}</th>
@@ -77,10 +73,10 @@ All information hjälper oss att få koll på influensaläget i Sverige!
    <!--<th colspan="2">Datum för senaste rapport</th>-->
 </tr>
 {% for person in persons %}
-<tr><td>{{ person.name }}</td>
+<tr><td colspan="2">{{ person.name }}</td>
 	<!--<td><b>{{ person.diag }}</b></td>-->
     <!--<td><img class="diag-icon" src="{{ MEDIA_URL }}/survey/img/diag-{{ person.health_status|default:'UNKNOWN' }}-small.png"/></td>-->
-        <td><a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a></td>
+        <!--<td><a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a></td>-->
         <td><a href="{{ person.get_profile_url }}">{% trans "Change profile" %}</a></td>
         <td><a href="{{ person.get_survey_url }}">{% trans "Enter symptoms" %}</a></td>
 {% if persons|length > 1 %}
@@ -99,6 +95,8 @@ All information hjälper oss att få koll på influensaläget i Sverige!
 </table>
 
 <br/>
+
+<h2>Hälsologgen</h2>
 
 <p>{% trans "The flu status of each participant is based on the symptoms you reported. <strong>This is not a medical diagnosis</strong>. We only ask for symptoms indicative of influenza-like illness, common colds, gastric flu. If you have other symptoms, or you are at all worried, we recommend that you contact your doctor or telephone NHS Direct / NHS 24."%}</p>
 

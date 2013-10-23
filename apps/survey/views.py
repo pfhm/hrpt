@@ -23,6 +23,7 @@ from .survey import ( Specification,
                       get_survey_context, )
 import apps.pollster as pollster
 import pickle
+from django.contrib.auth import logout
 
 #For remote debugging
 #import sys
@@ -43,8 +44,21 @@ def get_active_survey_user(request):
         return None
     else:
         try:
-            return models.SurveyUser.objects.get(global_id=gid,
+            survey_user = models.SurveyUser.objects.get(global_id=gid,
                                                  user=request.user)
+            err = False
+            if survey_user.user == None:
+                err = True
+            else:
+                if survey_user.user.is_active == False:
+                        err = True
+            
+            if err:
+                specialPrint("User not active, logout this one!")
+                messages.error(request,_('This account is inactive.'))
+                logout(request)
+            
+            return survey_user
         except models.SurveyUser.DoesNotExist:
             raise ValueError()
 
@@ -207,10 +221,21 @@ def idcode_save(request):
             messages.add_message(request, messages.ERROR, ('Angivet födelsedatum verkar inte stämma'))
         
     if error:
-        url = reverse('apps.survey.views.idcode_open')
-        url_next = reverse('apps.survey.views.index')
-        url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
-        return HttpResponseRedirect(url)
+        
+        if isMobile(request):
+            base_template = "base/mobile_bootstrap.html"
+        else:
+            base_template =  "survey/base.html"
+        return render_to_response('survey/id_code.html', {'idcode': idcode_id,
+                                                          'birthdate': fodelsedatum,
+                                                          'base_template': base_template,
+                                                          'person': survey_user},
+                                  context_instance=RequestContext(request))
+        
+        #url = reverse('apps.survey.views.idcode_open')
+        #url_next = reverse('apps.survey.views.index')
+        #url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
+        #return HttpResponseRedirect(url)
     
     idcode.surveyuser_global_id = gid
     if idcode.fodelsedatum == None:

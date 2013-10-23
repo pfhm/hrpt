@@ -12,9 +12,9 @@
 </p>
 {% trans "Please, if you have not already done so, fill in" %}
 {% if person %}
-<a href="/survey/?gid={{person.global_id}}">
+<a href="/survey/thanks/?gid={{person.global_id}}">
 {% else %}
-<a href="/survey/">
+<a href="/survey/thanks/">
 {% endif %}
 {% trans "the symptoms questionaire" %}</a>.
 {% endblock %}

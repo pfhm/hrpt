@@ -11,5 +11,12 @@
 
 {% block content %}<h1>{% trans "Registration Form" %}</h1>
 {% trans "register" %}
-                {% spaceless %}<form method="post" id="registration">{% csrf_token %}{{ form.as_p }}<p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p></form>{% endspaceless %}{% endblock content %}
+                {% spaceless %}<form method="post" id="registration">{% csrf_token %}
+                {% for field in form %}
+        		<div class="fieldWrapper">
+            	{{ field.label_tag }}{{ field }}
+            	{{ field.errors }}
+        		</div>
+    {% endfor %}
+                <p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p></form>{% endspaceless %}{% endblock content %}
 

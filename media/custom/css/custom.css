@@ -1,3 +1,31 @@
 /*
 Placeholder for custom css
 */
+
+/* Main */
+
+html body {
+ font-family: Verdana, Geneva, sans-serif;
+ line-height: 1.2em;
+ font-size: 1.3em;
+ -webkit-text-size-adjust: none;
+ color: #000000;
+ background: #d5d5d5;
+}
+
+table.imagetable th {
+ background: #51BFE2;
+ color: #FFFFFF;
+ border-width: 1px;
+ padding: 8px;
+ border-style: solid;
+ border-color: #999999;
+}
+
+#menubar li.selected,
+#menubar li.ancestor {
+ padding: 0 0px 0 0px; 
+ background: #51BFE2;
+ font-weight: bold;
+ color: #ffffff;
+}

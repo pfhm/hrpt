@@ -3,9 +3,11 @@
 {% load i18n %}
 
 {% block col1 %}
-
-Du kommer till denna sida eftersom du inte angivit någon id-kod. Var god ange den kod du fått på din inbjudan! 
-Ange även ditt födelsedatum i formatet YYYY-MM!
+<p>
+Tack för att du aktiverat ditt konto i Hälsorapport! Var vänlig fyll i den 
+kod som står tryckt på din inbjudan. Ange även födelsedatumet på den som anmälts till Hälsorapport i 
+formatet ÅÅÅÅ-MM<br/><br/>
+</p>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -16,10 +18,12 @@ Ange även ditt födelsedatum i formatet YYYY-MM!
 
 <form action="{% url apps.survey.views.idcode_save %}" method="post">
 {% csrf_token %}
-Id-kod:<br><input name="idkod" id="idkod" value=""/><br/>
-Födelsedatum(YYYY-MM):<br><input name="fodelsedatum" id="fodelsedatum" value=""/><br/>
+<p>
+Id-kod:<br><input name="idkod" id="idkod" value="{{idcode}}"/><br/>
+Födelsedatum(ÅÅÅÅ-MM):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
 <input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
 <input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>
+</p>
 </form>
 
 {% endblock %}
