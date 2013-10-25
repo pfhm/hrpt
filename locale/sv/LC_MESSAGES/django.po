@@ -801,11 +801,11 @@ msgstr "Rapportera"
 
 #: templates/survey/thanks_profile.html:5
 msgid "Thanks for changing your profile,"
-msgstr "Tack för att du ändrat ditt konto"
+msgstr "Tack för att du fyllt i eller uppdaterat bakgrundenkäten"
 
 #: templates/survey/thanks_profile.html:6
 msgid "Please, if you have not already done so, fill in"
-msgstr "Tillbaks till "
+msgstr "Gå tillbaks till "
 
 #: templates/survey/thanks_profile.html:6
 msgid "the symptoms questionaire"
@@ -877,8 +877,10 @@ msgstr "Symptomenkäten"
 
 msgid "The flu status of each participant is based on the symptoms you reported. <strong>This is not a medical diagnosis</strong>. We only ask for symptoms indicative of influenza-like illness, common colds, gastric flu. If you have other symptoms, or you are at all worried, we recommend that you contact your doctor or telephone NHS Direct / NHS 24."
 msgstr ""
-"Hälsorapport ger varje rapport en sjukdomskategori, men det är inte detsamma som en diagnos från en läkare. "
-"Var vänlig kontakta din vårdcentral eller 1177 Vårdguiden om du behöver råd eller vård."
+"Hälsorapport ger varje rapport en sjukdomskategori. I hälsologgen kan du se hur din rapport tolkats varje vecka." 
+"Det är viktigt att tänka på att sjukdomskategorin som systemet ger dig inte är en diagnos från en läkare, "
+"utan baseras bara på hur du svarat på frågorna i veckoenkäten. Kontakta din vårdcentral eller 1177 Vårdguiden "
+"om du behöver råd eller vård."
 
 msgid "Unknown"
 msgstr "Okänd"
@@ -904,9 +906,9 @@ msgstr "Hälsorapport"
 
 
 msgid "register"
-msgstr "För att delta i Hälsorapport behöver du skapa ett användarkonto. Skriv in ett användarnamn, din e-postadress "
+msgstr "Skriv in ett användarnamn, din e-postadress "
 "och ett lösenord. Det går inte att använda mellanslag i användarnamn eller lösenord. "
-"Har du frågor eller tekniska problem, vänligen kontakta oss på "
+"FÖr hjälp, kontakta oss på "
 "<a href=\"mailto:halsorapport@smi.se\">halsorapport@smi.se</a>"
 
 msgid "with a different username. If everything else fails, please do not hesitate to"
