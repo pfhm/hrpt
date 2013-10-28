@@ -63,7 +63,8 @@ ul.messagelist li {
     margin: 0 0 3px 0;
     border-bottom: 1px solid #ddd;
     color: #666;
-    background: #ffc url(/admin/media/img/admin/icon_success.gif) 6px .6em no-repeat;
+    /*background: #ffc url(/admin/media/img/admin/icon_success.gif) 6px .6em no-repeat;*/
+    background: #ffc;
 }
 
 ul.messagelist li.warning{

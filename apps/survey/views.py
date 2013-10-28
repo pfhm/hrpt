@@ -202,7 +202,25 @@ def idcode_save(request):
     if fodelsedatum == None or fodelsedatum == '':
         error = True
         messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum!'))    
-        
+    else:
+        if "-" not in fodelsedatum:
+            error = True
+            messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ-MM!'))
+        else :
+            yy = str(fodelsedatum[0:4])
+            mm = str(fodelsedatum[5:])
+
+            if yy.isdigit() == False or mm.isdigit() == False:
+                error = True
+                messages.add_message(request, messages.ERROR, (u'ÅÅÅÅ-MM måste vara numeriska värden mellan 1917-2013 och 01-12!'))
+            else:
+                if int(yy) < 1917 or int(yy) > 2013:
+                    error = True
+                    messages.add_message(request, messages.ERROR, (u'ÅÅÅÅ måste vara mellan 1917 och 2013!'))
+                elif int(mm) < 1 or int(mm) > 12 or len(mm) != 2:
+                    error = True
+                    messages.add_message(request, messages.ERROR, (u'MM måste vara mellan 01 och 12!'))
+            
     if error == False:
         try:
             idcode = models.SurveyIdCode.objects.get(idcode=idcode_id)
@@ -407,7 +425,7 @@ def profile_index(request):
 
     next = None
     if 'next' not in request.GET:
-        next = reverse(thanks_profile)
+        next = reverse(thanks)
 
     
     if isMobile(request):

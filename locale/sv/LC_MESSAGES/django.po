@@ -505,7 +505,7 @@ msgstr "eller"
 
 #: templates/registration/activation_complete.html:9
 msgid "proceed to the login page"
-msgstr "gå vidare till inloggningssidan"
+msgstr "Gå vidare till inloggningssidan"
 
 #: templates/registration/boxbase.html:4
 #: templates/registration/boxbase.html:9
@@ -908,7 +908,7 @@ msgstr "Hälsorapport"
 msgid "register"
 msgstr "Skriv in ett användarnamn, din e-postadress "
 "och ett lösenord. Det går inte att använda mellanslag i användarnamn eller lösenord. "
-"FÖr hjälp, kontakta oss på "
+"För hjälp, kontakta oss på "
 "<a href=\"mailto:halsorapport@smi.se\">halsorapport@smi.se</a>"
 
 msgid "with a different username. If everything else fails, please do not hesitate to"
