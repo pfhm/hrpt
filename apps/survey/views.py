@@ -197,29 +197,29 @@ def idcode_save(request):
     
     if idcode_id == None or idcode_id == '':
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange en idkod!'))
+        messages.add_message(request, messages.ERROR, (u'Du måste ange en idkod.'))
     
     if fodelsedatum == None or fodelsedatum == '':
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum!'))    
+        messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum.'))    
     else:
         if "-" not in fodelsedatum:
             error = True
-            messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ-MM!'))
+            messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ-MM.'))
         else :
             yy = str(fodelsedatum[0:4])
             mm = str(fodelsedatum[5:])
 
             if yy.isdigit() == False or mm.isdigit() == False:
                 error = True
-                messages.add_message(request, messages.ERROR, (u'ÅÅÅÅ-MM måste vara numeriska värden mellan 1917-2013 och 01-12!'))
+                messages.add_message(request, messages.ERROR, (u'År och månad måste vara numeriska värden mellan 1917-2013 och 01-12.'))
             else:
                 if int(yy) < 1917 or int(yy) > 2013:
                     error = True
-                    messages.add_message(request, messages.ERROR, (u'ÅÅÅÅ måste vara mellan 1917 och 2013!'))
+                    messages.add_message(request, messages.ERROR, (u'Årtalet måste vara mellan 1917 och 2013.'))
                 elif int(mm) < 1 or int(mm) > 12 or len(mm) != 2:
                     error = True
-                    messages.add_message(request, messages.ERROR, (u'MM måste vara mellan 01 och 12!'))
+                    messages.add_message(request, messages.ERROR, (u'Månaden måste vara mellan 01 och 12.'))
             
     if error == False:
         try:
@@ -227,7 +227,7 @@ def idcode_save(request):
         except:
             error = True
             specialPrint("Hittade inte idkod med varde" + idcode_id)
-            messages.add_message(request, messages.ERROR, ('Hittade inte idkod med värdet ' + str(idcode_id)))
+            messages.add_message(request, messages.ERROR, ('Hittade ingen idkod med värdet ' + str(idcode_id) + '. Var vänlig kontrollera att du matat in koden rätt.'))
      
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
