@@ -73,57 +73,31 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                               then 'NO-SYMPTOMS'
 
                           when ("Q5" = 0 or "Q6b" = 0)
-                           and ("Q1_1" or "Q1_2"  or "Q6d" = 3 or "Q6d" = 4 or "Q6d" = 5 or "Q1_11" or "Q111_8" or "Q111_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
+                           and ("Q1_1" or "Q1_2"  or "Q6d" = 3 or "Q6d" = 4 or "Q6d" = 5 or "Q1_11" or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
                            and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
                               then 'ILI'
 
                           when 
                             (
-                                ((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2")) 
-                                and (("Q6d" = 0) or ("Q6d" is null)) 
-                                and ("Q1_3" or "Q1_4" or "Q1_14" or "Q111_3" or "Q111_4" or "Q111_14")
-                                and ("Q11" = 2)
-                            ) and (
                                 case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
                                 case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
                                 case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
                                 case true when "Q1_18" or "Q111_18" then 1 else 0 end >= 2
-                            ) then 'ALLERGY-or-HAY-FEVER-and-GASTROINTESTINAL'
+                            ) then 'GASTROINTESTINAL'
 
                           when ((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2")) 
                            and (("Q6d" = 0) or ("Q6d" is null)) 
                            and ("Q1_3" or "Q1_4" or "Q1_14" or "Q111_3" or "Q111_4" or "Q111_14")
                            and ("Q11" = 2)
                               then 'ALLERGY-or-HAY-FEVER' 
-
-                          when
-                            (
-                                case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
-                                case true when "Q1_4" or "Q111_4" then 1 else 0 end + 
-                                case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
-                                case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 2
-                                  -- note: common cold after all allergy-related branches
-                            ) and (
-                                case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                                case true when "Q1_15" or "Q111_15" then 1 else 0 end + 
-                                case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                                case true when "Q1_18" or "Q111_18" then 1 else 0 end >= 2
-                            ) then 'COMMON-COLD-and-GASTROINTESTINAL'
-
+                
                           when 
                             case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
-                            case true when "Q1_4" or "Q111_4" then 1 else 0 end + 
+                            case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
                             case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
                             case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 2
                               -- note: common cold after all allergy-related branches
                               then 'COMMON-COLD'
-
-                          when 
-                            case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                            case true when "Q1_15" or "Q111_15" then 1 else 0 end + 
-                            case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                            case true when "Q1_18" or "Q111_18" then 1 else 0 end >= 2
-                              then 'GASTROINTESTINAL'
 
                           else 'NON-SPECIFIC-SYMPTOMS'
                       end as status
