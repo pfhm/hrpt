@@ -335,7 +335,7 @@ msgstr "symptom på magsjuka"
 
 #: apps/survey/views.py:58
 msgid "Other non-influenza symptons"
-msgstr "Andra icke-influensaliknande symptom"
+msgstr "Andra icke-specifika symptom"
 
 #: apps/survey/views.py:60
 msgid "Next status"

@@ -71,7 +71,7 @@ def _decode_person_health_status(status):
        diag = _('Cold / allergy')
     elif status == "GASTROINTESTINAL":
        diag = _('Gastrointestinal symptoms')
-    elif status == "NON-INFLUENZA":
+    elif status == "NON-SPECIFIC-SYMPTOMS":
        diag = _('Other non-influenza symptons')
     else:
        diag = _('Unknown')
