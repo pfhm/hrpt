@@ -331,7 +331,7 @@ msgstr "Förkylning / allergi"
 
 #: apps/survey/views.py:56
 msgid "Gastrointestinal symptoms"
-msgstr "symptom på magsjuka"
+msgstr "Magsjuka"
 
 #: apps/survey/views.py:58
 msgid "Other non-influenza symptons"

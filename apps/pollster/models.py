@@ -85,19 +85,21 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                                 case true when "Q1_18" or "Q111_18" then 1 else 0 end >= 2
                             ) then 'GASTROINTESTINAL'
 
-                          when ((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2")) 
+                          when 
+                              ((((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2"))) 
                            and (("Q6d" = 0) or ("Q6d" is null)) 
                            and ("Q1_3" or "Q1_4" or "Q1_14" or "Q111_3" or "Q111_4" or "Q111_14")
                            and ("Q11" = 2)
-                              then 'ALLERGY-or-HAY-FEVER' 
+                              ) then 'ALLERGY-or-HAY-FEVER' 
                 
                           when 
+                            (
                             case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
                             case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
                             case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
                             case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 2
                               -- note: common cold after all allergy-related branches
-                              then 'COMMON-COLD'
+                            )  then 'COMMON-COLD'
 
                           else 'NON-SPECIFIC-SYMPTOMS'
                       end as status
