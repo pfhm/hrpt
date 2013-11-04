@@ -73,6 +73,10 @@ def _decode_person_health_status(status):
        diag = _('Gastrointestinal symptoms')
     elif status == "NON-SPECIFIC-SYMPTOMS":
        diag = _('Other non-influenza symptons')
+    elif status == "ILI-and-GASTROINTESTINAL":
+       diag = _('ILI / gastro')
+    elif status == "COMMON-COLD-and-GASTROINTESTINAL":
+       diag = _('Cold / gastro')
     else:
        diag = _('Unknown')
     return diag

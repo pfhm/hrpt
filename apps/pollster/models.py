@@ -72,17 +72,123 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                           when ("Q1a" = 0 or "Q1aa" = 0)
                               then 'NO-SYMPTOMS'
 
+                          when 
+              (
+                (
+                ("Q5" = 0 or "Q6b" = 0)
+                            and ("Q1_1" or "Q1_2"  or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
+                            and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
+                )
+                and
+                (
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
+                (
+                    ("Q1_17" or "Q111_17") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                ) or
+                (
+                    ("Q1_16" or "Q111_16") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                )
+                            )
+                       ) then 'ILI-and-GASTROINTESTINAL'
+
+              when
+              (
+                (
+                                case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
+                                case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
+                                case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
+                                case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
+                ) 
+                and
+                (
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
+                (
+                    ("Q1_17" or "Q111_17") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                ) or
+                (
+                    ("Q1_16" or "Q111_16") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                )
+                            )
+                       ) then 'COMMON-COLD-and-GASTROINTESTINAL'
+
+
                           when ("Q5" = 0 or "Q6b" = 0)
-                           and ("Q1_1" or "Q1_2"  or "Q6d" = 3 or "Q6d" = 4 or "Q6d" = 5 or "Q1_11" or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
+                           and ("Q1_1" or "Q1_2"  or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
                            and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
                               then 'ILI'
 
                           when 
                             (
-                                case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                                case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                                case true when "Q1_18" or "Q111_18" then 1 else 0 end >= 2
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
+                (
+                    ("Q1_17" or "Q111_17") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                ) or
+                (
+                    ("Q1_16" or "Q111_16") and
+                    (
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
+                    )
+                )
                             ) then 'GASTROINTESTINAL'
 
                           when 
@@ -94,11 +200,12 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                 
                           when 
                             (
-                            case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
-                            case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
-                            case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
-                            case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 2
-                              -- note: common cold after all allergy-related branches
+                (
+                                case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
+                                case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
+                                case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
+                                case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
+                )
                             )  then 'COMMON-COLD'
 
                           else 'NON-SPECIFIC-SYMPTOMS'
