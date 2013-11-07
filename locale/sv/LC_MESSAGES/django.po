@@ -309,7 +309,7 @@ msgstr "Avbeställ nyhetsbrev"
 #: apps/reminder/templates/reminder/unsubscribe.html:7
 msgid "You may unsubscribe from the Influenzanet reminder/newsletter by pressing the button below."
 msgstr ""
-"Du kan avprenumerera från Häslorapports nyhetsbrev genom att klicka på "
+"Du kan avprenumerera från Hälsorapports nyhetsbrev genom att klicka på "
 "knappen nedan. Nyhetsbreven kommer en gång i veckan. "
 
 #: apps/reminder/templates/reminder/unsubscribe_successful.html:7
