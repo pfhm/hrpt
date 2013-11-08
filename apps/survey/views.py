@@ -201,7 +201,7 @@ def idcode_save(request):
     
     if idcode_id == None or idcode_id == '':
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange en idkod.'))
+        messages.add_message(request, messages.ERROR, (u'Du måste ange en kod.'))
     
     if fodelsedatum == None or fodelsedatum == '':
         error = True
@@ -231,7 +231,7 @@ def idcode_save(request):
         except:
             error = True
             specialPrint("Hittade inte idkod med varde" + idcode_id)
-            messages.add_message(request, messages.ERROR, ('Hittade ingen idkod med värdet ' + str(idcode_id) + '. Var vänlig kontrollera att du matat in koden rätt.'))
+            messages.add_message(request, messages.ERROR, ('Hittade ingen kod med värdet ' + str(idcode_id) + '. Var vänlig kontrollera att du matat in koden rätt.'))
      
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
