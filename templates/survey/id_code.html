@@ -6,7 +6,7 @@
 <p>
 Tack för att du aktiverat ditt konto i Hälsorapport! Var vänlig fyll i den 
 kod som står tryckt på din inbjudan. Ange även födelsedatumet på den som anmälts till Hälsorapport i 
-formatet ÅÅÅÅ-MM.<br/><br/>
+formatet ÅÅÅÅ-MM (exempelvis: 1950-10).<br/><br/>
 </p>
 {% if messages %}
 <ul class="messages">
@@ -19,7 +19,7 @@ formatet ÅÅÅÅ-MM.<br/><br/>
 <form action="{% url apps.survey.views.idcode_save %}" method="post">
 {% csrf_token %}
 <p>
-Id-kod:<br><input name="idkod" id="idkod" value="{{idcode}}"/><br/>
+Kod:<br><input name="idkod" id="idkod" value="{{idcode}}"/><br/>
 Födelsedatum(ÅÅÅÅ-MM):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
 <input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
 <input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>

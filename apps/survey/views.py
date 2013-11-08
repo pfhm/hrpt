@@ -236,7 +236,7 @@ def idcode_save(request):
         if idcode != None and idcode.surveyuser_global_id!=None:
             error = True
             specialPrint("Idkod med varde" + idcode_id + "ar redan upptaget")
-            messages.add_message(request, messages.ERROR, ('Idkoden ' + str(idcode_id) + ' är redan upptagen'))
+            messages.add_message(request, messages.ERROR, ('Koden ' + str(idcode_id) + ' är redan upptagen'))
         
         if idcode != None and idcode.fodelsedatum!=None and idcode.fodelsedatum != fodelsedatum:
             error = True
