@@ -628,7 +628,7 @@ msgstr "Tack! "
 msgid "We've e-mailed you instructions for setting your password to the e-mail address you submitted. You should be receiving it shortly."
 msgstr ""
 "Vi har skickat ett e-postmeddelande till dig med instruktioner för hur du "
-"byter ditt lösenord. Du bör få den inom kort. Om du inte får den, kolla dina "
+"byter ditt lösenord. Du bör få den inom kort. Om du inte får det, kolla dina "
 "spamfilter. "
 
 #: templates/registration/password_reset_email.html:3
@@ -849,7 +849,7 @@ msgstr "Hantera profiler"
 msgid "You have received this email because you are registered with %(site_name)s. Your contribution helps us track the spread of flu. If you do not wish to receive this weekly reminder any longer, please <a href=\"%(unsubscribe_url)s\">unsubscribe</a> from our mailings."
 msgstr ""
 "Du har fått detta meddelande för att du är registrerad som deltagare i Hälsorapport. Tack för att du är med! "
-"Om du har frågor eller synpunkter är du välkommen att höra av dig till"
+"Om du har frågor eller synpunkter är du välkommen att höra av dig till "
 "<a href=\"mailto:halsorapport@smi.se\">halsorapport@smi.se</a>. Hälsorapport skickar nyhetsbrev en gång i veckan. "
 "<a href=\"http://www.halsorapport.se/sv/reminder/unsubscribe/\">Klicka här</a> för att avbeställa nyhetsbreven."
 
