@@ -635,7 +635,7 @@ msgstr ""
 msgid "You're receiving this e-mail because you requested a password reset"
 msgstr ""
 "Du har fått detta e-postmeddelande eftersom du begärt en återställning av "
-"ditt lösenord för ditt användarkonto på Hälsorapport"
+"ditt lösenord "
 
 #: templates/registration/password_reset_email.html:4
 #, python-format
