@@ -18,7 +18,16 @@
                         constrainInput: true,
                         dateFormat: 'dd/mm/yy',
                         changeMonth: true,
-                        changeYear: true 
+                        changeYear: true,
+                        // Prevent the soft keyboard from popping up on mobile devices
+                        onClose: function(dateText, inst) 
+                        { 
+                            $(this).removeAttr("readonly");
+                        },
+                        beforeShow: function(input, inst) 
+                        {
+                            $(this).attr("readonly", 'readonly');
+                        }
                     })
                     /*.change(function(evt){
 			    var $this = $(this);
