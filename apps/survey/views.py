@@ -232,8 +232,8 @@ def idcode_save(request):
             error = True
             specialPrint("Hittade inte idkod med varde" + idcode_id)
             messages.add_message(request, messages.ERROR, ('Hittade ingen kod med värdet ' + str(idcode_id) + '. Var vänlig kontrollera att du matat in koden rätt.'))
-     
-        if idcode != None and idcode.surveyuser_global_id!=None:
+             
+        if idcode != None and idcode.surveyuser_global_id!=None and idcode.surveyuser_global_id!=survey_user.global_id:
             error = True
             specialPrint("Idkod med varde" + idcode_id + "ar redan upptaget")
             messages.add_message(request, messages.ERROR, ('Koden ' + str(idcode_id) + ' är redan upptagen'))
