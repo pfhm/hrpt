@@ -59,3 +59,13 @@ div.influenzabarcontent {
 	border-left: none;
 	border-right: none;
 }
+
+/* Pollster */
+textarea.user-field {
+	width: 98%;
+}
+
+/* Survey ID-code form */
+#fodelsedatum {
+	margin-bottom: 0.5em; 
+}
