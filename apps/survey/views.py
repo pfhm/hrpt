@@ -13,6 +13,8 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.db import connection
+from django.utils.datastructures import MultiValueDictKeyError
+import re
 
 from apps.survey import utils, models, forms
 from apps.pollster import views as pollster_views
@@ -190,30 +192,42 @@ def thanks_profile(request):
 
 @login_required
 def idcode_save(request):
-    
-    idcode_id = request.POST['idkod']
-    fodelsedatum = request.POST['fodelsedatum']
-    gid = request.POST['global_id']
-    specialPrint("idcode_save person:" + gid)
-    idcode = None
-    survey_user = models.SurveyUser.objects.get(global_id=gid)
+    idcode_id = None
+    fodelsedatum = None
+    gid = None
     error = False
+    idcode = None
+    survey_user = None
     
-    if idcode_id == None or idcode_id == '':
+    try:
+        idcode_id = request.POST['idkod']
+        fodelsedatum = request.POST['fodelsedatum']
+        gid = request.POST['global_id']
+        survey_user = models.SurveyUser.objects.get(global_id=gid)
+        specialPrint("idcode_save person:" + gid)
+    except MultiValueDictKeyError:
+        messages.add_message(request, messages.ERROR, (u'Ett tekniskt fel skedde då formuläret skickades in.'))
         error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange en kod.'))
     
-    if fodelsedatum == None or fodelsedatum == '':
-        error = True
-        messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum.'))    
-    else:
-        if "-" not in fodelsedatum:
+    if error == False:
+        specialPrint("idcode_save person:" + gid)
+        if idcode_id == None or idcode_id == '':
+            error = True
+            messages.add_message(request, messages.ERROR, (u'Du måste ange en kod.'))
+        
+        if fodelsedatum == None or fodelsedatum == '':
+            error = True
+            messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum.'))
+        elif re.match('^[0-9]{4}[\-]?[0-9]{2}$', fodelsedatum) is None:
             error = True
             messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ-MM.'))
-        else :
+        else:
+            if "-" not in fodelsedatum:
+                fodelsedatum = str(fodelsedatum[0:4]) + '-' + str(fodelsedatum[4:]); 
+
             yy = str(fodelsedatum[0:4])
             mm = str(fodelsedatum[5:])
-
+    
             if yy.isdigit() == False or mm.isdigit() == False:
                 error = True
                 messages.add_message(request, messages.ERROR, (u'År och månad måste vara numeriska värden mellan 1917-2013 och 01-12.'))
