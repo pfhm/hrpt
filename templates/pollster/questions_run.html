@@ -39,7 +39,12 @@
                 {{ question.translated_description }}
             </p>
             {% if question.is_text %}
-            <textarea rows="3" name="{{ question.data_name }}" id="question-{{ question.id }}-field" class="user-field">{{ question.form_value }}</textarea>
+            	{% if not question.option_set.all %}
+            		<textarea rows="3" name="{{ question.data_name }}" id="question-{{ question.id }}-field" class="user-field">{{ question.form_value }}</textarea>
+            	{% else %}
+            		<input type="text" name="{{ question.data_name }}" id="question-{{ question.id }}-field"
+						value="{{ question.form_value }}" class="user-field" />
+            	{% endif %}
             <p class="error-message">{{ question.translated_error_message }}</p>
             <ul class="derived-values">
                 {% for option in question.options %}
