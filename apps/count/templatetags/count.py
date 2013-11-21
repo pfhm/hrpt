@@ -41,7 +41,7 @@ class MemberCountNode(Node):
             return cache.get(key)
 
         try:
-            result = urllib2.urlopen(SOURCES[country], timeout=0.1 if settings.DEBUG else 2).read()
+            result = urllib2.urlopen(SOURCES[country], timeout=0.1 if settings.DEBUG else 0.08).read()
         except:
             result = '2300'
 
