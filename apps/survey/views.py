@@ -235,6 +235,9 @@ def idcode_save(request):
                 if int(yy) < 1917 or int(yy) > 2013:
                     error = True
                     messages.add_message(request, messages.ERROR, (u'Årtalet måste vara mellan 1917 och 2013.'))
+                elif int(yy) == 2013 and int(mm) == 12:
+                    error = True
+                    messages.add_message(request, messages.ERROR, (u'Födelsedatumet ligger efter det att inbjudan skickades. Var vänlig kontrollera att ni matat in rätt datum.'))
                 elif int(mm) < 1 or int(mm) > 12 or len(mm) != 2:
                     error = True
                     messages.add_message(request, messages.ERROR, (u'Månaden måste vara mellan 01 och 12.'))
