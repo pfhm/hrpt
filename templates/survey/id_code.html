@@ -20,7 +20,7 @@ formatet ÅÅÅÅ-MM (exempelvis: 1950-10).<br/><br/>
 {% csrf_token %}
 <p>
 Kod:<br><input name="idkod" id="idkod" value="{{idcode}}"/><br/>
-Födelsedatum(ÅÅÅÅ-MM):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
+Födelsedatum (ÅÅÅÅ-MM):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
 <input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
 <input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>
 </p>
