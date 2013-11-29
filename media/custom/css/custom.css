@@ -69,3 +69,45 @@ textarea.user-field {
 #fodelsedatum {
 	margin-bottom: 0.5em; 
 }
+
+/* Captcha */
+#box img.captcha {
+    margin: 0;
+}
+
+.help-text {
+	color: #AAAAAA;
+	font-size: 0.7em;
+    line-height: 1.2em;
+}
+
+form.contact_form img.captcha {
+	clear: left;
+	float: left;
+}
+
+form.contact_form input#id_captcha_1 {
+	float: left;
+	margin-left: 0.5em;
+}
+
+form.contact_form .helptext {
+	clear: left;
+	float: left;
+}
+
+#col1 form.contact_form ul.errorlist {
+	clear: left;
+	float: left;
+}
+
+#col1 form.contact_form ul.errorlist li {
+    clear: both;
+    color: #FF0000;
+    display: block;
+    font-size: 0.7em;
+    font-weight: bold;
+    line-height: 1.2em;
+    margin: 10px 0 0;
+    padding: 0;
+}

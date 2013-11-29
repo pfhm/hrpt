@@ -5,8 +5,11 @@ from django.views.generic.simple import direct_to_template
 from registration.views import activate
 from registration.views import register
 
+from django.contrib.auth.forms import PasswordResetForm
+
 from . import views
-from .forms import UnicodeRegistrationForm
+from .forms import CaptchaUnicodeRegistrationForm
+from .forms import CaptchaPasswordResetForm
 
 urlpatterns = patterns('',
     # From registration.backends.default.urls
@@ -27,7 +30,7 @@ urlpatterns = patterns('',
         register,
         { 'backend': 'registration.backends.default.DefaultBackend',
           'template_name': 'registration/registration_form.html',
-          'form_class': UnicodeRegistrationForm},
+          'form_class': CaptchaUnicodeRegistrationForm},
         name='registration_register'),
     url(r'^register/complete/$',
         direct_to_template,
@@ -57,7 +60,8 @@ urlpatterns = patterns('',
     url(r'^password/reset/$',
         auth_views.password_reset,
         {'template_name': 'registration/password_reset_form.html',
-         'email_template_name': 'registration/password_reset_email.html'},
+         'email_template_name': 'registration/password_reset_email.html',
+         'password_reset_form': CaptchaPasswordResetForm},
         name='auth_password_reset'),
     url(r'^password/reset/confirm/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$',
         auth_views.password_reset_confirm,

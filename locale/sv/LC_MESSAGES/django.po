@@ -936,3 +936,9 @@ msgstr ""
 
 msgid "Influenzanet is a system to monitor the activity of influenza-like-illness (ILI) with the aid of volunteers via the internet"
 msgstr "Hälsorapport är en del av Influenzanet, ett europeiskt system för webbaserad syndromövervakning."
+
+msgid "Please enter the characters shown in the image."
+msgstr "Skriv in bokstäverna som visas i bilden."
+
+msgid "Invalid CAPTCHA."
+msgstr "Felaktig CAPTCHA."

@@ -3,9 +3,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
 
 from registration.forms import RegistrationForm
 from apps.reminder.models import UserReminderInfo
+from captcha.fields import CaptchaField
 
 attrs_dict = {'class': 'required'}
 
@@ -80,3 +82,15 @@ class UsernameForm(forms.ModelForm):
 
         return value
 
+class CaptchaUnicodeRegistrationForm(RegistrationForm):
+    username = forms.RegexField(regex=r'(?u)^[\w.@+-]+$',
+                                max_length=30,
+                                widget=forms.TextInput(attrs=attrs_dict),
+                                label=_("Username"),
+                                error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
+    captcha = CaptchaField(label=_("Captcha"),
+                           help_text=_("Please enter the characters shown in the image."))
+
+class CaptchaPasswordResetForm(PasswordResetForm):
+    captcha = CaptchaField(label=_("Captcha"),
+                           help_text=_("Please enter the characters shown in the image."))

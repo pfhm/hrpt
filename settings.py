@@ -177,6 +177,7 @@ INSTALLED_APPS = (
     'haystack',
     'apps.pollster',
     'apps.contest',
+    'captcha',
     #'apps.captcha',
     #'apps.tellafriend',
 

@@ -5,7 +5,7 @@ from django.views.generic.simple import redirect_to
 from haystack.views import SearchView, search_view_factory
 from haystack.forms import SearchForm
 
-from apps.ew_contact_form.forms import ContactForm
+from apps.ew_contact_form.forms import CaptchaContactForm
 from views import LatestEntriesFeed
 
 from django.contrib import admin
@@ -32,7 +32,7 @@ urlpatterns = patterns('',
 
     (r'^xss/$', LatestEntriesFeed()),
 
-    #url(r'^captcha/', include('captcha.urls')),
+    url(r'^captcha/', include('captcha.urls')),
     #(r'^tellafriend/', include('tellafriend.urls')),
 
     url(r'^search/$', search_view_factory(
@@ -48,7 +48,7 @@ urlpatterns = patterns('',
     (r'^count/', include('apps.count.urls')),
     (r'^contest/', include('apps.contest.urls')),
 
-    url(r'^contact/$', 'contact_form.views.contact_form', {'form_class': ContactForm}, name='contact_form'),
+    url(r'^contact/$', 'contact_form.views.contact_form', {'form_class': CaptchaContactForm}, name='contact_form'),
     url(r'^contact/sent/$', 'django.views.generic.simple.direct_to_template', {'template': 'contact_form/contact_form_sent.html'}, name='contact_form_sent'),
 
     (r'^colors.css$', 'apps.partnersites.views.colors_css'),
