@@ -69,6 +69,10 @@
                         if (this.value == value)
                             this.selected = true;
                     });
+                    break;
+                case "textarea":
+                	this.value = value;
+                	break;
                 break;
             }
         });
