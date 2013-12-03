@@ -120,3 +120,7 @@ form.contact_form .helptext {
     margin: 10px 0 0;
     padding: 0;
 }
+
+.contact_form #commentsubmit {
+	margin-top: 0.7em;
+}

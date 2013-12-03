@@ -941,8 +941,8 @@ msgstr "Hälsorapport är en del av Influenzanet, ett europeiskt system för web
 msgid "Please enter the characters shown in the image."
 msgstr "Skriv in bokstäverna som visas i bilden."
 
-msgid "Invalid CAPTCHA."
-msgstr "Felaktig CAPTCHA."
+msgid "Invalid CAPTCHA"
+msgstr "Felaktigt kontrollord"
 
 msgid "Captcha"
 msgstr "Kontrollord"
