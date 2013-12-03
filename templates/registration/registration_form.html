@@ -19,5 +19,7 @@
             	{{ field.errors }}
         		</div>
     {% endfor %}
-                <p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p></form>{% endspaceless %}{% endblock content %}
+                <p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p>
+                <p class="registration-footnote">{% trans "Registration requires ID-code." %}</p>
+                </form>{% endspaceless %}{% endblock content %}
 

@@ -70,6 +70,15 @@ textarea.user-field {
 	margin-bottom: 0.5em; 
 }
 
+/* Registration form */
+.registration-footnote {
+	font-style: italic;
+	margin-top: 0.5em;
+	font-size: 0.9em;
+	line-height: 1.3em;
+	color: #666666;
+}
+
 /* Captcha */
 #box img.captcha {
     margin: 0;
