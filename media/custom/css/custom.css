@@ -90,6 +90,20 @@ textarea.user-field {
     line-height: 1.6em;
 }
 
+.captcha-refresh {
+	margin: 0;
+	vertical-align: top;
+}
+
+.captcha-refresh img, #box .captcha-refresh img {
+	margin: 6px 0 0 10px;
+	vertical-align: top;
+}
+
+form.contact_form .captcha-refresh {
+	float: left;
+}
+
 form.contact_form img.captcha {
 	clear: left;
 	float: left;
