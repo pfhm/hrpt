@@ -18,7 +18,7 @@
                         constrainInput: true,
                         dateFormat: 'dd/mm/yy',
                         changeMonth: true,
-                        changeYear: true,
+                        changeYear: true
                     });
                 // Prevent the soft keyboard from popping up on mobile device
                 $field.attr("readonly", 'readonly');
