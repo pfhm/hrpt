@@ -411,6 +411,7 @@ def survey_results_csv(request, id):
     now = datetime.datetime.now()
     response = HttpResponse(mimetype='text/csv')
     response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
+    response.write(u'\ufeff'.encode('utf8'))
     writer = csv.writer(response)
     survey.write_csv(writer)
     return response
