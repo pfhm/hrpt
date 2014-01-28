@@ -850,7 +850,7 @@ msgid "You have received this email because you are registered with %(site_name)
 msgstr ""
 "Du har fått detta meddelande för att du är registrerad som deltagare i Hälsorapport. Tack för att du är med! "
 "Om du har frågor eller synpunkter är du välkommen att höra av dig till "
-"<a href=\"mailto:halsorapport@smi.se\">halsorapport@smi.se</a>. Hälsorapport skickar nyhetsbrev en gång i veckan. "
+"<a href=\"mailto:halsorapport@folkhalsomyndigheten.se\">halsorapport@folkhalsomyndigheten.se</a>. Hälsorapport skickar nyhetsbrev en gång i veckan. "
 "<a href=\"http://www.halsorapport.se/sv/reminder/unsubscribe/\">Klicka här</a> för att avbeställa nyhetsbreven."
 
 msgid "Below is the list of participants currently managed by you. Click the corresponding option next to the participant to complete the background or symptoms questionnaire for that person, or to remove a participant."
