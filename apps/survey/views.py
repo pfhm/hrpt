@@ -318,7 +318,7 @@ def specialPrint(msg):
 def isMobile(request):
     x = request.META['HTTP_USER_AGENT']
     x = x.lower()
-    specialPrint("Check if this user is using mobile: " + x)
+    # specialPrint("Check if this user is using mobile: " + x)
     
     mobDevices = ['android','iphone']
     
@@ -329,7 +329,7 @@ def isMobile(request):
             retVal =  True
             break
       
-    specialPrint ("Mobile user=" + str(retVal))      
+    # specialPrint ("Mobile user=" + str(retVal))      
             
     return retVal
 
@@ -408,7 +408,7 @@ def index(request):
     if senaste != None:
         dt = datetime.datetime.strptime(senaste, '%Y-%m-%d')
         senaste = dt.strftime('%W')
-        specialPrint("compare senaste with idag:" + senaste + " and " + idag)
+        # specialPrint("compare senaste with idag:" + senaste + " and " + idag)
 
     if senaste != None and senaste == idag:
         #Removed messages since it seems they are not being removed correctly.
