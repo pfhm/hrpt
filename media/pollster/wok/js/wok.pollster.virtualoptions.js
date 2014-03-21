@@ -1,5 +1,3 @@
-console.log("Reading and applying the file, at least");
-
 (function($) {
     // COMMON UTILITIES
 
