@@ -108,10 +108,15 @@
         $.extend(this, {
             option: option,
             match: function(val) {
+            	val = Date.parse('1/'+val);
+            	
             	// val is on format MM/YYYY, ex 10/2014 for october 2014. Built in date parsing
             	// has proven unreliable, so we create the date object explicitly instead.
-                var parts = val.split('/');
+            	// This fix has been tested ok, but postponed for production
+                /*
+            	var parts = val.split('/');
                 val = new Date(parts[1], parts[0]-1, 1, 1, 0, 0);
+                */
                 inf = parseInt(inf);
                 sup = parseInt(sup);
                 

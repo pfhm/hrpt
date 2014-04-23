@@ -15,6 +15,7 @@
 
 
 {% block content %}<h1>{% trans "Registration Form" %}</h1>
+<p class="registration-footnote">{% trans "Registration requires ID-code." %}</p>
 {% trans "register" %}
                 {% spaceless %}<form method="post" id="registration">{% csrf_token %}
                 {% for field in form %}
@@ -24,7 +25,6 @@
             	{{ field.errors }}
         		</div>
     {% endfor %}
-                <p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p>
-                <p class="registration-footnote">{% trans "Registration requires ID-code." %}</p>
+                <p><input type="submit" id="boxsubmit" value="{% trans "Register" %}"/></p> 
                 </form>{% endspaceless %}{% endblock content %}
 
