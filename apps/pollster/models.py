@@ -5,6 +5,7 @@ from django.db import models, connection, transaction, IntegrityError, DatabaseE
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django.core.validators import RegexValidator
+from django.core.exceptions import ObjectDoesNotExist
 from cms.models import CMSPlugin
 from xml.etree import ElementTree
 from math import pi,cos,sin,log,exp,atan
@@ -641,11 +642,18 @@ class Survey(models.Model):
                 row.append(Survey.getUser(result.user).email)
             if addExtraIntake:
                 # Add extra fields for the intake export
-                rowUser = Survey.getUser(result.user)
-                rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
-                row.append(rowUser.email);
-                row.append(rowIdCode.idcode)
-                row.append(rowIdCode.fodelsedatum)
+                rowUser = None
+                rowIdCode = None
+                try:
+                    rowUser = Survey.getUser(result.user)
+                    rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
+                    row.append(rowUser.email);
+                    row.append(rowIdCode.idcode)
+                    row.append(rowIdCode.fodelsedatum)
+                except ObjectDoesNotExist:
+                    row.append("");
+                    row.append("")
+                    row.append("")
             writer.writerow(row)
 
 class RuleType(models.Model):
