@@ -646,14 +646,17 @@ class Survey(models.Model):
                 rowIdCode = None
                 try:
                     rowUser = Survey.getUser(result.user)
-                    rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
                     row.append(rowUser.email);
+                except ObjectDoesNotExist:
+                    row.append("")
+                try:
+                    rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
                     row.append(rowIdCode.idcode)
                     row.append(rowIdCode.fodelsedatum)
                 except ObjectDoesNotExist:
-                    row.append("");
                     row.append("")
                     row.append("")
+                    
             writer.writerow(row)
 
 class RuleType(models.Model):
