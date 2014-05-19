@@ -642,8 +642,7 @@ class Survey(models.Model):
             if addExtraIntake:
                 # Add extra fields for the intake export
                 rowUser = Survey.getUser(result.user)
-                rowSurveyUser = SurveyUser.objects.get(user = rowUser)
-                rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = rowSurveyUser.global_id)
+                rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
                 row.append(rowUser.email);
                 row.append(rowIdCode.idcode)
                 row.append(rowIdCode.fodelsedatum)
