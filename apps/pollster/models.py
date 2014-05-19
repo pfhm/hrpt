@@ -12,6 +12,7 @@ from . import dynamicmodels, json
 from .db.utils import get_db_type, convert_query_paramstyle
 import os, re, shutil, warnings, datetime, csv
 from django.conf import settings
+from apps.survey.models import SurveyIdCode, SurveyUser
 
 DEG_TO_RAD = pi/180
 RAD_TO_DEG = 180/pi
@@ -612,13 +613,16 @@ class Survey(models.Model):
     def write_csv(self, writer):
         model = self.as_model()
         fields = model._meta.fields
-        addExtra = self.shortname == 'weekly'
+        addExtraWeekly = self.shortname == 'weekly'
+        addExtraIntake = self.shortname == 'intake'
         
         fieldNames = []
         for field in fields:
             fieldNames += [field.verbose_name or field.name]
-        if addExtra:                                      
+        if addExtraWeekly:                                      
             fieldNames += ["status","email"]
+        if addExtraIntake:
+            fieldNames += ["email", "idcode", "fodelsedatum"]
         
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
@@ -631,10 +635,18 @@ class Survey(models.Model):
                 if type(val) is unicode:
                     val = val.encode('utf-8')
                 row.append(val)
-            if addExtra:
-                #Add extra fields
+            if addExtraWeekly:
+                #Add extra fields for weekly export
                 row.append(Survey.getHealthStatus(result.id))
                 row.append(Survey.getUser(result.user).email)
+            if addExtraIntake:
+                # Add extra fields for the intake export
+                rowUser = Survey.getUser(result.user)
+                rowSurveyUser = SurveyUser.objects.get(user = rowUser)
+                rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = rowSurveyUser.global_id)
+                row.append(rowUser.email);
+                row.append(rowIdCode.idcode)
+                row.append(rowIdCode.fodelsedatum)
             writer.writerow(row)
 
 class RuleType(models.Model):
