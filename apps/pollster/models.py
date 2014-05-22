@@ -616,6 +616,7 @@ class Survey(models.Model):
         fields = model._meta.fields
         addExtraWeekly = self.shortname == 'weekly'
         addExtraIntake = self.shortname == 'intake'
+        weeklySurvey = None
         
         fieldNames = []
         for field in fields:
@@ -623,7 +624,8 @@ class Survey(models.Model):
         if addExtraWeekly:                                      
             fieldNames += ["status","email"]
         if addExtraIntake:
-            fieldNames += ["email", "idcode", "fodelsedatum"]
+            fieldNames += ["email", "active", "idcode", "last_report"]
+            weeklySurvey = Survey.get_by_shortname('weekly')
         
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
@@ -646,15 +648,20 @@ class Survey(models.Model):
                 rowIdCode = None
                 try:
                     rowUser = Survey.getUser(result.user)
-                    row.append(rowUser.email);
+                    row.append(rowUser.email)
+                    row.append(rowUser.is_active)
                 except ObjectDoesNotExist:
+                    row.append("")
                     row.append("")
                 try:
                     rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
                     row.append(rowIdCode.idcode)
-                    row.append(rowIdCode.fodelsedatum)
                 except ObjectDoesNotExist:
                     row.append("")
+                try:
+                    lastParticipation = weeklySurvey.get_last_participation_data(rowUser.id, result.global_id);
+                    row.append(lastParticipation.date)
+                except AttributeError:
                     row.append("")
                     
             writer.writerow(row)
