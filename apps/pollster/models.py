@@ -661,7 +661,7 @@ class Survey(models.Model):
                 try:
                     lastParticipation = weeklySurvey.get_last_participation_data(rowUser.id, result.global_id);
                     row.append(lastParticipation['timestamp'])
-                except (AttributeError, KeyError) as e:
+                except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
                     
             writer.writerow(row)
