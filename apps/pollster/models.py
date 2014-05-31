@@ -617,6 +617,7 @@ class Survey(models.Model):
         addExtraWeekly = self.shortname == 'weekly'
         addExtraIntake = self.shortname == 'intake'
         weeklySurvey = None
+        lastParticipationData = {}
         
         fieldNames = []
         for field in fields:
@@ -626,6 +627,12 @@ class Survey(models.Model):
         if addExtraIntake:
             fieldNames += ["email", "active", "idcode", "last_report"]
             weeklySurvey = Survey.get_by_shortname('weekly')
+            lastParticipation  = weeklySurvey.as_model().objects\
+                .order_by('global_id', '-timestamp')\
+                .distinct('global_id')\
+                .values()
+            for participation in lastParticipation:
+                lastParticipationData[participation['global_id']] = participation
         
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
@@ -659,13 +666,12 @@ class Survey(models.Model):
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
-                    lastParticipation = weeklySurvey.get_last_participation_data(rowUser.id, result.global_id);
-                    row.append(lastParticipation['timestamp'].strftime('%Y-%m-%d %H:%M'))
+                    row.append(lastParticipationData['timestamp'].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
                     
             writer.writerow(row)
-
+            
 class RuleType(models.Model):
     title = models.CharField(max_length=255, blank=True, default='')
     js_class = models.CharField(max_length=255, unique=True)
