@@ -666,12 +666,12 @@ class Survey(models.Model):
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
-                    row.append(lastParticipationData['timestamp'].strftime('%Y-%m-%d %H:%M'))
+                    row.append(lastParticipationData[result.global_id]['timestamp'].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
                     
             writer.writerow(row)
-            
+        
 class RuleType(models.Model):
     title = models.CharField(max_length=255, blank=True, default='')
     js_class = models.CharField(max_length=255, unique=True)
