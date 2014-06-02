@@ -616,7 +616,6 @@ class Survey(models.Model):
         fields = model._meta.fields
         addExtraWeekly = self.shortname == 'weekly'
         addExtraIntake = self.shortname == 'intake'
-        weeklySurvey = None
         lastParticipationData = {}
         
         fieldNames = []
@@ -626,13 +625,11 @@ class Survey(models.Model):
             fieldNames += ["status","email"]
         if addExtraIntake:
             fieldNames += ["email", "active", "idcode", "last_report"]
-            weeklySurvey = Survey.get_by_shortname('weekly')
-            lastParticipation  = weeklySurvey.as_model().objects\
-                .order_by('global_id', '-timestamp')\
-                .distinct('global_id')\
-                .values()
+            cursor = connection.cursor()
+            cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
+            lastParticipation = cursor.fetchall()
             for participation in lastParticipation:
-                lastParticipationData[participation['global_id']] = participation
+                lastParticipationData[participation[0]] = [1]
         
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
@@ -666,7 +663,7 @@ class Survey(models.Model):
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
-                    row.append(lastParticipationData[result.global_id]['timestamp'].strftime('%Y-%m-%d %H:%M'))
+                    row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
                     
