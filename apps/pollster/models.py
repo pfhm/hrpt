@@ -629,7 +629,7 @@ class Survey(models.Model):
             cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
             lastParticipation = cursor.fetchall()
             for participation in lastParticipation:
-                lastParticipationData[participation[0]] = [1]
+                lastParticipationData[participation[0]] = participation[1]
         
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
@@ -663,6 +663,7 @@ class Survey(models.Model):
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
+                    row.append(lastParticipationData[result.global_id])
                     row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
