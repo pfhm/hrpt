@@ -663,7 +663,6 @@ class Survey(models.Model):
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
-                    row.append(lastParticipationData[result.global_id])
                     row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
                     row.append("")
