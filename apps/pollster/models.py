@@ -643,9 +643,16 @@ class Survey(models.Model):
                     val = val.encode('utf-8')
                 row.append(val)
             if addExtraWeekly:
-                #Add extra fields for weekly export
                 row.append(Survey.getHealthStatus(result.id))
-                row.append(Survey.getUser(result.user).email)
+                try:
+                    row.append(Survey.getUser(result.user).email)
+                except ObjectDoesNotExist:
+                    row.append("")
+                
+                
+                #Add extra fields for weekly export
+                #row.append(Survey.getHealthStatus(result.id))
+                #row.append(Survey.getUser(result.user).email)
             if addExtraIntake:
                 # Add extra fields for the intake export
                 rowUser = None
