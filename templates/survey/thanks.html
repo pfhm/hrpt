@@ -159,13 +159,9 @@ som varit kan du klicka på Rapportera i tabellen för att ändra dina svar.
 -->
 <br/>
 
-<h2>Rapporteringskartor</h2>
-<p>Kartan visar andelen personer i varje län som rapporterat luftvägsinfektion enligt Hälsorapportsystemets automatiska tolkning av symptomen.</p>
-<p>Kartorna kan användas för att följa rapporteringen. Kartorna bör inte tolkas som sjukdomsläget, för det behövs mer analyser. Är du nyfiken på sjukdomsläget enligt Hälsorapport kolla på <a href="https://www.halsorapport.se/sv/resultat/">Hälsorapports resultatsida</a>.</p>
-<p><strong>Vad står färgerna för?</strong><br />Vitt: för lite data. Grön 0-2%, Rosa 3-5%, Ljusblå 6-8%, Lila 9-11%, Orange 12-14%, Röd 15% eller mer.</p>
 
 <div class="survey-chart">
-    <div class="chart" data-chart-url="{% url pollster_chart_data "weekly" "neighbourhoodARI"  %}"
+    <div class="chart" data-chart-url="{% url pollster_chart_data "weekly" "neighbourhood"  %}"
         data-chart-type="google-map-centered" style="width:100%;height:330px">
     </div>
 </div>
