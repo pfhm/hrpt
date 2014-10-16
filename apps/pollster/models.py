@@ -624,7 +624,7 @@ class Survey(models.Model):
         if addExtraWeekly:                                      
             fieldNames += ["status","email"]
         if addExtraIntake:
-            fieldNames += ["email", "active", "idcode", "last_report"]
+            fieldNames += ["email", "active", "idcode", "dob_from_idcode", "last_report"]
             cursor = connection.cursor()
             cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
             lastParticipation = cursor.fetchall()
@@ -663,6 +663,7 @@ class Survey(models.Model):
                 try:
                     rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
                     row.append(rowIdCode.idcode)
+                    row.append(rowIdCode.fodelsedatum)
                 except ObjectDoesNotExist:
                     row.append("")
                 try:
