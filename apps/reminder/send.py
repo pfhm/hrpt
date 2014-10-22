@@ -13,6 +13,8 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.utils.translation import activate
 
+from apps.reminder import signals
+
 import loginurl.utils
 from apps.partnersites.context_processors import site_context
 
@@ -104,3 +106,5 @@ def send(now, user, message, language, is_test_message=False):
         info = UserReminderInfo.objects.get(user=user)
         info.last_reminder = now
         info.save()
+        signals.reminder_sent.send_robust(user=user) # Send signal to allow other modules to react
+        

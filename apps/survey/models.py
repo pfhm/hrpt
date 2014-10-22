@@ -24,6 +24,12 @@ def add_login_log(sender, request, user, **kwargs):
     log.event_type = "logged_in"
     log.save()
     
+def add_reminder_sent_log(sender, user, **kwargs):
+    log = SurveyUserLog()
+    log.user = user
+    log.event_type = "reminder_sent"
+    log.save()
+    
 user_logged_in.connect(add_login_log)
 
 class SurveyIdCode(models.Model):
