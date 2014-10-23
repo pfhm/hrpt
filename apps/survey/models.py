@@ -3,7 +3,6 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 from django.db import connection, transaction
@@ -13,24 +12,6 @@ from times import epoch
 def create_global_id():
     return str(uuid.uuid4())
 
-class SurveyUserLog(models.Model):
-    user = models.ForeignKey(User)
-    event_type = models.CharField(max_length=15)
-    event_date = models.DateTimeField(null=False, auto_now_add=True)
-    
-def add_login_log(sender, request, user, **kwargs):
-    log = SurveyUserLog()
-    log.user = user
-    log.event_type = "logged_in"
-    log.save()
-    
-def add_reminder_sent_log(sender, user, **kwargs):
-    log = SurveyUserLog()
-    log.user = user
-    log.event_type = "reminder_sent"
-    log.save()
-    
-user_logged_in.connect(add_login_log)
 
 class SurveyIdCode(models.Model):
     

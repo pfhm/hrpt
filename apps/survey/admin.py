@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.survey.models import SurveyUser, Profile, Participation, SurveyIdCode, SurveyUserLog
+from apps.survey.models import SurveyUser, Profile, Participation, SurveyIdCode
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'updated', 'valid', 'created')
@@ -29,14 +29,8 @@ class SurveyIdCodeAdmin(admin.ModelAdmin):
         if(obj.fodelsedatum == ''):
             obj.fodelsedatum = None
         obj.save()
-        
-class SurveyUserLogAdmin(admin.ModelAdmin):
-    list_display = ('user', 'event_type', 'event_date')
-    ordering = ('user', 'event_date', 'event_type')
-    search_fields = ('user', 'event_type')
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Participation, ParticipationAdmin)
 admin.site.register(SurveyUser, SurveyUserAdmin)
 admin.site.register(SurveyIdCode, SurveyIdCodeAdmin)
-admin.site.register(SurveyUserLog, SurveyUserLogAdmin)

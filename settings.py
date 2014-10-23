@@ -180,6 +180,7 @@ INSTALLED_APPS = (
     'captcha',
     #'apps.captcha',
     #'apps.tellafriend',
+    'apps.userlog',
 
     'pybb',
     'pytils',
