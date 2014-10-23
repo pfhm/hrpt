@@ -950,3 +950,6 @@ msgstr "Kontrollord"
 msgid "Registration requires ID-code."
 msgstr "<strong>Obs!</strong> För att gå med behöver du vara inbjuden. "
 "Koden från inbjudan uppger du när du loggat in för första gången."
+
+msgid "Changed %s from %s to %s."
+msgstr "Ändrade %s från %s till %s."

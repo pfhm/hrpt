@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
 from django.utils.encoding import force_unicode
 from django.utils.text import get_text_list
+from django.utils.translation import ugettext as _
 
 class UserActivityLogAdmin(admin.ModelAdmin):
     list_display = ('user', 'event_type', 'event_date')
@@ -25,14 +26,13 @@ class UserAdmin(OriginalUserAdmin):
         change_message = []
         if form.changed_data:
             user_instance = form.instance
-            #import pdb; pdb.set_trace()            
+            old_instance = form.initial
             changed_fields = {}
             for field_name in form.changed_data:
-                new_value = getattr(user_instance, field_name)
-                change_message.append("Changed %s to %s." % (field_name, new_value))
+                new_value = getattr(user_instance, field_name, '')
+                old_value = old_instance.get(field_name, 'null')
+                change_message.append(_("Changed %s from %s to %s.") % (field_name, old_value, new_value))
             
-            # change_message.append(_('Changed %s.') % get_text_list(form.changed_data, _('and')))
-
         if formsets:
             for formset in formsets:
                 for added_object in formset.new_objects:
