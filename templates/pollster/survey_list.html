@@ -44,6 +44,9 @@
                 | <a href="{% url pollster_survey_chart_list survey.id %}">charts</a>
                 | <a href="{% url pollster_survey_export_xml survey.id %}">export</a>
                 | <a href="{% url pollster_survey_results_csv survey.id %}">results</a>
+                {% if survey.shortname == "intake" %}
+                | <a href="{% url pollster_survey_results_csv_extended survey.id %}">extended results</a>
+                {% endif %}
                 | <form action="{% url pollster_survey_unpublish survey.id %}" method="POST">{% csrf_token %}<button class="link">unpublish</button></form>)
             </li>
             {% endif %}

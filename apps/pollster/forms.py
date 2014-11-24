@@ -22,3 +22,10 @@ class SurveyChartEditForm(forms.ModelForm):
 
 class SurveyImportForm(forms.Form):
     data = forms.FileField(label="Survey definition", required=True)
+
+class SurveyExtendedResultsForm(forms.Form):
+    email = forms.BooleanField(required=False, initial=True, label=_(u'Email address'))
+    is_active = forms.BooleanField(required=False, initial=True, label=_(u'User is active'))
+    id_code = forms.BooleanField(required=False, initial=True, label=_(u'ID code'))
+    dob_from_idcode = forms.BooleanField(required=False, initial=False, label=_(u'Date of Birth from id_code-table'))
+    last_report = forms.BooleanField(required=False, initial=True, label=_(u'Date of user\'s last report'))

@@ -611,11 +611,11 @@ class Survey(models.Model):
         self.status = 'UNPUBLISHED'
         self.save()
 
-    def write_csv(self, writer):
+    def write_csv(self, writer, intake_fields = None):
         model = self.as_model()
         fields = model._meta.fields
         addExtraWeekly = self.shortname == 'weekly'
-        addExtraIntake = self.shortname == 'intake'
+        addExtraIntake = self.shortname == 'intake' and intake_fields != None
         lastParticipationData = {}
         
         fieldNames = []
@@ -624,7 +624,17 @@ class Survey(models.Model):
         if addExtraWeekly:                                      
             fieldNames += ["status","email"]
         if addExtraIntake:
-            fieldNames += ["email", "active", "idcode", "dob_from_idcode", "last_report"]
+            if (intake_fields["email"]):
+                fieldNames += ["email"]
+            if (intake_fields["is_active"]):
+                fieldNames += ["active"]
+            if (intake_fields["id_code"]):
+                fieldNames += ["idcode"]
+            if (intake_fields["dob_from_idcode"]):
+                fieldNames += ["dob_from_idcode"]
+            if (intake_fields["last_report"]):
+                fieldNames += ["last_report"]
+            
             cursor = connection.cursor()
             cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
             lastParticipation = cursor.fetchall()
@@ -655,21 +665,32 @@ class Survey(models.Model):
                 rowIdCode = None
                 try:
                     rowUser = Survey.getUser(result.user)
-                    row.append(rowUser.email)
-                    row.append(rowUser.is_active)
+                    if (intake_fields["email"]):
+                        row.append(rowUser.email)
+                    if (intake_fields["is_active"]):
+                        row.append(rowUser.is_active)
                 except ObjectDoesNotExist:
-                    row.append("")
-                    row.append("")
+                    if (intake_fields["email"]):
+                        row.append("")
+                    if (intake_fields["is_active"]):
+                        row.append("")
                 try:
                     rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
-                    row.append(rowIdCode.idcode)
-                    row.append(rowIdCode.fodelsedatum)
+                    if (intake_fields["id_code"]):
+                        row.append(rowIdCode.idcode)
+                    if (intake_fields["dob_from_idcode"]):
+                        row.append(rowIdCode.fodelsedatum)
                 except ObjectDoesNotExist:
-                    row.append("")
+                    if (intake_fields["id_code"]):
+                        row.append("")
+                    if (intake_fields["dob_from_idcode"]):
+                        row.append("")
                 try:
-                    row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
+                    if (intake_fields["last_report"]):
+                        row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
                 except (AttributeError, KeyError, TypeError) as e:
-                    row.append("")
+                    if (intake_fields["last_report"]):
+                        row.append("")
                     
             writer.writerow(row)
         

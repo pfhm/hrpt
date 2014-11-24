@@ -417,6 +417,29 @@ def survey_results_csv(request, id):
     return response
 
 @staff_member_required
+def survey_results_csv_extended(request, id):
+    survey = get_object_or_404(models.Survey, pk=id)
+    if request.method == 'POST': # If the form has been submitted...
+        form = forms.SurveyExtendedResultsForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data            
+            now = datetime.datetime.now()
+            response = HttpResponse(mimetype='text/csv')
+            response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
+            response.write(u'\ufeff'.encode('utf8'))
+            writer = csv.writer(response)
+            survey.write_csv(writer, intake_fields = form.cleaned_data)
+            return response
+        
+    else:
+        form = forms.SurveyExtendedResultsForm() # An unbound form
+
+    return render_to_response('pollster/extended_results.html', {
+        'form': form,
+        'survey': survey,
+    }, context_instance=RequestContext(request))
+
+@staff_member_required
 def survey_export_xml(request, id):
     survey = get_object_or_404(models.Survey, pk=id)
     now = datetime.datetime.now()
