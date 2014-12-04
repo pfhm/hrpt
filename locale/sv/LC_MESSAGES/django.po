@@ -950,3 +950,21 @@ msgstr "Kontrollord"
 msgid "Registration requires ID-code."
 msgstr "<strong>Obs!</strong> För att gå med behöver du vara inbjuden. "
 "Koden från inbjudan uppger du när du loggat in för första gången."
+
+msgid "Email address"
+msgstr "Epostadress"
+
+msgid "User is active"
+msgstr "Användaren är aktiv"
+
+msgid "ID code"
+msgstr "ID-kod"
+
+msgid "Date of Birth from id_code-table"
+msgstr "Födelsedatum (från ID-kodstabell)"
+
+msgid "Date of user's last report"
+msgstr "Datum för senaste rapport"
+
+msgid "Please select which additional fields should be included in the report."
+msgstr "Välj nedan vilka extra fält som ska läggas till exporten."
