@@ -7,7 +7,7 @@ django-annoying==0.7.7
 django-appmedia==1.0.1
 django-classy-tags==0.4
 django-cms==2.1.4
-django-contact-form==1.0
+-e hg+https://hg@bitbucket.org/ubernostrum/django-contact-form@0bc16c6#egg=django-contact-form
 django-haystack==1.2.0
 -e git+https://github.com/ojii/django-nani.git@bb47153e05b46b775658887f214a486412fe25a5#egg=django_nani-dev
 django-pure-pagination==0.2.1
@@ -24,5 +24,6 @@ six==1.4.1
 sorl-thumbnail==11.12
 wsgiref==0.1.2
 xapian-haystack==1.1.5beta
--e hg+https://hg@bitbucket.org/ubernostrum/django-registration#egg=django-registration
+-e hg+https://hg@bitbucket.org/ubernostrum/django-registration@27bccd1#egg=django-registration
 -e hg+https://bitbucket.org/jespern/django-piston@adeef486579b#egg=django-piston
+-e git+https://github.com/vanschelven/epidb-client-python.git#egg=epidb-client
