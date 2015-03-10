@@ -19,7 +19,6 @@ class ExtendedUserAdmin(current_user_admin):
     actions = ['batch_deactivate'] 
 
     def batch_deactivate(self, request, queryset): 
-        queryset.update(is_active = False)
         
         ct = ContentType.objects.get_for_model(queryset.model)
         for obj in queryset:
@@ -30,6 +29,9 @@ class ExtendedUserAdmin(current_user_admin):
                 object_repr = obj.username,
                 action_flag = CHANGE,
                 change_message = 'User deactivated as part of a batch operation.')
+            
+            obj.is_active = False
+            obj.save()
          
         pass
     
