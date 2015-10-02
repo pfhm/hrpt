@@ -26,4 +26,4 @@ wsgiref==0.1.2
 xapian-haystack==1.1.5beta
 -e hg+https://hg@bitbucket.org/ubernostrum/django-registration@27bccd1#egg=django-registration
 -e hg+https://bitbucket.org/jespern/django-piston@adeef486579b#egg=django-piston
--e git+https://github.com/vanschelven/epidb-client-python.git#egg=epidb-client
+-e git+https://github.com/pfhm/epidb-client-python.git#egg=epidb-client
