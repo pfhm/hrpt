@@ -30,6 +30,7 @@ else
     exit 1
 fi
 
+
 echo ""
 echo -n "Checking for pre-requisites: easy_install ... "
 exe_easy_install="$(which easy_install)"
@@ -88,14 +89,6 @@ else
     echo "not found; automatic PostgreSQL configuration disabled"
 fi
 
-# Can we keep access to mapnik module and still use --no-site-packages?
-# virtualenv --no-site-packages .
-virtualenv .
-
-source ./bin/activate
-
-#pip uninstall -r requirements.txt
-pip install -r requirements.txt
 
 if [ -n "$exe_mysql" ] ; then
     pip install MySQL-python
