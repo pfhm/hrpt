@@ -1,4 +1,62 @@
 #!/bin/bash
+
+DB_ENGINE="postgresql"
+POSTGRES_SUPERUSER_USERNAME="admin"
+DB_NAME="epiwork"
+DB_HOST="localhost"
+#DB_PORT=""
+DB_USERNAME="epiwork"
+DJANGO_ENGINE="postgresql_psycopg2"
+TIMEZONE="Europe/Stockholm"  # This is the same that is obtained by running 'cat Europe/Stockholm'
+LANGUAGE="sv"
+COUNTRY="sv"
+
+
+# Just doing some basic cleanup and update after a fresh install
+rm /var/lib/apt/lists/* -vf
+apt-get  clean
+apt-get  autoremove
+apt-get  update
+
+# We need to install git first so we can pull the source, in which the list of dependencies live
+apt-get install -y git
+	
+# now clone the git repo
+mkdir /var/www
+cd /var/www
+git clone -b 2013-1 https://github.com/pfhm/hrpt.git
+
+
+#install all necessairy apt depoendencies. Many pip modules won't install if we don't do this.
+
+
+
+
+echo "lets install all the apt-dependencies"
+apt-get install -y $(cat /var/www/hrpt/apt-dependencies.txt | tr '\n' ' ')
+
+# now we get inside the virtual environment and go crazy!!!
+cd /var/www/hrpt
+virtualenv .
+source ./bin/activate
+
+# these two modules need these flags because they wouldn't be installable otherwise
+# AFAIUI they either have dependencied on external hosted modules and/or do not provide checksums
+pip install PIL --allow-external PIL --allow-unverified PIL
+pip install postmarkup --allow-external postmarkup --allow-unverified postmarkup
+
+#now 
+pip install -r /var/www/hrpt/requirements.txt
+
+
+
+#####################################################################
+## The following is based on what was on bootstrap.sh in september 2015
+# For reference, here's a link from that time
+# https://github.com/pfhm/hrpt/blob/d2e7f1920cae9af10817d3bcb044a5843ac8f95a/bootstrap.sh
+
+
+#!/bin/bash
 #
 # Bootstraps everything installing Django and all required eggs, configuring
 # the database and making sure a consistent Mono development environment is
@@ -8,205 +66,24 @@
 # database, language and country. Note that the database and the user used
 # to connect should already exist.
 
-DB_ENGINE=""
-DB_NAME=""
-DB_HOST=""
-DB_PORT=""
-DB_USERNAME=""
-DB_USERNAME=""
-DJANGO_ENGINE="unconfigured"
-TIMEZONE=""
-LANGUAGE=""
-COUNTRY=""
-
-echo ""
-echo -n "Checking for pre-requisites: python ... "
-exe_python="$(which python)"
-if [ -n "$exe_python" ] ; then
-    echo "$exe_python"
-else
-    echo "no found; place make sure Python 2.6 is installed"
-    echo ""
-    exit 1
-fi
 
 
-echo ""
-echo -n "Checking for pre-requisites: easy_install ... "
-exe_easy_install="$(which easy_install)"
-if [ -n "$exe_easy_install" ] ; then
-    echo "$exe_easy_install"
-else
-    echo "no found; place make sure setuptools are installed"
-    echo ""
-    exit 1
-fi
+# Lets now	create a superuser for postgres
+# you'll be prompt for a password
+echo "Let's create a new postgresql role...\n"
+su postgres -c "createuser --pwprompt --superuser $POSTGRES_SUPERUSER_USERNAME"
 
-echo ""
-echo -n "Checking for pre-requisites: pip ... "
-exe_pip="$(which pip)"
-if [ -n "$exe_pip" ] ; then
-    echo "$exe_pip"
-else
-    echo "no found; place make sure pip is installed (sudo easy_install pip)"
-    echo ""
-    exit 1
-fi
+# And instal plpgsql on the template1 database
+# which suposedly is the template all new databases are based on
 
-echo ""
-echo -n "Checking for pre-requisites: virtualenv ... "
-exe_virtualenv="$(which virtualenv)"
-if [ -n "$exe_virtualenv" ] ; then
-    echo "$exe_virtualenv"
-else
-    echo "no found; place make sure virtualenv is installed (sudo pip install --upgrade virtualenv)"
-    echo ""
-    exit 1
-fi
-
-echo -n "Checking for pre-requisites: mysql ...  "
-exe_mysql="$(which mysql)"
-if [ -n "$exe_mysql" ] ; then
-    echo "$exe_mysql"
-else
-    echo "not found; automatic MySQL configuration disabled"
-fi
-
-echo -n "Checking for pre-requisites: mysql_config ...  "
-exe_mysql_config="$(which mysql_config)"
-if [ -n "$exe_mysql_config" ] ; then
-    echo "$exe_mysql_config"
-else
-    unset exe_mysql
-    echo "not found; automatic MySQL configuration disabled (please install the libmysqlclient-dev package)"
-fi
-
-echo -n "Checking for pre-requisites: psql ...  "
-exe_psql="$(which psql)"
-if [ -n "$exe_psql" ] ; then
-    echo "$exe_psql"
-else
-    echo "not found; automatic PostgreSQL configuration disabled"
-fi
+su postgres -c "createlang plpgsql template1"
 
 
-if [ -n "$exe_mysql" ] ; then
-    pip install MySQL-python
-fi
-if [ -n "$exe_psql" ] ; then
-    pip install psycopg2
-fi
+while [ -z "$DB_PASSWORD" ] ; do
+	echo -n "Database password ( username is '$DB_USERNAME'): "
+	read line && [ -n "$line" ] && DB_PASSWORD="$line";
+done    
 
-echo ""
-while [ -z "$LANGUAGE" ] ; do
-    echo -n "Please, choose your country and language (be, it, nl, uk, pt, se): "
-    read line && [ -n "$line" ] && LANGUAGE="$line";
-    COUNTRY="$LANGUAGE"
-done
-
-while [ -z "$TIMEZONE" ] ; do
-    test -f /etc/timezone && TIMEZONE="$(cat /etc/timezone)"
-    echo -n "Please, enter your time zone (default is $TIMEZONE): "
-    read line && [ -n "$line" ] && TIMEZONE="$line";
-done
-
-while [ -z "$DB_ENGINE" ] ; do
-    echo -n "Please, choose a database engine (sqlite3, the default, postgresql or mysql): "
-    read line
-    DB_ENGINE="${line:-sqlite3}"
-    if [ "$DB_ENGINE" != "sqlite3" -a "$DB_ENGINE" != "mysql" -a "$DB_ENGINE" != "postgresql" ] ; then
-        DB_ENGINE=""
-    fi
-done
-
-if [ "$DB_ENGINE" = "sqlite3" ] ; then
-    DB_NAME="ggm.db"
-    DJANGO_ENGINE="sqlite3"
-fi
-
-if [ "$DB_ENGINE" = "mysql" ] ; then
-    echo ""
-    
-    echo -n "Database host (just hit enter if on localhost/same host): "
-    read line && [ -n "$line"] && DB_HOST="$line";
-    
-    echo -n "Database port (just hit enter if using default port): "
-    read line && [ -n "$line"] && DB_PORT="$line";
-    
-    while [ -z "$DB_NAME" ] ; do
-        echo -n "Database name (database will be created if necessary; default is epiwork): "
-        read line && DB_NAME="${line:-epiwork}";
-    done
-
-    while [ -z "$DB_USERNAME" ] ; do
-        echo -n "Database username (user will be created if necessary; default is epiwork): "
-        read line && DB_USERNAME="${line:-epiwork}";
-    done
-
-    while [ -z "$DB_PASSWORD" ] ; do
-        echo -n "Database password: "
-        read line && [ -n "$line" ] && DB_PASSWORD="$line";
-    done    
-
-    DJANGO_ENGINE="mysql"
-    
-    if [ -n "$exe_mysql" ] ; then
-        echo ""
-        echo "Note: the following data will NOT be saved, but it is necessary to create"
-        echo "the database '$DB_NAME' and the user '$DB_USERNAME' that will be used to"
-        echo "connect to database for normal operation."
-        
-        echo ""
-        echo -n "Please, insert MySQL administrator's username (default is root): "
-        read line
-        root_username="${line:-root}"
-    
-        root_password=""
-        while [ -z "$root_password" ] ; do
-            echo -n "Please, insert MySQL administrator's passsword: "
-            read line && [ -n "$line" ] && root_password="$line";
-        done
-    fi
-fi
-
-if [ "$DB_ENGINE" = "postgresql" ] ; then
-    echo ""
-    
-    echo -n "Database host (just hit enter if on localhost/same host): "
-    read line && [ -n "$line" ] && DB_HOST="$line";
-    
-    echo -n "Database port (just hit enter if using default port): "
-    read line && [ -n "$line" ] && DB_PORT="$line";
-    
-    while [ -z "$DB_NAME" ] ; do
-        echo -n "Database name (database will be created if necessary; default is epiwork): "
-        read line && DB_NAME="${line:-epiwork}";
-    done
-
-    while [ -z "$DB_USERNAME" ] ; do
-        echo -n "Database username (user will be created if necessary; default is epiwork): "
-        read line && DB_USERNAME="${line:-epiwork}";
-    done
-
-    while [ -z "$DB_PASSWORD" ] ; do
-        echo -n "Database password: "
-        read line && [ -n "$line" ] && DB_PASSWORD="$line";
-    done    
-
-    DJANGO_ENGINE="postgresql_psycopg2"
-    
-    if [ -n "$exe_psql" ] ; then
-        echo ""
-        echo "Note: the following data will NOT be saved, but it is necessary to create"
-        echo "the database '$DB_NAME' and the user '$DB_USERNAME' that will be used to"
-        echo "connect to database for normal operation."
-        
-        echo ""
-        echo -n "Please, insert PostgrSQL administrator's username (default is postgres): "
-        read line
-        root_username="${line:-postgres}"
-    fi
-fi
 
 echo ""
 echo "Configuration parameters:"
@@ -215,8 +92,8 @@ echo "  country and language: $LANGUAGE"
 echo "  time zone:            $TIMEZONE"
 echo "  database engine:      $DB_ENGINE ($DJANGO_ENGINE)"
 echo "  database name:        $DB_NAME"
-echo "  database host:        ${DB_HOST:-localhost}"
-echo "  database port:        ${DB_PORT:-(default)}"
+echo "  database host:        $DB_HOST"
+#echo "  database port:        ${DB_PORT:-(default)}"
 echo "  database username:    $DB_USERNAME"
 echo "  database password:    $DB_PASSWORD"
 echo ""
@@ -235,44 +112,26 @@ done
 
 echo ""
 
-if [ "$DB_ENGINE" = "sqlite3" ] ; then
-    echo -n "Creating database $DB_NAME ... "
-    rm -f $DB_NAME
-    echo "done"
+echo "Creating database $DB_NAME ... "
+
+args="--username=$POSTGRES_SUPERUSER_USERNAME template1"
+
+#if [ -n "$DB_PORT" ] ; then
+#	args="--port=$DB_PORT $args"
+#fi
+
+if [ -n "$DB_HOST" ] ; then
+	args="--host=$DB_HOST $args"
 fi
 
-if [ "$DB_ENGINE" = "mysql" -a -n "$exe_mysql" ] ; then
-    echo -n "Creating database $DB_NAME ... "
-    mysql --batch --host=${DB_HOST:-localhost} --port=${DB_PORT:-0} --user=$root_username --password=$root_password mysql <<EOF
-    CREATE DATABASE IF NOT EXISTS $DB_NAME ;
-    INSERT INTO user VALUES ('%', '$DB_USERNAME', PASSWORD('$DB_PASSWORD'),
-        'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y',
-        'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y',
-        '','','','',0,0,0,0)
-           ON DUPLICATE KEY UPDATE User = '$DB_USERNAME' ;
-    FLUSH PRIVILEGES ;
-    GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USERNAME ;
-    echo "done"
-EOF
-fi
 
-if [ "$DB_ENGINE" = "postgresql" -a -n "$exe_psql" ] ; then
-    echo "Creating database $DB_NAME ... "
-    args="--username=$root_username template1"
-    if [ -n "$DB_PORT" ] ; then
-        args="--port=$DB_PORT $args"
-    fi
-    if [ -n "$DB_HOST" ] ; then
-        args="--host=$DB_HOST $args"
-    fi
-    psql -q $args <<EOF
-DROP DATABASE IF EXISTS $DB_NAME ;
-DROP USER IF EXISTS $DB_USERNAME ;
-CREATE USER $DB_USERNAME WITH ENCRYPTED PASSWORD '$DB_PASSWORD' ;
-CREATE DATABASE $DB_NAME WITH OWNER = $DB_USERNAME ;
+psql -q $args <<EOF
+	DROP DATABASE IF EXISTS $DB_NAME ;
+	DROP USER IF EXISTS $DB_USERNAME ;
+	CREATE USER $DB_USERNAME WITH ENCRYPTED PASSWORD '$DB_PASSWORD' ;
+	CREATE DATABASE $DB_NAME WITH OWNER = $DB_USERNAME ;
 EOF
-    echo "PostgreSQL setup complete"
-fi
+echo "PostgreSQL setup complete"
 
 echo ""
 echo -n "Generating settings.py ... "
@@ -329,21 +188,19 @@ python manage.py virtual_option_type_register --title 'Regular expression' --que
 
 python manage.py createcachetable django_cache 2>/dev/null || echo 'Cache table errors ignored'
 
-if [ "$DB_ENGINE" = "postgresql" -a -n "$exe_psql" ] ; then
-    #postgis=$(ls /usr/share/postgresql/*/contrib/postgis-*/postgis.sql)
-    #srefsys=$(ls /usr/share/postgresql/*/contrib/postgis-*/spatial_ref_sys.sql)
-    postgis=$(ls /usr/share/postgresql/*/contrib/postgis.sql)
-    srefsys=$(ls /usr/share/postgresql/*/contrib/spatial_ref_sys.sql)
-    if [ -n "$postgis" -a -n "$srefsys" ] ; then
-        echo "Setting up PostGIS"
-        args="--username=$root_username $DB_NAME"
-        if [ -n "$DB_PORT" ] ; then
-            args="--port=$DB_PORT $args"
-        fi
-        if [ -n "$DB_HOST" ] ; then
-            args="--host=$DB_HOST $args"
-        fi
-        psql -q $args <<EOF
+
+postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
+srefsys="/usr/share/postgresql/9.3/contrib/postgis-2.1/spatial_ref_sys.sql"
+if [ -n "$postgis" -a -n "$srefsys" ] ; then
+	echo "Setting up PostGIS"
+	args="--username=$POSTGRES_SUPERUSER_USERNAME $DB_NAME"
+	if [ -n "$DB_PORT" ] ; then
+		args="--port=$DB_PORT $args"
+	fi
+	if [ -n "$DB_HOST" ] ; then
+		args="--host=$DB_HOST $args"
+	fi
+	psql -q $args <<EOF
 \i $postgis
 \i $srefsys
 CREATE TABLE pollster_zip_codes (id serial, country TEXT, zip_code_key TEXT);
@@ -353,11 +210,5 @@ ALTER TABLE spatial_ref_sys OWNER TO $DB_USERNAME;
 ALTER TABLE geometry_columns OWNER TO $DB_USERNAME;
 ALTER VIEW geography_columns OWNER TO $DB_USERNAME;
 EOF
-        echo "PostGIS setup complete"
-    fi
+	echo "PostGIS setup complete"
 fi
-
-
-echo ""
-echo "** All done. You can start the system by issuing: 'source ./bin/activate && python manage.py runserver'"
-echo ""
