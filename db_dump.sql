@@ -3161,76 +3161,6 @@ ALTER TABLE ONLY pollster_virtualoptiontype ALTER COLUMN id SET DEFAULT nextval(
 -- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
 --
 
-ALTER TABLE ONLY pybb_attachment ALTER COLUMN id SET DEFAULT nextval('pybb_attachment_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_category ALTER COLUMN id SET DEFAULT nextval('pybb_category_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forum ALTER COLUMN id SET DEFAULT nextval('pybb_forum_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forum_moderators ALTER COLUMN id SET DEFAULT nextval('pybb_forum_moderators_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forumreadtracker ALTER COLUMN id SET DEFAULT nextval('pybb_forumreadtracker_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_post ALTER COLUMN id SET DEFAULT nextval('pybb_post_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_profile ALTER COLUMN id SET DEFAULT nextval('pybb_profile_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic ALTER COLUMN id SET DEFAULT nextval('pybb_topic_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic_subscribers ALTER COLUMN id SET DEFAULT nextval('pybb_topic_subscribers_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topicreadtracker ALTER COLUMN id SET DEFAULT nextval('pybb_topicreadtracker_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: epiwork
---
-
 ALTER TABLE ONLY registration_registrationprofile ALTER COLUMN id SET DEFAULT nextval('registration_registrationprofile_id_seq'::regclass);
 
 
@@ -5385,14 +5315,6 @@ COPY django_content_type (id, name, app_label, model) FROM stdin;
 72	prediction	contest	prediction
 73	week	contest	week
 74	captcha store	captcha	captchastore
-75	Category	pybb	category
-76	Forum	pybb	forum
-77	Topic	pybb	topic
-78	Post	pybb	post
-79	Profile	pybb	profile
-80	Attachment	pybb	attachment
-81	Topic read tracker	pybb	topicreadtracker
-82	Forum read tracker	pybb	forumreadtracker
 \.
 
 
@@ -7588,157 +7510,6 @@ SELECT pg_catalog.setval('pollster_virtualoptiontype_id_seq', 7, true);
 
 
 --
--- Data for Name: pybb_attachment; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_attachment (id, post_id, size, file) FROM stdin;
-\.
-
-
---
--- Name: pybb_attachment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_attachment_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_category; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_category (id, name, "position", hidden) FROM stdin;
-\.
-
-
---
--- Name: pybb_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_category_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_forum; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_forum (id, category_id, name, "position", description, updated, post_count, topic_count, hidden, headline) FROM stdin;
-\.
-
-
---
--- Name: pybb_forum_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_forum_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_forum_moderators; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_forum_moderators (id, forum_id, user_id) FROM stdin;
-\.
-
-
---
--- Name: pybb_forum_moderators_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_forum_moderators_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_forumreadtracker; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_forumreadtracker (id, user_id, forum_id, time_stamp) FROM stdin;
-\.
-
-
---
--- Name: pybb_forumreadtracker_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_forumreadtracker_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_post; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_post (id, topic_id, user_id, created, updated, body, body_html, body_text, user_ip, on_moderation) FROM stdin;
-\.
-
-
---
--- Name: pybb_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_post_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_profile; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_profile (id, user_id, signature, signature_html, time_zone, language, show_signatures, post_count, avatar, autosubscribe) FROM stdin;
-1	1			3	Svenska	t	0		t
-\.
-
-
---
--- Name: pybb_profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_profile_id_seq', 1, true);
-
-
---
--- Data for Name: pybb_topic; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_topic (id, forum_id, name, created, updated, user_id, views, sticky, closed, post_count, on_moderation) FROM stdin;
-\.
-
-
---
--- Name: pybb_topic_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_topic_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_topic_subscribers; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_topic_subscribers (id, topic_id, user_id) FROM stdin;
-\.
-
-
---
--- Name: pybb_topic_subscribers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_topic_subscribers_id_seq', 1, false);
-
-
---
--- Data for Name: pybb_topicreadtracker; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pybb_topicreadtracker (id, user_id, topic_id, time_stamp) FROM stdin;
-\.
-
-
---
--- Name: pybb_topicreadtracker_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pybb_topicreadtracker_id_seq', 1, false);
-
-
---
 -- Data for Name: registration_registrationprofile; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
@@ -8797,95 +8568,6 @@ ALTER TABLE ONLY pollster_virtualoptiontype
 
 ALTER TABLE ONLY pollster_virtualoptiontype
     ADD CONSTRAINT pollster_virtualoptiontype_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_attachment
-    ADD CONSTRAINT pybb_attachment_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_category_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_category
-    ADD CONSTRAINT pybb_category_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_forum_moderators_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_forum_moderators
-    ADD CONSTRAINT pybb_forum_moderators_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_forum_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_forum
-    ADD CONSTRAINT pybb_forum_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_forumreadtracker_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_forumreadtracker
-    ADD CONSTRAINT pybb_forumreadtracker_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_post_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_post
-    ADD CONSTRAINT pybb_post_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_profile_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_profile
-    ADD CONSTRAINT pybb_profile_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_profile_user_id_key; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_profile
-    ADD CONSTRAINT pybb_profile_user_id_key UNIQUE (user_id);
-
-
---
--- Name: pybb_topic_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_topic
-    ADD CONSTRAINT pybb_topic_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_topic_subscribers_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_topic_subscribers
-    ADD CONSTRAINT pybb_topic_subscribers_pkey PRIMARY KEY (id);
-
-
---
--- Name: pybb_topicreadtracker_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
---
-
-ALTER TABLE ONLY pybb_topicreadtracker
-    ADD CONSTRAINT pybb_topicreadtracker_pkey PRIMARY KEY (id);
-
 
 --
 -- Name: registration_registrationprofile_pkey; Type: CONSTRAINT; Schema: public; Owner: epiwork; Tablespace:
@@ -10039,104 +9721,6 @@ CREATE INDEX pollster_virtualoptiontype_question_data_type_id ON pollster_virtua
 
 
 --
--- Name: pybb_attachment_post_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_attachment_post_id ON pybb_attachment USING btree (post_id);
-
-
---
--- Name: pybb_forum_category_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_forum_category_id ON pybb_forum USING btree (category_id);
-
-
---
--- Name: pybb_forum_moderators_forum_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_forum_moderators_forum_id ON pybb_forum_moderators USING btree (forum_id);
-
-
---
--- Name: pybb_forum_moderators_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_forum_moderators_user_id ON pybb_forum_moderators USING btree (user_id);
-
-
---
--- Name: pybb_forumreadtracker_forum_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_forumreadtracker_forum_id ON pybb_forumreadtracker USING btree (forum_id);
-
-
---
--- Name: pybb_forumreadtracker_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_forumreadtracker_user_id ON pybb_forumreadtracker USING btree (user_id);
-
-
---
--- Name: pybb_post_topic_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_post_topic_id ON pybb_post USING btree (topic_id);
-
-
---
--- Name: pybb_post_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_post_user_id ON pybb_post USING btree (user_id);
-
-
---
--- Name: pybb_topic_forum_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topic_forum_id ON pybb_topic USING btree (forum_id);
-
-
---
--- Name: pybb_topic_subscribers_topic_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topic_subscribers_topic_id ON pybb_topic_subscribers USING btree (topic_id);
-
-
---
--- Name: pybb_topic_subscribers_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topic_subscribers_user_id ON pybb_topic_subscribers USING btree (user_id);
-
-
---
--- Name: pybb_topic_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topic_user_id ON pybb_topic USING btree (user_id);
-
-
---
--- Name: pybb_topicreadtracker_topic_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topicreadtracker_topic_id ON pybb_topicreadtracker USING btree (topic_id);
-
-
---
--- Name: pybb_topicreadtracker_user_id; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
---
-
-CREATE INDEX pybb_topicreadtracker_user_id ON pybb_topicreadtracker USING btree (user_id);
-
-
---
 -- Name: reminder_newslettertemplatetranslation_language_code; Type: INDEX; Schema: public; Owner: epiwork; Tablespace:
 --
 
@@ -10310,12 +9894,6 @@ ALTER TABLE ONLY journal_latestentryplugin_category
     ADD CONSTRAINT category_id_refs_id_5eb9b850 FOREIGN KEY (category_id) REFERENCES journal_category(id) DEFERRABLE INITIALLY DEFERRED;
 
 
---
--- Name: category_id_refs_id_755356e7; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forum
-    ADD CONSTRAINT category_id_refs_id_755356e7 FOREIGN KEY (category_id) REFERENCES pybb_category(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -10461,29 +10039,6 @@ ALTER TABLE ONLY django_admin_log
 ALTER TABLE ONLY django_admin_log
     ADD CONSTRAINT django_admin_log_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
-
---
--- Name: forum_id_refs_id_4cb84657; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic
-    ADD CONSTRAINT forum_id_refs_id_4cb84657 FOREIGN KEY (forum_id) REFERENCES pybb_forum(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: forum_id_refs_id_67f2a6c8; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forumreadtracker
-    ADD CONSTRAINT forum_id_refs_id_67f2a6c8 FOREIGN KEY (forum_id) REFERENCES pybb_forum(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: forum_id_refs_id_68cbdc59; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forum_moderators
-    ADD CONSTRAINT forum_id_refs_id_68cbdc59 FOREIGN KEY (forum_id) REFERENCES pybb_forum(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -10750,13 +10305,6 @@ ALTER TABLE ONLY cms_page_placeholders
     ADD CONSTRAINT placeholder_id_refs_id_4f20b6a0 FOREIGN KEY (placeholder_id) REFERENCES cms_placeholder(id) DEFERRABLE INITIALLY DEFERRED;
 
 
---
--- Name: post_id_refs_id_62f32ada; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_attachment
-    ADD CONSTRAINT post_id_refs_id_62f32ada FOREIGN KEY (post_id) REFERENCES pybb_post(id) DEFERRABLE INITIALLY DEFERRED;
-
 
 --
 -- Name: prediction_id_refs_id_7396a312; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
@@ -10973,31 +10521,6 @@ ALTER TABLE ONLY survey_localflusurvey
 ALTER TABLE ONLY survey_localprofile
     ADD CONSTRAINT surveyuser_id_refs_id_68347cd8 FOREIGN KEY (surveyuser_id) REFERENCES survey_surveyuser(id) DEFERRABLE INITIALLY DEFERRED;
 
-
---
--- Name: topic_id_refs_id_47a23f00; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topicreadtracker
-    ADD CONSTRAINT topic_id_refs_id_47a23f00 FOREIGN KEY (topic_id) REFERENCES pybb_topic(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: topic_id_refs_id_6b6fbd09; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic_subscribers
-    ADD CONSTRAINT topic_id_refs_id_6b6fbd09 FOREIGN KEY (topic_id) REFERENCES pybb_topic(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: topic_id_refs_id_76964085; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_post
-    ADD CONSTRAINT topic_id_refs_id_76964085 FOREIGN KEY (topic_id) REFERENCES pybb_topic(id) DEFERRABLE INITIALLY DEFERRED;
-
-
 --
 -- Name: translation_id_refs_id_368b5a6c; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
 --
@@ -11046,12 +10569,6 @@ ALTER TABLE ONLY survey_participation
     ADD CONSTRAINT user_id_refs_id_1663bc1a FOREIGN KEY (user_id) REFERENCES survey_surveyuser(id) DEFERRABLE INITIALLY DEFERRED;
 
 
---
--- Name: user_id_refs_id_1d19e4cb; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic
-    ADD CONSTRAINT user_id_refs_id_1d19e4cb FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -11071,38 +10588,6 @@ ALTER TABLE ONLY cms_pagemoderator
 
 
 --
--- Name: user_id_refs_id_4241836f; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topic_subscribers
-    ADD CONSTRAINT user_id_refs_id_4241836f FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: user_id_refs_id_425c2054; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forumreadtracker
-    ADD CONSTRAINT user_id_refs_id_425c2054 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: user_id_refs_id_4497a955; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_post
-    ADD CONSTRAINT user_id_refs_id_4497a955 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: user_id_refs_id_48610185; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_forum_moderators
-    ADD CONSTRAINT user_id_refs_id_48610185 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: user_id_refs_id_4c3c8bce; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
 --
 
@@ -11119,14 +10604,6 @@ ALTER TABLE ONLY cms_pagepermission
 
 
 --
--- Name: user_id_refs_id_5073bd9a; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_topicreadtracker
-    ADD CONSTRAINT user_id_refs_id_5073bd9a FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
 -- Name: user_id_refs_id_54dfc11c; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
 --
 
@@ -11140,14 +10617,6 @@ ALTER TABLE ONLY survey_profile
 
 ALTER TABLE ONLY reminder_userreminderinfo
     ADD CONSTRAINT user_id_refs_id_6b067e56 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
-
-
---
--- Name: user_id_refs_id_6bba9839; Type: FK CONSTRAINT; Schema: public; Owner: epiwork
---
-
-ALTER TABLE ONLY pybb_profile
-    ADD CONSTRAINT user_id_refs_id_6bba9839 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
