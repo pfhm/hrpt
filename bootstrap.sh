@@ -40,6 +40,13 @@ apt-get install -y $(cat /var/www/hrpt/apt-dependencies.txt | tr '\n' ' ')
 #TODO: add these to apt-dependencies-dev
 apt-get install -y libjpeg8 libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-dev
 
+
+#enable password login for root
+# this is useful for editing files over SFTP, but should not be enabled in production
+# TODO: wrap this in getops and don't run by default
+sed -i 's/PermitRootLogin\swithout-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
+
+
 #these are necessairy for pil, no ideia why they aren't linked or placed under /usr/lib
 ln -s /usr/lib/i386-linux-gnu/libfreetype.so /usr/lib/
 ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/
