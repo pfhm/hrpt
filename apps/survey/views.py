@@ -108,34 +108,9 @@ def _get_person_health_status(request, survey, global_id):
     return (status, _decode_person_health_status(status))
 
 def _get_health_history(request, survey):
-    results = []
-    cursor = connection.cursor()
-    params = { 'user_id': request.user.id }
-    queries = {
-        'sqlite':"""
-            SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
-             WHERE S.pollster_results_weekly_id = W.id
-               AND W.user = :user_id
-             ORDER BY W.timestamp""",
-        'mysql':"""
-            SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
-             WHERE S.pollster_results_weekly_id = W.id
-               AND W.user = :user_id
-             ORDER BY W.timestamp""",
-        'postgresql':"""
-            SELECT W.timestamp, W.global_id, S.status
-              FROM pollster_health_status_hrpt20131 S, pollster_results_weekly W
-             WHERE S.pollster_results_weekly_id = W.id
-               AND W.user = %(user_id)s
-             ORDER BY W.timestamp""",
-    }
-    cursor.execute(queries[utils.get_db_type(connection)], params)
-    results = cursor.fetchall()
-    for ret in results:
-        timestamp, global_id, status = ret
-        yield {'global_id': global_id, 'timestamp': timestamp, 'status': status, 'diag':_decode_person_health_status(status)}
+    return []
+
+
 
 @login_required
 def thanks(request):
@@ -159,26 +134,22 @@ def thanks(request):
     if redirect != None:
         return HttpResponseRedirect(redirect)
 
-    history = list(_get_health_history(request, survey))
-    persons = models.SurveyUser.objects.filter(user=request.user, deleted=False)
-    persons_dict = dict([(p.global_id, p) for p in persons])
-    for item in history:
-        item['person'] = persons_dict.get(item['global_id'])
-    for person in persons:
-        person.health_status, person.diag = _get_person_health_status(request, survey, person.global_id)
-        person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "base/twocol.html"
+#    history = list(_get_health_history(request, survey))
+#    persons = models.SurveyUser.objects.filter(user=request.user, deleted=False)
+#    persons_dict = dict([(p.global_id, p) for p in persons])
+#    for item in history:
+#        item['person'] = persons_dict.get(item['global_id'])
+#    for person in persons:
+#        person.health_status, person.diag = _get_person_health_status(request, survey, person.global_id)
+#        person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
 
     view_data = {
-        'base_template': base_template,
+        'base_template': "base/twocol.html",
         'mobile': isMobile(request),
         'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,
         'person': survey_user,
-        'persons': persons,
-        'history': history
+        'persons': [],
+        'history': []
     }
     return render_to_response('survey/thanks.html', view_data, context_instance=RequestContext(request))
 

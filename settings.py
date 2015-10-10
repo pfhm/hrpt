@@ -178,7 +178,6 @@ INSTALLED_APPS = (
     'captcha',
     #'apps.captcha',
     #'apps.tellafriend',
-
     'pytils',
     'sorl.thumbnail',
     'pure_pagination',
@@ -248,11 +247,8 @@ CMS_SEO_FIELDS = True
 SESSION_COOKIE_AGE = 60 * 60 * 2
 
 LOGIN_REDIRECT_URL = '/survey/thanks/'
+#LOGIN_REDIRECT_URL = '/thank-you/'
 
-# PyBB settings
-AUTH_PROFILE_MODULE = 'pybb.Profile'
-PYBB_TEMPLATE = 'base/forum.html'
-PYBB_ENABLE_ANONYMOUS_POST = True
-PYBB_ANONYMOUS_USERNAME = 'Gast'
+
 
 MULTI_PROFILE_ALLOWED = 'false' #pekka
