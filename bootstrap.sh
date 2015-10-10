@@ -19,6 +19,11 @@ apt-get  update
 
 # We need to install git first so we can pull the source, in which the list of dependencies live
 apt-get install -y git
+
+# just setting basic git properties so we can commit from here if we so wish
+git config --global user.email "developer@fhm"
+git config --global user.name "Joe FHM developer"
+
 	
 # now clone the git repo
 mkdir /var/www
