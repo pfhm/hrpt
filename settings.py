@@ -103,7 +103,6 @@ MIDDLEWARE_CLASSES = (
     'cms.middleware.user.CurrentUserMiddleware',
     'cms.middleware.toolbar.ToolbarMiddleware',
     'cms.middleware.media.PlaceholderMediaMiddleware',
-    'pybb.middleware.PybbMiddleware',
     'cms.middleware.multilingual.MultilingualURLMiddleware',
 )
 
@@ -116,7 +115,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     "cms.context_processors.media",
     "apps.partnersites.context_processors.customizations",
-    "pybb.context_processors.processor",
     "django.core.context_processors.static",
 )
 
@@ -181,7 +179,6 @@ INSTALLED_APPS = (
     #'apps.captcha',
     #'apps.tellafriend',
 
-    'pybb',
     'pytils',
     'sorl.thumbnail',
     'pure_pagination',
