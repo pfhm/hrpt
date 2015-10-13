@@ -30,10 +30,17 @@ git clone -b 2013-1 https://github.com/pfhm/hrpt.git
 #install all necessairy apt depoendencies. Many pip modules won't install if we don't do this.
 
 
-
-
 echo "lets install all the apt-dependencies"
 apt-get install -y $(cat /var/www/hrpt/apt-dependencies.txt | tr '\n' ' ')
+
+#TODO: add these to apt-dependencies-dev
+apt-get install -y libjpeg8 libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-dev
+
+#these are necessairy for pil, no ideia why they aren't linked or placed under /usr/lib
+ln -s /usr/lib/i386-linux-gnu/libfreetype.so /usr/lib/
+ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/
+ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
+ln -s /usr/include/freetype2 /usr/include/freetype
 
 # now we get inside the virtual environment and go crazy!!!
 cd /var/www/hrpt
