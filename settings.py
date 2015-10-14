@@ -176,7 +176,6 @@ INSTALLED_APPS = (
     'apps.contest',
     'captcha',
     #'apps.captcha',
-    #'apps.tellafriend',
     'pytils',
     'sorl.thumbnail',
     'pure_pagination',
