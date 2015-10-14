@@ -153,7 +153,6 @@ INSTALLED_APPS = (
     'apps.accounts',
     'apps.survey',
     'apps.reminder',
-#    'apps.banner',
     'apps.search',
     'apps.journal',
     'apps.sander',
