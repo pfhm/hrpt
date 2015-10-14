@@ -6,7 +6,6 @@ from haystack.views import SearchView, search_view_factory
 from haystack.forms import SearchForm
 
 from apps.ew_contact_form.forms import CaptchaContactForm
-from views import LatestEntriesFeed
 
 from django.contrib import admin
 admin.autodiscover()
@@ -26,21 +25,13 @@ urlpatterns = patterns('',
     (r'^googlec96088c11ef7e5c4.html$', 'django.views.generic.simple.direct_to_template', {'template': 'googlec96088c11ef7e5c4.html'}),
     (r'nu.html$', 'django.views.generic.simple.direct_to_template', {'template': 'nu.html'}),
     
-    (r'^mobile/login/$', 'views.mobile_login'),
-    (r'^mobile/surveys/(?P<shortname>.+)/$', 'apps.pollster.views.survey_run', {'clean_template': True}),
-    (r'^mobile/map/(?P<survey_shortname>.+)/(?P<chart_shortname>.+)/$', 'apps.pollster.views.survey_map'),
-
-    (r'^xss/$', LatestEntriesFeed()),
-
     url(r'^captcha/', include('captcha.urls')),
-    #(r'^tellafriend/', include('tellafriend.urls')),
 
     url(r'^search/$', search_view_factory(
         view_class=SearchView,
         form_class=SearchForm
     ), name='haystack_search'),
 
-    (r'^test-search/$', 'views.test_search'),
     (r'^accounts/', include('apps.accounts.urls')),
     url(r'^login/$', redirect_to, {'url': settings.LOGIN_URL}, 
                      name='loginurl-index'),
@@ -59,7 +50,6 @@ urlpatterns = patterns('',
           'template_name': 'registration/registration_explanation.html' },
         name='registration_register_explanation'),
 
-    (r'^forum/', include('pybb.urls', namespace='pybb')),
 )
 
 if settings.DEBUG:
