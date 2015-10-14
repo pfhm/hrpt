@@ -19,11 +19,11 @@ from .utils import get_user_profile
 from . import models, forms, fields, parser, json
 import re, datetime, locale, csv, urlparse, urllib
 
-#For remote debugging
-#import sys
-#sys.path.append('/opt/eclipse_juno2/plugins/org.python.pydev_2.7.5.2013052819/pysrc/')
-#import pydevd
-#pydevd.settrace()
+
+
+#This stuff is ... intense
+# get rid of it!
+From here....
 
 def request_render_to_response(req, *args, **kwargs):
     kwargs['context_instance'] = RequestContext(req)
@@ -44,6 +44,9 @@ def retry(f, *args, **kwargs):
             tries -= 1
             if tries == 0:
                 raise
+
+# ... until here! 
+
 
 @staff_member_required
 def survey_list(request):
@@ -163,6 +166,7 @@ def survey_test(request, id, language=None):
     })
 
 def survey_run(request, shortname, next=None, clean_template=False,bootstrap=False,update=False):
+
     if 'login_key' in request.GET:
         user = authenticate(key=request.GET['login_key'])
         if user is not None:
@@ -173,11 +177,13 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
 
     # @login_required from this point on.
     if not request.user.is_authenticated():
-        if clean_template: # i.e. "if is_mobile"
-            return HttpResponse(simplejson.dumps({'error': True, 'error_code': 3, 'error_msg': 'you must be logged in'}), mimetype="application/json")
         return redirect_to_login(request.path)
 
     survey = get_object_or_404(models.Survey, shortname=shortname, status='PUBLISHED')
+
+    #return HttpResponse("survey fetchado!!! weeeheee")
+
+
     language = get_language()
     locale_code = locale.locale_alias.get(language)
     if locale_code:
@@ -190,23 +196,29 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
     form = None
     user_id = request.user.id
     global_id = survey_user and survey_user.global_id
+
+    #return HttpResponse("Em principio da merda aqui!!!!")
+
     last_participation_data = survey.get_last_participation_data(user_id, global_id)
-    
+
+    return HttpResponse("eu falei.....")
+
     idcode = get_object_or_404(SurveyIdCode, surveyuser_global_id=global_id)
-    
+
+    #TODO: Sweet zombie Jesus!!! Break this up into it's own function...
     if request.method == 'POST':
         data = request.POST.copy()
         data['user'] = user_id
         data['global_id'] = global_id
         data['timestamp'] = datetime.datetime.now()
-        
+
         #Force merge behaviour instead of add if prev data exists
         if update and last_participation_data != None:
             data['id'] = last_participation_data.get('id')
             survey.as_form_update()
-            
+
         form = survey.as_form()(data)
-        
+
         if form.is_valid():
             form.save()
             next_url = next or _get_next_url(request, reverse(survey_run, kwargs={'shortname': shortname}))
@@ -221,11 +233,14 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         else:
             survey.set_form(form)
     encoder = json.JSONEncoder(ensure_ascii=False, indent=2)
-    
+
     #Clear data if new week...
     if survey.shortname == 'weekly' and update == False:
         last_participation_data = None
-    
+
+
+    #TODO: this really needs to be cleaned up, very messy!!!!!
+
     #...then inject birthdate from id code
     last_participation_data_json = None
     qname = ''
@@ -233,28 +248,17 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         qname = 'Q0'
     elif survey.shortname == 'intake':
         qname = 'Q2'
-    
+
     if last_participation_data is None:
         last_participation_data_json = '{\"'+qname+'\": \"'+idcode.fodelsedatum+'\"};'
     else:
         last_participation_data[qname]=idcode.fodelsedatum
-    
+
     if last_participation_data_json is None:
         last_participation_data_json = encoder.encode(last_participation_data)
-    
-    
-    if bootstrap:
-        return request_render_to_response(request, "pollster/survey_run_bootstrap.html", {
-        "language": language,
-        "locale_code": locale_code,
-        "survey": survey,
-        "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
-        "last_participation_data_json": last_participation_data_json,
-        "form": form,
-        "person": survey_user
-    })
-        
-    return request_render_to_response(request, "pollster/survey_run_clean.html" if clean_template else 'pollster/survey_run.html', {
+
+
+    return request_render_to_response(request, 'pollster/survey_run.html', {
         "language": language,
         "locale_code": locale_code,
         "survey": survey,
@@ -422,7 +426,7 @@ def survey_results_csv_extended(request, id):
     if request.method == 'POST': # If the form has been submitted...
         form = forms.SurveyExtendedResultsForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data            
+            # Process the data in form.cleaned_data
             now = datetime.datetime.now()
             response = HttpResponse(mimetype='text/csv')
             response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
@@ -430,7 +434,7 @@ def survey_results_csv_extended(request, id):
             writer = csv.writer(response)
             survey.write_csv(writer, intake_fields = form.cleaned_data)
             return response
-        
+
     else:
         form = forms.SurveyExtendedResultsForm() # An unbound form
 
@@ -547,4 +551,3 @@ def _get_next_url(request, default):
     if survey_user:
         url = '%s?gid=%s' % (url, survey_user.global_id)
     return url
-

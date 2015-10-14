@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 import warnings
 
 from django.db import models, connection, transaction, IntegrityError, DatabaseError
@@ -28,7 +28,7 @@ except:
     except ImportError:
         mapnik_version = None
         warnings.warn("No working version for library 'mapnik' found. Continuing without mapnik")
-        
+
 
 SURVEY_STATUS_CHOICES = (
     ('DRAFT', 'Draft'),
@@ -74,7 +74,7 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                           when ("Q1a" = 0 or "Q1aa" = 0)
                               then 'NO-SYMPTOMS'
 
-                          when 
+                          when
               (
                 (
                 ("Q5" = 0 or "Q6b" = 0)
@@ -83,31 +83,31 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                 )
                 and
                 (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
                 ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
                 ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
                 (
                     ("Q1_17" or "Q111_17") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 ) or
                 (
                     ("Q1_16" or "Q111_16") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 )
@@ -117,38 +117,38 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
               when
               (
                 (
-                                case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
-                                case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
-                                case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
+                                case true when "Q1_3" or "Q111_3" then 1 else 0 end +
+                                case true when "Q1_7" or "Q111_7" then 1 else 0 end +
+                                case true when "Q1_6" or "Q111_6" then 1 else 0 end +
                                 case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
-                ) 
+                )
                 and
                 (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
                 ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
                 ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
                 (
                     ("Q1_17" or "Q111_17") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 ) or
                 (
                     ("Q1_16" or "Q111_16") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 )
@@ -161,125 +161,57 @@ SURVEY_EXTRA_SQL_HRPT20131 = {
                            and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
                               then 'ILI'
 
-                          when 
+                          when
                             (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or 
+                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
                 ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or 
+                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
                 ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
                 (
                     ("Q1_17" or "Q111_17") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 ) or
                 (
                     ("Q1_16" or "Q111_16") and
                     (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end + 
+                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
                                     case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end + 
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end + 
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end + 
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end + 
+                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
+                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
+                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
+                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
                                     case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
                     )
                 )
                             ) then 'GASTROINTESTINAL'
 
-                          when 
-                              ((((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2"))) 
-                           and (("Q6d" = 0) or ("Q6d" is null)) 
+                          when
+                              ((((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2")))
+                           and (("Q6d" = 0) or ("Q6d" is null))
                            and ("Q1_3" or "Q1_4" or "Q1_14" or "Q111_3" or "Q111_4" or "Q111_14")
                            and ("Q11" = 2)
-                              ) then 'ALLERGY-or-HAY-FEVER' 
-                
-                          when 
+                              ) then 'ALLERGY-or-HAY-FEVER'
+
+                          when
                             (
                 (
-                                case true when "Q1_3" or "Q111_3" then 1 else 0 end + 
-                                case true when "Q1_7" or "Q111_7" then 1 else 0 end + 
-                                case true when "Q1_6" or "Q111_6" then 1 else 0 end + 
+                                case true when "Q1_3" or "Q111_3" then 1 else 0 end +
+                                case true when "Q1_7" or "Q111_7" then 1 else 0 end +
+                                case true when "Q1_6" or "Q111_6" then 1 else 0 end +
                                 case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
                 )
                             )  then 'COMMON-COLD'
 
                           else 'NON-SPECIFIC-SYMPTOMS'
                       end as status
-                 FROM pollster_results_weekly"""
-        ]
-    },
-    'sqlite': {
-        'weekly': [
-            """DROP VIEW IF EXISTS pollster_health_status""",
-            """CREATE VIEW pollster_health_status AS
-               SELECT id as pollster_results_weekly_id,
-                      case 1
-                          when Q1_0
-                              then 'NO-SYMPTOMS'
-
-                          when (Q5 = 0 or Q6b = 0)
-                           and (Q1_1 or Q1_2  or Q6d = 3 or Q6d = 4 or Q6d = 5 or Q1_11 or Q1_8 or Q1_9)
-                           and (Q1_5 or Q1_6 or Q1_7)
-                              then 'ILI'
-
-                          when 
-                            (
-                                (not Q1_1) and (not Q1_2) 
-                                and ((Q6d = 0) or (Q6d is null)) 
-                                and (Q1_3 or Q1_4 or Q1_14)
-                                and (Q11 = 2)
-                            ) and (
-                                case true when Q1_17 then 1 else 0 end + 
-                                case true when Q1_15 then 1 else 0 end + 
-                                case true when Q1_16 then 1 else 0 end + 
-                                case true when Q1_18 then 1 else 0 end >= 2
-                            ) then 'ALLERGY-or-HAY-FEVER-and-GASTROINTESTINAL'
-
-                          when (not Q1_1) and (not Q1_2) 
-                           and ((Q6d = 0) or (Q6d is null)) 
-                           and (Q1_3 or Q1_4 or Q1_14)
-                           and (Q11 = 2)
-                              then 'ALLERGY-or-HAY-FEVER' 
-
-                          when
-                            (
-                                case true when Q1_3 then 1 else 0 end + 
-                                case true when Q1_4 then 1 else 0 end + 
-                                case true when Q1_6 then 1 else 0 end + 
-                                case true when Q1_5 then 1 else 0 end >= 2
-                                  -- note: common cold after all allergy-related branches
-                            ) and (
-                                case true when Q1_17 then 1 else 0 end + 
-                                case true when Q1_15 then 1 else 0 end + 
-                                case true when Q1_16 then 1 else 0 end + 
-                                case true when Q1_18 then 1 else 0 end >= 2
-                            ) then 'COMMON-COLD-and-GASTROINTESTINAL'
-
-                          when 
-                            case true when Q1_3 then 1 else 0 end + 
-                            case true when Q1_4 then 1 else 0 end + 
-                            case true when Q1_6 then 1 else 0 end + 
-                            case true when Q1_5 then 1 else 0 end >= 2
-                              -- note: common cold after all allergy-related branches
-                              then 'COMMON-COLD'
-
-                          when 
-                            case true when Q1_17 then 1 else 0 end + 
-                            case true when Q1_15 then 1 else 0 end + 
-                            case true when Q1_16 then 1 else 0 end + 
-                            case true when Q1_18 then 1 else 0 end >= 2
-                              then 'GASTROINTESTINAL'
-
-                          else 'NON-SPECIFIC-SYMPTOMS'
-                      end as status
-
                  FROM pollster_results_weekly"""
         ]
     }
@@ -300,124 +232,56 @@ SURVEY_EXTRA_SQL = {
                            and ("Q1_5" or "Q1_6" or "Q1_7")
                               then 'ILI'
 
-                          when 
+                          when
                             (
-                                (not "Q1_1") and (not "Q1_2") 
-                                and (("Q6d" = 0) or ("Q6d" is null)) 
+                                (not "Q1_1") and (not "Q1_2")
+                                and (("Q6d" = 0) or ("Q6d" is null))
                                 and ("Q1_3" or "Q1_4" or "Q1_14")
                                 and ("Q11" = 2)
                             ) and (
-                                case true when "Q1_17" then 1 else 0 end + 
-                                case true when "Q1_15" then 1 else 0 end + 
-                                case true when "Q1_16" then 1 else 0 end + 
+                                case true when "Q1_17" then 1 else 0 end +
+                                case true when "Q1_15" then 1 else 0 end +
+                                case true when "Q1_16" then 1 else 0 end +
                                 case true when "Q1_18" then 1 else 0 end >= 2
                             ) then 'ALLERGY-or-HAY-FEVER-and-GASTROINTESTINAL'
 
-                          when (not "Q1_1") and (not "Q1_2") 
-                           and (("Q6d" = 0) or ("Q6d" is null)) 
+                          when (not "Q1_1") and (not "Q1_2")
+                           and (("Q6d" = 0) or ("Q6d" is null))
                            and ("Q1_3" or "Q1_4" or "Q1_14")
                            and ("Q11" = 2)
-                              then 'ALLERGY-or-HAY-FEVER' 
+                              then 'ALLERGY-or-HAY-FEVER'
 
                           when
                             (
-                                case true when "Q1_3" then 1 else 0 end + 
-                                case true when "Q1_4" then 1 else 0 end + 
-                                case true when "Q1_6" then 1 else 0 end + 
+                                case true when "Q1_3" then 1 else 0 end +
+                                case true when "Q1_4" then 1 else 0 end +
+                                case true when "Q1_6" then 1 else 0 end +
                                 case true when "Q1_5" then 1 else 0 end >= 2
                                   -- note: common cold after all allergy-related branches
                             ) and (
-                                case true when "Q1_17" then 1 else 0 end + 
-                                case true when "Q1_15" then 1 else 0 end + 
-                                case true when "Q1_16" then 1 else 0 end + 
+                                case true when "Q1_17" then 1 else 0 end +
+                                case true when "Q1_15" then 1 else 0 end +
+                                case true when "Q1_16" then 1 else 0 end +
                                 case true when "Q1_18" then 1 else 0 end >= 2
                             ) then 'COMMON-COLD-and-GASTROINTESTINAL'
 
-                          when 
-                            case true when "Q1_3" then 1 else 0 end + 
-                            case true when "Q1_4" then 1 else 0 end + 
-                            case true when "Q1_6" then 1 else 0 end + 
+                          when
+                            case true when "Q1_3" then 1 else 0 end +
+                            case true when "Q1_4" then 1 else 0 end +
+                            case true when "Q1_6" then 1 else 0 end +
                             case true when "Q1_5" then 1 else 0 end >= 2
                               -- note: common cold after all allergy-related branches
                               then 'COMMON-COLD'
 
-                          when 
-                            case true when "Q1_17" then 1 else 0 end + 
-                            case true when "Q1_15" then 1 else 0 end + 
-                            case true when "Q1_16" then 1 else 0 end + 
+                          when
+                            case true when "Q1_17" then 1 else 0 end +
+                            case true when "Q1_15" then 1 else 0 end +
+                            case true when "Q1_16" then 1 else 0 end +
                             case true when "Q1_18" then 1 else 0 end >= 2
                               then 'GASTROINTESTINAL'
 
                           else 'NON-SPECIFIC-SYMPTOMS'
                       end as status
-                 FROM pollster_results_weekly"""
-        ]
-    },
-    'sqlite': {
-        'weekly': [
-            """DROP VIEW IF EXISTS pollster_health_status""",
-            """CREATE VIEW pollster_health_status AS
-               SELECT id as pollster_results_weekly_id,
-                      case 1
-                          when Q1_0
-                              then 'NO-SYMPTOMS'
-
-                          when (Q5 = 0 or Q6b = 0)
-                           and (Q1_1 or Q1_2  or Q6d = 3 or Q6d = 4 or Q6d = 5 or Q1_11 or Q1_8 or Q1_9)
-                           and (Q1_5 or Q1_6 or Q1_7)
-                              then 'ILI'
-
-                          when 
-                            (
-                                (not Q1_1) and (not Q1_2) 
-                                and ((Q6d = 0) or (Q6d is null)) 
-                                and (Q1_3 or Q1_4 or Q1_14)
-                                and (Q11 = 2)
-                            ) and (
-                                case true when Q1_17 then 1 else 0 end + 
-                                case true when Q1_15 then 1 else 0 end + 
-                                case true when Q1_16 then 1 else 0 end + 
-                                case true when Q1_18 then 1 else 0 end >= 2
-                            ) then 'ALLERGY-or-HAY-FEVER-and-GASTROINTESTINAL'
-
-                          when (not Q1_1) and (not Q1_2) 
-                           and ((Q6d = 0) or (Q6d is null)) 
-                           and (Q1_3 or Q1_4 or Q1_14)
-                           and (Q11 = 2)
-                              then 'ALLERGY-or-HAY-FEVER' 
-
-                          when
-                            (
-                                case true when Q1_3 then 1 else 0 end + 
-                                case true when Q1_4 then 1 else 0 end + 
-                                case true when Q1_6 then 1 else 0 end + 
-                                case true when Q1_5 then 1 else 0 end >= 2
-                                  -- note: common cold after all allergy-related branches
-                            ) and (
-                                case true when Q1_17 then 1 else 0 end + 
-                                case true when Q1_15 then 1 else 0 end + 
-                                case true when Q1_16 then 1 else 0 end + 
-                                case true when Q1_18 then 1 else 0 end >= 2
-                            ) then 'COMMON-COLD-and-GASTROINTESTINAL'
-
-                          when 
-                            case true when Q1_3 then 1 else 0 end + 
-                            case true when Q1_4 then 1 else 0 end + 
-                            case true when Q1_6 then 1 else 0 end + 
-                            case true when Q1_5 then 1 else 0 end >= 2
-                              -- note: common cold after all allergy-related branches
-                              then 'COMMON-COLD'
-
-                          when 
-                            case true when Q1_17 then 1 else 0 end + 
-                            case true when Q1_15 then 1 else 0 end + 
-                            case true when Q1_16 then 1 else 0 end + 
-                            case true when Q1_18 then 1 else 0 end >= 2
-                              then 'GASTROINTESTINAL'
-
-                          else 'NON-SPECIFIC-SYMPTOMS'
-                      end as status
-
                  FROM pollster_results_weekly"""
         ]
     }
@@ -447,22 +311,26 @@ class Survey(models.Model):
         ('global_id', models.CharField(max_length=36, null=True, blank=True, verbose_name="Person")),
         ('channel', models.CharField(max_length=36, null=True, blank=True, verbose_name="Channel"))
     ]
-    
+
     _id_existing_field =[
         ('id', models.BigIntegerField(primary_key=True))
     ]
-    
+
     update = False
 
     @staticmethod
     def get_by_shortname(shortname):
         return Survey.objects.all().get(shortname=shortname, status="PUBLISHED")
-    
+
+    # Seriously, what the hell are all these mathods doing in here?
+
     @staticmethod
     def getUser(user_id):
         user = User.objects.get(id=user_id)
         return user
-    
+
+
+    #TODO: delete this crazynes, this is insane
     @staticmethod
     def getHealthStatus(id):
         cursor = connection.cursor()
@@ -470,12 +338,15 @@ class Survey(models.Model):
         cursor.execute(sql)
         status = cursor.fetchone()[0]
         return status
-    
+
     @property
     def translated_title(self):
         if self.translation and self.translation.title:
             return self.translation.title
         return self.title
+
+
+    # jesus christ, just check the freaking status whenever you need it
 
     @property
     def is_draft(self):
@@ -525,22 +396,24 @@ class Survey(models.Model):
             .values()
         return _get_or_default(participation)
 
+
+    # this was already a model, you know....
     def as_model(self):
         fields = []
-        
+
         if self.update:
             fields.extend(Survey._id_existing_field)
-        
+
         fields.extend(Survey._standard_result_fields)
-        
+
         for question in self.questions:
             fields += question.as_fields()
         model = dynamicmodels.create(self.get_table_name(), fields=dict(fields), app_label='pollster')
         return model
-    
+
     def as_form_update(self):
         self.update = True
-    
+
     def as_form(self):
         model = self.as_model()
         questions = list(self.questions)
@@ -617,11 +490,11 @@ class Survey(models.Model):
         addExtraWeekly = self.shortname == 'weekly'
         addExtraIntake = self.shortname == 'intake' and intake_fields != None
         lastParticipationData = {}
-        
+
         fieldNames = []
         for field in fields:
             fieldNames += [field.verbose_name or field.name]
-        if addExtraWeekly:                                      
+        if addExtraWeekly:
             fieldNames += ["status","email"]
         if addExtraIntake:
             if (intake_fields["email"]):
@@ -634,13 +507,13 @@ class Survey(models.Model):
                 fieldNames += ["dob_from_idcode"]
             if (intake_fields["last_report"]):
                 fieldNames += ["last_report"]
-            
+
             cursor = connection.cursor()
             cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
             lastParticipation = cursor.fetchall()
             for participation in lastParticipation:
                 lastParticipationData[participation[0]] = participation[1]
-        
+
         #writer.writerow([field.verbose_name or field.name for field in fields])
         writer.writerow(fieldNames)
         for result in model.objects.all():
@@ -691,9 +564,9 @@ class Survey(models.Model):
                 except (AttributeError, KeyError, TypeError) as e:
                     if (intake_fields["last_report"]):
                         row.append("")
-                    
+
             writer.writerow(row)
-        
+
 class RuleType(models.Model):
     title = models.CharField(max_length=255, blank=True, default='')
     js_class = models.CharField(max_length=255, unique=True)
@@ -1277,7 +1150,7 @@ class Chart(models.Model):
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=255, default='DRAFT', choices=CHART_STATUS_CHOICES)
     geotable = models.CharField(max_length=255, default='pollster_zip_codes', choices=settings.GEOMETRY_TABLES)
-    
+
     class Meta:
         ordering = ['survey', 'shortname']
         unique_together = ('survey', 'shortname')
@@ -1481,7 +1354,7 @@ class Chart(models.Model):
         if table_query:
             table = self.get_table_name()
             view = self.get_view_name()
-            
+
             if re.search(r'\bzip_code_country\b', table_query):
                 view_query = """SELECT A.*, B.id AS OGC_FID, B.geometry
                                   FROM %s B, (SELECT * FROM %s) A
@@ -1605,14 +1478,14 @@ class GoogleProjection:
             self.zc.append((e,e))
             self.Ac.append(c)
             c *= 2
-                
+
     def fromLLtoPixel(self,ll,zoom):
          d = self.zc[zoom]
          e = round(d[0] + ll[0] * self.Bc[zoom])
          f = min(max(sin(DEG_TO_RAD * ll[1]),-0.9999),0.9999)
          g = round(d[1] + 0.5*log((1+f)/(1-f))*-self.Cc[zoom])
          return (e,g)
-     
+
     def fromPixelToLL(self,px,zoom):
          e = self.zc[zoom]
          f = (px[0] - e[0])/self.Bc[zoom]

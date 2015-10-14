@@ -14,11 +14,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.db import connection
 from django.utils.datastructures import MultiValueDictKeyError
-import re
+from django.utils.translation import to_locale, get_language
+import re, locale
 
 from apps.survey import utils, models, forms
 from apps.pollster import views as pollster_views
 from apps.pollster import utils as pollster_utils
+from apps.pollster import fields as pollser_field_types
 from .survey import ( Specification,
                       FormBuilder,
                       JavascriptBuilder,
@@ -89,21 +91,12 @@ def _get_person_health_status(request, survey, global_id):
     if data:
         cursor = connection.cursor()
         params = { 'weekly_id': data["id"] }
-        queries = {
-            'sqlite':"""
-            SELECT S.status
-              FROM pollster_health_status_hrpt20131 S
-             WHERE S.pollster_results_weekly_id = :weekly_id""",
-            'mysql':"""
-            SELECT S.status
-              FROM pollster_health_status_hrpt20131 S
-             WHERE S.pollster_results_weekly_id = :weekly_id""",
-            'postgresql':"""
+        query = """
             SELECT S.status
               FROM pollster_health_status_hrpt20131 S
              WHERE S.pollster_results_weekly_id = %(weekly_id)s"""
-        }
-        cursor.execute(queries[utils.get_db_type(connection)], params)
+
+        cursor.execute(query, params)
         status = cursor.fetchone()[0]
     return (status, _decode_person_health_status(status))
 
@@ -145,7 +138,7 @@ def thanks(request):
 
     view_data = {
         'base_template': "base/twocol.html",
-        'mobile': isMobile(request),
+        'mobile': False,
         'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,
         'person': survey_user,
         'persons': [],
@@ -233,9 +226,6 @@ def idcode_save(request):
     idcode.save()
     return thanks(request)
 
-@login_required
-def bootstraptest(request):
-    return render_to_response('survey/bootstrap_test.html', {},context_instance=RequestContext(request))
 
 @login_required
 def select_user(request, template='survey/select_user.html'):
@@ -266,24 +256,6 @@ def select_user(request, template='survey/select_user.html'):
 def specialPrint(msg):
     print >> sys.stderr,msg
 
-def isMobile(request):
-    x = request.META['HTTP_USER_AGENT']
-    x = x.lower()
-    # specialPrint("Check if this user is using mobile: " + x)
-
-    mobDevices = ['android','iphone']
-
-    retVal = False
-
-    for device in mobDevices:
-        if x.find(device) > -1:
-            retVal =  True
-            break
-
-    # specialPrint ("Mobile user=" + str(retVal))
-
-    return retVal
-
 @login_required
 def idcode_open(request):
     try:
@@ -291,12 +263,13 @@ def idcode_open(request):
     except ValueError:
         raise Http404()
 
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-
-    return render_to_response('survey/id_code.html', {'base_template': base_template,'person': survey_user},context_instance=RequestContext(request))
+    return render_to_response(
+        'survey/id_code.html',
+        {
+            'base_template': "survey/base.html",
+            'person': survey_user},
+        context_instance=RequestContext(request)
+    )
 
 def checkIdCode(str_url_next,survey_user):
     idcode = models.SurveyIdCode.objects.filter(surveyuser_global_id=survey_user.global_id)
@@ -358,13 +331,13 @@ def index(request):
     if senaste != None and senaste == idag:
         upd = True
 
-    if isMobile(request):
-        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True,update=upd)
-    else:
-        return pollster_views.survey_run(request, survey.shortname, next=next,update=upd)
+    return pollster_views.survey_run(request, survey.shortname, next=next,update=upd)
 
 @login_required
 def profile_index(request):
+    #TODO: get rid of this crazyness. This is painful.
+
+    # What is all this spaghetti-y ...?  I don't even....
     try:
         survey_user = get_active_survey_user(request)
     except ValueError:
@@ -378,6 +351,9 @@ def profile_index(request):
     if redirect != None:
         return HttpResponseRedirect(redirect)
 
+
+    #this is crazy, let's not check if an 'intake' survey exists
+    # what are we doing in here if if doesn't, really
     try:
         survey = pollster.models.Survey.get_by_shortname('intake')
     except:
@@ -387,11 +363,69 @@ def profile_index(request):
     if 'next' not in request.GET:
         next = reverse(thanks)
 
+    return pollster_views.survey_run(request, survey.shortname, next=next,update=True)
 
-    if isMobile(request):
-        return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True,update=True)
-    else:
-        return pollster_views.survey_run(request, survey.shortname, next=next,update=True)
+
+################################################################################
+################################################################################
+
+@login_required
+def show_intake_survey(request):
+
+    #TODO: get name from url
+    #TODO: get replies to This
+    #TODO: Load the replies from db
+    #TODO: inject replies in form and see if they show
+    #TODO: update if data exists? Or maybe just save a new row and allways retrieve the most recent one.
+
+
+    language = get_language()
+    locale_code = locale.locale_alias.get(language)
+
+    survey_shortname = request.GET.get('survey', None)
+
+    #TODO: validate with regex
+
+    survey = pollster.models.Survey.get_by_shortname(survey_shortname)
+
+    gid = request.GET.get('gid', None)
+    survey_user = models.SurveyUser.objects.get(global_id=gid, user=request.user)
+
+    form = None # Acho que isto é para sacar das respostas ou qq merda assim. Ver no views.py do pollster
+
+    if request.method == 'POST':
+        data = request.POST.copy()
+        data['user'] = request.user.id
+        data['global_id'] = gid
+        data['timestamp'] = datetime.datetime.now()
+
+        form = survey.as_form()(data)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Form submited successfully!!!!!")
+        else:
+            survey.set_form(form)
+
+    return render_to_response(
+        'pollster/survey_run.html',
+        {
+            "language": language,
+            "locale_code": locale_code,
+            "survey": survey,
+            "default_postal_code_format": pollser_field_types.PostalCodeField.get_default_postal_code_format(),
+            "last_participation_data_json": None, # try removing this crap
+            "form": form,
+            "person": survey_user
+        },
+        context_instance=RequestContext(request)  #don't know why this is necessairy, nobody does apparently. See https://github.com/django-compressor/django-compressor/issues/483#issuecomment-52243164
+    )
+
+
+################################################################################
+################################################################################
+
+
 
 @login_required
 def people_edit(request):
@@ -412,19 +446,13 @@ def people_edit(request):
             survey_user.save()
 
             return HttpResponseRedirect(reverse(people))
-
     else:
         form = forms.AddPeople(initial={'name': survey_user.name})
 
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-
-    return render_to_response('survey/people_edit.html', {'base_template': base_template,'form': form},
+    return render_to_response('survey/people_edit.html', {'base_template': "survey/base.html",'form': form},
                               context_instance=RequestContext(request))
-    #return render_to_response('survey/thanks.html', {'form': form},
-     #                         context_instance=RequestContext(request))
+
+
 
 @login_required
 def people_remove(request):
@@ -485,7 +513,3 @@ def people_add(request):
 @login_required
 def people(request):
     return HttpResponseRedirect(reverse(thanks))
-
-    #users = models.SurveyUser.objects.filter(user=request.user, deleted=False)
-    #return render_to_response('survey/people.html', {'people': users},
-     #                         context_instance=RequestContext(request))
