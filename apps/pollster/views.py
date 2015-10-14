@@ -23,7 +23,7 @@ import re, datetime, locale, csv, urlparse, urllib
 
 #This stuff is ... intense
 # get rid of it!
-From here....
+#From here....
 
 def request_render_to_response(req, *args, **kwargs):
     kwargs['context_instance'] = RequestContext(req)
@@ -45,7 +45,7 @@ def retry(f, *args, **kwargs):
             if tries == 0:
                 raise
 
-# ... until here! 
+# ... until here!
 
 
 @staff_member_required
