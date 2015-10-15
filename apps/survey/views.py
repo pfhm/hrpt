@@ -189,12 +189,7 @@ def thanks_profile(request):
     except ValueError:
         pass
 
-    if isMobile(request):
-        base_template= "base/mobile_bootstrap.html"
-    else:
-        base_template= "survey/base.html"
-
-    return render_to_response('survey/thanks_profile.html', {'base_template': base_template, 'person': survey_user},
+    return render_to_response('survey/thanks_profile.html', {'base_template': "survey/base.html", 'person': survey_user},
         context_instance=RequestContext(request))
 
 @login_required
@@ -216,7 +211,7 @@ def idcode_save(request):
         messages.add_message(request, messages.ERROR, (u'Ett tekniskt fel skedde då formuläret skickades in.'))
         error = True
 
-    if error == False:
+    if not error:
         specialPrint("idcode_save person:" + gid)
         if idcode_id == None or idcode_id == '':
             error = True
@@ -225,31 +220,18 @@ def idcode_save(request):
         if fodelsedatum == None or fodelsedatum == '':
             error = True
             messages.add_message(request, messages.ERROR, (u'Du måste ange ett födelsedatum.'))
-        elif re.match('^[0-9]{4}[\-]?[0-9]{2}$', fodelsedatum) is None:
+        elif re.match('^[0-9]{4}$', fodelsedatum) is None:
             error = True
-            messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ-MM.'))
+            messages.add_message(request, messages.ERROR, (u'Födelsedatum måste vara angivet i formatet ÅÅÅÅ.'))
         else:
-            if "-" not in fodelsedatum:
-                fodelsedatum = str(fodelsedatum[0:4]) + '-' + str(fodelsedatum[4:]);
-
-            yy = str(fodelsedatum[0:4])
-            mm = str(fodelsedatum[5:])
-
-            if yy.isdigit() == False or mm.isdigit() == False:
+            year = int(fodelsedatum)
+            current_year = datetime.date.today().year
+            old_age_threshold = current_year - 85
+            if year > current_year or year < old_age_threshold:
                 error = True
-                messages.add_message(request, messages.ERROR, (u'År och månad måste vara numeriska värden mellan 1917-2013 och 01-12.'))
-            else:
-                if int(yy) < 1917 or int(yy) > 2013:
-                    error = True
-                    messages.add_message(request, messages.ERROR, (u'Årtalet måste vara mellan 1917 och 2013.'))
-                elif int(yy) == 2013 and int(mm) == 12:
-                    error = True
-                    messages.add_message(request, messages.ERROR, (u'Födelsedatumet ligger efter det att inbjudan skickades. Var vänlig kontrollera att ni matat in rätt datum.'))
-                elif int(mm) < 1 or int(mm) > 12 or len(mm) != 2:
-                    error = True
-                    messages.add_message(request, messages.ERROR, (u'Månaden måste vara mellan 01 och 12.'))
+                messages.add_message(request, messages.ERROR, ('Årtalet måste vara mellan' + str(old_age_threshold) + ' och ' + str(current_year) + '.'))
 
-    if error == False:
+    if not error:
         try:
             idcode = models.SurveyIdCode.objects.get(idcode=idcode_id)
         except:
@@ -268,20 +250,11 @@ def idcode_save(request):
 
     if error:
 
-        if isMobile(request):
-            base_template = "base/mobile_bootstrap.html"
-        else:
-            base_template =  "survey/base.html"
         return render_to_response('survey/id_code.html', {'idcode': idcode_id,
                                                           'birthdate': fodelsedatum,
-                                                          'base_template': base_template,
+                                                          'base_template': "survey/base.html",
                                                           'person': survey_user},
                                   context_instance=RequestContext(request))
-
-        #url = reverse('apps.survey.views.idcode_open')
-        #url_next = reverse('apps.survey.views.index')
-        #url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
-        #return HttpResponseRedirect(url)
 
     idcode.surveyuser_global_id = gid
     if idcode.fodelsedatum == None:
@@ -412,13 +385,7 @@ def index(request):
         # specialPrint("compare senaste with idag:" + senaste + " and " + idag)
 
     if senaste != None and senaste == idag:
-        #Removed messages since it seems they are not being removed correctly.
-        #if not messages.get_messages(request):
-        #    messages.add_message(request, messages.INFO,_(u'Du har redan rapporterat för vecka ' + senaste + '. Den kommer uppdateras med dina nya svar.'))
         upd = True
-    #else:
-        #if not messages.get_messages(request):
-        #    messages.add_message(request, messages.INFO,_(u'Ange svar för vecka ' + idag + '.'))
 
     if isMobile(request):
         return pollster_views.survey_run(request, survey.shortname, next=next,clean_template=True,bootstrap=True,update=upd)

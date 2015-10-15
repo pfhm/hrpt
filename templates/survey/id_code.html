@@ -4,8 +4,8 @@
 
 {% block col1 %}
 <p>
-Tack för att du aktiverat ditt konto i Hälsorapport! Var vänlig fyll i den 
-kod som står tryckt på inbjudan. Ange även födelsedatumet på den som bjudits in till Hälsorapport i 
+Tack för att du aktiverat ditt konto i Hälsorapport! Var vänlig fyll i den
+kod som står tryckt på inbjudan. Ange även födelsedatumet på den som bjudits in till Hälsorapport i
 formatet ÅÅÅÅ-MM (exempelvis: 1950-10).<br/><br/>
 </p>
 {% if messages %}
@@ -20,7 +20,7 @@ formatet ÅÅÅÅ-MM (exempelvis: 1950-10).<br/><br/>
 {% csrf_token %}
 <p>
 Kod:<br><input name="idkod" id="idkod" value="{{idcode}}"/><br/>
-Födelsedatum (ÅÅÅÅ-MM):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
+Födelseår(ÅÅÅÅ):<br><input name="fodelsedatum" id="fodelsedatum" value="{{birthdate}}"/><br/>
 <input type="submit" id="commentsubmit" value="{% trans "Save" %}"/>
 <input type="HIDDEN" name="global_id" id="global_id" value="{{person.global_id}}"/>
 </p>
