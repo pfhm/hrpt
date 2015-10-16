@@ -287,6 +287,8 @@ SURVEY_EXTRA_SQL = {
     }
 }
 
+
+# really???
 def _get_or_default(queryset, default=None):
     r = queryset[0:1]
     if r:

@@ -197,11 +197,7 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
     user_id = request.user.id
     global_id = survey_user and survey_user.global_id
 
-    #return HttpResponse("Em principio da merda aqui!!!!")
-
     last_participation_data = survey.get_last_participation_data(user_id, global_id)
-
-    return HttpResponse("eu falei.....")
 
     idcode = get_object_or_404(SurveyIdCode, surveyuser_global_id=global_id)
 

@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='survey_index'),
     url(r'^idcode_save/$', views.idcode_save, name='survey_idcode_save'),
     url(r'^idcode_open/$', views.idcode_open, name='survey_idcode_open'),
-    url(r'^intake/$', views.show_intake_survey, name='survey_intake'),
+    url(r'^show/(?P<survey_short_name>.+)/$', views.show_survey, name='survey_show'),
 )

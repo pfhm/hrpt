@@ -100,10 +100,12 @@ class ReminderError(models.Model):
     def email(self):
         return self.user.email
 
+
+### WOW, I though this could not be for real...
 def get_settings():
     if ReminderSettings.objects.count() == 0:
         return None
-    return ReminderSettings.objects.all()[0] 
+    return ReminderSettings.objects.all()[0]
 
 def get_upcoming_dates(now):
     settings = get_settings()
@@ -121,7 +123,7 @@ def get_upcoming_dates(now):
         if current >= now - datetime.timedelta(2 * settings.get_interval()):
             diff = current - now
             days = abs(diff.days) % 7
-            weeks = abs(diff.days) / 7 
+            weeks = abs(diff.days) / 7
             if diff.days > 0:
                 if weeks == 0:
                     yield current, _("%(current)s (in %(days)s days)") % locals()
@@ -217,7 +219,7 @@ def get_reminders_for_users(now, users):
     yielded = 0
     for user in users:
         if batch_size and yielded >= batch_size:
-            raise StopIteration 
+            raise StopIteration
 
         info, _ = UserReminderInfo.objects.get_or_create(user=user, defaults={'active': True, 'last_reminder': user.date_joined})
 
@@ -227,7 +229,7 @@ def get_reminders_for_users(now, users):
         language = info.get_language()
         if not language in reminder_dict:
             language = settings.LANGUAGE_CODE
-        
+
         reminder = reminder_dict[language]
 
         if info.last_reminder is None:
@@ -246,13 +248,11 @@ def get_reminders_for_users(now, users):
                 last_action_date = info.last_reminder
 
             last_action = (now - last_action_date).days
-            last_action_long_ago_enough = last_action >= 7 
-            
+            last_action_long_ago_enough = last_action >= 7
+
             if not last_action_long_ago_enough:
                 continue
 
         if info.last_reminder < reminder.date:
             yield user, reminder, language
             yielded += 1
-
-

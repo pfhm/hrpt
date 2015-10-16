@@ -6,7 +6,7 @@ from django.contrib.sites.models import Site
 from django.conf import settings
 from django import forms
 
-from mock import Mock, patch, patch_object
+from mock import Mock, patch
 
 from apps.survey.models import SurveyUser
 
@@ -29,7 +29,7 @@ class ReminderTestCase(unittest.TestCase):
 
     def test_get_upcoming_updates(self):
         def test(first_date, last_date, result):
-            result = list(result) 
+            result = list(result)
             self.assertEqual(first_date, result[0][0])
             self.assertEqual(last_date, result[-1][0])
 
@@ -50,7 +50,7 @@ class ReminderTestCase(unittest.TestCase):
         settings.save()
 
         test(datetime(2010, 9, 15, 14, 0), datetime(2010, 12, 8, 14, 0), get_upcoming_dates(datetime(2010, 10, 1, 15, 0, 0)))
-         
+
     def test_get_prev_reminder_date(self):
         site = Site.objects.get()
 
@@ -218,7 +218,7 @@ class ReminderTestCase(unittest.TestCase):
         class Message(object):
             def __init__(self):
                 self.message = 'this is text'
-                
+
         user = User.objects.create(username="user")
 
         text_base, html = create_message(user, Message(), 'nl')
@@ -231,7 +231,7 @@ class ReminderTestCase(unittest.TestCase):
         self.assertTrue('U ontvangt deze mail omdat' in html, html)
 
     def test_irregular_intervals_form(self):
-        form = NewsLetterForm() 
+        form = NewsLetterForm()
         self.assertEquals(forms.ChoiceField, type(form.fields['date']))
 
         settings = ReminderSettings.objects.create(
@@ -241,7 +241,7 @@ class ReminderTestCase(unittest.TestCase):
             interval=NO_INTERVAL,
         )
 
-        form = NewsLetterForm() 
+        form = NewsLetterForm()
         self.assertEquals(forms.DateField, type(form.fields['date']))
 
     def test_email_errors(self):
@@ -250,7 +250,7 @@ class ReminderTestCase(unittest.TestCase):
 
         user = User.objects.create(username="malformed-user", email="")
         info = UserReminderInfo.objects.create(user=user)
-         
+
         september_first = datetime(2010, 9, 1, 14, 0, 0)
 
         site = Site.objects.get()
@@ -314,4 +314,3 @@ class ReminderTestCase(unittest.TestCase):
         NewsLetter.objects.all().delete()
         result = list(get_reminders_for_users(september_first + timedelta(minutes=1), User.objects.filter(username__startswith="week-after-user-")))
         self.assertEqual(0, len(result))
-

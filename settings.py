@@ -133,9 +133,6 @@ ROOT_URLCONF = 'urls'
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_PATH, 'custom_templates'),
     os.path.join(PROJECT_PATH, 'templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
 )
 
 INSTALLED_APPS = (
@@ -166,7 +163,6 @@ INSTALLED_APPS = (
     'cms.plugins.link',
     'cms.plugins.file',
     'cms.plugins.snippet',
-#    'cms.plugins.googlemap',
     'menus',
     'mptt',
     'appmedia',
@@ -175,7 +171,6 @@ INSTALLED_APPS = (
     'apps.pollster',
     'apps.contest',
     'captcha',
-    #'apps.captcha',
     'pytils',
     'sorl.thumbnail',
     'pure_pagination',

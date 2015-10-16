@@ -370,33 +370,41 @@ def profile_index(request):
 ################################################################################
 
 @login_required
-def show_intake_survey(request):
+def show_survey(request, survey_short_name):
 
     #TODO: get name from url
     #TODO: get replies to This
     #TODO: Load the replies from db
     #TODO: inject replies in form and see if they show
     #TODO: update if data exists? Or maybe just save a new row and allways retrieve the most recent one.
+    #TODO: set the translation???? maybe? Like this: survey.set_translation_survey(translation)
 
 
     language = get_language()
-    locale_code = locale.locale_alias.get(language)
-
-    survey_shortname = request.GET.get('survey', None)
+    #locale_code = locale.locale_alias.get(language)
+    #survey_shortname = request.GET.get('survey', None)
 
     #TODO: validate with regex
 
-    survey = pollster.models.Survey.get_by_shortname(survey_shortname)
+    survey = pollster.models.Survey.get_by_shortname(survey_short_name)
 
-    gid = request.GET.get('gid', None)
-    survey_user = models.SurveyUser.objects.get(global_id=gid, user=request.user)
+    global_id = request.GET.get('gid', None)
+    survey_user = models.SurveyUser.objects.get(global_id=global_id, user=request.user)
 
-    form = None # Acho que isto é para sacar das respostas ou qq merda assim. Ver no views.py do pollster
+    last_participation_data = survey.get_last_participation_data(request.user.id, global_id)
+
+    if last_participation_data:
+        #TODO: show something nicer
+        return HttpResponse("you have already answered this")
+
+    specialPrint(last_participation_data)
+
+    form = survey.as_form()(last_participation_data) # Acho que isto é para sacar das respostas ou qq merda assim. Ver no views.py do pollster
 
     if request.method == 'POST':
         data = request.POST.copy()
         data['user'] = request.user.id
-        data['global_id'] = gid
+        data['global_id'] = global_id
         data['timestamp'] = datetime.datetime.now()
 
         form = survey.as_form()(data)
@@ -411,10 +419,10 @@ def show_intake_survey(request):
         'pollster/survey_run.html',
         {
             "language": language,
-            "locale_code": locale_code,
+            "locale_code": "sv-SE", # let's just hardcode this for now
             "survey": survey,
             "default_postal_code_format": pollser_field_types.PostalCodeField.get_default_postal_code_format(),
-            "last_participation_data_json": None, # try removing this crap
+            "last_participation_data_json": {}, # try removing this crap # Edit: soooo... this is injected inside javascript code. The horror!
             "form": form,
             "person": survey_user
         },
