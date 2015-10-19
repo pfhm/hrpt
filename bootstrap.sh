@@ -1,4 +1,4 @@
-#!/bin/bash
+	#!/bin/bash
 
 DB_ENGINE="postgresql"
 POSTGRES_SUPERUSER_USERNAME="admin"
@@ -13,9 +13,9 @@ COUNTRY="sv"
 
 # Just doing some basic cleanup and update after a fresh install
 rm /var/lib/apt/lists/* -vf
-apt-get -y clean
-apt-get -y autoremove
-apt-get -y update
+apt-get  clean
+apt-get  autoremove
+apt-get  update
 
 # We need to install git first so we can pull the source, in which the list of dependencies live
 apt-get install -y git
@@ -24,7 +24,7 @@ apt-get install -y git
 git config --global user.email "developer@fhm"
 git config --global user.name "Joe FHM developer"
 
-	
+
 # now clone the git repo
 mkdir /var/www
 cd /var/www
@@ -48,9 +48,17 @@ sed -i 's/PermitRootLogin\swithout-password/PermitRootLogin yes/g' /etc/ssh/sshd
 sudo service ssh reload
 
 #these are necessairy for pil, no ideia why they aren't linked or placed under /usr/lib
-ln -s /usr/lib/i386-linux-gnu/libfreetype.so /usr/lib/
-ln -s /usr/lib/i386-linux-gnu/libz.so /usr/lib/
-ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
+
+
+ARCHITECTURE="i386"
+
+if [ "$(uname -i)" == 'x86_64' ]; then
+    ARCHITECTURE="x86_64"
+fi
+
+ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libfreetype.so /usr/lib/
+ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libz.so /usr/lib/
+ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libjpeg.so /usr/lib/
 ln -s /usr/include/freetype2 /usr/include/freetype
 
 # now we get inside the virtual environment and go crazy!!!
@@ -81,7 +89,7 @@ su postgres -c "createlang plpgsql template1"
 while [ -z "$DB_PASSWORD" ] ; do
 	echo -n "Database password ( username is '$DB_USERNAME'): "
 	read line && [ -n "$line" ] && DB_PASSWORD="$line";
-done    
+done
 
 
 echo ""
@@ -121,8 +129,8 @@ cat local_settings.py.in \
     | sed -e "s/@COUNTRY@/$COUNTRY/g" \
     | sed -e "s%@TIMEZONE@%$TIMEZONE%g" \
     > local_settings.py
-	
-	
+
+
 
 echo "\nCreating database $DB_NAME ... "
 psql --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME template1 <<EOF
@@ -132,7 +140,7 @@ psql --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME template1 <<EOF
 	CREATE DATABASE $DB_NAME WITH OWNER = $DB_USERNAME ;
 EOF
 
-	
+
 echo "\nLoading the data from SQL dump file into the database...\n"
 psql --username=$POSTGRES_SUPERUSER_USERNAME --host=$DB_HOST $DB_NAME < /var/www/hrpt/db_dump.sql
 
