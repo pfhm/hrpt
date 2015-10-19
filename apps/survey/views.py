@@ -29,12 +29,6 @@ import apps.pollster as pollster
 import pickle
 from django.contrib.auth import logout
 
-#For remote debugging
-#import sys
-#sys.path.append('/opt/eclipse_juno2/plugins/org.python.pydev_2.7.5.2013052819/pysrc/')
-#import pydevd
-#pydevd.settrace()
-
 import sys
 import datetime
 from django.conf import settings
@@ -360,7 +354,6 @@ def profile_index(request):
 @login_required
 def show_survey(request, survey_short_name):
 
-    #TODO: get name from url
     #TODO: get replies to This
     #TODO: Load the replies from db
     #TODO: inject replies in form and see if they show
@@ -370,9 +363,6 @@ def show_survey(request, survey_short_name):
 
     language = get_language()
     #locale_code = locale.locale_alias.get(language)
-    #survey_shortname = request.GET.get('survey', None)
-
-    #TODO: validate with regex
 
     survey = pollster.models.Survey.get_by_shortname(survey_short_name)
 
@@ -382,9 +372,7 @@ def show_survey(request, survey_short_name):
     last_participation_data = survey.get_last_participation_data(request.user.id, global_id)
 
     if last_participation_data:
-        return HttpResponseRedirect('survey-already-answered')
-
-    specialPrint(last_participation_data)
+        return HttpResponseRedirect('svarad-enkat')
 
     form = survey.as_form()(last_participation_data)
 
