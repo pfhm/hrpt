@@ -7,6 +7,9 @@ from django.utils.html import strip_tags
 
 from cms.models import Page, Placeholder
 
+
+#TODO: this doesn't work, remove it
+
 class PageIndex(SearchIndex):
     text = CharField(document=True)
     summary = CharField()

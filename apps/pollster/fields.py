@@ -2,7 +2,6 @@ from django.db import connection
 from django.core import exceptions, validators
 from django.forms import CharField, ValidationError
 from django.utils.translation import ugettext_lazy as _
-from .db.utils import get_db_type, convert_query_paramstyle
 import datetime, time, re, logging
 from django.conf import settings
 
@@ -41,7 +40,7 @@ class YearMonthField(CharField):
     def clean(self, value):
         """
         Validate month and year values.
-        
+
         Returns a string object in YYYY-MM format.
         """
         if value in validators.EMPTY_VALUES:
@@ -70,7 +69,7 @@ class DateField(CharField):
     def clean(self, value):
         """
         Validate month and year values.
-        
+
         Returns a string object in YYYY-MM-DD format.
         """
         if value in validators.EMPTY_VALUES:
@@ -122,7 +121,6 @@ class PostalCodeField(CharField):
         if mode == 'EXACT':
             params = { 'country': settings.COUNTRY.lower(), 'zip': str(value).lower() }
             query = "SELECT count(*) FROM pollster_zip_codes WHERE lower(country) = %(country)s AND lower(zip_code_key) = %(zip)s"
-            query = convert_query_paramstyle(connection, query, params)
             cursor = connection.cursor()
             cursor.execute(query, params)
             count = cursor.fetchone()[0]

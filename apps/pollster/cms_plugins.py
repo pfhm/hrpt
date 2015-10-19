@@ -23,4 +23,26 @@ class CMSSurveyChartPlugin(CMSPluginBase):
         })
         return context
 
+
+#class MySurveyListPlugin(CMSPluginBase):
+#    model = SurveyListPluginModel
+#    name = "My surveys list"
+#    render_template = "pollster/cms_plugin_survey_list.html"
+#
+#
+#    def render(self, context, instance, placeholder):
+#        request = context['request']
+#        global_id = request.GET.get('gid', None)
+#        profile = None
+#        if global_id:
+#            profile = get_user_profile(request.user.id, global_id)
+#        context.update({
+#            'profile': profile,
+#            'object': instance,
+#            'placeholder': placeholder
+#        })
+#        return context
+#
+
 plugin_pool.register_plugin(CMSSurveyChartPlugin)
+#plugin_pool.register_plugin(MySurveyListPlugin)

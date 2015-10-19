@@ -315,7 +315,7 @@ def save_local_profile(survey_user, data):
         lp.surveyuser = survey_user
         lp.sq_num_season = 0
         lp.sq_num_total = 0
-    
+
     lp.birth_date = data['IntakeQ2']
     lp.zip_code = data['IntakeQ3']
     lp.region = get_user_region(data['IntakeQ3'])
@@ -348,7 +348,7 @@ def save_local_profile(survey_user, data):
         lp.a_vaccine_current = 'Y'
     else:
         lp.a_vaccine_current = 'N'
-    
+
     lp.save()
 
 def update_local_profile(survey_user):
@@ -368,15 +368,3 @@ def save_local_flu_survey(survey_user, survey_id, data):
     ls.data = pickle.dumps(data)
     ls.survey_id = survey_id
     ls.save()
-
-def get_db_type(connection):
-    db = None
-    if connection.settings_dict['ENGINE'] == "django.db.backends.sqlite3":
-        db = "sqlite"
-    elif connection.settings_dict['ENGINE'] == "django.db.backends.postgresql":
-        db = "postgresql"
-    elif connection.settings_dict['ENGINE'] == "django.db.backends.postgresql_psycopg2":
-        db = "postgresql"
-    elif connection.settings_dict['ENGINE'] == "django.db.backends.mysql":
-        db = "mysql"
-    return db

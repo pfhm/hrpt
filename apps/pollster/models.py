@@ -10,7 +10,6 @@ from cms.models import CMSPlugin
 from xml.etree import ElementTree
 from math import pi,cos,sin,log,exp,atan
 from . import dynamicmodels, json
-from .db.utils import get_db_type, convert_query_paramstyle
 import os, re, shutil, warnings, datetime, csv
 from django.conf import settings
 from apps.survey.models import SurveyIdCode, SurveyUser
@@ -1407,7 +1406,6 @@ class Chart(models.Model):
         elif self.sqlfilter == 'PERSON':
             query += """ WHERE "user" = %(user_id)s AND global_id = %(global_id)s"""
         params = { 'user_id': user_id, 'global_id': global_id }
-        query = convert_query_paramstyle(connection, query, params)
         try:
             cursor = connection.cursor()
             cursor.execute(query, params)
@@ -1423,7 +1421,6 @@ class Chart(models.Model):
         elif self.sqlfilter == 'PERSON':
             query += """ WHERE "user" = %(user_id)s AND global_id = %(global_id)s"""
         params = { 'user_id': user_id, 'global_id': global_id }
-        query = convert_query_paramstyle(connection, query, params)
         try:
             cursor = connection.cursor()
             cursor.execute(query, params)

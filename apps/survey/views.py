@@ -107,17 +107,12 @@ def _get_health_history(request, survey):
 
 @login_required
 def thanks(request):
-    try:
-        survey = pollster.models.Survey.get_by_shortname('weekly')
-    except:
-        raise Exception("The survey application requires a published survey with the shortname 'weekly'")
-    #Weekly = survey.as_model()
 
     try:
         survey_user = get_active_survey_user(request)
         if(survey_user is None):
             specialPrint('No gid in url go to select page!')
-            url = '%s?next=%s' % (reverse(select_user), reverse(thanks))
+            url = '%s?next=%s' % (reverse(select_user), '/valkommen/')
             return HttpResponseRedirect(url)
     except ValueError:
         pass
@@ -126,15 +121,6 @@ def thanks(request):
     redirect = checkIdCode('apps.survey.views.thanks',survey_user)
     if redirect != None:
         return HttpResponseRedirect(redirect)
-
-#    history = list(_get_health_history(request, survey))
-#    persons = models.SurveyUser.objects.filter(user=request.user, deleted=False)
-#    persons_dict = dict([(p.global_id, p) for p in persons])
-#    for item in history:
-#        item['person'] = persons_dict.get(item['global_id'])
-#    for person in persons:
-#        person.health_status, person.diag = _get_person_health_status(request, survey, person.global_id)
-#        person.health_history = [i for i in history if i['global_id'] == person.global_id][-10:]
 
     view_data = {
         'base_template': "base/twocol.html",
@@ -145,6 +131,8 @@ def thanks(request):
         'history': []
     }
     return render_to_response('survey/thanks.html', view_data, context_instance=RequestContext(request))
+
+
 
 @login_required
 def thanks_profile(request):
@@ -394,12 +382,11 @@ def show_survey(request, survey_short_name):
     last_participation_data = survey.get_last_participation_data(request.user.id, global_id)
 
     if last_participation_data:
-        #TODO: show something nicer
-        return HttpResponse("you have already answered this")
+        return HttpResponseRedirect('survey-already-answered')
 
     specialPrint(last_participation_data)
 
-    form = survey.as_form()(last_participation_data) # Acho que isto é para sacar das respostas ou qq merda assim. Ver no views.py do pollster
+    form = survey.as_form()(last_participation_data)
 
     if request.method == 'POST':
         data = request.POST.copy()
