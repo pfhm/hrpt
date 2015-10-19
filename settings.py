@@ -239,8 +239,12 @@ CMS_SEO_FIELDS = True
 
 SESSION_COOKIE_AGE = 60 * 60 * 2
 
-LOGIN_REDIRECT_URL = '/survey/thanks/'
-#LOGIN_REDIRECT_URL = '/thank-you/'
+# Old thank you page, will leave it in here just for future reference
+# It listed weekly surveys and it was _not_ managed through django CMS_SEO_FIELDS
+#LOGIN_REDIRECT_URL = '/survey/thanks/'
+
+#This needs to exist. Create and edit this page with CMS
+LOGIN_REDIRECT_URL = '/thank-you/'
 
 
 
