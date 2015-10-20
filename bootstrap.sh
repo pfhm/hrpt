@@ -4,7 +4,6 @@ DB_ENGINE="postgresql"
 POSTGRES_SUPERUSER_USERNAME="admin"
 DB_NAME="epiwork"
 DB_HOST="localhost"
-#DB_PORT=""
 DB_USERNAME="epiwork"
 DJANGO_ENGINE="postgresql_psycopg2"
 TIMEZONE="Europe/Stockholm"  # This is the same that is obtained by running 'cat Europe/Stockholm'
@@ -48,31 +47,12 @@ virtualenv .
 source ./bin/activate
 
 # these two modules need these flags because they wouldn't be installable otherwise
-# AFAIUI they either have dependencied on external hosted modules and/or do not provide checksums
+# AFAIUI they have dependencied on external hosted modules and/or do not provide checksums
 pip install PIL --allow-external PIL --allow-unverified PIL
 pip install postmarkup --allow-external postmarkup --allow-unverified postmarkup
 
-#now 
+#now  install the rest of the pip dependencies
 pip install -r /var/www/hrpt/requirements.txt
-
-
-
-#####################################################################
-## The following is based on what was on bootstrap.sh in september 2015
-# For reference, here's a link from that time
-# https://github.com/pfhm/hrpt/blob/d2e7f1920cae9af10817d3bcb044a5843ac8f95a/bootstrap.sh
-
-
-#!/bin/bash
-#
-# Bootstraps everything installing Django and all required eggs, configuring
-# the database and making sure a consistent Mono development environment is
-# installed.
-
-# Here we customize src/epiweb/settings.py by setting the user preferred
-# database, language and country. Note that the database and the user used
-# to connect should already exist.
-
 
 
 # Lets now	create a superuser for postgres
@@ -100,7 +80,6 @@ echo "  time zone:            $TIMEZONE"
 echo "  database engine:      $DB_ENGINE ($DJANGO_ENGINE)"
 echo "  database name:        $DB_NAME"
 echo "  database host:        $DB_HOST"
-#echo "  database port:        ${DB_PORT:-(default)}"
 echo "  database username:    $DB_USERNAME"
 echo "  database password:    $DB_PASSWORD"
 echo ""
@@ -122,10 +101,6 @@ echo ""
 echo "Creating database $DB_NAME ... "
 
 args="--username=$POSTGRES_SUPERUSER_USERNAME template1"
-
-#if [ -n "$DB_PORT" ] ; then
-#	args="--port=$DB_PORT $args"
-#fi
 
 if [ -n "$DB_HOST" ] ; then
 	args="--host=$DB_HOST $args"
@@ -155,59 +130,24 @@ cat local_settings.py.in \
     | sed -e "s%@TIMEZONE@%$TIMEZONE%g" \
     > local_settings.py
 
-echo "done"
-echo ""
-echo "Initializing Django database and loading default surveys:"
-echo ""
+	
+echo "\nLoading the data from SQL dump file into the database...\n"
+psql $DB_NAME < /var/www/hrpt/db_dump.sql
 
-python manage.py syncdb
-# On PostgreSQL ovverride the order of migrated tables creating first
-# referenced tables (journal migration fails if CMS isn't available.)
-python manage.py migrate cms
-python manage.py migrate
-python manage.py rule_type_register --title 'Show Question' --jsclass 'wok.pollster.rules.ShowQuestion'
-python manage.py rule_type_register --title 'Hide Question' --jsclass 'wok.pollster.rules.HideQuestion'
-python manage.py rule_type_register --title 'Show Options' --jsclass 'wok.pollster.rules.ShowOptions'
-python manage.py rule_type_register --title 'Hide Options' --jsclass 'wok.pollster.rules.HideOptions'
-python manage.py rule_type_register --title 'Check Options' --jsclass 'wok.pollster.rules.CheckOptions'
-python manage.py rule_type_register --title 'Uncheck Options' --jsclass 'wok.pollster.rules.UncheckOptions'
-python manage.py rule_type_register --title 'Exclusive' --jsclass 'wok.pollster.rules.Exclusive'
-python manage.py rule_type_register --title 'Future Fill' --jsclass 'wok.pollster.rules.FutureFill'
-python manage.py rule_type_register --title 'Future Show Question' --jsclass 'wok.pollster.rules.FutureShowQuestion'
-python manage.py rule_type_register --title 'Future Hide Question' --jsclass 'wok.pollster.rules.FutureHideQuestion'
-python manage.py rule_type_register --title 'Future Show Options' --jsclass 'wok.pollster.rules.FutureShowOptions'
-python manage.py rule_type_register --title 'Future Hide Options' --jsclass 'wok.pollster.rules.FutureHideOptions'
-python manage.py rule_type_register --title 'Fill' --jsclass 'wok.pollster.rules.Fill'
-python manage.py question_data_type_register --title 'Text' --dbtype 'django.db.models.TextField(null=True, blank=True)' --cssclass 'text-type' --jsclass 'wok.pollster.datatypes.Text'
-python manage.py question_data_type_register --title 'Numeric' --dbtype 'django.db.models.PositiveIntegerField(null=True, blank=True)' --cssclass 'numeric-type' --jsclass 'wok.pollster.datatypes.Numeric'
-python manage.py question_data_type_register --title 'Date' --dbtype 'django.db.models.DateField(null=True, blank=True)' --cssclass 'date-type' --jsclass 'wok.pollster.datatypes.Date'
-python manage.py question_data_type_register --title 'YearMonth' --dbtype 'db.models.YearMonthField(null=True, blank=True)' --cssclass 'monthyear-type' --jsclass 'wok.pollster.datatypes.YearMonth'
-python manage.py question_data_type_register --title 'Timestamp' --dbtype 'django.db.models.DateTimeField(null=True, blank=True)' --cssclass 'timestamp-type' --jsclass 'wok.pollster.datatypes.Timestamp'
-# PostalCode is added by the pollster migration 0005_postalcodefield.py
-# python manage.py question_data_type_register --title 'PostalCode' --dbtype 'django.db.models.PostalCodeField(null=True, blank=True)' --cssclass 'postalcode-type' --jsclass 'wok.pollster.datatypes.PostalCode'
-python manage.py virtual_option_type_register --title 'Range' --question-data-type-title 'Text' --jsclass 'wok.pollster.virtualoptions.TextRange'
-python manage.py virtual_option_type_register --title 'Range' --question-data-type-title 'Numeric' --jsclass 'wok.pollster.virtualoptions.NumericRange'
-python manage.py virtual_option_type_register --title 'Range' --question-data-type-title 'Date' --jsclass 'wok.pollster.virtualoptions.DateRange'
-python manage.py virtual_option_type_register --title 'Years ago' --question-data-type-title 'Date' --jsclass 'wok.pollster.virtualoptions.DateYearsAgo'
-python manage.py virtual_option_type_register --title 'Years ago' --question-data-type-title 'YearMonth' --jsclass 'wok.pollster.virtualoptions.YearMonthYearsAgo'
-python manage.py virtual_option_type_register --title 'Weeks ago' --question-data-type-title 'Timestamp' --jsclass 'wok.pollster.virtualoptions.TimestampWeeksAgo'
-python manage.py virtual_option_type_register --title 'Regular expression' --question-data-type-title 'Text' --jsclass 'wok.pollster.virtualoptions.RegularExpression'
 
-python manage.py createcachetable django_cache 2>/dev/null || echo 'Cache table errors ignored'
-
+echo "\nSetting up PostGIS..."
 
 postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
 srefsys="/usr/share/postgresql/9.3/contrib/postgis-2.1/spatial_ref_sys.sql"
-if [ -n "$postgis" -a -n "$srefsys" ] ; then
-	echo "Setting up PostGIS"
-	args="--username=$POSTGRES_SUPERUSER_USERNAME $DB_NAME"
-	if [ -n "$DB_PORT" ] ; then
-		args="--port=$DB_PORT $args"
-	fi
-	if [ -n "$DB_HOST" ] ; then
-		args="--host=$DB_HOST $args"
-	fi
-	psql -q $args <<EOF
+
+
+args="--username=$POSTGRES_SUPERUSER_USERNAME $DB_NAME"
+
+if [ -n "$DB_HOST" ] ; then
+	args="--host=$DB_HOST $args"
+fi
+
+psql -q $args <<EOF
 \i $postgis
 \i $srefsys
 CREATE TABLE pollster_zip_codes (id serial, country TEXT, zip_code_key TEXT);
@@ -218,4 +158,3 @@ ALTER TABLE geometry_columns OWNER TO $DB_USERNAME;
 ALTER VIEW geography_columns OWNER TO $DB_USERNAME;
 EOF
 	echo "PostGIS setup complete"
-fi
