@@ -132,7 +132,7 @@ cat local_settings.py.in \
 
 	
 echo "\nLoading the data from SQL dump file into the database...\n"
-psql $DB_NAME < /var/www/hrpt/db_dump.sql
+psql -q $args $DB_NAME < /var/www/hrpt/db_dump.sql
 
 
 echo "\nSetting up PostGIS..."
