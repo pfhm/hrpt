@@ -96,28 +96,8 @@ while [ -z "$line" ] ; do
     if [ "$line" != "YES" ] ; then line="" ; fi
 done
 
-echo ""
 
-echo "Creating database $DB_NAME ... "
-
-args="--username=$POSTGRES_SUPERUSER_USERNAME template1"
-
-if [ -n "$DB_HOST" ] ; then
-	args="--host=$DB_HOST $args"
-fi
-
-
-psql -q $args <<EOF
-	DROP DATABASE IF EXISTS $DB_NAME ;
-	DROP USER IF EXISTS $DB_USERNAME ;
-	CREATE USER $DB_USERNAME WITH ENCRYPTED PASSWORD '$DB_PASSWORD' ;
-	CREATE DATABASE $DB_NAME WITH OWNER = $DB_USERNAME ;
-EOF
-echo "PostgreSQL setup complete"
-
-echo ""
-echo -n "Generating settings.py ... "
-
+echo "\nGenerating settings.py ... "
 cat local_settings.py.in \
     | sed -e "s/@DB_ENGINE@/django.db.backends.$DJANGO_ENGINE/g" \
     | sed -e "s/@DB_NAME@/$DB_NAME/g" \
@@ -129,25 +109,28 @@ cat local_settings.py.in \
     | sed -e "s/@COUNTRY@/$COUNTRY/g" \
     | sed -e "s%@TIMEZONE@%$TIMEZONE%g" \
     > local_settings.py
+	
+	
+
+echo "\nCreating database $DB_NAME ... "
+postgres_credentials_args = "-q --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME"
+psql $postgres_credentials_args template1 <<EOF
+	DROP DATABASE IF EXISTS $DB_NAME ;
+	DROP USER IF EXISTS $DB_USERNAME ;
+	CREATE USER $DB_USERNAME WITH ENCRYPTED PASSWORD '$DB_PASSWORD' ;
+	CREATE DATABASE $DB_NAME WITH OWNER = $DB_USERNAME ;
+EOF
 
 	
 echo "\nLoading the data from SQL dump file into the database...\n"
-psql -q $args $DB_NAME < /var/www/hrpt/db_dump.sql
+psql $postgres_credentials_args $DB_NAME < /var/www/hrpt/db_dump.sql
 
 
-echo "\nSetting up PostGIS..."
-
+echo "\nLoading postgis data into the database ...\n"
 postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
 srefsys="/usr/share/postgresql/9.3/contrib/postgis-2.1/spatial_ref_sys.sql"
 
-
-args="--username=$POSTGRES_SUPERUSER_USERNAME $DB_NAME"
-
-if [ -n "$DB_HOST" ] ; then
-	args="--host=$DB_HOST $args"
-fi
-
-psql -q $args <<EOF
+psql $postgres_credentials_args $DB_NAME <<EOF
 \i $postgis
 \i $srefsys
 CREATE TABLE pollster_zip_codes (id serial, country TEXT, zip_code_key TEXT);
@@ -157,4 +140,5 @@ ALTER TABLE spatial_ref_sys OWNER TO $DB_USERNAME;
 ALTER TABLE geometry_columns OWNER TO $DB_USERNAME;
 ALTER VIEW geography_columns OWNER TO $DB_USERNAME;
 EOF
-	echo "PostGIS setup complete"
+
+echo "The end."
