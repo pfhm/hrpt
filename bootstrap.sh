@@ -113,8 +113,7 @@ cat local_settings.py.in \
 	
 
 echo "\nCreating database $DB_NAME ... "
-postgres_credentials_args = "-q --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME"
-psql $postgres_credentials_args template1 <<EOF
+psql --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME template1 <<EOF
 	DROP DATABASE IF EXISTS $DB_NAME ;
 	DROP USER IF EXISTS $DB_USERNAME ;
 	CREATE USER $DB_USERNAME WITH ENCRYPTED PASSWORD '$DB_PASSWORD' ;
@@ -123,14 +122,14 @@ EOF
 
 	
 echo "\nLoading the data from SQL dump file into the database...\n"
-psql $postgres_credentials_args $DB_NAME < /var/www/hrpt/db_dump.sql
+psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME < /var/www/hrpt/db_dump.sql
 
 
 echo "\nLoading postgis data into the database ...\n"
 postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
 srefsys="/usr/share/postgresql/9.3/contrib/postgis-2.1/spatial_ref_sys.sql"
 
-psql $postgres_credentials_args $DB_NAME <<EOF
+psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME <<EOF
 \i $postgis
 \i $srefsys
 CREATE TABLE pollster_zip_codes (id serial, country TEXT, zip_code_key TEXT);
