@@ -122,14 +122,14 @@ EOF
 
 	
 echo "\nLoading the data from SQL dump file into the database...\n"
-psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME < /var/www/hrpt/db_dump.sql
+psql --username=$POSTGRES_SUPERUSER_USERNAME --host=$DB_HOST $DB_NAME < /var/www/hrpt/db_dump.sql
 
 
 echo "\nLoading postgis data into the database ...\n"
 postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
 srefsys="/usr/share/postgresql/9.3/contrib/postgis-2.1/spatial_ref_sys.sql"
 
-psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME <<EOF
+psql --username=$POSTGRES_SUPERUSER_USERNAME --host=$DB_HOST $DB_NAME <<EOF
 \i $postgis
 \i $srefsys
 CREATE TABLE pollster_zip_codes (id serial, country TEXT, zip_code_key TEXT);
