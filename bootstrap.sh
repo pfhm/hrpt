@@ -43,7 +43,7 @@ ln -s /usr/include/freetype2 /usr/include/freetype
 
 # now we get inside the virtual environment and go crazy!!!
 cd /var/www/hrpt
-virtualenv .
+virtualenv --no-site-packages .
 source ./bin/activate
 
 # these two modules need these flags because they wouldn't be installable otherwise
