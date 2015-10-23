@@ -13,9 +13,9 @@ COUNTRY="sv"
 
 # Just doing some basic cleanup and update after a fresh install
 rm /var/lib/apt/lists/* -vf
-apt-get  clean
-apt-get  autoremove
-apt-get  update
+apt-get -y clean
+apt-get -y autoremove
+apt-get -y update
 
 # We need to install git first so we can pull the source, in which the list of dependencies live
 apt-get install -y git
