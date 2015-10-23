@@ -2759,11 +2759,6 @@ ALTER TABLE public.survey_surveyidcode_id_seq OWNER TO epiwork;
 ALTER SEQUENCE survey_surveyidcode_id_seq OWNED BY survey_surveyidcode.id;
 
 
-ALTER TABLE survey_surveyidcode
-  ADD CONSTRAINT global_id_fk FOREIGN KEY (surveyuser_global_id) REFERENCES survey_surveyuser (global_id)
-   ON UPDATE NO ACTION ON DELETE CASCADE;
-
-
 --
 -- Name: survey_surveyuser; Type: TABLE; Schema: public; Owner: epiwork; Tablespace:
 --
@@ -2801,6 +2796,17 @@ ALTER TABLE public.survey_surveyuser_id_seq OWNER TO epiwork;
 
 ALTER SEQUENCE survey_surveyuser_id_seq OWNED BY survey_surveyuser.id;
 
+
+
+/*
+
+--TODO: uncomment this 
+
+ALTER TABLE survey_surveyidcode
+  ADD CONSTRAINT global_id_fk FOREIGN KEY (surveyuser_global_id) REFERENCES survey_surveyuser (global_id)
+   ON UPDATE NO ACTION ON DELETE CASCADE;
+
+*/
 
 --
 -- Name: thumbnail_kvstore; Type: TABLE; Schema: public; Owner: epiwork; Tablespace:
@@ -3576,30 +3582,6 @@ COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
 220	Can add captcha store	74	add_captchastore
 221	Can change captcha store	74	change_captchastore
 222	Can delete captcha store	74	delete_captchastore
-223	Can add Category	75	add_category
-224	Can change Category	75	change_category
-225	Can delete Category	75	delete_category
-226	Can add Forum	76	add_forum
-227	Can change Forum	76	change_forum
-228	Can delete Forum	76	delete_forum
-229	Can add Topic	77	add_topic
-230	Can change Topic	77	change_topic
-231	Can delete Topic	77	delete_topic
-232	Can add Post	78	add_post
-233	Can change Post	78	change_post
-234	Can delete Post	78	delete_post
-235	Can add Profile	79	add_profile
-236	Can change Profile	79	change_profile
-237	Can delete Profile	79	delete_profile
-238	Can add Attachment	80	add_attachment
-239	Can change Attachment	80	change_attachment
-240	Can delete Attachment	80	delete_attachment
-241	Can add Topic read tracker	81	add_topicreadtracker
-242	Can change Topic read tracker	81	change_topicreadtracker
-243	Can delete Topic read tracker	81	delete_topicreadtracker
-244	Can add Forum read tracker	82	add_forumreadtracker
-245	Can change Forum read tracker	82	change_forumreadtracker
-246	Can delete Forum read tracker	82	delete_forumreadtracker
 \.
 
 
@@ -3639,16 +3621,6 @@ SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('auth_user_id_seq', 1, true);
-
-
---
--- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
-1	1	232
-2	1	229
-\.
 
 
 --
@@ -4658,64 +4630,66 @@ SELECT pg_catalog.setval('cms_placeholder_id_seq', 349, true);
 -- Data for Name: cms_title; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY cms_title (language, title, page_id, id, path, creation_date, slug, has_url_overwrite, application_urls, redirect, meta_keywords, meta_description, page_title, menu_title) FROM stdin;
-sv	avsluta	53	76	avsluta	2011-03-15 12:52:10+01	avsluta	f
-en	Terms of Service	5	5	terms	2010-01-17 11:35:50+01	terms	f
-en	Privacy Policy	6	6	privacy	2010-01-17 11:36:01+01	privacy	f
-sv	login_page	50	73	login_page	2011-03-09 14:01:42+01	login_page	f
-sv	Om Hälsorapport	30	37	om	2010-12-09 17:16:43+01	om	f
-sv	Frågor & svar	11	16	faq	2010-10-14 15:10:48+02	faq	f
-sv	Dashboard	57	80	dashboard	2011-10-31 16:04:48+01	dashboard	f
-sv	Länkar	62	85	lankar	2011-11-21 13:07:01+01	lankar	f
-sv	Karta	49	72	karta	2011-02-08 09:59:45+01	karta	f
-sv	forkylning	73	96	karta/forkylning	2012-01-19 11:41:17+01	forkylning	f
-sv	länkartest	65	88	lankartest	2011-12-13 12:00:13+01	lankartest	f
-sv	tack	77	100	tack	2012-06-05 16:58:30+02	tack	f
-sv	andeltabell	88	111	andeltabell	2013-01-28 17:33:51+01	andeltabell	f
-sv	Kartatest	25	50	kartatest	2011-01-15 00:53:07+01	kartatest	f
-sv	Resultat	75	98	resultat	2012-02-28 17:14:44+01	resultat	f
-sv	Fakta om datainsamlingen	24	29	fakta-om-datainsamlingen	2010-10-22 13:57:58+02	fakta-om-datainsamlingen	f
-sv	AndraFragor	54	77	andrafragor	2011-06-10 15:55:43+02	andrafragor	f
-sv	Nyhetsarkiv	81	104	nyhetsarkiv	2012-11-06 16:51:26+01	nyhetsarkiv	f
-sv	Kontakt	29	36	contact	2010-12-09 14:10:56+01	contact	f
-sv	surveys	79	102	surveys	2012-06-07 11:29:04+02	surveys	f
-sv	Registrera	56	79	register	2011-10-31 15:04:36+01	register	f
-sv	utvardering	80	103	surveys/utvardering	2012-06-07 11:29:23+02	utvardering	f
-sv	sent	61	84	contact/sent	2011-11-11 11:32:27+01	sent	t
-sv	utvardering	78	101	utvardering	2012-06-07 11:20:52+02	utvardering	f
-sv	magsjuka	72	95	karta/magsjuka	2012-01-19 11:41:02+01	magsjuka	f
-sv	dokument	4	41	dokument	2011-01-14 13:08:08+01	dokument	f
-sv	andelskarta	74	97	karta/andelskarta	2012-02-28 10:31:09+01	andelskarta	f
-sv	veckovisa	76	99	karta/veckovisa	2012-03-16 16:07:35+01	veckovisa	f
-sv	Hem	7	44	hem	2011-01-15 00:43:04+01	hem	f
-sv	accounts	90	113	accounts	2013-11-04 16:21:57+01	accounts	f
-sv	register	91	114	accounts/register	2013-11-04 16:22:22+01	register	f
-sv	Gamlasidor	92	115	gamlasidor	2013-11-04 16:38:21+01	gamlasidor	f
-sv	fragorna	87	110	gamlasidor/fragorna	2012-12-21 12:44:03+01	fragorna	f
-sv	sasongen11-12	83	106	gamlasidor/sasongen11-12	2012-11-19 18:21:01+01	sasongen11-12	f
-sv	Jag vill vara med	9	14	gamlasidor/jag-vill-vara-med	2010-10-14 10:16:11+02	jag-vill-vara-med	f
-sv	Flera profiler 	52	75	gamlasidor/flera-profiler	2011-03-10 10:23:32+01	flera-profiler	f
-sv	Länkargamla	58	81	gamlasidor/lankargamla	2011-10-31 17:03:19+01	lankargamla	f
-sv	Influensaskola	41	64	gamlasidor/influensaskola	2011-01-27 13:44:23+01	influensaskola	f
-sv	Varför?	12	17	gamlasidor/varfor	2010-10-15 15:36:59+02	varfor	f
-sv	Influensavaccination	47	70	gamlasidor/influensaskola/influensavaccination	2011-01-27 13:59:49+01	influensavaccination	f
-sv	omepiwork	82	105	gamlasidor/omepiwork	2012-11-12 10:55:09+01	omepiwork	f
-sv	utvardering11-12	84	107	gamlasidor/utvardering11-12	2012-11-19 18:32:53+01	utvardering11-12	f
-sv	Hjälp	63	86	hjalp	2011-11-21 16:14:23+01	hjalp	f
-sv	Influensa	40	63	gamlasidor/influensaskola/influensa	2011-01-27 13:43:49+01	influensa	f
-sv	Frågeförmulär	3	13	survey	2010-10-01 08:09:35+02	survey	f
-sv	tack	60	83	survey/tack	2011-11-08 11:50:56+01	tack	f
-sv	Förkylningar	42	65	gamlasidor/influensaskola/forkylning	2011-01-27 13:56:55+01	forkylning	f
-sv	Pandemier	43	66	gamlasidor/influensaskola/pandemier	2011-01-27 13:57:32+01	pandemier	f
-sv	Material	85	108	gamlasidor/material	2012-11-21 11:33:09+01	material	f
-sv	Så mäts influensaaktiviteten i Sverige	44	67	gamlasidor/influensaskola/sa-mats-influensaaktivitet	2011-01-27 13:57:40+01	sa-mats-influensaaktivitet	f
-sv	Så sprids influensavirus	45	68	gamlasidor/influensaskola/sa-sprids-influensavirus	2011-01-27 13:58:02+01	sa-sprids-influensavirus	f
-sv	Så undviker du att bli smittad	46	69	gamlasidor/influensaskola/sa-undviker-du-att-bli-smittad	2011-01-27 13:59:18+01	sa-undviker-du-att-bli-smittad	f
-sv	Film med Annika	39	62	gamlasidor/influensaskola/film	2011-01-27 13:35:33+01	film	f
-sv	Frågesport	55	78	gamlasidor/influensaskola/fragesport	2011-10-07 15:46:24+02	fragesport	f
-sv	Influensan förr	67	90	gamlasidor/influensaskola/forr	2011-12-22 11:50:35+01	forr	f
-sv	kur	68	91	gamlasidor/influensaskola/kur	2011-12-22 14:41:21+01	kur	f
-\.
+
+
+INSERT INTO cms_title VALUES ('sv', 'avsluta', 53, 76, 'avsluta', '2011-03-15 12:52:10+01', 'avsluta', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('en', 'Terms of Service', 5, 5, 'terms', '2010-01-17 11:35:50+01', 'terms', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('en', 'Privacy Policy', 6, 6, 'privacy', '2010-01-17 11:36:01+01', 'privacy', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'login_page', 50, 73, 'login_page', '2011-03-09 14:01:42+01', 'login_page', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Om Hälsorapport', 30, 37, 'om', '2010-12-09 17:16:43+01', 'om', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Frågor & svar', 11, 16, 'faq', '2010-10-14 15:10:48+02', 'faq', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Dashboard', 57, 80, 'dashboard', '2011-10-31 16:04:48+01', 'dashboard', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Länkar', 62, 85, 'lankar', '2011-11-21 13:07:01+01', 'lankar', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Karta', 49, 72, 'karta', '2011-02-08 09:59:45+01', 'karta', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'forkylning', 73, 96, 'karta/forkylning', '2012-01-19 11:41:17+01', 'forkylning', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'länkartest', 65, 88, 'lankartest', '2011-12-13 12:00:13+01', 'lankartest', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'tack', 77, 100, 'tack', '2012-06-05 16:58:30+02', 'tack', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'andeltabell', 88, 111, 'andeltabell', '2013-01-28 17:33:51+01', 'andeltabell', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Kartatest', 25, 50, 'kartatest', '2011-01-15 00:53:07+01', 'kartatest', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Resultat', 75, 98, 'resultat', '2012-02-28 17:14:44+01', 'resultat', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Fakta om datainsamlingen', 24, 29, 'fakta-om-datainsamlingen', '2010-10-22 13:57:58+02', 'fakta-om-datainsamlingen', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'AndraFragor', 54, 77, 'andrafragor', '2011-06-10 15:55:43+02', 'andrafragor', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Nyhetsarkiv', 81, 104, 'nyhetsarkiv', '2012-11-06 16:51:26+01', 'nyhetsarkiv', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Kontakt', 29, 36, 'contact', '2010-12-09 14:10:56+01', 'contact', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'surveys', 79, 102, 'surveys', '2012-06-07 11:29:04+02', 'surveys', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Registrera', 56, 79, 'register', '2011-10-31 15:04:36+01', 'register', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'utvardering', 80, 103, 'surveys/utvardering', '2012-06-07 11:29:23+02', 'utvardering', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'sent', 61, 84, 'contact/sent', '2011-11-11 11:32:27+01', 'sent', true, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'utvardering', 78, 101, 'utvardering', '2012-06-07 11:20:52+02', 'utvardering', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'magsjuka', 72, 95, 'karta/magsjuka', '2012-01-19 11:41:02+01', 'magsjuka', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'dokument', 4, 41, 'dokument', '2011-01-14 13:08:08+01', 'dokument', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'andelskarta', 74, 97, 'karta/andelskarta', '2012-02-28 10:31:09+01', 'andelskarta', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'veckovisa', 76, 99, 'karta/veckovisa', '2012-03-16 16:07:35+01', 'veckovisa', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Hem', 7, 44, 'hem', '2011-01-15 00:43:04+01', 'hem', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'accounts', 90, 113, 'accounts', '2013-11-04 16:21:57+01', 'accounts', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'register', 91, 114, 'accounts/register', '2013-11-04 16:22:22+01', 'register', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Gamlasidor', 92, 115, 'gamlasidor', '2013-11-04 16:38:21+01', 'gamlasidor', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'fragorna', 87, 110, 'gamlasidor/fragorna', '2012-12-21 12:44:03+01', 'fragorna', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'sasongen11-12', 83, 106, 'gamlasidor/sasongen11-12', '2012-11-19 18:21:01+01', 'sasongen11-12', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Jag vill vara med', 9, 14, 'gamlasidor/jag-vill-vara-med', '2010-10-14 10:16:11+02', 'jag-vill-vara-med', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Flera profiler ', 52, 75, 'gamlasidor/flera-profiler', '2011-03-10 10:23:32+01', 'flera-profiler', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Länkargamla', 58, 81, 'gamlasidor/lankargamla', '2011-10-31 17:03:19+01', 'lankargamla', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Influensaskola', 41, 64, 'gamlasidor/influensaskola', '2011-01-27 13:44:23+01', 'influensaskola', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Varför?', 12, 17, 'gamlasidor/varfor', '2010-10-15 15:36:59+02', 'varfor', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Influensavaccination', 47, 70, 'gamlasidor/influensaskola/influensavaccination', '2011-01-27 13:59:49+01', 'influensavaccination', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'omepiwork', 82, 105, 'gamlasidor/omepiwork', '2012-11-12 10:55:09+01', 'omepiwork', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'utvardering11-12', 84, 107, 'gamlasidor/utvardering11-12', '2012-11-19 18:32:53+01', 'utvardering11-12', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Hjälp', 63, 86, 'hjalp', '2011-11-21 16:14:23+01', 'hjalp', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Influensa', 40, 63, 'gamlasidor/influensaskola/influensa', '2011-01-27 13:43:49+01', 'influensa', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Frågeförmulär', 3, 13, 'survey', '2010-10-01 08:09:35+02', 'survey', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'tack', 60, 83, 'survey/tack', '2011-11-08 11:50:56+01', 'tack', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Förkylningar', 42, 65, 'gamlasidor/influensaskola/forkylning', '2011-01-27 13:56:55+01', 'forkylning', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Pandemier', 43, 66, 'gamlasidor/influensaskola/pandemier', '2011-01-27 13:57:32+01', 'pandemier', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Material', 85, 108, 'gamlasidor/material', '2012-11-21 11:33:09+01', 'material', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Så mäts influensaaktiviteten i Sverige', 44, 67, 'gamlasidor/influensaskola/sa-mats-influensaaktivitet', '2011-01-27 13:57:40+01', 'sa-mats-influensaaktivitet', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Så sprids influensavirus', 45, 68, 'gamlasidor/influensaskola/sa-sprids-influensavirus', '2011-01-27 13:58:02+01', 'sa-sprids-influensavirus', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Så undviker du att bli smittad', 46, 69, 'gamlasidor/influensaskola/sa-undviker-du-att-bli-smittad', '2011-01-27 13:59:18+01', 'sa-undviker-du-att-bli-smittad', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Film med Annika', 39, 62, 'gamlasidor/influensaskola/film', '2011-01-27 13:35:33+01', 'film', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Frågesport', 55, 78, 'gamlasidor/influensaskola/fragesport', '2011-10-07 15:46:24+02', 'fragesport', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'Influensan förr', 67, 90, 'gamlasidor/influensaskola/forr', '2011-12-22 11:50:35+01', 'forr', false, '', '', '', '', '', '');
+INSERT INTO cms_title VALUES ('sv', 'kur', 68, 91, 'gamlasidor/influensaskola/kur', '2011-12-22 14:41:21+01', 'kur', false, '', '', '', '', '', '');
+
+
 
 
 --
@@ -4758,196 +4732,192 @@ COPY cmsplugin_latestentryplugin (cmsplugin_ptr_id, title, "limit") FROM stdin;
 -- Data for Name: cmsplugin_link; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY cmsplugin_link (url, cmsplugin_ptr_id, name, page_link_id, mailto) FROM stdin;
-	440	Så mäts influensaaktiviteten i Sverige	44
-	738	Rapportera	3
-	648	Frågor och svar	11
-	431	Tillbaka till influensaskolan	41
-	447	Läs mer...	47
-	570	kontakta oss	29
-	643	Hem	7
-	433	Tillbaka till influensaskolan	41
-	432	FAQ	11
-	767	Frågor och svar	11
-	439	Läs mer...	43
-	268	Frågor och svar	11
-	446	Influensavaccination	47
-	445	Läs mer...	46
-	444	Så undviker du att bli smittad	46
-	547	Läs mer.	52
-	443	Läs mer...	45
-	546	Profil	3
-	442	Så sprids influensavirus	45
-	441	Läs mer...	44
-	438	Pandemier	43
-	435	Läs mer...	42
-	434	Förkylning	42
-	684	Frågor och svar	11
-	325	Frågor och svar	11
-	863	samlingssida	62
-	1196	Om Influensakoll	30
-	1342	Gå med i Hälsorapport	91
-	1179	Klicka här för att komma till Råd från förr	67
-	1315	halsorapport@folkhalsomyndigheten.se	\N	halsorapport@folkhalsomyndigheten.se
-http://www.who.int/influenza/vaccines/virus/en/	470	hemsida	\N
-http://www.google.org/flutrends/	457	Google flu trends	\N
-	316	här	24
-	452	Tillbaka till influensaskolan	41
-	454	Tillbaka till influensaskolan	41
-	544	Gå till startsidan	7
-	543	rapportera	3
-	308	Frågor och svar	11
-	309	Fakta om datainsamlingen	24
-	311	Varför är min insats viktig?	12
-http://192.168.197.68/accounts/register/	638	gå med	\N
-	410	Se filmen här.	12
-	649	Jag vill gå med i Influensakoll	9
-	331	Rapportera	3
-	458	Tillbaka till influensaskolan	41
-	270	Varför är min insats viktig?	12
-	1343	Kontakta oss	29
-	739	Jag vill gå med i Influensakoll	9
-	315	halsorapport@folkhalsomyndigheten.se	\N	halsorapport@folkhalsomyndigheten.se
-	271	Fakta om datainsamlingen	24
-	274	Rapportera	3
-	461	Tillbaka till influensaskolan	41
-http://www.thenakedscientists.com/HTML/content/kitchenscience/garage-science/exp/how-fast-is-a-sneeze/	462	Titta på en nysning i slowmotion	\N
-	466	Tillbaka till influensaskolan	41
-	471	Tillbaka till influensaskolan	41
-	644	Fakta om datainsamlingen	24
-	411	Tillbaka till startsidan	7
-	418	Läs mer...	40
-	416	Influensa	40
-	685	Tillbaka till startsidan	7
-	456	Tillbaka till influensaskolan	41
-	460	Tillbaka till influensaskolan	41
-	464	Tillbaka till influensaskolan	41
-	468	Tillbaka till influensaskolan	41
-	415	Rapportera	3
-http://arkiv.mitti.se:4711/2011/48/sodermalm/MIIS-20111129-A-016-A.pdf	864	artiklarna	\N
-	729	Jag vill gå med i Influensakoll	9
-	964	Sjukdomsläget: magsjuka	72
-	906	Influensaskola	41
-	1063	Klicka här	49
-http://www.influenzanet.eu/	1311	här	\N
-	473	Tillbaka till startsidan	7
-	476	Rapportera	3
-	480	Tillbaka till startsidan	7
-	538	Tillbaka till influensaskolan	41
-	740	Tillbaka till startsidan	7
-	645	Frågor och svar	11
-	650	Influensaskolan	41
-	639	hanterar flera profiler. 	52
-	1317	Tillbaka till startsidan	7
-	1247	Sjukdomsläget: influensa	49
-	1188	Om Influensakoll	30
-	680	här	52
-	686	Influensakolls resultat	49
-http://www.influenzanet.org/	600	Influenzanet	\N
-	615	Gå med	9
-	611	Tillbaka till startsidan	7
-	612	Kontakta oss	29
-	613	Influensaskolan	41
-	616	Rapportera	3
-	1292	Läs mer... 	75
-	479	Tillbaka till startsidan	7
-	730	Gå med i Hälsorapport	91
-	394	Kontakta oss	29
-	395	Tillbaka till startsidan	7
-http://www.who.int/influenza/surveillance_monitoring/updates/en/index.html	660	senaste influensauppdatering	\N
-	592	Tillbaka till startsidan	7
-	965	Sjukdomsläget: förkylning	73
-	1064	Klicka här	72
-http://ecdc.europa.eu/en/healthtopics/seasonal_influenza/Pages/index.aspx	661	säsongsinfluensan	\N
-	799	Tillbaka till startsidan	7
-	1318	Om Hälsorapport	30
-	735	Tillbaka till startsidan	7
-	764	Jag vill gå med i Influensakoll	9
-	1193	Fakta om datainsamlingen	24
-	1195	Om EPIWORK	82
-	1345	Vår hjälpsida	63
-	1094	Sjukdomsläget: influensa	49
-	640	Fakta om datainsamlingen.	24
-	908	Tillbaka till startsidan	7
-	1214	Utvärderingsenkäten 2011-12 	84
-	1335	halsorapport@folkhalsomyndigheten.se	\N	halsorapport@folkhalsomyndigheten.se
-	851	Tillbaka till startsidan	7
-http://www.forskning.se/	742	www.forskning.se	\N
-	682	"mitt konto"	9
-	688	Rapportera för en annan profil	3
-	765	Rapportera	3
-	1340	Om Hälsorapport	30
-http://www.1177.se/Fakta-och-rad/Sjukdomar/Magsjuka---diarre-och-krakningar/	1322	Läs mer om magsjuka	\N
-	1220	Nyheter	62
-	1231	Länkar	58
-	1249	Klicka här	73
-	1232	här	30
-	642	influensakoll@smi.se	\N	influensakoll@smi.se
-	766	Frågor och svar	11
-http://www.1177.se/	910	1177	\N
-	1291	Sjukdomsläget: veckodiagram	75
-http://www.bwz.se/smi/b.aspx?l=4966A86C-CBA5-47E8-A141-6CEC767C1D12&r=1&rcrc=8C7F66C3	862	Läs mer...	\N
-http://www.1177.se/Fakta-och-rad/Sjukdomar/Influensa/	1323	Läs mer om influensa	\N
-	1246	Sjukdomsläget: förkylning	73
-	368	Frågor och svar	11
-	370	Läs mer om Influensakoll	30
-	1341	Rapportera	3
-	1221	Nyhetsarkiv	81
-	425	Tillbaka till influensaskolan	41
-	1191	Fick du en inbjudan på posten?	30
-	424	FAQ	11
-	422	Pandemier	43
-	420	Tillbaka till influensaskolan	41
-\.
-
+INSERT INTO cmsplugin_link VALUES ('', 440, 'Så mäts influensaaktiviteten i Sverige', 44, '');
+INSERT INTO cmsplugin_link VALUES ('', 738, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 648, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 431, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 447, 'Läs mer...', 47, '');
+INSERT INTO cmsplugin_link VALUES ('', 570, 'kontakta oss', 29, '');
+INSERT INTO cmsplugin_link VALUES ('', 643, 'Hem', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 433, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 432, 'FAQ', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 767, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 439, 'Läs mer...', 43, '');
+INSERT INTO cmsplugin_link VALUES ('', 268, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 446, 'Influensavaccination', 47, '');
+INSERT INTO cmsplugin_link VALUES ('', 445, 'Läs mer...', 46, '');
+INSERT INTO cmsplugin_link VALUES ('', 444, 'Så undviker du att bli smittad', 46, '');
+INSERT INTO cmsplugin_link VALUES ('', 547, 'Läs mer.', 52, '');
+INSERT INTO cmsplugin_link VALUES ('', 443, 'Läs mer...', 45, '');
+INSERT INTO cmsplugin_link VALUES ('', 546, 'Profil', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 442, 'Så sprids influensavirus', 45, '');
+INSERT INTO cmsplugin_link VALUES ('', 441, 'Läs mer...', 44, '');
+INSERT INTO cmsplugin_link VALUES ('', 438, 'Pandemier', 43, '');
+INSERT INTO cmsplugin_link VALUES ('', 435, 'Läs mer...', 42, '');
+INSERT INTO cmsplugin_link VALUES ('', 434, 'Förkylning', 42, '');
+INSERT INTO cmsplugin_link VALUES ('', 684, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 325, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 863, 'samlingssida', 62, '');
+INSERT INTO cmsplugin_link VALUES ('', 1196, 'Om Influensakoll', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 1342, 'Gå med i Hälsorapport', 91, '');
+INSERT INTO cmsplugin_link VALUES ('', 1179, 'Klicka här för att komma till Råd från förr', 67, '');
+INSERT INTO cmsplugin_link VALUES ('', 1315, 'halsorapport@folkhalsomyndigheten.se', NULL, 'halsorapport@folkhalsomyndigheten.se');
+INSERT INTO cmsplugin_link VALUES ('http://www.who.int/influenza/vaccines/virus/en/', 470, 'hemsida', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.google.org/flutrends/', 457, 'Google flu trends', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 316, 'här', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 452, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 454, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 544, 'Gå till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 543, 'rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 308, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 309, 'Fakta om datainsamlingen', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 311, 'Varför är min insats viktig?', 12, '');
+INSERT INTO cmsplugin_link VALUES ('http://192.168.197.68/accounts/register/', 638, 'gå med', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 410, 'Se filmen här.', 12, '');
+INSERT INTO cmsplugin_link VALUES ('', 649, 'Jag vill gå med i Influensakoll', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 331, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 458, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 270, 'Varför är min insats viktig?', 12, '');
+INSERT INTO cmsplugin_link VALUES ('', 1343, 'Kontakta oss', 29, '');
+INSERT INTO cmsplugin_link VALUES ('', 739, 'Jag vill gå med i Influensakoll', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 315, 'halsorapport@folkhalsomyndigheten.se', NULL, 'halsorapport@folkhalsomyndigheten.se');
+INSERT INTO cmsplugin_link VALUES ('', 271, 'Fakta om datainsamlingen', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 274, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 461, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.thenakedscientists.com/HTML/content/kitchenscience/garage-science/exp/how-fast-is-a-sneeze/', 462, 'Titta på en nysning i slowmotion', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 466, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 471, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 644, 'Fakta om datainsamlingen', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 411, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 418, 'Läs mer...', 40, '');
+INSERT INTO cmsplugin_link VALUES ('', 416, 'Influensa', 40, '');
+INSERT INTO cmsplugin_link VALUES ('', 685, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 456, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 460, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 464, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 468, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 415, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('http://arkiv.mitti.se:4711/2011/48/sodermalm/MIIS-20111129-A-016-A.pdf', 864, 'artiklarna', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 729, 'Jag vill gå med i Influensakoll', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 964, 'Sjukdomsläget: magsjuka', 72, '');
+INSERT INTO cmsplugin_link VALUES ('', 906, 'Influensaskola', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 1063, 'Klicka här', 49, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.influenzanet.eu/', 1311, 'här', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 473, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 476, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 480, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 538, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 740, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 645, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 650, 'Influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 639, 'hanterar flera profiler. ', 52, '');
+INSERT INTO cmsplugin_link VALUES ('', 1317, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 1247, 'Sjukdomsläget: influensa', 49, '');
+INSERT INTO cmsplugin_link VALUES ('', 1188, 'Om Influensakoll', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 680, 'här', 52, '');
+INSERT INTO cmsplugin_link VALUES ('', 686, 'Influensakolls resultat', 49, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.influenzanet.org/', 600, 'Influenzanet', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 615, 'Gå med', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 611, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 612, 'Kontakta oss', 29, '');
+INSERT INTO cmsplugin_link VALUES ('', 613, 'Influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 616, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 1292, 'Läs mer... ', 75, '');
+INSERT INTO cmsplugin_link VALUES ('', 479, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 730, 'Gå med i Hälsorapport', 91, '');
+INSERT INTO cmsplugin_link VALUES ('', 394, 'Kontakta oss', 29, '');
+INSERT INTO cmsplugin_link VALUES ('', 395, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.who.int/influenza/surveillance_monitoring/updates/en/index.html', 660, 'senaste influensauppdatering', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 592, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 965, 'Sjukdomsläget: förkylning', 73, '');
+INSERT INTO cmsplugin_link VALUES ('', 1064, 'Klicka här', 72, '');
+INSERT INTO cmsplugin_link VALUES ('http://ecdc.europa.eu/en/healthtopics/seasonal_influenza/Pages/index.aspx', 661, 'säsongsinfluensan', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 799, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 1318, 'Om Hälsorapport', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 735, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 764, 'Jag vill gå med i Influensakoll', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 1193, 'Fakta om datainsamlingen', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 1195, 'Om EPIWORK', 82, '');
+INSERT INTO cmsplugin_link VALUES ('', 1345, 'Vår hjälpsida', 63, '');
+INSERT INTO cmsplugin_link VALUES ('', 1094, 'Sjukdomsläget: influensa', 49, '');
+INSERT INTO cmsplugin_link VALUES ('', 640, 'Fakta om datainsamlingen.', 24, '');
+INSERT INTO cmsplugin_link VALUES ('', 908, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('', 1214, 'Utvärderingsenkäten 2011-12 ', 84, '');
+INSERT INTO cmsplugin_link VALUES ('', 1335, 'halsorapport@folkhalsomyndigheten.se', NULL, 'halsorapport@folkhalsomyndigheten.se');
+INSERT INTO cmsplugin_link VALUES ('', 851, 'Tillbaka till startsidan', 7, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.forskning.se/', 742, 'www.forskning.se', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 682, '"mitt konto"', 9, '');
+INSERT INTO cmsplugin_link VALUES ('', 688, 'Rapportera för en annan profil', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 765, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 1340, 'Om Hälsorapport', 30, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.1177.se/Fakta-och-rad/Sjukdomar/Magsjuka---diarre-och-krakningar/', 1322, 'Läs mer om magsjuka', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 1220, 'Nyheter', 62, '');
+INSERT INTO cmsplugin_link VALUES ('', 1231, 'Länkar', 58, '');
+INSERT INTO cmsplugin_link VALUES ('', 1249, 'Klicka här', 73, '');
+INSERT INTO cmsplugin_link VALUES ('', 1232, 'här', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 642, 'influensakoll@smi.se', NULL, 'influensakoll@smi.se');
+INSERT INTO cmsplugin_link VALUES ('', 766, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.1177.se/', 910, '1177', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 1291, 'Sjukdomsläget: veckodiagram', 75, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.bwz.se/smi/b.aspx?l=4966A86C-CBA5-47E8-A141-6CEC767C1D12&r=1&rcrc=8C7F66C3', 862, 'Läs mer...', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('http://www.1177.se/Fakta-och-rad/Sjukdomar/Influensa/', 1323, 'Läs mer om influensa', NULL, '');
+INSERT INTO cmsplugin_link VALUES ('', 1246, 'Sjukdomsläget: förkylning', 73, '');
+INSERT INTO cmsplugin_link VALUES ('', 368, 'Frågor och svar', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 370, 'Läs mer om Influensakoll', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 1341, 'Rapportera', 3, '');
+INSERT INTO cmsplugin_link VALUES ('', 1221, 'Nyhetsarkiv', 81, '');
+INSERT INTO cmsplugin_link VALUES ('', 425, 'Tillbaka till influensaskolan', 41, '');
+INSERT INTO cmsplugin_link VALUES ('', 1191, 'Fick du en inbjudan på posten?', 30, '');
+INSERT INTO cmsplugin_link VALUES ('', 424, 'FAQ', 11, '');
+INSERT INTO cmsplugin_link VALUES ('', 422, 'Pandemier', 43, '');
+INSERT INTO cmsplugin_link VALUES ('', 420, 'Tillbaka till influensaskolan', 41, '');
 
 --
 -- Data for Name: cmsplugin_picture; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY cmsplugin_picture (url, image, cmsplugin_ptr_id, alt, page_link_id, "float", longdesc) FROM stdin;
-	cms_page_media/42/nysning_färg.jpg	436		\N	\N
-	cms_page_media/7/nyheter_1.png	1352		81	\N
-	cms_page_media/84/varfordelta11-12best.PNG	1212		\N	\N
-	cms_page_media/67/influensagammal_liten.png	905		68	\N
-	cms_page_media/72/kartforklaring_parentes.PNG	992		\N	\N
-	cms_page_media/43/pigs.jpg	453		\N	left
-	cms_page_media/83/kumulativaprofiler_11-12_2.PNG	1208		\N	\N
-http://www.influensakoll.se/sv/accounts/register/	cms_page_media/72/gamedgra.PNG	1103		\N	\N
-	cms_page_media/46/washing_hands_.jpg	465		\N	\N
-	cms_page_media/47/_injection_needle_small.jpg	469		\N	\N
-	cms_page_media/65/stars_2.png	889		\N	\N
-	cms_page_media/65/starsstars.png	890		\N	\N
-	cms_page_media/43/Pandemier_.jpg	599	Pandemier i Sverige 1900-talet	\N	\N	Pandemier i Sverige 1900-talet
-	cms_page_media/41/ANNIKA-LINDE-.jpg	506		\N	\N
-	cms_page_media/65/starsstars_small_1.png	891		\N	\N
-	cms_page_media/7/snabblank2.PNG	1344		\N	\N
-	cms_page_media/84/forbattranyhetsbrev11-12best.PNG	1213		\N	\N
-	cms_page_media/72/rapporteragra.PNG	1104		3	\N
-	cms_page_media/75/agi_2014_vecka47.png	1385		\N	\N
-http:\\\\www.folkhalsomyndigheten.se	cms_page_media/7/FolkhalsomyndighetenLogga.png	1301	www.folkhalsomyndigheten.se	\N	\N	Folkhälsomyndighetens logotyp
-	cms_page_media/74/kartforklaringANDEL.png	1093		\N	\N
-	cms_page_media/74/forrfa.png	1096		\N	\N
-	cms_page_media/75/ariili_2014_vecka47.png	1384		\N	\N
-	cms_page_media/65/jullogga_2.png	892		\N	\N
-	cms_page_media/83/aldersgrupp11-12.PNG	1209		\N	\N
-	cms_page_media/49/forklaringandel.PNG	1251		\N	\N
-	cms_page_media/78/tilllenkaten.PNG	1165		80	\N
-	cms_page_media/68/influensagammal_page1.png	903		\N	\N
-	cms_page_media/65/nyheter-illu.gif	861		\N	\N
-	cms_page_media/76/kartforklaring.png	1117		\N	\N
-	cms_page_media/73/forklaringandel.PNG	1252		\N	\N
-	cms_page_media/49/forklaringandel-fin-liten.png	1276		\N	\N
-	cms_page_media/68/influensagammal_page2.png	904		\N	\N
-http://www.folkhalsomyndigheten.se	cms_page_media/24/FolkhalsomyndighetenLogga.png	1320	Logotyp	\N	\N
-	cms_page_media/25/kartforklaring_1.png	944		\N	\N
-	cms_page_media/40/influensa-a-h1n1-01-fargad.jpg	421		\N	\N
-\.
+
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/42/nysning_färg.jpg', 436, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/7/nyheter_1.png', 1352, '', 81, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/84/varfordelta11-12best.PNG', 1212, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/67/influensagammal_liten.png', 905, '', 68, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/72/kartforklaring_parentes.PNG', 992, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/43/pigs.jpg', 453, '', NULL, 'left', '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/83/kumulativaprofiler_11-12_2.PNG', 1208, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('http://www.influensakoll.se/sv/accounts/register/', 'cms_page_media/72/gamedgra.PNG', 1103, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/46/washing_hands_.jpg', 465, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/47/_injection_needle_small.jpg', 469, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/65/stars_2.png', 889, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/65/starsstars.png', 890, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/43/Pandemier_.jpg', 599, 'Pandemier i Sverige 1900-talet', NULL, NULL, 'Pandemier i Sverige 1900-talet');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/41/ANNIKA-LINDE-.jpg', 506, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/65/starsstars_small_1.png', 891, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/7/snabblank2.PNG', 1344, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/84/forbattranyhetsbrev11-12best.PNG', 1213, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/72/rapporteragra.PNG', 1104, '', 3, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/75/agi_2014_vecka47.png', 1385, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('http:\\www.folkhalsomyndigheten.se', 'cms_page_media/7/FolkhalsomyndighetenLogga.png', 1301, 'www.folkhalsomyndigheten.se', NULL, NULL, 'Folkhälsomyndighetens logotyp');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/74/kartforklaringANDEL.png', 1093, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/74/forrfa.png', 1096, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/75/ariili_2014_vecka47.png', 1384, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/65/jullogga_2.png', 892, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/83/aldersgrupp11-12.PNG', 1209, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/49/forklaringandel.PNG', 1251, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/78/tilllenkaten.PNG', 1165, '', 80, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/68/influensagammal_page1.png', 903, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/65/nyheter-illu.gif', 861, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/76/kartforklaring.png', 1117, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/73/forklaringandel.PNG', 1252, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/49/forklaringandel-fin-liten.png', 1276, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/68/influensagammal_page2.png', 904, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('http://www.folkhalsomyndigheten.se', 'cms_page_media/24/FolkhalsomyndighetenLogga.png', 1320, 'Logotyp', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/25/kartforklaring_1.png', 944, '', NULL, NULL, '');
+INSERT INTO cmsplugin_picture VALUES ('', 'cms_page_media/40/influensa-a-h1n1-01-fargad.jpg', 421, '', NULL, NULL, '');
 
 
---
--- Data for Name: cmsplugin_snippetptr; Type: TABLE DATA; Schema: public; Owner: epiwork
---
+
+
+
 
 COPY cmsplugin_snippetptr (cmsplugin_ptr_id, snippet_id) FROM stdin;
 569	20
@@ -4979,6 +4949,7 @@ COPY cmsplugin_snippetptr (cmsplugin_ptr_id, snippet_id) FROM stdin;
 1045	30
 1262	11
 \.
+
 
 
 --
@@ -5511,305 +5482,304 @@ SELECT pg_catalog.setval('pollster_charttype_id_seq', 3, true);
 -- Data for Name: pollster_option; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY pollster_option (id, question_id, clone_id, row_id, column_id, is_virtual, is_open, starts_hidden, ordinal, text, "group", value, virtual_type_id, virtual_inf, virtual_sup, virtual_regex, description) FROM stdin;
-1	2	\N	\N	\N	f	f	f	1	Male		0	\N
-2	2	\N	\N	\N	f	f	f	2	Female		1	\N
-3	4	\N	\N	\N	t	f	f	1				5	50	15
-4	4	\N	\N	\N	t	f	f	2				5	0	16
-5	4	\N	\N	\N	t	f	f	3				5	99	16
-6	4	\N	\N	\N	t	f	f	4				5	16	0
-7	5	\N	\N	\N	f	f	f	1	1 person		1	\N
-8	5	\N	\N	\N	f	f	f	2	2 people		2	\N
-9	5	\N	\N	\N	f	f	f	3	3 people		3	\N
-10	5	\N	\N	\N	f	f	f	4	4 people		4	\N
-11	5	\N	\N	\N	f	f	f	5	5 people or more		5	\N
-12	5	\N	\N	\N	f	f	f	6	I don't want to answer		99	\N
-13	6	\N	\N	\N	f	f	f	1	1 person		1	\N
-14	6	\N	\N	\N	f	f	f	2	2 people		2	\N
-15	6	\N	\N	\N	f	f	f	3	3 people		3	\N
-16	6	\N	\N	\N	f	f	f	4	4 people		4	\N
-17	6	\N	\N	\N	f	f	f	5	5 people or more		5	\N
-18	6	\N	\N	\N	f	f	f	6	I don't want to answer		99	\N
-19	7	\N	\N	\N	f	f	f	1	0 children		0	\N
-20	7	\N	\N	\N	f	f	f	2	1 child		1	\N
-21	7	\N	\N	\N	f	f	f	3	2 children		2	\N
-22	7	\N	\N	\N	f	f	f	4	3 children		3	\N
-23	7	\N	\N	\N	f	f	f	5	4 or more children		4	\N
-24	7	\N	\N	\N	f	f	f	6	I don't want to answer		99	\N
-25	8	\N	\N	\N	f	f	f	1	0 children		0	\N
-26	8	\N	\N	\N	f	f	f	2	1 child		1	\N
-27	8	\N	\N	\N	f	f	f	3	2 children		2	\N
-28	8	\N	\N	\N	f	f	f	4	3 children		3	\N
-29	8	\N	\N	\N	f	f	f	5	4 or more children		4	\N
-30	8	\N	\N	\N	f	f	f	6	I don't want to answer		99	\N
-31	9	\N	\N	\N	f	f	f	1	Myself		0	\N
-32	9	\N	\N	\N	f	f	f	2	A member of my household		1	\N
-33	9	\N	\N	\N	f	f	f	3	Someone else		2	\N
-34	10	\N	\N	\N	f	f	t	1	Null		0	\N
-35	11	\N	\N	\N	f	f	f	1	I have no formal qualification		0	\N
-36	11	\N	\N	\N	f	f	f	2	Primary school 2 (SWE ONLY)		7	\N
-37	11	\N	\N	\N	f	f	f	3	Secondary cat 2 (SWE ONLY)		8	\N
-38	11	\N	\N	\N	f	f	f	4	GCSE's, levels, CSEs or equivalent		1	\N
-39	11	\N	\N	\N	f	f	f	5	A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)		2	\N
-40	11	\N	\N	\N	f	f	f	6	Batchelors Degree (BA, BSc) or equivalent		3	\N
-41	11	\N	\N	\N	f	f	f	7	Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)		4	\N
-42	11	\N	\N	\N	f	f	f	8	Other post-secondary (SWE ONLY)		6	\N
-43	11	\N	\N	\N	f	f	t	9	I am still in education		5	\N
-44	11	\N	\N	\N	f	f	f	10	Don't want to answer		99	\N
-45	12	\N	\N	\N	f	f	f	1	I have no formal qualification		0	\N
-46	12	\N	\N	\N	f	f	f	2	Primary school 2 (SWE ONLY)		7	\N
-47	12	\N	\N	\N	f	f	f	3	Secondary cat 2 (SWE ONLY)		8	\N
-48	12	\N	\N	\N	f	f	f	4	GCSE's, levels, CSEs or equivalent		1	\N
-49	12	\N	\N	\N	f	f	f	5	A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)		2	\N
-50	12	\N	\N	\N	f	f	f	6	Batchelors Degree (BA, BSc) or equivalent		3	\N
-51	12	\N	\N	\N	f	f	f	7	Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)		4	\N
-52	12	\N	\N	\N	f	f	f	8	Other post-secondary (SWE ONLY)		6	\N
-53	12	\N	\N	\N	f	f	t	9	I am still in education		5	\N
-54	12	\N	\N	\N	f	f	f	10	Don't want to answer		99	\N
-55	13	\N	\N	\N	f	f	f	1	Paid employment, full time		0	\N
-56	13	\N	\N	\N	f	f	t	2	Paid employment, part time		1	\N
-57	13	\N	\N	\N	f	f	f	3	Self-employed (businessman, farmer, tradesman, etc.)		2	\N
-58	13	\N	\N	\N	f	f	f	4	Attending daycare/school/college/university		3	\N
-59	13	\N	\N	\N	f	f	f	5	Home-maker (e.g. housewife)		4	\N
-60	13	\N	\N	\N	f	f	f	6	Unemployed		5	\N
-61	13	\N	\N	\N	f	f	f	7	Retired		7	\N
-62	13	\N	\N	\N	f	f	f	8	Parental leave (SWE ONLY)		9	\N
-63	13	\N	\N	\N	f	f	f	9	Long-term sick-leave or parental leave		6	\N
-64	13	\N	\N	\N	f	f	f	10	Other		8	\N
-65	13	\N	\N	\N	f	f	f	11	Don't want to answer		10	\N
-66	14	\N	\N	\N	f	f	f	1	Paid employment, full time		0	\N
-67	14	\N	\N	\N	f	f	t	2	Paid employment, part time		1	\N
-68	14	\N	\N	\N	f	f	f	3	Self-employed (businessman, farmer, tradesman, etc.)		2	\N
-69	14	\N	\N	\N	f	f	f	4	Attending daycare/school/college/university		3	\N
-70	14	\N	\N	\N	f	f	f	5	Home-maker (e.g. housewife)		4	\N
-71	14	\N	\N	\N	f	f	f	6	Unemployed		5	\N
-72	14	\N	\N	\N	f	f	f	7	Retired		7	\N
-73	14	\N	\N	\N	f	f	f	8	Parental leave (SWE ONLY)		9	\N
-74	14	\N	\N	\N	f	f	f	9	Long-term sick-leave or parental leave		6	\N
-75	14	\N	\N	\N	f	f	f	10	Other		8	\N
-76	14	\N	\N	\N	f	f	f	11	Don't want to answer		10	\N
-77	15	\N	\N	\N	f	f	f	1	Management		8	\N
-78	15	\N	\N	\N	f	f	f	2	Professional (e.g. manager, doctor, teacher, nurse, engineer)		0	\N
-79	15	\N	\N	\N	f	f	t	3	Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)		2	\N
-80	15	\N	\N	\N	f	f	f	4	Work that requires some post-secondary training.		10	\N
-81	15	\N	\N	\N	f	f	f	5	Office work (e.g. admin, finance assistant, receptionist etc.)		1	\N
-82	15	\N	\N	\N	f	f	f	6	Service and sales		11	\N
-83	15	\N	\N	\N	f	f	f	7	Skilled manual worker (e.g. mechanic, electrician, technician)		3	\N
-84	15	\N	\N	\N	f	f	f	8	Skilled manual cat2 (SWE ONLY)		6	\N
-85	15	\N	\N	\N	f	f	f	9	Skilled manual cat3 (SWE ONLY)		7	\N
-86	15	\N	\N	\N	f	f	f	10	Other manual work (e.g. cleaning, seciruty, driver etc)		4	\N
-87	15	\N	\N	\N	f	f	f	11	Military		9	\N
-88	15	\N	\N	\N	f	f	t	12	Other		5	\N
-89	15	\N	\N	\N	f	f	f	13	Don't want to answer		12	\N
-90	16	\N	\N	\N	f	f	f	1	Management		8	\N
-91	16	\N	\N	\N	f	f	f	2	Professional (e.g. manager, doctor, teacher, nurse, engineer)		0	\N
-92	16	\N	\N	\N	f	f	t	3	Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)		2	\N
-93	16	\N	\N	\N	f	f	f	4	Work that requires some post-secondary training.		10	\N
-94	16	\N	\N	\N	f	f	f	5	Office work (e.g. admin, finance assistant, receptionist etc.)		1	\N
-95	16	\N	\N	\N	f	f	f	6	Service and sales		11	\N
-96	16	\N	\N	\N	f	f	f	7	Skilled manual worker (e.g. mechanic, electrician, technician)		3	\N
-97	16	\N	\N	\N	f	f	f	8	Skilled manual cat2 (SWE ONLY)		6	\N
-98	16	\N	\N	\N	f	f	f	9	Skilled manual cat3 (SWE ONLY)		7	\N
-99	16	\N	\N	\N	f	f	f	10	Other manual work (e.g. cleaning, seciruty, driver etc)		4	\N
-100	16	\N	\N	\N	f	f	f	11	Military		9	\N
-101	16	\N	\N	\N	f	f	t	12	Other		5	\N
-102	16	\N	\N	\N	f	f	f	13	Don't want to answer		12	\N
-103	17	\N	\N	\N	f	f	f	1	No		0	\N
-104	17	\N	\N	\N	f	f	f	2	Yes		1	\N
-105	17	\N	\N	\N	f	f	f	3	Don't want to answer		2	\N
-106	18	\N	\N	\N	f	f	f	1	No		0	\N
-107	18	\N	\N	\N	f	f	f	2	Yes		1	\N
-108	18	\N	\N	\N	f	f	f	3	Don't want to answer		2	\N
-109	19	\N	\N	\N	f	f	f	1	Yes		1	\N
-110	19	\N	\N	\N	f	f	f	2	No		0	\N
-111	20	\N	\N	\N	f	f	t	1	Null		0	\N
-112	21	\N	\N	\N	f	f	f	1	I have no formal qualification		0	\N
-113	21	\N	\N	\N	f	f	f	2	Primary school 2 (SWE ONLY)		7	\N
-114	21	\N	\N	\N	f	f	f	3	Secondary cat 2 (SWE ONLY)		8	\N
-115	21	\N	\N	\N	f	f	f	4	GCSE's, levels, CSEs or equivalent		1	\N
-116	21	\N	\N	\N	f	f	f	5	A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)		2	\N
-117	21	\N	\N	\N	f	f	f	6	Batchelors Degree (BA, BSc) or equivalent		3	\N
-118	21	\N	\N	\N	f	f	f	7	Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)		4	\N
-119	21	\N	\N	\N	f	f	f	8	Other post-secondary (SWE ONLY)		6	\N
-120	21	\N	\N	\N	f	f	t	9	I am still in education		5	\N
-121	21	\N	\N	\N	f	f	f	10	Don't want to answer		99	\N
-122	22	\N	\N	\N	f	f	f	1	Paid employment, full time		0	\N
-123	22	\N	\N	\N	f	f	t	2	Paid employment, part time		1	\N
-124	22	\N	\N	\N	f	f	f	3	Self-employed (businessman, farmer, tradesman, etc.)		2	\N
-125	22	\N	\N	\N	f	f	f	4	Attending daycare/school/college/university		3	\N
-126	22	\N	\N	\N	f	f	f	5	Home-maker (e.g. housewife)		4	\N
-127	22	\N	\N	\N	f	f	f	6	Unemployed		5	\N
-128	22	\N	\N	\N	f	f	f	7	Retired		7	\N
-129	22	\N	\N	\N	f	f	f	8	Parental leave (SWE ONLY)		9	\N
-130	22	\N	\N	\N	f	f	f	9	Long-term sick-leave or parental leave		6	\N
-131	22	\N	\N	\N	f	f	f	10	Other		8	\N
-132	22	\N	\N	\N	f	f	f	11	Don't want to answer		10	\N
-133	23	\N	\N	\N	f	f	f	1	Management		8	\N
-134	23	\N	\N	\N	f	f	f	2	Professional (e.g. manager, doctor, teacher, nurse, engineer)		0	\N
-135	23	\N	\N	\N	f	f	t	3	Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)		2	\N
-136	23	\N	\N	\N	f	f	f	4	Work that requires some post-secondary training.		10	\N
-137	23	\N	\N	\N	f	f	f	5	Office work (e.g. admin, finance assistant, receptionist etc.)		1	\N
-138	23	\N	\N	\N	f	f	f	6	Service and sales		11	\N
-139	23	\N	\N	\N	f	f	f	7	Skilled manual worker (e.g. mechanic, electrician, technician)		3	\N
-140	23	\N	\N	\N	f	f	f	8	Skilled manual cat2 (SWE ONLY)		6	\N
-141	23	\N	\N	\N	f	f	f	9	Skilled manual cat3 (SWE ONLY)		7	\N
-142	23	\N	\N	\N	f	f	f	10	Other manual work (e.g. cleaning, seciruty, driver etc)		4	\N
-143	23	\N	\N	\N	f	f	f	11	Military		9	\N
-144	23	\N	\N	\N	f	f	t	12	Other		5	\N
-145	23	\N	\N	\N	f	f	f	13	Don't want to answer		12	\N
-146	24	\N	\N	\N	f	f	f	1	No		0	\N
-147	24	\N	\N	\N	f	f	f	2	Yes		1	\N
-148	24	\N	\N	\N	f	f	f	3	Don't want to answer		2	\N
-149	26	\N	\N	\N	f	f	t	1	Null		0	\N
-150	27	\N	\N	\N	f	f	t	1	Null		0	\N
-151	28	\N	\N	\N	f	f	f	1	answer0		0	\N
-152	28	\N	\N	\N	f	f	f	2	answer1		1	\N
-153	28	\N	\N	\N	f	f	f	3	answer2		2	\N
-154	28	\N	\N	\N	f	f	f	4	answer3		3	\N
-155	28	\N	\N	\N	f	f	f	5	answer4		4	\N
-156	28	\N	\N	\N	f	f	f	6	answer5		5	\N
-157	29	\N	\N	\N	f	f	f	1	answer0		0	\N
-158	29	\N	\N	\N	f	f	f	2	answer1		1	\N
-159	29	\N	\N	\N	f	f	f	3	answer2		2	\N
-160	29	\N	\N	\N	f	f	f	4	answer3		3	\N
-161	29	\N	\N	\N	f	f	f	5	answer4		4	\N
-162	29	\N	\N	\N	f	f	f	6	answer5		5	\N
-163	30	\N	\N	\N	f	f	f	1	answer0		0	\N
-164	30	\N	\N	\N	f	f	f	2	answer1		1	\N
-165	30	\N	\N	\N	f	f	f	3	answer2		2	\N
-166	30	\N	\N	\N	f	f	f	4	answer3		3	\N
-167	30	\N	\N	\N	f	f	f	5	answer4		4	\N
-168	30	\N	\N	\N	f	f	f	6	answer5		5	\N
-169	31	\N	\N	\N	f	f	f	1	answer0		0	\N
-170	31	\N	\N	\N	f	f	f	2	answer1		1	\N
-171	31	\N	\N	\N	f	f	f	3	answer2		2	\N
-172	31	\N	\N	\N	f	f	f	4	answer3		3	\N
-173	31	\N	\N	\N	f	f	f	5	answer4		4	\N
-174	31	\N	\N	\N	f	f	f	6	answer5		5	\N
-175	33	\N	\N	\N	t	f	f	1				5	16	0
-176	33	\N	\N	\N	t	f	f	2				5	99	16
-177	34	\N	\N	\N	f	f	t	1	Null		0	\N
-178	35	\N	\N	\N	f	f	f	1	No		0	\N
-179	35	\N	\N	\N	f	f	f	2	Yes		1	\N
-180	36	\N	\N	\N	f	f	f	1	No		0	\N
-181	36	\N	\N	\N	f	f	f	2	Yes		1	\N
-182	37	\N	\N	\N	f	f	f	1	No		0	\N
-183	37	\N	\N	\N	f	f	f	2	Yes		1	\N
-184	37	\N	\N	\N	f	f	t	3	NullAns		17	\N
-185	38	\N	\N	\N	f	f	f	1	No		0	\N
-186	38	\N	\N	\N	f	f	f	2	Yes		1	\N
-187	38	\N	\N	\N	f	f	t	3	NullAns		17	\N
-188	40	\N	\N	\N	f	f	t	1	No symptoms		0	\N
-189	40	\N	\N	\N	f	f	f	2	Fever		1	\N
-190	40	\N	\N	\N	f	f	f	3	Chills		2	\N
-191	40	\N	\N	\N	f	f	t	4	Sneezing		4	\N
-192	40	\N	\N	\N	f	f	f	5	Sore thoat		5	\N
-193	40	\N	\N	\N	f	f	f	6	Runny nose		3	\N
-194	40	\N	\N	\N	f	f	f	7	Cough		6	\N
-195	40	\N	\N	\N	f	f	t	8	Coloured sputum/phlegm		13	\N
-196	40	\N	\N	\N	f	f	f	9	Shortness of breath/Difficulty breathing		7	\N
-197	40	\N	\N	\N	f	f	t	10	Chest pain		10	\N
-198	40	\N	\N	\N	f	f	f	11	Feeling tired or exhausted		11	\N
-199	40	\N	\N	\N	f	f	f	12	Muscle/join pain		9	\N
-200	40	\N	\N	\N	f	f	f	13	Headache		8	\N
-201	40	\N	\N	\N	f	f	t	14	Loss of appetite		12	\N
-202	40	\N	\N	\N	f	f	t	15	Watery, bloodshot eyes		14	\N
-203	40	\N	\N	\N	f	f	f	16	Stomach ache		18	\N
-204	40	\N	\N	\N	f	f	f	17	Abdominal cramps		22	\N
-205	40	\N	\N	\N	f	f	f	18	Nausea		15	\N
-206	40	\N	\N	\N	f	f	f	19	Vomiting		16	\N
-207	40	\N	\N	\N	f	f	f	20	Diarrhoea		17	\N
-208	40	\N	\N	\N	f	f	f	21	Mucus in stool		20	\N
-209	40	\N	\N	\N	f	f	f	22	Blood in stool		21	\N
-210	40	\N	\N	\N	f	f	f	23	Other		19	\N
-211	41	\N	\N	\N	f	f	t	1	No symptoms		0	\N
-212	41	\N	\N	\N	f	f	f	2	Fever		1	\N
-213	41	\N	\N	\N	f	f	f	3	Chills		2	\N
-214	41	\N	\N	\N	f	f	t	4	Sneezing		4	\N
-215	41	\N	\N	\N	f	f	f	5	Sore thoat		5	\N
-216	41	\N	\N	\N	f	f	f	6	Runny nose		3	\N
-217	41	\N	\N	\N	f	f	f	7	Cough		6	\N
-218	41	\N	\N	\N	f	f	t	8	Coloured sputum/phlegm		13	\N
-219	41	\N	\N	\N	f	f	f	9	Shortness of breath/Difficulty breathing		7	\N
-220	41	\N	\N	\N	f	f	t	10	Chest pain		10	\N
-221	41	\N	\N	\N	f	f	f	11	Feeling tired or exhausted		11	\N
-222	41	\N	\N	\N	f	f	f	12	Muscle/join pain		9	\N
-223	41	\N	\N	\N	f	f	f	13	Headache		8	\N
-224	41	\N	\N	\N	f	f	t	14	Loss of appetite		12	\N
-225	41	\N	\N	\N	f	f	t	15	Watery, bloodshot eyes		14	\N
-226	41	\N	\N	\N	f	f	f	16	Stomach ache		18	\N
-227	41	\N	\N	\N	f	f	f	17	Abdominal cramps		22	\N
-228	41	\N	\N	\N	f	f	f	18	Nausea		15	\N
-229	41	\N	\N	\N	f	f	f	19	Vomiting		16	\N
-230	41	\N	\N	\N	f	f	f	20	Diarrhoea		17	\N
-231	41	\N	\N	\N	f	f	f	21	Mucus in stool		20	\N
-232	41	\N	\N	\N	f	f	f	22	Blood in stool		21	\N
-233	41	\N	\N	\N	f	f	f	23	Other		19	\N
-234	42	\N	\N	\N	f	f	f	1	Yes		0	\N
-235	42	\N	\N	\N	f	f	f	2	No		1	\N
-236	42	\N	\N	\N	f	f	f	3	I don't know/can't remember		2	\N
-237	43	\N	\N	\N	f	f	f	1	Yes		1	\N
-238	43	\N	\N	\N	f	f	f	2	No		0	\N
-239	43	\N	\N	\N	f	f	f	3	I don't know		2	\N
-240	43	\N	\N	\N	f	f	t	4	NullAns		17	\N
-241	44	\N	\N	\N	f	f	f	1	Yes		0	\N
-242	44	\N	\N	\N	f	f	f	2	No		1	\N
-243	44	\N	\N	\N	f	f	f	3	I don't know		3	\N
-244	44	\N	\N	\N	f	f	t	4	NullAns		17	\N
-245	45	\N	\N	\N	f	f	t	1	NullAns		17	\N
-246	45	\N	\N	\N	f	f	f	2	1 time		1	\N
-247	45	\N	\N	\N	f	f	f	3	2 times		2	\N
-248	45	\N	\N	\N	f	f	f	4	3 times		3	\N
-249	45	\N	\N	\N	f	f	f	5	4 or 5 times		4	\N
-250	45	\N	\N	\N	f	f	f	6	6 or more times		6	\N
-251	46	\N	\N	\N	f	f	t	1	NullAns		17	\N
-252	46	\N	\N	\N	f	f	f	2	1 time		1	\N
-253	46	\N	\N	\N	f	f	f	3	2 times		2	\N
-254	46	\N	\N	\N	f	f	f	4	3 times		3	\N
-255	46	\N	\N	\N	f	f	f	5	4 or 5 times		4	\N
-256	46	\N	\N	\N	f	f	f	6	6 or more times		6	\N
-257	47	\N	\N	\N	f	f	t	1	NullAns		17	\N
-258	47	\N	\N	\N	f	f	f	2	1 time		1	\N
-259	47	\N	\N	\N	f	f	f	3	2 times		2	\N
-260	47	\N	\N	\N	f	f	f	4	3 times		3	\N
-261	47	\N	\N	\N	f	f	f	5	4 or 5 times		4	\N
-262	47	\N	\N	\N	f	f	f	6	6 or more times		6	\N
-263	48	\N	\N	\N	f	f	t	1	NullAns		17	\N
-264	48	\N	\N	\N	f	f	f	2	1 time		1	\N
-265	48	\N	\N	\N	f	f	f	3	2 times		2	\N
-266	48	\N	\N	\N	f	f	f	4	3 times		3	\N
-267	48	\N	\N	\N	f	f	f	5	4 or 5 times		4	\N
-268	48	\N	\N	\N	f	f	f	6	6 or more times		6	\N
-269	49	\N	\N	\N	f	t	f	1	Choose date		0	\N
-270	49	\N	\N	\N	f	f	t	2	I don't know/can't remember		1	\N
-271	49	\N	\N	\N	f	f	t	3	NullAns		17	\N
-272	50	\N	\N	\N	f	f	f	1	Flu or flu-like illness		0	\N
-273	50	\N	\N	\N	f	f	f	2	Common cold		1	\N
-274	50	\N	\N	\N	f	f	f	3	Allergy/hay fever		2	\N
-275	50	\N	\N	\N	f	f	f	4	Asthma		6	\N
-276	50	\N	\N	\N	f	f	f	5	Gastroenteritis/gastric flu		3	\N
-277	50	\N	\N	\N	f	f	f	6	Other		4	\N
-278	50	\N	\N	\N	f	f	f	7	I don't know		5	\N
-279	52	\N	\N	\N	f	f	t	1	Null		0	\N
-280	53	\N	\N	\N	f	f	t	1	Null		0	\N
-281	54	\N	\N	\N	f	f	t	1	Null		0	\N
-282	55	\N	\N	\N	f	f	f	1	No		0	\N
-283	55	\N	\N	\N	f	f	f	2	Yes		1	\N
-284	56	\N	\N	\N	f	f	f	1	No		0	\N
-285	56	\N	\N	\N	f	f	f	2	Yes		1	\N
-286	57	\N	\N	\N	f	f	f	1	answer		0	\N
-287	57	\N	\N	\N	f	f	f	2	answer		1	\N
-288	57	\N	\N	\N	f	f	f	3	answer		2	\N
-289	57	\N	\N	\N	f	f	f	4	answer		3	\N
-290	57	\N	\N	\N	f	f	f	5	answer		4	\N
-291	57	\N	\N	\N	f	f	f	6	answer		5	\N
-292	58	\N	\N	\N	f	f	f	1	answer		0	\N
-293	58	\N	\N	\N	f	f	f	2	answer		1	\N
-294	58	\N	\N	\N	f	f	f	3	answer		2	\N
-295	58	\N	\N	\N	f	f	f	4	answer		3	\N
-296	58	\N	\N	\N	f	f	f	5	answer		4	\N
-297	58	\N	\N	\N	f	f	f	6	answer		5	\N
-\.
+INSERT INTO pollster_option VALUES (1, 2, NULL, NULL, NULL, false, false, false, 1, 'Male', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (2, 2, NULL, NULL, NULL, false, false, false, 2, 'Female', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (3, 4, NULL, NULL, NULL, true, false, false, 1, '', '', '', 5, '50', '15', '', '');
+INSERT INTO pollster_option VALUES (4, 4, NULL, NULL, NULL, true, false, false, 2, '', '', '', 5, '0', '16', '', '');
+INSERT INTO pollster_option VALUES (5, 4, NULL, NULL, NULL, true, false, false, 3, '', '', '', 5, '99', '16', '', '');
+INSERT INTO pollster_option VALUES (6, 4, NULL, NULL, NULL, true, false, false, 4, '', '', '', 5, '16', '0', '', '');
+INSERT INTO pollster_option VALUES (7, 5, NULL, NULL, NULL, false, false, false, 1, '1 person', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (8, 5, NULL, NULL, NULL, false, false, false, 2, '2 people', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (9, 5, NULL, NULL, NULL, false, false, false, 3, '3 people', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (10, 5, NULL, NULL, NULL, false, false, false, 4, '4 people', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (11, 5, NULL, NULL, NULL, false, false, false, 5, '5 people or more', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (12, 5, NULL, NULL, NULL, false, false, false, 6, 'I don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (13, 6, NULL, NULL, NULL, false, false, false, 1, '1 person', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (14, 6, NULL, NULL, NULL, false, false, false, 2, '2 people', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (15, 6, NULL, NULL, NULL, false, false, false, 3, '3 people', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (16, 6, NULL, NULL, NULL, false, false, false, 4, '4 people', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (17, 6, NULL, NULL, NULL, false, false, false, 5, '5 people or more', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (18, 6, NULL, NULL, NULL, false, false, false, 6, 'I don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (19, 7, NULL, NULL, NULL, false, false, false, 1, '0 children', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (20, 7, NULL, NULL, NULL, false, false, false, 2, '1 child', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (21, 7, NULL, NULL, NULL, false, false, false, 3, '2 children', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (22, 7, NULL, NULL, NULL, false, false, false, 4, '3 children', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (23, 7, NULL, NULL, NULL, false, false, false, 5, '4 or more children', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (24, 7, NULL, NULL, NULL, false, false, false, 6, 'I don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (25, 8, NULL, NULL, NULL, false, false, false, 1, '0 children', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (26, 8, NULL, NULL, NULL, false, false, false, 2, '1 child', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (27, 8, NULL, NULL, NULL, false, false, false, 3, '2 children', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (28, 8, NULL, NULL, NULL, false, false, false, 4, '3 children', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (29, 8, NULL, NULL, NULL, false, false, false, 5, '4 or more children', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (30, 8, NULL, NULL, NULL, false, false, false, 6, 'I don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (31, 9, NULL, NULL, NULL, false, false, false, 1, 'Myself', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (32, 9, NULL, NULL, NULL, false, false, false, 2, 'A member of my household', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (33, 9, NULL, NULL, NULL, false, false, false, 3, 'Someone else', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (34, 10, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (35, 11, NULL, NULL, NULL, false, false, false, 1, 'I have no formal qualification', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (36, 11, NULL, NULL, NULL, false, false, false, 2, 'Primary school 2 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (37, 11, NULL, NULL, NULL, false, false, false, 3, 'Secondary cat 2 (SWE ONLY)', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (38, 11, NULL, NULL, NULL, false, false, false, 4, 'GCSE''s, levels, CSEs or equivalent', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (39, 11, NULL, NULL, NULL, false, false, false, 5, 'A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (40, 11, NULL, NULL, NULL, false, false, false, 6, 'Batchelors Degree (BA, BSc) or equivalent', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (41, 11, NULL, NULL, NULL, false, false, false, 7, 'Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (42, 11, NULL, NULL, NULL, false, false, false, 8, 'Other post-secondary (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (43, 11, NULL, NULL, NULL, false, false, true, 9, 'I am still in education', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (44, 11, NULL, NULL, NULL, false, false, false, 10, 'Don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (45, 12, NULL, NULL, NULL, false, false, false, 1, 'I have no formal qualification', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (46, 12, NULL, NULL, NULL, false, false, false, 2, 'Primary school 2 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (47, 12, NULL, NULL, NULL, false, false, false, 3, 'Secondary cat 2 (SWE ONLY)', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (48, 12, NULL, NULL, NULL, false, false, false, 4, 'GCSE''s, levels, CSEs or equivalent', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (49, 12, NULL, NULL, NULL, false, false, false, 5, 'A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (50, 12, NULL, NULL, NULL, false, false, false, 6, 'Batchelors Degree (BA, BSc) or equivalent', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (51, 12, NULL, NULL, NULL, false, false, false, 7, 'Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (52, 12, NULL, NULL, NULL, false, false, false, 8, 'Other post-secondary (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (53, 12, NULL, NULL, NULL, false, false, true, 9, 'I am still in education', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (54, 12, NULL, NULL, NULL, false, false, false, 10, 'Don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (55, 13, NULL, NULL, NULL, false, false, false, 1, 'Paid employment, full time', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (56, 13, NULL, NULL, NULL, false, false, true, 2, 'Paid employment, part time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (57, 13, NULL, NULL, NULL, false, false, false, 3, 'Self-employed (businessman, farmer, tradesman, etc.)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (58, 13, NULL, NULL, NULL, false, false, false, 4, 'Attending daycare/school/college/university', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (59, 13, NULL, NULL, NULL, false, false, false, 5, 'Home-maker (e.g. housewife)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (60, 13, NULL, NULL, NULL, false, false, false, 6, 'Unemployed', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (61, 13, NULL, NULL, NULL, false, false, false, 7, 'Retired', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (62, 13, NULL, NULL, NULL, false, false, false, 8, 'Parental leave (SWE ONLY)', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (63, 13, NULL, NULL, NULL, false, false, false, 9, 'Long-term sick-leave or parental leave', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (64, 13, NULL, NULL, NULL, false, false, false, 10, 'Other', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (65, 13, NULL, NULL, NULL, false, false, false, 11, 'Don''t want to answer', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (66, 14, NULL, NULL, NULL, false, false, false, 1, 'Paid employment, full time', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (67, 14, NULL, NULL, NULL, false, false, true, 2, 'Paid employment, part time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (68, 14, NULL, NULL, NULL, false, false, false, 3, 'Self-employed (businessman, farmer, tradesman, etc.)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (69, 14, NULL, NULL, NULL, false, false, false, 4, 'Attending daycare/school/college/university', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (70, 14, NULL, NULL, NULL, false, false, false, 5, 'Home-maker (e.g. housewife)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (71, 14, NULL, NULL, NULL, false, false, false, 6, 'Unemployed', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (72, 14, NULL, NULL, NULL, false, false, false, 7, 'Retired', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (73, 14, NULL, NULL, NULL, false, false, false, 8, 'Parental leave (SWE ONLY)', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (74, 14, NULL, NULL, NULL, false, false, false, 9, 'Long-term sick-leave or parental leave', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (75, 14, NULL, NULL, NULL, false, false, false, 10, 'Other', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (76, 14, NULL, NULL, NULL, false, false, false, 11, 'Don''t want to answer', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (77, 15, NULL, NULL, NULL, false, false, false, 1, 'Management', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (78, 15, NULL, NULL, NULL, false, false, false, 2, 'Professional (e.g. manager, doctor, teacher, nurse, engineer)', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (79, 15, NULL, NULL, NULL, false, false, true, 3, 'Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (80, 15, NULL, NULL, NULL, false, false, false, 4, 'Work that requires some post-secondary training.', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (81, 15, NULL, NULL, NULL, false, false, false, 5, 'Office work (e.g. admin, finance assistant, receptionist etc.)', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (82, 15, NULL, NULL, NULL, false, false, false, 6, 'Service and sales', '', '11', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (83, 15, NULL, NULL, NULL, false, false, false, 7, 'Skilled manual worker (e.g. mechanic, electrician, technician)', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (84, 15, NULL, NULL, NULL, false, false, false, 8, 'Skilled manual cat2 (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (85, 15, NULL, NULL, NULL, false, false, false, 9, 'Skilled manual cat3 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (86, 15, NULL, NULL, NULL, false, false, false, 10, 'Other manual work (e.g. cleaning, seciruty, driver etc)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (87, 15, NULL, NULL, NULL, false, false, false, 11, 'Military', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (88, 15, NULL, NULL, NULL, false, false, true, 12, 'Other', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (89, 15, NULL, NULL, NULL, false, false, false, 13, 'Don''t want to answer', '', '12', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (90, 16, NULL, NULL, NULL, false, false, false, 1, 'Management', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (91, 16, NULL, NULL, NULL, false, false, false, 2, 'Professional (e.g. manager, doctor, teacher, nurse, engineer)', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (92, 16, NULL, NULL, NULL, false, false, true, 3, 'Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (93, 16, NULL, NULL, NULL, false, false, false, 4, 'Work that requires some post-secondary training.', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (94, 16, NULL, NULL, NULL, false, false, false, 5, 'Office work (e.g. admin, finance assistant, receptionist etc.)', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (95, 16, NULL, NULL, NULL, false, false, false, 6, 'Service and sales', '', '11', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (96, 16, NULL, NULL, NULL, false, false, false, 7, 'Skilled manual worker (e.g. mechanic, electrician, technician)', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (97, 16, NULL, NULL, NULL, false, false, false, 8, 'Skilled manual cat2 (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (98, 16, NULL, NULL, NULL, false, false, false, 9, 'Skilled manual cat3 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (99, 16, NULL, NULL, NULL, false, false, false, 10, 'Other manual work (e.g. cleaning, seciruty, driver etc)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (100, 16, NULL, NULL, NULL, false, false, false, 11, 'Military', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (101, 16, NULL, NULL, NULL, false, false, true, 12, 'Other', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (102, 16, NULL, NULL, NULL, false, false, false, 13, 'Don''t want to answer', '', '12', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (103, 17, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (104, 17, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (105, 17, NULL, NULL, NULL, false, false, false, 3, 'Don''t want to answer', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (106, 18, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (107, 18, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (108, 18, NULL, NULL, NULL, false, false, false, 3, 'Don''t want to answer', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (109, 19, NULL, NULL, NULL, false, false, false, 1, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (110, 19, NULL, NULL, NULL, false, false, false, 2, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (111, 20, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (112, 21, NULL, NULL, NULL, false, false, false, 1, 'I have no formal qualification', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (113, 21, NULL, NULL, NULL, false, false, false, 2, 'Primary school 2 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (114, 21, NULL, NULL, NULL, false, false, false, 3, 'Secondary cat 2 (SWE ONLY)', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (115, 21, NULL, NULL, NULL, false, false, false, 4, 'GCSE''s, levels, CSEs or equivalent', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (116, 21, NULL, NULL, NULL, false, false, false, 5, 'A-levels or equivalent (e.g. Higher, NVQ Level3, BTEC)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (117, 21, NULL, NULL, NULL, false, false, false, 6, 'Batchelors Degree (BA, BSc) or equivalent', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (118, 21, NULL, NULL, NULL, false, false, false, 7, 'Higher Degree or equivalent (e.g. Masters Degree, PGCE, PhD, Medical Doctorate, Advanced Professional Award)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (119, 21, NULL, NULL, NULL, false, false, false, 8, 'Other post-secondary (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (120, 21, NULL, NULL, NULL, false, false, true, 9, 'I am still in education', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (121, 21, NULL, NULL, NULL, false, false, false, 10, 'Don''t want to answer', '', '99', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (122, 22, NULL, NULL, NULL, false, false, false, 1, 'Paid employment, full time', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (123, 22, NULL, NULL, NULL, false, false, true, 2, 'Paid employment, part time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (124, 22, NULL, NULL, NULL, false, false, false, 3, 'Self-employed (businessman, farmer, tradesman, etc.)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (125, 22, NULL, NULL, NULL, false, false, false, 4, 'Attending daycare/school/college/university', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (126, 22, NULL, NULL, NULL, false, false, false, 5, 'Home-maker (e.g. housewife)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (127, 22, NULL, NULL, NULL, false, false, false, 6, 'Unemployed', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (128, 22, NULL, NULL, NULL, false, false, false, 7, 'Retired', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (129, 22, NULL, NULL, NULL, false, false, false, 8, 'Parental leave (SWE ONLY)', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (130, 22, NULL, NULL, NULL, false, false, false, 9, 'Long-term sick-leave or parental leave', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (131, 22, NULL, NULL, NULL, false, false, false, 10, 'Other', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (132, 22, NULL, NULL, NULL, false, false, false, 11, 'Don''t want to answer', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (133, 23, NULL, NULL, NULL, false, false, false, 1, 'Management', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (134, 23, NULL, NULL, NULL, false, false, false, 2, 'Professional (e.g. manager, doctor, teacher, nurse, engineer)', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (135, 23, NULL, NULL, NULL, false, false, true, 3, 'Retail, sales, catering and hospitality and leisure (e.g. shop assistant, waiter, bar-staff, gym instructor etc)', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (136, 23, NULL, NULL, NULL, false, false, false, 4, 'Work that requires some post-secondary training.', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (137, 23, NULL, NULL, NULL, false, false, false, 5, 'Office work (e.g. admin, finance assistant, receptionist etc.)', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (138, 23, NULL, NULL, NULL, false, false, false, 6, 'Service and sales', '', '11', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (139, 23, NULL, NULL, NULL, false, false, false, 7, 'Skilled manual worker (e.g. mechanic, electrician, technician)', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (140, 23, NULL, NULL, NULL, false, false, false, 8, 'Skilled manual cat2 (SWE ONLY)', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (141, 23, NULL, NULL, NULL, false, false, false, 9, 'Skilled manual cat3 (SWE ONLY)', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (142, 23, NULL, NULL, NULL, false, false, false, 10, 'Other manual work (e.g. cleaning, seciruty, driver etc)', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (143, 23, NULL, NULL, NULL, false, false, false, 11, 'Military', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (144, 23, NULL, NULL, NULL, false, false, true, 12, 'Other', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (145, 23, NULL, NULL, NULL, false, false, false, 13, 'Don''t want to answer', '', '12', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (146, 24, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (147, 24, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (148, 24, NULL, NULL, NULL, false, false, false, 3, 'Don''t want to answer', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (149, 26, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (150, 27, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (151, 28, NULL, NULL, NULL, false, false, false, 1, 'answer0', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (152, 28, NULL, NULL, NULL, false, false, false, 2, 'answer1', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (153, 28, NULL, NULL, NULL, false, false, false, 3, 'answer2', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (154, 28, NULL, NULL, NULL, false, false, false, 4, 'answer3', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (155, 28, NULL, NULL, NULL, false, false, false, 5, 'answer4', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (156, 28, NULL, NULL, NULL, false, false, false, 6, 'answer5', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (157, 29, NULL, NULL, NULL, false, false, false, 1, 'answer0', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (158, 29, NULL, NULL, NULL, false, false, false, 2, 'answer1', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (159, 29, NULL, NULL, NULL, false, false, false, 3, 'answer2', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (160, 29, NULL, NULL, NULL, false, false, false, 4, 'answer3', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (161, 29, NULL, NULL, NULL, false, false, false, 5, 'answer4', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (162, 29, NULL, NULL, NULL, false, false, false, 6, 'answer5', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (163, 30, NULL, NULL, NULL, false, false, false, 1, 'answer0', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (164, 30, NULL, NULL, NULL, false, false, false, 2, 'answer1', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (165, 30, NULL, NULL, NULL, false, false, false, 3, 'answer2', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (166, 30, NULL, NULL, NULL, false, false, false, 4, 'answer3', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (167, 30, NULL, NULL, NULL, false, false, false, 5, 'answer4', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (168, 30, NULL, NULL, NULL, false, false, false, 6, 'answer5', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (169, 31, NULL, NULL, NULL, false, false, false, 1, 'answer0', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (170, 31, NULL, NULL, NULL, false, false, false, 2, 'answer1', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (171, 31, NULL, NULL, NULL, false, false, false, 3, 'answer2', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (172, 31, NULL, NULL, NULL, false, false, false, 4, 'answer3', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (173, 31, NULL, NULL, NULL, false, false, false, 5, 'answer4', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (174, 31, NULL, NULL, NULL, false, false, false, 6, 'answer5', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (175, 33, NULL, NULL, NULL, true, false, false, 1, '', '', '', 5, '16', '0', '', '');
+INSERT INTO pollster_option VALUES (176, 33, NULL, NULL, NULL, true, false, false, 2, '', '', '', 5, '99', '16', '', '');
+INSERT INTO pollster_option VALUES (177, 34, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (178, 35, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (179, 35, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (180, 36, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (181, 36, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (182, 37, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (183, 37, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (184, 37, NULL, NULL, NULL, false, false, true, 3, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (185, 38, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (186, 38, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (187, 38, NULL, NULL, NULL, false, false, true, 3, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (188, 40, NULL, NULL, NULL, false, false, true, 1, 'No symptoms', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (189, 40, NULL, NULL, NULL, false, false, false, 2, 'Fever', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (190, 40, NULL, NULL, NULL, false, false, false, 3, 'Chills', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (191, 40, NULL, NULL, NULL, false, false, true, 4, 'Sneezing', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (192, 40, NULL, NULL, NULL, false, false, false, 5, 'Sore thoat', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (193, 40, NULL, NULL, NULL, false, false, false, 6, 'Runny nose', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (194, 40, NULL, NULL, NULL, false, false, false, 7, 'Cough', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (195, 40, NULL, NULL, NULL, false, false, true, 8, 'Coloured sputum/phlegm', '', '13', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (196, 40, NULL, NULL, NULL, false, false, false, 9, 'Shortness of breath/Difficulty breathing', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (197, 40, NULL, NULL, NULL, false, false, true, 10, 'Chest pain', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (198, 40, NULL, NULL, NULL, false, false, false, 11, 'Feeling tired or exhausted', '', '11', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (199, 40, NULL, NULL, NULL, false, false, false, 12, 'Muscle/join pain', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (200, 40, NULL, NULL, NULL, false, false, false, 13, 'Headache', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (201, 40, NULL, NULL, NULL, false, false, true, 14, 'Loss of appetite', '', '12', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (202, 40, NULL, NULL, NULL, false, false, true, 15, 'Watery, bloodshot eyes', '', '14', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (203, 40, NULL, NULL, NULL, false, false, false, 16, 'Stomach ache', '', '18', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (204, 40, NULL, NULL, NULL, false, false, false, 17, 'Abdominal cramps', '', '22', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (205, 40, NULL, NULL, NULL, false, false, false, 18, 'Nausea', '', '15', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (206, 40, NULL, NULL, NULL, false, false, false, 19, 'Vomiting', '', '16', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (207, 40, NULL, NULL, NULL, false, false, false, 20, 'Diarrhoea', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (208, 40, NULL, NULL, NULL, false, false, false, 21, 'Mucus in stool', '', '20', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (209, 40, NULL, NULL, NULL, false, false, false, 22, 'Blood in stool', '', '21', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (210, 40, NULL, NULL, NULL, false, false, false, 23, 'Other', '', '19', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (211, 41, NULL, NULL, NULL, false, false, true, 1, 'No symptoms', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (212, 41, NULL, NULL, NULL, false, false, false, 2, 'Fever', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (213, 41, NULL, NULL, NULL, false, false, false, 3, 'Chills', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (214, 41, NULL, NULL, NULL, false, false, true, 4, 'Sneezing', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (215, 41, NULL, NULL, NULL, false, false, false, 5, 'Sore thoat', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (216, 41, NULL, NULL, NULL, false, false, false, 6, 'Runny nose', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (217, 41, NULL, NULL, NULL, false, false, false, 7, 'Cough', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (218, 41, NULL, NULL, NULL, false, false, true, 8, 'Coloured sputum/phlegm', '', '13', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (219, 41, NULL, NULL, NULL, false, false, false, 9, 'Shortness of breath/Difficulty breathing', '', '7', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (220, 41, NULL, NULL, NULL, false, false, true, 10, 'Chest pain', '', '10', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (221, 41, NULL, NULL, NULL, false, false, false, 11, 'Feeling tired or exhausted', '', '11', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (222, 41, NULL, NULL, NULL, false, false, false, 12, 'Muscle/join pain', '', '9', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (223, 41, NULL, NULL, NULL, false, false, false, 13, 'Headache', '', '8', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (224, 41, NULL, NULL, NULL, false, false, true, 14, 'Loss of appetite', '', '12', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (225, 41, NULL, NULL, NULL, false, false, true, 15, 'Watery, bloodshot eyes', '', '14', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (226, 41, NULL, NULL, NULL, false, false, false, 16, 'Stomach ache', '', '18', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (227, 41, NULL, NULL, NULL, false, false, false, 17, 'Abdominal cramps', '', '22', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (228, 41, NULL, NULL, NULL, false, false, false, 18, 'Nausea', '', '15', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (229, 41, NULL, NULL, NULL, false, false, false, 19, 'Vomiting', '', '16', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (230, 41, NULL, NULL, NULL, false, false, false, 20, 'Diarrhoea', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (231, 41, NULL, NULL, NULL, false, false, false, 21, 'Mucus in stool', '', '20', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (232, 41, NULL, NULL, NULL, false, false, false, 22, 'Blood in stool', '', '21', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (233, 41, NULL, NULL, NULL, false, false, false, 23, 'Other', '', '19', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (234, 42, NULL, NULL, NULL, false, false, false, 1, 'Yes', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (235, 42, NULL, NULL, NULL, false, false, false, 2, 'No', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (236, 42, NULL, NULL, NULL, false, false, false, 3, 'I don''t know/can''t remember', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (237, 43, NULL, NULL, NULL, false, false, false, 1, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (238, 43, NULL, NULL, NULL, false, false, false, 2, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (239, 43, NULL, NULL, NULL, false, false, false, 3, 'I don''t know', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (240, 43, NULL, NULL, NULL, false, false, true, 4, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (241, 44, NULL, NULL, NULL, false, false, false, 1, 'Yes', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (242, 44, NULL, NULL, NULL, false, false, false, 2, 'No', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (243, 44, NULL, NULL, NULL, false, false, false, 3, 'I don''t know', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (244, 44, NULL, NULL, NULL, false, false, true, 4, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (245, 45, NULL, NULL, NULL, false, false, true, 1, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (246, 45, NULL, NULL, NULL, false, false, false, 2, '1 time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (247, 45, NULL, NULL, NULL, false, false, false, 3, '2 times', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (248, 45, NULL, NULL, NULL, false, false, false, 4, '3 times', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (249, 45, NULL, NULL, NULL, false, false, false, 5, '4 or 5 times', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (250, 45, NULL, NULL, NULL, false, false, false, 6, '6 or more times', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (251, 46, NULL, NULL, NULL, false, false, true, 1, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (252, 46, NULL, NULL, NULL, false, false, false, 2, '1 time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (253, 46, NULL, NULL, NULL, false, false, false, 3, '2 times', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (254, 46, NULL, NULL, NULL, false, false, false, 4, '3 times', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (255, 46, NULL, NULL, NULL, false, false, false, 5, '4 or 5 times', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (256, 46, NULL, NULL, NULL, false, false, false, 6, '6 or more times', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (257, 47, NULL, NULL, NULL, false, false, true, 1, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (258, 47, NULL, NULL, NULL, false, false, false, 2, '1 time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (259, 47, NULL, NULL, NULL, false, false, false, 3, '2 times', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (260, 47, NULL, NULL, NULL, false, false, false, 4, '3 times', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (261, 47, NULL, NULL, NULL, false, false, false, 5, '4 or 5 times', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (262, 47, NULL, NULL, NULL, false, false, false, 6, '6 or more times', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (263, 48, NULL, NULL, NULL, false, false, true, 1, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (264, 48, NULL, NULL, NULL, false, false, false, 2, '1 time', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (265, 48, NULL, NULL, NULL, false, false, false, 3, '2 times', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (266, 48, NULL, NULL, NULL, false, false, false, 4, '3 times', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (267, 48, NULL, NULL, NULL, false, false, false, 5, '4 or 5 times', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (268, 48, NULL, NULL, NULL, false, false, false, 6, '6 or more times', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (269, 49, NULL, NULL, NULL, false, true, false, 1, 'Choose date', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (270, 49, NULL, NULL, NULL, false, false, true, 2, 'I don''t know/can''t remember', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (271, 49, NULL, NULL, NULL, false, false, true, 3, 'NullAns', '', '17', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (272, 50, NULL, NULL, NULL, false, false, false, 1, 'Flu or flu-like illness', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (273, 50, NULL, NULL, NULL, false, false, false, 2, 'Common cold', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (274, 50, NULL, NULL, NULL, false, false, false, 3, 'Allergy/hay fever', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (275, 50, NULL, NULL, NULL, false, false, false, 4, 'Asthma', '', '6', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (276, 50, NULL, NULL, NULL, false, false, false, 5, 'Gastroenteritis/gastric flu', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (277, 50, NULL, NULL, NULL, false, false, false, 6, 'Other', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (278, 50, NULL, NULL, NULL, false, false, false, 7, 'I don''t know', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (279, 52, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (280, 53, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (281, 54, NULL, NULL, NULL, false, false, true, 1, 'Null', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (282, 55, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (283, 55, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (284, 56, NULL, NULL, NULL, false, false, false, 1, 'No', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (285, 56, NULL, NULL, NULL, false, false, false, 2, 'Yes', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (286, 57, NULL, NULL, NULL, false, false, false, 1, 'answer', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (287, 57, NULL, NULL, NULL, false, false, false, 2, 'answer', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (288, 57, NULL, NULL, NULL, false, false, false, 3, 'answer', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (289, 57, NULL, NULL, NULL, false, false, false, 4, 'answer', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (290, 57, NULL, NULL, NULL, false, false, false, 5, 'answer', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (291, 57, NULL, NULL, NULL, false, false, false, 6, 'answer', '', '5', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (292, 58, NULL, NULL, NULL, false, false, false, 1, 'answer', '', '0', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (293, 58, NULL, NULL, NULL, false, false, false, 2, 'answer', '', '1', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (294, 58, NULL, NULL, NULL, false, false, false, 3, 'answer', '', '2', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (295, 58, NULL, NULL, NULL, false, false, false, 4, 'answer', '', '3', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (296, 58, NULL, NULL, NULL, false, false, false, 5, 'answer', '', '4', NULL, '', '', '', '');
+INSERT INTO pollster_option VALUES (297, 58, NULL, NULL, NULL, false, false, false, 6, 'answer', '', '5', NULL, '', '', '', '');
+
 
 
 --
@@ -5823,66 +5793,65 @@ SELECT pg_catalog.setval('pollster_option_id_seq', 297, true);
 -- Data for Name: pollster_question; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY pollster_question (id, survey_id, starts_hidden, is_mandatory, ordinal, title, description, type, data_type_id, open_option_data_type_id, data_name, visual, tags, regex, error_message) FROM stdin;
-1	1	f	f	1	Compilation Date		builtin	6	\N	timestamp
-2	1	f	t	2	What is your gender?		single-choice	3	\N	Q1
-3	1	f	t	3	What is the first part of your home postal code?		text	1	\N	Q3				Hoppsan! Postnumret får bara vara 5 siffror långt och får inte innehålla mellanslag eller bindesstreck!
-4	1	t	t	4	What is your date of birth?		text	5	\N	Q2
-5	1	t	f	5	INCLUDING YOU, how many people live in your household?		single-choice	2	\N	Q6f
-6	1	t	f	6	INCLUDING YOU, how many people live in your household?		single-choice	2	\N	Q6ff
-7	1	t	f	7	How many children under 7 live in your household?		single-choice	2	\N	Q6g
-8	1	t	f	8	How many children under 7 live in your child's household?		single-choice	2	\N	Q6gg
-9	1	t	f	9	For whom are you filling this survey in?		single-choice	3	\N	Q0
-10	1	t	f	10	Comment for guardians		single-choice	2	\N	Q3hh
-11	1	t	f	11	What is the highest level of formal education/qualification that you have?	If you are still in education, then please tick this box with the highest level that you have already achieved.	single-choice	3	\N	Q4d
-12	1	t	f	12	What is the highest level of formal education/qualification that you have?	If you are still in education, then please tick this box with the highest level that you have already achieved.	single-choice	3	\N	Q4d1
-13	1	t	f	13	What is your main activity?		single-choice	3	\N	Q4
-14	1	t	f	14	What is your main activity?		single-choice	3	\N	Q4e1
-15	1	t	f	15	Which of the following descriptions most closely matches with your main occupation?		single-choice	3	\N	Q4c
-16	1	t	f	16	Which of the following descriptions most closely matches with your main occupation?		single-choice	3	\N	Q4c1
-17	1	t	f	17	Do you smoke daily?		single-choice	3	\N	Q13
-18	1	t	f	18	Do you smoke daily?		single-choice	3	\N	Q13e1
-19	1	t	f	19	SWEDEN ONLY: Does the child have more than one guardian?		single-choice	2	\N	Q7gg
-20	1	t	f	20	Comment about second guardian		single-choice	2	\N	Q4gg
-21	1	t	f	21	What is the highest level of formal education/qualification that you have?	If you are still in education, then please tick this box with the highest level that you have already achieved.	single-choice	3	\N	Q4d2
-22	1	t	f	22	What is your main activity?		single-choice	3	\N	Q4e2
-23	1	t	f	23	Which of the following descriptions most closely matches with your main occupation?		single-choice	3	\N	Q4c2
-24	1	t	f	24	Does guaridan number 2 smoke daily?		single-choice	3	\N	Q13e2
-25	1	t	f	25	Do you have anything to add?		text	2	\N	Q14b
-26	1	t	f	26	Thank you		single-choice	2	\N	Q14c
-27	1	t	f	27	Thank you for updating		single-choice	2	\N	Q14d
-28	1	t	f	28	Extra question 1		single-choice	3	\N	Q18a
-29	1	t	f	29	Extra question 2		single-choice	3	\N	Q18b
-30	1	t	f	30	Extra question 3		multiple-choice	3	\N	Q18c	check
-31	1	t	f	31	Extra question 4		multiple-choice	3	\N	Q18d	check
-32	2	f	f	1	Compilation Date		builtin	6	\N	timestamp
-33	2	t	f	2	Age		text	5	\N	Q0
-34	2	t	f	3	Thank you for updating!	Don't forget to click "Send"!	single-choice	2	\N	Q6k
-35	2	t	f	4	Have you fallen ill during the past seven days?		single-choice	3	\N	Q1a
-36	2	t	f	5	Has your child fallen ill during the past seven days?		single-choice	3	\N	Q1aa
-37	2	t	f	6	Had you been overseas / abroad during the 10 days before your symptoms started?		single-choice	3	\N	Q1b
-38	2	t	f	7	Had your child been overseas / abroad during the 10 days before the symptoms started?		single-choice	3	\N	Q1bb
-39	2	t	f	8	To which country/countries did you travel?		text	2	\N	Q1c
-40	2	t	f	9	Which of the following symptoms did you/have you have?		multiple-choice	3	\N	Q1	check
-41	2	t	f	10	Which of the following symptoms did your child have?		multiple-choice	3	\N	Q111	check
-42	2	t	f	11	Did the symptoms develop suddenly over a few hours?	By suddenly, we mean over a few hours, rather than days.	single-choice	3	\N	Q5
-43	2	t	f	12	Was the fever more than 38 degrees Celsius? (If you did not measure your temperature, mark "I don't know")		single-choice	3	\N	Q6d
-44	2	t	f	13	Did the fever develop suddenly?		single-choice	3	\N	Q6b
-45	2	t	f	14	How many times did you vomit on the worst day?		single-choice	3	\N	Q6e
-46	2	t	f	15	How many times did your child vomit on the worst day?		single-choice	3	\N	Q6ee
-47	2	t	f	16	How many times did you have diarrhea on the worst day?		single-choice	3	\N	Q6f
-48	2	t	f	17	How many times did your child have diarrhea on the worst day?		single-choice	3	\N	Q6ff
-49	2	t	f	18	When did the first symptoms appear?		single-choice	3	4	Q3	radio
-50	2	t	f	19	What do you think is causing your symptoms?	If you are reasonably sure about what is causing your symptoms, please tick the appropriate box. Otherwise, please tick “I don’t know”.	single-choice	3	\N	Q11
-51	2	t	f	20	Do you have any comments?		text	2	\N	Q6g
-52	2	t	f	21	Thank you!	Don't forget to click "Send"!	single-choice	2	\N	Q6h
-53	2	t	f	22	Thank you for your null-report!	Don't forget to click "Send"!	single-choice	2	\N	Q6i
-54	2	t	f	23	Thank you for your travel-report!	Don't forget to click "Send"!	single-choice	2	\N	Q6j
-55	2	t	f	24	Have you had other symptoms during the past 30 days that you forgot to report?		single-choice	3	\N	Q1d
-56	2	t	f	25	Open new survey for old symptoms...		single-choice	3	\N	Q1e
-57	2	t	f	26	Example		multiple-choice	3	\N	Q14c	check
-58	2	t	f	27	Example		multiple-choice	3	\N	Q14d	check
-\.
+
+INSERT INTO pollster_question VALUES (1, 1, false, false, 1, 'Compilation Date', '', 'builtin', 6, NULL, 'timestamp', '', '', '', '');
+INSERT INTO pollster_question VALUES (2, 1, false, true, 2, 'What is your gender?', '', 'single-choice', 3, NULL, 'Q1', '', '', '', '');
+INSERT INTO pollster_question VALUES (3, 1, false, true, 3, 'What is the first part of your home postal code?', '', 'text', 1, NULL, 'Q3', '', '', '', 'Hoppsan! Postnumret får bara vara 5 siffror långt och får inte innehålla mellanslag eller bindesstreck!');
+INSERT INTO pollster_question VALUES (4, 1, true, true, 4, 'What is your date of birth?', '', 'text', 5, NULL, 'Q2', '', '', '', '');
+INSERT INTO pollster_question VALUES (5, 1, true, false, 5, 'INCLUDING YOU, how many people live in your household?', '', 'single-choice', 2, NULL, 'Q6f', '', '', '', '');
+INSERT INTO pollster_question VALUES (6, 1, true, false, 6, 'INCLUDING YOU, how many people live in your household?', '', 'single-choice', 2, NULL, 'Q6ff', '', '', '', '');
+INSERT INTO pollster_question VALUES (7, 1, true, false, 7, 'How many children under 7 live in your household?', '', 'single-choice', 2, NULL, 'Q6g', '', '', '', '');
+INSERT INTO pollster_question VALUES (8, 1, true, false, 8, 'How many children under 7 live in your child''s household?', '', 'single-choice', 2, NULL, 'Q6gg', '', '', '', '');
+INSERT INTO pollster_question VALUES (9, 1, true, false, 9, 'For whom are you filling this survey in?', '', 'single-choice', 3, NULL, 'Q0', '', '', '', '');
+INSERT INTO pollster_question VALUES (10, 1, true, false, 10, 'Comment for guardians', '', 'single-choice', 2, NULL, 'Q3hh', '', '', '', '');
+INSERT INTO pollster_question VALUES (11, 1, true, false, 11, 'What is the highest level of formal education/qualification that you have?', 'If you are still in education, then please tick this box with the highest level that you have already achieved.', 'single-choice', 3, NULL, 'Q4d', '', '', '', '');
+INSERT INTO pollster_question VALUES (12, 1, true, false, 12, 'What is the highest level of formal education/qualification that you have?', 'If you are still in education, then please tick this box with the highest level that you have already achieved.', 'single-choice', 3, NULL, 'Q4d1', '', '', '', '');
+INSERT INTO pollster_question VALUES (13, 1, true, false, 13, 'What is your main activity?', '', 'single-choice', 3, NULL, 'Q4', '', '', '', '');
+INSERT INTO pollster_question VALUES (14, 1, true, false, 14, 'What is your main activity?', '', 'single-choice', 3, NULL, 'Q4e1', '', '', '', '');
+INSERT INTO pollster_question VALUES (15, 1, true, false, 15, 'Which of the following descriptions most closely matches with your main occupation?', '', 'single-choice', 3, NULL, 'Q4c', '', '', '', '');
+INSERT INTO pollster_question VALUES (16, 1, true, false, 16, 'Which of the following descriptions most closely matches with your main occupation?', '', 'single-choice', 3, NULL, 'Q4c1', '', '', '', '');
+INSERT INTO pollster_question VALUES (17, 1, true, false, 17, 'Do you smoke daily?', '', 'single-choice', 3, NULL, 'Q13', '', '', '', '');
+INSERT INTO pollster_question VALUES (18, 1, true, false, 18, 'Do you smoke daily?', '', 'single-choice', 3, NULL, 'Q13e1', '', '', '', '');
+INSERT INTO pollster_question VALUES (19, 1, true, false, 19, 'SWEDEN ONLY: Does the child have more than one guardian?', '', 'single-choice', 2, NULL, 'Q7gg', '', '', '', '');
+INSERT INTO pollster_question VALUES (20, 1, true, false, 20, 'Comment about second guardian', '', 'single-choice', 2, NULL, 'Q4gg', '', '', '', '');
+INSERT INTO pollster_question VALUES (21, 1, true, false, 21, 'What is the highest level of formal education/qualification that you have?', 'If you are still in education, then please tick this box with the highest level that you have already achieved.', 'single-choice', 3, NULL, 'Q4d2', '', '', '', '');
+INSERT INTO pollster_question VALUES (22, 1, true, false, 22, 'What is your main activity?', '', 'single-choice', 3, NULL, 'Q4e2', '', '', '', '');
+INSERT INTO pollster_question VALUES (23, 1, true, false, 23, 'Which of the following descriptions most closely matches with your main occupation?', '', 'single-choice', 3, NULL, 'Q4c2', '', '', '', '');
+INSERT INTO pollster_question VALUES (24, 1, true, false, 24, 'Does guaridan number 2 smoke daily?', '', 'single-choice', 3, NULL, 'Q13e2', '', '', '', '');
+INSERT INTO pollster_question VALUES (25, 1, true, false, 25, 'Do you have anything to add?', '', 'text', 2, NULL, 'Q14b', '', '', '', '');
+INSERT INTO pollster_question VALUES (26, 1, true, false, 26, 'Thank you', '', 'single-choice', 2, NULL, 'Q14c', '', '', '', '');
+INSERT INTO pollster_question VALUES (27, 1, true, false, 27, 'Thank you for updating', '', 'single-choice', 2, NULL, 'Q14d', '', '', '', '');
+INSERT INTO pollster_question VALUES (28, 1, true, false, 28, 'Extra question 1', '', 'single-choice', 3, NULL, 'Q18a', '', '', '', '');
+INSERT INTO pollster_question VALUES (29, 1, true, false, 29, 'Extra question 2', '', 'single-choice', 3, NULL, 'Q18b', '', '', '', '');
+INSERT INTO pollster_question VALUES (30, 1, true, false, 30, 'Extra question 3', '', 'multiple-choice', 3, NULL, 'Q18c', 'check', '', '', '');
+INSERT INTO pollster_question VALUES (31, 1, true, false, 31, 'Extra question 4', '', 'multiple-choice', 3, NULL, 'Q18d', 'check', '', '', '');
+INSERT INTO pollster_question VALUES (32, 2, false, false, 1, 'Compilation Date', '', 'builtin', 6, NULL, 'timestamp', '', '', '', '');
+INSERT INTO pollster_question VALUES (33, 2, true, false, 2, 'Age', '', 'text', 5, NULL, 'Q0', '', '', '', '');
+INSERT INTO pollster_question VALUES (34, 2, true, false, 3, 'Thank you for updating!', 'Don''t forget to click "Send"!', 'single-choice', 2, NULL, 'Q6k', '', '', '', '');
+INSERT INTO pollster_question VALUES (35, 2, true, false, 4, 'Have you fallen ill during the past seven days?', '', 'single-choice', 3, NULL, 'Q1a', '', '', '', '');
+INSERT INTO pollster_question VALUES (36, 2, true, false, 5, 'Has your child fallen ill during the past seven days?', '', 'single-choice', 3, NULL, 'Q1aa', '', '', '', '');
+INSERT INTO pollster_question VALUES (37, 2, true, false, 6, 'Had you been overseas / abroad during the 10 days before your symptoms started?', '', 'single-choice', 3, NULL, 'Q1b', '', '', '', '');
+INSERT INTO pollster_question VALUES (38, 2, true, false, 7, 'Had your child been overseas / abroad during the 10 days before the symptoms started?', '', 'single-choice', 3, NULL, 'Q1bb', '', '', '', '');
+INSERT INTO pollster_question VALUES (39, 2, true, false, 8, 'To which country/countries did you travel?', '', 'text', 2, NULL, 'Q1c', '', '', '', '');
+INSERT INTO pollster_question VALUES (40, 2, true, false, 9, 'Which of the following symptoms did you/have you have?', '', 'multiple-choice', 3, NULL, 'Q1', 'check', '', '', '');
+INSERT INTO pollster_question VALUES (41, 2, true, false, 10, 'Which of the following symptoms did your child have?', '', 'multiple-choice', 3, NULL, 'Q111', 'check', '', '', '');
+INSERT INTO pollster_question VALUES (42, 2, true, false, 11, 'Did the symptoms develop suddenly over a few hours?', 'By suddenly, we mean over a few hours, rather than days.', 'single-choice', 3, NULL, 'Q5', '', '', '', '');
+INSERT INTO pollster_question VALUES (43, 2, true, false, 12, 'Was the fever more than 38 degrees Celsius? (If you did not measure your temperature, mark "I don''t know")', '', 'single-choice', 3, NULL, 'Q6d', '', '', '', '');
+INSERT INTO pollster_question VALUES (44, 2, true, false, 13, 'Did the fever develop suddenly?', '', 'single-choice', 3, NULL, 'Q6b', '', '', '', '');
+INSERT INTO pollster_question VALUES (45, 2, true, false, 14, 'How many times did you vomit on the worst day?', '', 'single-choice', 3, NULL, 'Q6e', '', '', '', '');
+INSERT INTO pollster_question VALUES (46, 2, true, false, 15, 'How many times did your child vomit on the worst day?', '', 'single-choice', 3, NULL, 'Q6ee', '', '', '', '');
+INSERT INTO pollster_question VALUES (47, 2, true, false, 16, 'How many times did you have diarrhea on the worst day?', '', 'single-choice', 3, NULL, 'Q6f', '', '', '', '');
+INSERT INTO pollster_question VALUES (48, 2, true, false, 17, 'How many times did your child have diarrhea on the worst day?', '', 'single-choice', 3, NULL, 'Q6ff', '', '', '', '');
+INSERT INTO pollster_question VALUES (49, 2, true, false, 18, 'When did the first symptoms appear?', '', 'single-choice', 3, 4, 'Q3', 'radio', '', '', '');
+INSERT INTO pollster_question VALUES (50, 2, true, false, 19, 'What do you think is causing your symptoms?', 'If you are reasonably sure about what is causing your symptoms, please tick the appropriate box. Otherwise, please tick “I don’t know”.', 'single-choice', 3, NULL, 'Q11', '', '', '', '');
+INSERT INTO pollster_question VALUES (51, 2, true, false, 20, 'Do you have any comments?', '', 'text', 2, NULL, 'Q6g', '', '', '', '');
+INSERT INTO pollster_question VALUES (52, 2, true, false, 21, 'Thank you!', 'Don''t forget to click "Send"!', 'single-choice', 2, NULL, 'Q6h', '', '', '', '');
+INSERT INTO pollster_question VALUES (53, 2, true, false, 22, 'Thank you for your null-report!', 'Don''t forget to click "Send"!', 'single-choice', 2, NULL, 'Q6i', '', '', '', '');
+INSERT INTO pollster_question VALUES (54, 2, true, false, 23, 'Thank you for your travel-report!', 'Don''t forget to click "Send"!', 'single-choice', 2, NULL, 'Q6j', '', '', '', '');
+INSERT INTO pollster_question VALUES (55, 2, true, false, 24, 'Have you had other symptoms during the past 30 days that you forgot to report?', '', 'single-choice', 3, NULL, 'Q1d', '', '', '', '');
+INSERT INTO pollster_question VALUES (56, 2, true, false, 25, 'Open new survey for old symptoms...', '', 'single-choice', 3, NULL, 'Q1e', '', '', '', '');
+INSERT INTO pollster_question VALUES (57, 2, true, false, 26, 'Example', '', 'multiple-choice', 3, NULL, 'Q14c', 'check', '', '', '');
+INSERT INTO pollster_question VALUES (58, 2, true, false, 27, 'Example', '', 'multiple-choice', 3, NULL, 'Q14d', 'check', '', '', '');
 
 
 --
@@ -6936,498 +6905,398 @@ SELECT pg_catalog.setval('pollster_survey_id_seq', 2, true);
 --
 -- Data for Name: pollster_translationoption; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
+INSERT INTO pollster_translationoption VALUES (1, 1, 1, 'Maschio', '');
+INSERT INTO pollster_translationoption VALUES (2, 1, 2, 'Femmina', '');
+INSERT INTO pollster_translationoption VALUES (3, 1, 3, '', '');
+INSERT INTO pollster_translationoption VALUES (4, 1, 4, '', '');
+INSERT INTO pollster_translationoption VALUES (5, 1, 31, 'Sì', '');
+INSERT INTO pollster_translationoption VALUES (6, 1, 35, 'Non possiedo alcuna qualifica formale', '');
+INSERT INTO pollster_translationoption VALUES (7, 1, 38, 'Diploma di scuola superiore', '');
+INSERT INTO pollster_translationoption VALUES (8, 1, 40, 'Diploma di laurea triennale ', '');
+INSERT INTO pollster_translationoption VALUES (9, 1, 41, 'Diploma di laurea magistrale o titolo di studio superiore (Ph.D.)', '');
+INSERT INTO pollster_translationoption VALUES (10, 1, 43, 'Sono ancora in formazione scolastica', '');
+INSERT INTO pollster_translationoption VALUES (11, 1, 55, 'Impiego retribuito, tempo pieno', '');
+INSERT INTO pollster_translationoption VALUES (12, 1, 56, 'Impiego retribuito, part time', '');
+INSERT INTO pollster_translationoption VALUES (13, 1, 57, 'Lavoratore autonomo (libero professionista, commerciante, contadino, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (14, 1, 58, 'Studente (scuola dell''obbligo, scuola superiore, università, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (15, 1, 59, 'Casalingo/a', '');
+INSERT INTO pollster_translationoption VALUES (16, 1, 60, 'Senza impiego', '');
+INSERT INTO pollster_translationoption VALUES (17, 1, 61, 'In pensione', '');
+INSERT INTO pollster_translationoption VALUES (18, 1, 63, 'Congedo a lungo termine dall''attività lavorativa (per maternità/paternità, malattia, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (19, 1, 64, 'Altro', '');
+INSERT INTO pollster_translationoption VALUES (20, 1, 78, 'Professionista (es. manager, medico, insegnante, infermiera, ingegnere, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (21, 1, 79, 'Vendita al dettaglio, ristorazione ospitalità e tempo libero (es. commesso di negozio, cameriere, barista, istruttore di palestra etc.)', '');
+INSERT INTO pollster_translationoption VALUES (22, 1, 81, 'Lavoro d''ufficio (es. amministratore, assistente finanziario, segretaria etc.)', '');
+INSERT INTO pollster_translationoption VALUES (23, 1, 83, 'Lavoratore manuale specializzato (es. meccanico, elettricista, tecnico, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (24, 1, 86, 'Lavoratore manuale di altro tipo (es. addetto alle pulizie, addetto alla sicurezza, autista, etc.)', '');
+INSERT INTO pollster_translationoption VALUES (25, 1, 88, 'Altro', '');
+INSERT INTO pollster_translationoption VALUES (26, 1, 103, 'No', '');
+INSERT INTO pollster_translationoption VALUES (27, 1, 104, 'Si, occasionalmente', '');
+INSERT INTO pollster_translationoption VALUES (28, 2, 1, 'Man', '');
+INSERT INTO pollster_translationoption VALUES (29, 2, 2, 'Vrouw', '');
+INSERT INTO pollster_translationoption VALUES (30, 2, 3, '', '');
+INSERT INTO pollster_translationoption VALUES (31, 2, 4, '', '');
+INSERT INTO pollster_translationoption VALUES (32, 2, 31, 'Mezelf', '');
+INSERT INTO pollster_translationoption VALUES (33, 2, 33, 'Iemand anders', '');
+INSERT INTO pollster_translationoption VALUES (34, 2, 35, 'Ik heb geen officiële diploma’s', '');
+INSERT INTO pollster_translationoption VALUES (35, 2, 38, 'Mavo of vmbo', '');
+INSERT INTO pollster_translationoption VALUES (36, 2, 39, 'Havo, vwo of MBO', '');
+INSERT INTO pollster_translationoption VALUES (37, 2, 40, 'HBO of WO bachelor', '');
+INSERT INTO pollster_translationoption VALUES (38, 2, 41, 'WO master/PhD (doctor)', '');
+INSERT INTO pollster_translationoption VALUES (39, 2, 43, 'Ik ben nog bezig met een opleiding', '');
+INSERT INTO pollster_translationoption VALUES (40, 2, 55, 'Ik werk fulltime in loondienst', '');
+INSERT INTO pollster_translationoption VALUES (41, 2, 56, 'Ik werk parttime in loondienst', '');
+INSERT INTO pollster_translationoption VALUES (42, 2, 57, 'Ik werk als zelfstandige/ondernemer', '');
+INSERT INTO pollster_translationoption VALUES (43, 2, 58, 'Ik ben scholier of student', '');
+INSERT INTO pollster_translationoption VALUES (44, 2, 59, 'Ik ben huisman/huisvrouw', '');
+INSERT INTO pollster_translationoption VALUES (45, 2, 60, 'Ik ben werkloos', '');
+INSERT INTO pollster_translationoption VALUES (46, 2, 61, 'Ik ben met pensioen', '');
+INSERT INTO pollster_translationoption VALUES (47, 2, 63, 'Ik ben thuis vanwege langdurige ziekte of zwangerschapsverlof', '');
+INSERT INTO pollster_translationoption VALUES (48, 2, 64, 'Anders', '');
+INSERT INTO pollster_translationoption VALUES (49, 2, 78, 'Professional', '');
+INSERT INTO pollster_translationoption VALUES (50, 2, 79, 'Verkoop, horeca en vrije tijd', '');
+INSERT INTO pollster_translationoption VALUES (51, 2, 81, 'Kantoorwerk', '');
+INSERT INTO pollster_translationoption VALUES (52, 2, 83, 'Technisch handwerk', '');
+INSERT INTO pollster_translationoption VALUES (53, 2, 86, 'Ander handwerk', '');
+INSERT INTO pollster_translationoption VALUES (54, 2, 88, 'Anders', '');
+INSERT INTO pollster_translationoption VALUES (55, 2, 103, 'Nee', '');
+INSERT INTO pollster_translationoption VALUES (56, 2, 104, 'Ja, af en toe', '');
+INSERT INTO pollster_translationoption VALUES (57, 3, 1, 'Man/pojke', '');
+INSERT INTO pollster_translationoption VALUES (58, 3, 2, 'Kvinna/flicka', '');
+INSERT INTO pollster_translationoption VALUES (59, 3, 3, '', '');
+INSERT INTO pollster_translationoption VALUES (60, 3, 4, '', '');
+INSERT INTO pollster_translationoption VALUES (61, 3, 5, '', '');
+INSERT INTO pollster_translationoption VALUES (62, 3, 6, '', '');
+INSERT INTO pollster_translationoption VALUES (63, 3, 7, '1 person ', '');
+INSERT INTO pollster_translationoption VALUES (64, 3, 8, '2 personer', '');
+INSERT INTO pollster_translationoption VALUES (65, 3, 9, '3 personer', '');
+INSERT INTO pollster_translationoption VALUES (66, 3, 10, '4 personer', '');
+INSERT INTO pollster_translationoption VALUES (67, 3, 11, '5 personer eller fler', '');
+INSERT INTO pollster_translationoption VALUES (68, 3, 12, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (69, 3, 13, '1 person', '');
+INSERT INTO pollster_translationoption VALUES (70, 3, 14, '2 personer', '');
+INSERT INTO pollster_translationoption VALUES (71, 3, 15, '3 personer', '');
+INSERT INTO pollster_translationoption VALUES (72, 3, 16, '4 personer', '');
+INSERT INTO pollster_translationoption VALUES (73, 3, 17, '5 personer eller fler', '');
+INSERT INTO pollster_translationoption VALUES (74, 3, 18, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (75, 3, 19, '0 barn', '');
+INSERT INTO pollster_translationoption VALUES (76, 3, 20, '1 barn', '');
+INSERT INTO pollster_translationoption VALUES (77, 3, 21, '2 barn', '');
+INSERT INTO pollster_translationoption VALUES (78, 3, 22, '3 barn', '');
+INSERT INTO pollster_translationoption VALUES (79, 3, 23, '4 barn eller fler', '');
+INSERT INTO pollster_translationoption VALUES (80, 3, 24, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (81, 3, 25, '0 barn', '');
+INSERT INTO pollster_translationoption VALUES (82, 3, 26, '1 barn', '');
+INSERT INTO pollster_translationoption VALUES (83, 3, 27, '2 barn', '');
+INSERT INTO pollster_translationoption VALUES (84, 3, 28, '3 barn', '');
+INSERT INTO pollster_translationoption VALUES (85, 3, 29, '4 barn eller fler', '');
+INSERT INTO pollster_translationoption VALUES (86, 3, 30, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (87, 3, 31, 'Mig själv', '');
+INSERT INTO pollster_translationoption VALUES (88, 3, 32, 'En hushållsmedlem ', '');
+INSERT INTO pollster_translationoption VALUES (89, 3, 33, 'Någon annan (utanför mitt hushåll)', '');
+INSERT INTO pollster_translationoption VALUES (90, 3, 34, '', '');
+INSERT INTO pollster_translationoption VALUES (91, 3, 35, 'Ingen avslutad utbildning  ', '');
+INSERT INTO pollster_translationoption VALUES (92, 3, 36, 'Folkskola, 6 eller 7 år', '');
+INSERT INTO pollster_translationoption VALUES (93, 3, 37, 'Realskola', '');
+INSERT INTO pollster_translationoption VALUES (94, 3, 38, 'Grundskola, 9 år', '');
+INSERT INTO pollster_translationoption VALUES (95, 3, 39, 'Gymnasieskola, 2 till 4 år', '');
+INSERT INTO pollster_translationoption VALUES (96, 3, 40, 'Universitet/högskola, mindre än 3 år', '');
+INSERT INTO pollster_translationoption VALUES (97, 3, 41, 'Universitet/högskola, 3 år eller mer', '');
+INSERT INTO pollster_translationoption VALUES (98, 3, 42, 'Annan eftergymnasial påbyggnadsutbildning', '');
+INSERT INTO pollster_translationoption VALUES (99, 3, 43, 'Studerar fortfarande', '');
+INSERT INTO pollster_translationoption VALUES (100, 3, 44, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (101, 3, 45, 'Ingen avslutad utbildning  ', '');
+INSERT INTO pollster_translationoption VALUES (102, 3, 46, 'Folkskola, 6 eller 7 år', '');
+INSERT INTO pollster_translationoption VALUES (103, 3, 47, 'Realskola', '');
+INSERT INTO pollster_translationoption VALUES (104, 3, 48, 'Grundskola, 9 år', '');
+INSERT INTO pollster_translationoption VALUES (105, 3, 49, 'Gymnasieskola, 2 till 4 år', '');
+INSERT INTO pollster_translationoption VALUES (106, 3, 50, 'Universitet/högskola, mindre än 3 år', '');
+INSERT INTO pollster_translationoption VALUES (107, 3, 51, 'Universitet/högskola, 3 år eller mer', '');
+INSERT INTO pollster_translationoption VALUES (108, 3, 52, 'Annan eftergymnasial påbyggnadsutbildning', '');
+INSERT INTO pollster_translationoption VALUES (109, 3, 53, 'Studerar fortfarande', '');
+INSERT INTO pollster_translationoption VALUES (110, 3, 54, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (111, 3, 55, 'Anställd', '');
+INSERT INTO pollster_translationoption VALUES (112, 3, 56, 'Anställd, deltid', '');
+INSERT INTO pollster_translationoption VALUES (113, 3, 57, 'Näringsverksamhet', '');
+INSERT INTO pollster_translationoption VALUES (114, 3, 58, 'Studerar', '');
+INSERT INTO pollster_translationoption VALUES (115, 3, 59, 'Vård av barn/anhörig, hemmamake/-maka', '');
+INSERT INTO pollster_translationoption VALUES (116, 3, 60, 'Arbetslös', '');
+INSERT INTO pollster_translationoption VALUES (117, 3, 61, 'Pensionär', '');
+INSERT INTO pollster_translationoption VALUES (118, 3, 62, 'Föräldraledig ', '');
+INSERT INTO pollster_translationoption VALUES (119, 3, 63, 'Sjukskriven ', '');
+INSERT INTO pollster_translationoption VALUES (120, 3, 64, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (121, 3, 65, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (122, 3, 66, 'Anställd', '');
+INSERT INTO pollster_translationoption VALUES (123, 3, 67, 'Anställd, deltid', '');
+INSERT INTO pollster_translationoption VALUES (124, 3, 68, 'Näringsverksamhet', '');
+INSERT INTO pollster_translationoption VALUES (125, 3, 69, 'Studerar', '');
+INSERT INTO pollster_translationoption VALUES (126, 3, 70, 'Vård av barn/anhörig, hemmamake/-maka', '');
+INSERT INTO pollster_translationoption VALUES (127, 3, 71, 'Arbetslös', '');
+INSERT INTO pollster_translationoption VALUES (128, 3, 72, 'Pensionär', '');
+INSERT INTO pollster_translationoption VALUES (129, 3, 73, 'Föräldraledig ', '');
+INSERT INTO pollster_translationoption VALUES (130, 3, 74, 'Sjukskriven ', '');
+INSERT INTO pollster_translationoption VALUES (131, 3, 75, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (132, 3, 76, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (133, 3, 77, 'Chefsarbete', '');
+INSERT INTO pollster_translationoption VALUES (134, 3, 78, 'Arbete som kräver fördjupad högskolekompetens', '');
+INSERT INTO pollster_translationoption VALUES (135, 3, 79, 'visas ej', '');
+INSERT INTO pollster_translationoption VALUES (136, 3, 80, 'Arbete som kräver högskolekompetens eller motsvarande', '');
+INSERT INTO pollster_translationoption VALUES (137, 3, 81, 'Administration och kundtjänst', '');
+INSERT INTO pollster_translationoption VALUES (138, 3, 82, 'Service, omsorg och försäljning', '');
+INSERT INTO pollster_translationoption VALUES (139, 3, 83, 'Maskinell tillverkning och transport', '');
+INSERT INTO pollster_translationoption VALUES (140, 3, 84, 'Lantbruk, trädgård, skogsbruk, fiske ', '');
+INSERT INTO pollster_translationoption VALUES (141, 3, 85, 'Byggverksamhet och tillverkning ', '');
+INSERT INTO pollster_translationoption VALUES (142, 3, 86, 'Arbete som kräver kortare utbildning eller introduktion', '');
+INSERT INTO pollster_translationoption VALUES (143, 3, 87, 'Militärt arbete', '');
+INSERT INTO pollster_translationoption VALUES (144, 3, 88, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (145, 3, 89, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (146, 3, 90, 'Chefsarbete', '');
+INSERT INTO pollster_translationoption VALUES (147, 3, 91, 'Arbete som kräver fördjupad högskolekompetens', '');
+INSERT INTO pollster_translationoption VALUES (148, 3, 92, 'visas ej?', '');
+INSERT INTO pollster_translationoption VALUES (149, 3, 93, 'Arbete som kräver högskolekompetens eller motsvarande', '');
+INSERT INTO pollster_translationoption VALUES (150, 3, 94, 'Administration och kundtjänst', '');
+INSERT INTO pollster_translationoption VALUES (151, 3, 95, 'Service, omsorg och försäljning', '');
+INSERT INTO pollster_translationoption VALUES (152, 3, 96, 'Maskinell tillverkning och transport', '');
+INSERT INTO pollster_translationoption VALUES (153, 3, 97, 'Lantbruk, trädgård, skogsbruk, fiske ', '');
+INSERT INTO pollster_translationoption VALUES (154, 3, 98, 'Byggverksamhet och tillverkning ', '');
+INSERT INTO pollster_translationoption VALUES (155, 3, 99, 'Arbete som kräver kortare utbildning eller introduktion', '');
+INSERT INTO pollster_translationoption VALUES (156, 3, 100, 'Militärt arbete', '');
+INSERT INTO pollster_translationoption VALUES (157, 3, 101, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (158, 3, 102, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (159, 3, 103, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (160, 3, 104, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (161, 3, 105, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (162, 3, 106, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (163, 3, 107, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (164, 3, 108, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (165, 3, 109, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (166, 3, 110, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (167, 3, 111, '', '');
+INSERT INTO pollster_translationoption VALUES (168, 3, 112, 'Ingen avslutad utbildning  ', '');
+INSERT INTO pollster_translationoption VALUES (169, 3, 113, 'Folkskola, 6 eller 7 år', '');
+INSERT INTO pollster_translationoption VALUES (170, 3, 114, 'Realskola', '');
+INSERT INTO pollster_translationoption VALUES (171, 3, 115, 'Grundskola, 9 år', '');
+INSERT INTO pollster_translationoption VALUES (172, 3, 116, 'Gymnasieskola, 2 till 4 år', '');
+INSERT INTO pollster_translationoption VALUES (173, 3, 117, 'Universitet/högskola, mindre än 3 år', '');
+INSERT INTO pollster_translationoption VALUES (174, 3, 118, 'Universitet/högskola, 3 år eller mer', '');
+INSERT INTO pollster_translationoption VALUES (175, 3, 119, 'Annan eftergymnasial påbyggnadsutbildning', '');
+INSERT INTO pollster_translationoption VALUES (176, 3, 120, 'Studerar fortfarande', '');
+INSERT INTO pollster_translationoption VALUES (177, 3, 121, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (178, 3, 122, 'Anställd', '');
+INSERT INTO pollster_translationoption VALUES (179, 3, 123, 'Anställd, deltid', '');
+INSERT INTO pollster_translationoption VALUES (180, 3, 124, 'Näringsverksamhet', '');
+INSERT INTO pollster_translationoption VALUES (181, 3, 125, 'Studerar', '');
+INSERT INTO pollster_translationoption VALUES (182, 3, 126, 'Vård av barn/anhörig, hemmamake/-maka', '');
+INSERT INTO pollster_translationoption VALUES (183, 3, 127, 'Arbetslös', '');
+INSERT INTO pollster_translationoption VALUES (184, 3, 128, 'Pensionär', '');
+INSERT INTO pollster_translationoption VALUES (185, 3, 129, 'Föräldraledig ', '');
+INSERT INTO pollster_translationoption VALUES (186, 3, 130, 'Sjukskriven ', '');
+INSERT INTO pollster_translationoption VALUES (187, 3, 131, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (188, 3, 132, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (189, 3, 133, 'Chefsarbete', '');
+INSERT INTO pollster_translationoption VALUES (190, 3, 134, 'Arbete som kräver fördjupad högskolekompetens', '');
+INSERT INTO pollster_translationoption VALUES (191, 3, 135, 'Administration och kundtjänst', '');
+INSERT INTO pollster_translationoption VALUES (192, 3, 136, 'Arbete som kräver högskolekompetens eller motsvarande', '');
+INSERT INTO pollster_translationoption VALUES (193, 3, 137, 'Administration och kundtjänst', '');
+INSERT INTO pollster_translationoption VALUES (194, 3, 138, 'Service, omsorg och försäljning', '');
+INSERT INTO pollster_translationoption VALUES (195, 3, 139, 'Maskinell tillverkning och transport', '');
+INSERT INTO pollster_translationoption VALUES (196, 3, 140, 'Lantbruk, trädgård, skogsbruk, fiske ', '');
+INSERT INTO pollster_translationoption VALUES (197, 3, 141, 'Byggverksamhet och tillverkning ', '');
+INSERT INTO pollster_translationoption VALUES (198, 3, 142, 'Arbete som kräver kortare utbildning eller introduktion', '');
+INSERT INTO pollster_translationoption VALUES (199, 3, 143, 'Militärt arbete', '');
+INSERT INTO pollster_translationoption VALUES (200, 3, 144, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (201, 3, 145, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (202, 3, 146, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (203, 3, 147, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (204, 3, 148, 'Jag vill inte svara', '');
+INSERT INTO pollster_translationoption VALUES (205, 3, 149, '', '');
+INSERT INTO pollster_translationoption VALUES (206, 3, 150, '', '');
+INSERT INTO pollster_translationoption VALUES (207, 3, 151, '', '');
+INSERT INTO pollster_translationoption VALUES (208, 3, 152, '', '');
+INSERT INTO pollster_translationoption VALUES (209, 3, 153, '', '');
+INSERT INTO pollster_translationoption VALUES (210, 3, 154, '', '');
+INSERT INTO pollster_translationoption VALUES (211, 3, 155, '', '');
+INSERT INTO pollster_translationoption VALUES (212, 3, 156, '', '');
+INSERT INTO pollster_translationoption VALUES (213, 3, 157, '', '');
+INSERT INTO pollster_translationoption VALUES (214, 3, 158, '', '');
+INSERT INTO pollster_translationoption VALUES (215, 3, 159, '', '');
+INSERT INTO pollster_translationoption VALUES (216, 3, 160, '', '');
+INSERT INTO pollster_translationoption VALUES (217, 3, 161, '', '');
+INSERT INTO pollster_translationoption VALUES (218, 3, 162, '', '');
+INSERT INTO pollster_translationoption VALUES (219, 3, 163, '', '');
+INSERT INTO pollster_translationoption VALUES (220, 3, 164, '', '');
+INSERT INTO pollster_translationoption VALUES (221, 3, 165, '', '');
+INSERT INTO pollster_translationoption VALUES (222, 3, 166, '', '');
+INSERT INTO pollster_translationoption VALUES (223, 3, 167, '', '');
+INSERT INTO pollster_translationoption VALUES (224, 3, 168, '', '');
+INSERT INTO pollster_translationoption VALUES (225, 3, 169, '', '');
+INSERT INTO pollster_translationoption VALUES (226, 3, 170, '', '');
+INSERT INTO pollster_translationoption VALUES (227, 3, 171, '', '');
+INSERT INTO pollster_translationoption VALUES (228, 3, 172, '', '');
+INSERT INTO pollster_translationoption VALUES (229, 3, 173, '', '');
+INSERT INTO pollster_translationoption VALUES (230, 3, 174, '', '');
+INSERT INTO pollster_translationoption VALUES (231, 4, 188, 'Nee, geen symptomen', '');
+INSERT INTO pollster_translationoption VALUES (232, 4, 189, 'Koorts', '');
+INSERT INTO pollster_translationoption VALUES (233, 4, 190, 'Koude rillingen', '');
+INSERT INTO pollster_translationoption VALUES (234, 4, 191, 'Niezen', '');
+INSERT INTO pollster_translationoption VALUES (235, 4, 192, 'Zere keel', '');
+INSERT INTO pollster_translationoption VALUES (236, 4, 193, 'Loopneus of verstopte neus', '');
+INSERT INTO pollster_translationoption VALUES (237, 4, 194, 'Hoesten', '');
+INSERT INTO pollster_translationoption VALUES (238, 4, 195, 'Verkleurd slijm', '');
+INSERT INTO pollster_translationoption VALUES (239, 4, 196, 'Kortademigheid', '');
+INSERT INTO pollster_translationoption VALUES (240, 4, 197, 'Pijn op de borst', '');
+INSERT INTO pollster_translationoption VALUES (241, 4, 198, 'Gevoel van vermoeidheid/uitgeput', '');
+INSERT INTO pollster_translationoption VALUES (242, 4, 199, 'Spier/gewrichtspijn', '');
+INSERT INTO pollster_translationoption VALUES (243, 4, 200, 'Hoofdpijn', '');
+INSERT INTO pollster_translationoption VALUES (244, 4, 201, 'Verminderde eetlust', '');
+INSERT INTO pollster_translationoption VALUES (245, 4, 202, 'Waterige of bloeddoorlopen ogen', '');
+INSERT INTO pollster_translationoption VALUES (246, 4, 203, 'Pijn in de maag', '');
+INSERT INTO pollster_translationoption VALUES (247, 4, 205, 'Misselijkheid', '');
+INSERT INTO pollster_translationoption VALUES (248, 4, 206, 'Overgeven', '');
+INSERT INTO pollster_translationoption VALUES (249, 4, 207, 'Diarree', '');
+INSERT INTO pollster_translationoption VALUES (250, 4, 210, 'Andere symptomen', '');
+INSERT INTO pollster_translationoption VALUES (251, 4, 234, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (252, 4, 235, 'Nee', '');
+INSERT INTO pollster_translationoption VALUES (253, 4, 236, 'Dat weet ik niet (meer)', '');
+INSERT INTO pollster_translationoption VALUES (254, 4, 237, '', '');
+INSERT INTO pollster_translationoption VALUES (255, 4, 238, '37°C of lager', '');
+INSERT INTO pollster_translationoption VALUES (256, 4, 239, '', '');
+INSERT INTO pollster_translationoption VALUES (257, 4, 240, '', '');
+INSERT INTO pollster_translationoption VALUES (258, 4, 241, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (259, 4, 242, 'Nee', '');
+INSERT INTO pollster_translationoption VALUES (260, 4, 243, 'Dat weet ik niet (meer)', '');
+INSERT INTO pollster_translationoption VALUES (261, 4, 269, 'Kies datum:', '');
+INSERT INTO pollster_translationoption VALUES (262, 4, 270, 'Dat weet ik niet (meer)', '');
+INSERT INTO pollster_translationoption VALUES (263, 4, 272, 'Ja, ik heb griep of griepachtige verschijnselen', '');
+INSERT INTO pollster_translationoption VALUES (264, 4, 273, 'Ja, ik ben verkouden', '');
+INSERT INTO pollster_translationoption VALUES (265, 4, 274, 'Ja, van een allergie zoals hooikoorts', '');
+INSERT INTO pollster_translationoption VALUES (266, 4, 276, 'Ja, ik heb maag-/darmklachten of buikgriep', '');
+INSERT INTO pollster_translationoption VALUES (267, 4, 277, 'Ja, ik heb een andere ziekte die de klachten veroorzaakt', '');
+INSERT INTO pollster_translationoption VALUES (268, 4, 278, 'Nee, ik heb geen idee', '');
+INSERT INTO pollster_translationoption VALUES (269, 5, 175, '', '');
+INSERT INTO pollster_translationoption VALUES (270, 5, 176, '', '');
+INSERT INTO pollster_translationoption VALUES (271, 5, 177, '', '');
+INSERT INTO pollster_translationoption VALUES (272, 5, 178, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (273, 5, 179, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (274, 5, 180, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (275, 5, 181, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (276, 5, 182, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (277, 5, 183, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (278, 5, 184, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (279, 5, 185, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (280, 5, 186, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (281, 5, 187, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (282, 5, 188, 'Inget av dessa symptom', '');
+INSERT INTO pollster_translationoption VALUES (283, 5, 189, 'Feber', '');
+INSERT INTO pollster_translationoption VALUES (284, 5, 190, 'Frossa', '');
+INSERT INTO pollster_translationoption VALUES (285, 5, 191, 'Nysningar', '');
+INSERT INTO pollster_translationoption VALUES (286, 5, 192, 'Ont i halsen', '');
+INSERT INTO pollster_translationoption VALUES (287, 5, 193, 'Snuva', '');
+INSERT INTO pollster_translationoption VALUES (288, 5, 194, 'Hosta', '');
+INSERT INTO pollster_translationoption VALUES (289, 5, 195, 'Färgade upphostningar', '');
+INSERT INTO pollster_translationoption VALUES (290, 5, 196, 'Andfåddhet', '');
+INSERT INTO pollster_translationoption VALUES (291, 5, 197, 'Bröstsmärtor', '');
+INSERT INTO pollster_translationoption VALUES (292, 5, 198, 'Stor trötthet, utmattning', '');
+INSERT INTO pollster_translationoption VALUES (293, 5, 199, 'Muskelvärk, värk i kroppen', '');
+INSERT INTO pollster_translationoption VALUES (294, 5, 200, 'Huvudvärk', '');
+INSERT INTO pollster_translationoption VALUES (295, 5, 201, 'Aptitlöshet', '');
+INSERT INTO pollster_translationoption VALUES (296, 5, 202, 'Rinnande/rödsprängda ögon', '');
+INSERT INTO pollster_translationoption VALUES (297, 5, 203, 'Ont i magen', '');
+INSERT INTO pollster_translationoption VALUES (298, 5, 204, 'Magknip', '');
+INSERT INTO pollster_translationoption VALUES (299, 5, 205, 'Illamående', '');
+INSERT INTO pollster_translationoption VALUES (300, 5, 206, 'Kräkningar', '');
+INSERT INTO pollster_translationoption VALUES (301, 5, 207, 'Diarré', '');
+INSERT INTO pollster_translationoption VALUES (302, 5, 208, 'Slem i avföringen', '');
+INSERT INTO pollster_translationoption VALUES (303, 5, 209, 'Blod i avföringen', '');
+INSERT INTO pollster_translationoption VALUES (304, 5, 210, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (305, 5, 211, 'inga symptom', '');
+INSERT INTO pollster_translationoption VALUES (306, 5, 212, 'Feber', '');
+INSERT INTO pollster_translationoption VALUES (307, 5, 213, 'Frossa', '');
+INSERT INTO pollster_translationoption VALUES (308, 5, 214, 'Nysningar', '');
+INSERT INTO pollster_translationoption VALUES (309, 5, 215, 'Ont i halsen', '');
+INSERT INTO pollster_translationoption VALUES (310, 5, 216, 'Snuva', '');
+INSERT INTO pollster_translationoption VALUES (311, 5, 217, 'Hosta', '');
+INSERT INTO pollster_translationoption VALUES (312, 5, 218, 'Färgade upphostningar', '');
+INSERT INTO pollster_translationoption VALUES (313, 5, 219, 'Andfåddhet', '');
+INSERT INTO pollster_translationoption VALUES (314, 5, 220, 'Bröstsmärtor', '');
+INSERT INTO pollster_translationoption VALUES (315, 5, 221, 'Extrem trötthet, utmattning', '');
+INSERT INTO pollster_translationoption VALUES (316, 5, 222, 'Muskelvärk, värk i kroppen', '');
+INSERT INTO pollster_translationoption VALUES (317, 5, 223, 'Huvudvärk', '');
+INSERT INTO pollster_translationoption VALUES (318, 5, 224, 'Aptitlöshet', '');
+INSERT INTO pollster_translationoption VALUES (319, 5, 225, 'Rinnande/blodsprängda ögon', '');
+INSERT INTO pollster_translationoption VALUES (320, 5, 226, 'Ont i magen', '');
+INSERT INTO pollster_translationoption VALUES (321, 5, 227, 'Magknip', '');
+INSERT INTO pollster_translationoption VALUES (322, 5, 228, 'Illamående', '');
+INSERT INTO pollster_translationoption VALUES (323, 5, 229, 'Kräkningar', '');
+INSERT INTO pollster_translationoption VALUES (324, 5, 230, 'Diarre', '');
+INSERT INTO pollster_translationoption VALUES (325, 5, 231, 'Slem i avföringen', '');
+INSERT INTO pollster_translationoption VALUES (326, 5, 232, 'Blod i avföringen', '');
+INSERT INTO pollster_translationoption VALUES (327, 5, 233, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (328, 5, 234, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (329, 5, 235, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (330, 5, 236, 'Jag vet inte/minns inte', '');
+INSERT INTO pollster_translationoption VALUES (331, 5, 237, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (332, 5, 238, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (333, 5, 239, 'Jag vet inte', '');
+INSERT INTO pollster_translationoption VALUES (334, 5, 240, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (335, 5, 241, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (336, 5, 242, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (337, 5, 243, 'Jag vet inte', '');
+INSERT INTO pollster_translationoption VALUES (338, 5, 244, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (339, 5, 245, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (340, 5, 246, '1 gång', '');
+INSERT INTO pollster_translationoption VALUES (341, 5, 247, '2 gånger', '');
+INSERT INTO pollster_translationoption VALUES (342, 5, 248, '3 gånger', '');
+INSERT INTO pollster_translationoption VALUES (343, 5, 249, '4-5 gånger', '');
+INSERT INTO pollster_translationoption VALUES (344, 5, 250, '6 eller fler gånger', '');
+INSERT INTO pollster_translationoption VALUES (345, 5, 251, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (346, 5, 252, '1 gång', '');
+INSERT INTO pollster_translationoption VALUES (347, 5, 253, '2 gånger', '');
+INSERT INTO pollster_translationoption VALUES (348, 5, 254, '3 gånger', '');
+INSERT INTO pollster_translationoption VALUES (349, 5, 255, '4-5 gånger', '');
+INSERT INTO pollster_translationoption VALUES (350, 5, 256, '6 eller fler gånger', '');
+INSERT INTO pollster_translationoption VALUES (351, 5, 257, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (352, 5, 258, '1 gång', '');
+INSERT INTO pollster_translationoption VALUES (353, 5, 259, '2 gånger', '');
+INSERT INTO pollster_translationoption VALUES (354, 5, 260, '3 gånger', '');
+INSERT INTO pollster_translationoption VALUES (355, 5, 261, '4-5 gånger', '');
+INSERT INTO pollster_translationoption VALUES (356, 5, 262, '6 eller fler gånger', '');
+INSERT INTO pollster_translationoption VALUES (357, 5, 263, 'NullAns', '');
+INSERT INTO pollster_translationoption VALUES (358, 5, 264, '1 gång', '');
+INSERT INTO pollster_translationoption VALUES (359, 5, 265, '2 gånger', '');
+INSERT INTO pollster_translationoption VALUES (360, 5, 266, '3 gånger', '');
+INSERT INTO pollster_translationoption VALUES (361, 5, 267, '4-5 gånger', '');
+INSERT INTO pollster_translationoption VALUES (362, 5, 268, '6 eller fler gånger', '');
+INSERT INTO pollster_translationoption VALUES (363, 5, 269, 'Datum:', '');
+INSERT INTO pollster_translationoption VALUES (364, 5, 270, 'Jag vet inte/minns inte', '');
+INSERT INTO pollster_translationoption VALUES (365, 5, 271, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (366, 5, 272, 'Influensaliknande sjukdom', '');
+INSERT INTO pollster_translationoption VALUES (367, 5, 273, 'Förkylning/snuva', '');
+INSERT INTO pollster_translationoption VALUES (368, 5, 274, 'Allergi/pollen', '');
+INSERT INTO pollster_translationoption VALUES (369, 5, 275, 'Astma', '');
+INSERT INTO pollster_translationoption VALUES (370, 5, 276, 'Magsjuka/gastroenterit', '');
+INSERT INTO pollster_translationoption VALUES (371, 5, 277, 'Annat', '');
+INSERT INTO pollster_translationoption VALUES (372, 5, 278, 'Jag vet inte ', '');
+INSERT INTO pollster_translationoption VALUES (373, 5, 279, '', '');
+INSERT INTO pollster_translationoption VALUES (374, 5, 280, '', '');
+INSERT INTO pollster_translationoption VALUES (375, 5, 281, '', '');
+INSERT INTO pollster_translationoption VALUES (376, 5, 282, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (377, 5, 283, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (378, 5, 284, 'Nej', '');
+INSERT INTO pollster_translationoption VALUES (379, 5, 285, 'Ja', '');
+INSERT INTO pollster_translationoption VALUES (380, 5, 286, '', '');
+INSERT INTO pollster_translationoption VALUES (381, 5, 287, '', '');
+INSERT INTO pollster_translationoption VALUES (382, 5, 288, '', '');
+INSERT INTO pollster_translationoption VALUES (383, 5, 289, '', '');
+INSERT INTO pollster_translationoption VALUES (384, 5, 290, '', '');
+INSERT INTO pollster_translationoption VALUES (385, 5, 291, '', '');
+INSERT INTO pollster_translationoption VALUES (386, 5, 292, '', '');
+INSERT INTO pollster_translationoption VALUES (387, 5, 293, '', '');
+INSERT INTO pollster_translationoption VALUES (388, 5, 294, '', '');
+INSERT INTO pollster_translationoption VALUES (389, 5, 295, '', '');
+INSERT INTO pollster_translationoption VALUES (390, 5, 296, '', '');
+INSERT INTO pollster_translationoption VALUES (391, 5, 297, '', '');
 
-COPY pollster_translationoption (id, translation_id, option_id, text, description) FROM stdin;
-1	1	1	Maschio
-2	1	2	Femmina
-3	1	3
-4	1	4
-5	1	31	Sì
-6	1	35	Non possiedo alcuna qualifica formale
-7	1	38	Diploma di scuola superiore
-8	1	40	Diploma di laurea triennale
-9	1	41	Diploma di laurea magistrale o titolo di studio superiore (Ph.D.)
-10	1	43	Sono ancora in formazione scolastica
-11	1	55	Impiego retribuito, tempo pieno
-12	1	56	Impiego retribuito, part time
-13	1	57	Lavoratore autonomo (libero professionista, commerciante, contadino, etc.)
-14	1	58	Studente (scuola dell'obbligo, scuola superiore, università, etc.)
-15	1	59	Casalingo/a
-16	1	60	Senza impiego
-17	1	61	In pensione
-18	1	63	Congedo a lungo termine dall'attività lavorativa (per maternità/paternità, malattia, etc.)
-19	1	64	Altro
-20	1	78	Professionista (es. manager, medico, insegnante, infermiera, ingegnere, etc.)
-21	1	79	Vendita al dettaglio, ristorazione ospitalità e tempo libero (es. commesso di negozio, cameriere, barista, istruttore di palestra etc.)
-22	1	81	Lavoro d'ufficio (es. amministratore, assistente finanziario, segretaria etc.)
-23	1	83	Lavoratore manuale specializzato (es. meccanico, elettricista, tecnico, etc.)
-24	1	86	Lavoratore manuale di altro tipo (es. addetto alle pulizie, addetto alla sicurezza, autista, etc.)
-25	1	88	Altro
-26	1	103	No
-27	1	104	Si, occasionalmente
-28	2	1	Man
-29	2	2	Vrouw
-30	2	3
-31	2	4
-32	2	31	Mezelf
-33	2	33	Iemand anders
-34	2	35	Ik heb geen officiële diploma’s
-35	2	38	Mavo of vmbo
-36	2	39	Havo, vwo of MBO
-37	2	40	HBO of WO bachelor
-38	2	41	WO master/PhD (doctor)
-39	2	43	Ik ben nog bezig met een opleiding
-40	2	55	Ik werk fulltime in loondienst
-41	2	56	Ik werk parttime in loondienst
-42	2	57	Ik werk als zelfstandige/ondernemer
-43	2	58	Ik ben scholier of student
-44	2	59	Ik ben huisman/huisvrouw
-45	2	60	Ik ben werkloos
-46	2	61	Ik ben met pensioen
-47	2	63	Ik ben thuis vanwege langdurige ziekte of zwangerschapsverlof
-48	2	64	Anders
-49	2	78	Professional
-50	2	79	Verkoop, horeca en vrije tijd
-51	2	81	Kantoorwerk
-52	2	83	Technisch handwerk
-53	2	86	Ander handwerk
-54	2	88	Anders
-55	2	103	Nee
-56	2	104	Ja, af en toe
-57	3	1	Man/pojke
-58	3	2	Kvinna/flicka
-59	3	3
-60	3	4
-61	3	5
-62	3	6
-63	3	7	1 person
-64	3	8	2 personer
-65	3	9	3 personer
-66	3	10	4 personer
-67	3	11	5 personer eller fler
-68	3	12	Jag vill inte svara
-69	3	13	1 person
-70	3	14	2 personer
-71	3	15	3 personer
-72	3	16	4 personer
-73	3	17	5 personer eller fler
-74	3	18	Jag vill inte svara
-75	3	19	0 barn
-76	3	20	1 barn
-77	3	21	2 barn
-78	3	22	3 barn
-79	3	23	4 barn eller fler
-80	3	24	Jag vill inte svara
-81	3	25	0 barn
-82	3	26	1 barn
-83	3	27	2 barn
-84	3	28	3 barn
-85	3	29	4 barn eller fler
-86	3	30	Jag vill inte svara
-87	3	31	Mig själv
-88	3	32	En hushållsmedlem
-89	3	33	Någon annan (utanför mitt hushåll)
-90	3	34
-91	3	35	Ingen avslutad utbildning
-92	3	36	Folkskola, 6 eller 7 år
-93	3	37	Realskola
-94	3	38	Grundskola, 9 år
-95	3	39	Gymnasieskola, 2 till 4 år
-96	3	40	Universitet/högskola, mindre än 3 år
-97	3	41	Universitet/högskola, 3 år eller mer
-98	3	42	Annan eftergymnasial påbyggnadsutbildning
-99	3	43	Studerar fortfarande
-100	3	44	Jag vill inte svara
-101	3	45	Ingen avslutad utbildning
-102	3	46	Folkskola, 6 eller 7 år
-103	3	47	Realskola
-104	3	48	Grundskola, 9 år
-105	3	49	Gymnasieskola, 2 till 4 år
-106	3	50	Universitet/högskola, mindre än 3 år
-107	3	51	Universitet/högskola, 3 år eller mer
-108	3	52	Annan eftergymnasial påbyggnadsutbildning
-109	3	53	Studerar fortfarande
-110	3	54	Jag vill inte svara
-111	3	55	Anställd
-112	3	56	Anställd, deltid
-113	3	57	Näringsverksamhet
-114	3	58	Studerar
-115	3	59	Vård av barn/anhörig, hemmamake/-maka
-116	3	60	Arbetslös
-117	3	61	Pensionär
-118	3	62	Föräldraledig
-119	3	63	Sjukskriven
-120	3	64	Annat
-121	3	65	Jag vill inte svara
-122	3	66	Anställd
-123	3	67	Anställd, deltid
-124	3	68	Näringsverksamhet
-125	3	69	Studerar
-126	3	70	Vård av barn/anhörig, hemmamake/-maka
-127	3	71	Arbetslös
-128	3	72	Pensionär
-129	3	73	Föräldraledig
-130	3	74	Sjukskriven
-131	3	75	Annat
-132	3	76	Jag vill inte svara
-133	3	77	Chefsarbete
-134	3	78	Arbete som kräver fördjupad högskolekompetens
-135	3	79	visas ej
-136	3	80	Arbete som kräver högskolekompetens eller motsvarande
-137	3	81	Administration och kundtjänst
-138	3	82	Service, omsorg och försäljning
-139	3	83	Maskinell tillverkning och transport
-140	3	84	Lantbruk, trädgård, skogsbruk, fiske
-141	3	85	Byggverksamhet och tillverkning
-142	3	86	Arbete som kräver kortare utbildning eller introduktion
-143	3	87	Militärt arbete
-144	3	88	Annat
-145	3	89	Jag vill inte svara
-146	3	90	Chefsarbete
-147	3	91	Arbete som kräver fördjupad högskolekompetens
-148	3	92	visas ej?
-149	3	93	Arbete som kräver högskolekompetens eller motsvarande
-150	3	94	Administration och kundtjänst
-151	3	95	Service, omsorg och försäljning
-152	3	96	Maskinell tillverkning och transport
-153	3	97	Lantbruk, trädgård, skogsbruk, fiske
-154	3	98	Byggverksamhet och tillverkning
-155	3	99	Arbete som kräver kortare utbildning eller introduktion
-156	3	100	Militärt arbete
-157	3	101	Annat
-158	3	102	Jag vill inte svara
-159	3	103	Nej
-160	3	104	Ja
-161	3	105	Jag vill inte svara
-162	3	106	Nej
-163	3	107	Ja
-164	3	108	Jag vill inte svara
-165	3	109	Ja
-166	3	110	Nej
-167	3	111
-168	3	112	Ingen avslutad utbildning
-169	3	113	Folkskola, 6 eller 7 år
-170	3	114	Realskola
-171	3	115	Grundskola, 9 år
-172	3	116	Gymnasieskola, 2 till 4 år
-173	3	117	Universitet/högskola, mindre än 3 år
-174	3	118	Universitet/högskola, 3 år eller mer
-175	3	119	Annan eftergymnasial påbyggnadsutbildning
-176	3	120	Studerar fortfarande
-177	3	121	Jag vill inte svara
-178	3	122	Anställd
-179	3	123	Anställd, deltid
-180	3	124	Näringsverksamhet
-181	3	125	Studerar
-182	3	126	Vård av barn/anhörig, hemmamake/-maka
-183	3	127	Arbetslös
-184	3	128	Pensionär
-185	3	129	Föräldraledig
-186	3	130	Sjukskriven
-187	3	131	Annat
-188	3	132	Jag vill inte svara
-189	3	133	Chefsarbete
-190	3	134	Arbete som kräver fördjupad högskolekompetens
-191	3	135	Administration och kundtjänst
-192	3	136	Arbete som kräver högskolekompetens eller motsvarande
-193	3	137	Administration och kundtjänst
-194	3	138	Service, omsorg och försäljning
-195	3	139	Maskinell tillverkning och transport
-196	3	140	Lantbruk, trädgård, skogsbruk, fiske
-197	3	141	Byggverksamhet och tillverkning
-198	3	142	Arbete som kräver kortare utbildning eller introduktion
-199	3	143	Militärt arbete
-200	3	144	Annat
-201	3	145	Jag vill inte svara
-202	3	146	Nej
-203	3	147	Ja
-204	3	148	Jag vill inte svara
-205	3	149
-206	3	150
-207	3	151
-208	3	152
-209	3	153
-210	3	154
-211	3	155
-212	3	156
-213	3	157
-214	3	158
-215	3	159
-216	3	160
-217	3	161
-218	3	162
-219	3	163
-220	3	164
-221	3	165
-222	3	166
-223	3	167
-224	3	168
-225	3	169
-226	3	170
-227	3	171
-228	3	172
-229	3	173
-230	3	174
-231	4	188	Nee, geen symptomen
-232	4	189	Koorts
-233	4	190	Koude rillingen
-234	4	191	Niezen
-235	4	192	Zere keel
-236	4	193	Loopneus of verstopte neus
-237	4	194	Hoesten
-238	4	195	Verkleurd slijm
-239	4	196	Kortademigheid
-240	4	197	Pijn op de borst
-241	4	198	Gevoel van vermoeidheid/uitgeput
-242	4	199	Spier/gewrichtspijn
-243	4	200	Hoofdpijn
-244	4	201	Verminderde eetlust
-245	4	202	Waterige of bloeddoorlopen ogen
-246	4	203	Pijn in de maag
-247	4	205	Misselijkheid
-248	4	206	Overgeven
-249	4	207	Diarree
-250	4	210	Andere symptomen
-251	4	234	Ja
-252	4	235	Nee
-253	4	236	Dat weet ik niet (meer)
-254	4	237
-255	4	238	37°C of lager
-256	4	239
-257	4	240
-258	4	241	Ja
-259	4	242	Nee
-260	4	243	Dat weet ik niet (meer)
-261	4	269	Kies datum:
-262	4	270	Dat weet ik niet (meer)
-263	4	272	Ja, ik heb griep of griepachtige verschijnselen
-264	4	273	Ja, ik ben verkouden
-265	4	274	Ja, van een allergie zoals hooikoorts
-266	4	276	Ja, ik heb maag-/darmklachten of buikgriep
-267	4	277	Ja, ik heb een andere ziekte die de klachten veroorzaakt
-268	4	278	Nee, ik heb geen idee
-269	5	175
-270	5	176
-271	5	177
-272	5	178	Nej
-273	5	179	Ja
-274	5	180	Nej
-275	5	181	Ja
-276	5	182	Nej
-277	5	183	Ja
-278	5	184	NullAns
-279	5	185	Nej
-280	5	186	Ja
-281	5	187	NullAns
-282	5	188	Inget av dessa symptom
-283	5	189	Feber
-284	5	190	Frossa
-285	5	191	Nysningar
-286	5	192	Ont i halsen
-287	5	193	Snuva
-288	5	194	Hosta
-289	5	195	Färgade upphostningar
-290	5	196	Andfåddhet
-291	5	197	Bröstsmärtor
-292	5	198	Stor trötthet, utmattning
-293	5	199	Muskelvärk, värk i kroppen
-294	5	200	Huvudvärk
-295	5	201	Aptitlöshet
-296	5	202	Rinnande/rödsprängda ögon
-297	5	203	Ont i magen
-298	5	204	Magknip
-299	5	205	Illamående
-300	5	206	Kräkningar
-301	5	207	Diarré
-302	5	208	Slem i avföringen
-303	5	209	Blod i avföringen
-304	5	210	Annat
-305	5	211	inga symptom
-306	5	212	Feber
-307	5	213	Frossa
-308	5	214	Nysningar
-309	5	215	Ont i halsen
-310	5	216	Snuva
-311	5	217	Hosta
-312	5	218	Färgade upphostningar
-313	5	219	Andfåddhet
-314	5	220	Bröstsmärtor
-315	5	221	Extrem trötthet, utmattning
-316	5	222	Muskelvärk, värk i kroppen
-317	5	223	Huvudvärk
-318	5	224	Aptitlöshet
-319	5	225	Rinnande/blodsprängda ögon
-320	5	226	Ont i magen
-321	5	227	Magknip
-322	5	228	Illamående
-323	5	229	Kräkningar
-324	5	230	Diarre
-325	5	231	Slem i avföringen
-326	5	232	Blod i avföringen
-327	5	233	Annat
-328	5	234	Ja
-329	5	235	Nej
-330	5	236	Jag vet inte/minns inte
-331	5	237	Ja
-332	5	238	Nej
-333	5	239	Jag vet inte
-334	5	240	NullAns
-335	5	241	Ja
-336	5	242	Nej
-337	5	243	Jag vet inte
-338	5	244	NullAns
-339	5	245	NullAns
-340	5	246	1 gång
-341	5	247	2 gånger
-342	5	248	3 gånger
-343	5	249	4-5 gånger
-344	5	250	6 eller fler gånger
-345	5	251	NullAns
-346	5	252	1 gång
-347	5	253	2 gånger
-348	5	254	3 gånger
-349	5	255	4-5 gånger
-350	5	256	6 eller fler gånger
-351	5	257	NullAns
-352	5	258	1 gång
-353	5	259	2 gånger
-354	5	260	3 gånger
-355	5	261	4-5 gånger
-356	5	262	6 eller fler gånger
-357	5	263	NullAns
-358	5	264	1 gång
-359	5	265	2 gånger
-360	5	266	3 gånger
-361	5	267	4-5 gånger
-362	5	268	6 eller fler gånger
-363	5	269	Datum:
-364	5	270	Jag vet inte/minns inte
-365	5	271	Ja
-366	5	272	Influensaliknande sjukdom
-367	5	273	Förkylning/snuva
-368	5	274	Allergi/pollen
-369	5	275	Astma
-370	5	276	Magsjuka/gastroenterit
-371	5	277	Annat
-372	5	278	Jag vet inte
-373	5	279
-374	5	280
-375	5	281
-376	5	282	Nej
-377	5	283	Ja
-378	5	284	Nej
-379	5	285	Ja
-380	5	286
-381	5	287
-382	5	288
-383	5	289
-384	5	290
-385	5	291
-386	5	292
-387	5	293
-388	5	294
-389	5	295
-390	5	296
-391	5	297
-\.
-
-
---
--- Name: pollster_translationoption_id_seq; Type: SEQUENCE SET; Schema: public; Owner: epiwork
---
-
-SELECT pg_catalog.setval('pollster_translationoption_id_seq', 391, true);
-
-
---
--- Data for Name: pollster_translationquestion; Type: TABLE DATA; Schema: public; Owner: epiwork
---
-
-COPY pollster_translationquestion (id, translation_id, question_id, title, description, error_message) FROM stdin;
-1	1	1
-2	1	2	Adesione Q1	Sesso:
-3	1	3	Adesione Q3	Qual è il Codice Postale della zona in cui vivi?
-4	1	4	Adesione Q2	Mese ed anno di nascita:
-5	1	9	Adesione Q0	Sei un membro di questo gruppo/nucleo familiare?
-6	1	11	Adesione Q4d	Qual è il livello più alto di educazione/qualificazione che possiedi? Se sei ancora in formazione, ti preghiamo di segnare la casella corrispondente al livello di educazione più alto che hai già raggiunto.
-7	1	13	Adesione Q4	Qual è la tua attività principale?
-8	1	15	Adesione Q4c	Quale tra le seguenti definizioni si descrive meglio la tua attività lavorativa?
-9	1	17	Adesione Q13	Sei un fumatore/fumatrice?
-10	2	1
-11	2	2	Wat is uw geslacht?
-12	2	3	Wat zijn de vier cijfers van uw postcode?
-13	2	4	Wat is uw geboortedatum?	(Selecteer de maand en het jaar.)
-14	2	9	Wie wilt u aanmelden als griepmeter?
-15	2	11	Wat is uw hoogst genoten opleiding?	(Meerdere antwoorden mogelijk.)
-16	2	13	Wat is uw voornaamste bezigheid overdag?	(Eén antwoord mogelijk.)
-17	2	15	Welke omschrijving past het best bij uw dagelijkse werkzaamheden?
-18	2	17	Rookt u?
-19	3	1
-20	3	2	Kön.	Ange kön för den som fått inbjudan till Hälsorapport.
-21	3	3	Vilket postnummer har den inbjudna personen?	(Skriv in utan mellanslag: 12345)
-22	3	4	Ange födelsemånad och år:	(Använd kalenderfunktionen eller skriv med formatet MM/ÅÅÅÅ.)
-23	3	5	Hur många personer bor i ditt hushåll (dig själv inräknad)? 	Om någon eller några bara bor i hushållet under vissa tider (till exempel barn för vilka särboende föräldrar har delad vårdnad), räkna dem som bor i hushållet mer än en fjärdedel (25 %) av tiden.
-24	3	6	Hur många personer bor i det hushåll barnet bor i, barnet inräknat? 	Om någon eller några bara bor i hushållet under vissa tider (till exempel barn för vilka särboende föräldrar har delad vårdnad), räkna dem som bor i hushållet mer än en fjärdedel (25 %) av tiden.
-25	3	7	Hur många barn i åldrarna 0 till 6 år bor i ditt hushåll?	Räkna även med deltidsboende barn om de bor i hushållet mer än en fjärdedel (25 %) av tiden. Om det inte bor några barn i åldrarna 0 till 6 år i hushållet, kryssa i ”0 barn”.
-26	3	8	Hur många barn i åldrarna 0 till 6 år bor i det hushåll barnet bor i, barnet inräknat?	Räkna även med deltidsboende barn om de bor i hushållet mer än en fjärdedel (25 %) av tiden. Om det inte bor några barn i åldrarna 0 till 6 år i hushållet, kryssa i ”0 barn”.
-27	3	9	Vem gäller bakgrundsinformationen?
-28	3	10	Frågor om dig som målsman	Här följer några frågor (3-4) om dig som målsman. Dina svar på dessa frågor använder vi för att se om Hälsorapports deltagare speglar Sveriges befolkning.
-29	3	11	Vilken är den högsta utbildningsnivå du uppnått? 	Om du fortfarande studerar, välj den högsta utbildningsnivån du avslutat.
-30	3	12	Vilken är den högsta utbildningsnivå du som målsman uppnått? 	Om du fortfarande studerar, välj den högsta utbildningsnivån du avslutat.
-31	3	13	Vad är din huvudsakliga sysselsättning?	Välj det alternativ som passar bäst.
-32	3	14	Vad är din huvudsakliga sysselsättning?	Välj det alternativ som passar bäst.
-33	3	15	Vilket av följande stämmer bäst in på ditt arbete?
-34	3	16	Vilket av följande stämmer bäst in på ditt arbete?
-35	3	17	Röker du dagligen?
-36	3	18	Röker du dagligen?
-37	3	19	Finns det ytterligare en målsman till barnet?	Svara JA om ni har delad vårdnad över barnet.
-38	3	20	Frågor om målsman 2	Här följer några frågor (3-4) om den vi kallar målsman 2, det vill säga den andra målsman för ditt barn. Dina svar på dessa frågor använder vi för att se om Hälsorapports deltagare speglar Sveriges befolkning.
-39	3	21	Vilken är den högsta utbildningsnivå som målsman 2 uppnått?	Om målsman 2 fortfarande studerar, välj den högsta utbildningsnivån du avslutat.
-40	3	22	Vad är målsman 2:s huvudsakliga sysselsättning?
-41	3	23	Vilket av följande stämmer bäst in på målsman 2:s arbete?
-42	3	24	Röker målsman 2 dagligen?
-43	3	25	Om du har något att tillägga är du välkommen att skriva det här:
-44	3	26	Stort tack för dina svar!	Glöm inte att klicka på "Skicka in"!
-45	3	27	Har du ändrat något svar i enkäten? 	För att uppdatera dina svar på bakgrundsenkäten behöver du klicka på "Skicka in". Då sparas dina uppdaterade svar. Om du inte gjort några ändringar kan du klicka på Mitt Konto (uppe till höger) för att komma tillbaka till ditt konto utan att spara.
-46	3	28
-47	3	29
-48	3	30
-49	3	31
-50	4	32
-51	4	40	Heeft u sinds uw vorige bezoek (of sinds afgelopen week als dit de eerste keer is dat u inlogt) last gehad van een of meer van de onderstaande symptomen?	(Meerdere antwoorden mogelijk.)
-52	4	42	Kwamen de symptomen plotseling binnen een paar uur opzetten?
-53	4	43	Wat was uw hoogst gemeten temperatuur?
-54	4	44	Kwam de koorts plotseling binnen een paar uur opzetten?
-55	4	49	Wanneer kwamen de eerste symptomen opzetten?
-56	4	50	Heeft u zelf enig idee waar uw klachten vandaan komen?
-57	5	32
-58	5	33	Age
-59	5	34	Vill du ändra något i rapporten för förra veckan?	För att uppdatera rapporten för förra veckan gör du dina ändringar och klickar sedan på "Skicka in". Då sparas dina uppdaterade svar över dina gamla. Om du inte vill göra  några ändringar kan du klicka på Mitt Konto (uppe till höger) för att komma tillbaka till ditt konto utan att spara. På måndag blir nästa veckoenkät tillgänglig.
-60	5	35	Blev du sjuk i förra veckan?	Med förra veckan menas perioden måndag-söndag i den senast avslutade kalenderveckan. (Om du fortfarande har symptom från en sjukdomsepisod, som du redan har rapporterat, ska du markera NEJ, eftersom du inte blivit sjuk på nytt. Om det däremot känns som en ny smitta ska du markera JA och rapportera dina symptom.)
-61	5	36	Blev ditt barn sjukt i förra veckan?	Med förra veckan menas perioden måndag-söndag i den senast avslutade kalenderveckan. (Om ditt barn fortfarande har symptom från en sjukdomsepisod, som du redan har rapporterat, ska du markera NEJ, eftersom ditt barn inte blivit sjukt på nytt. Om det däremot känns som en ny smitta ska du markera JA och rapportera ditt barns symptom.)
-62	5	37	Har du varit utomlands någon gång under de 10 dagarna innan symptomen började?
-63	5	38	Har ditt barn varit utomlands någon gång under de 10 dagarna innan symptomen började?
-64	5	39	Till vilket land eller vilka länder?
-65	5	40	Vilka av följande symptom har du haft någon gång sedan du blev sjuk?	(Flerval.)
-66	5	41	Vilka av följande symptom har ditt barn haft någon gång sedan ditt barn blev sjukt?	(Flerval.)
-67	5	42	Var det ett hastigt insjuknande?	(Det vill säga, när man blir sjuk inom några timmar.)
-68	5	43	Var febern någon gång över 38 grader? 	(Om du inte mätte temperaturen, markera "jag vet inte")
-69	5	44	Kom febern hastigt?
-70	5	45	Hur många gånger kräktes du på det hittills värsta dygnet?
-71	5	46	Hur många gånger kräktes ditt barn på det hittills värsta dygnet?
-72	5	47	Hur många gånger hade du diarré på det hittills värsta dygnet?
-73	5	48	Hur många gånger hade ditt barn diarré på det hittills värsta dygnet?
-74	5	49	*Datum för insjuknande:	Klicka på Datum och använd sedan  kalenderfunktionen i rutan.
-75	5	50	Vad tror du själv är den huvudsakliga orsaken till symptomen?
-76	5	51	Har du några kommentarer?	Skriv dem då i rutan.
-77	5	52	Stort tack för dina svar!	Glöm inte att klicka "Skicka in"!
-78	5	53	Tack för din rapport!	Glöm inte att klicka "Skicka in"!
-79	5	54	 	Eftersom vi fokuserar på smitta i Sverige kommer rapporterna för deltagare som har varit utomlands någon gång under de tio dagar innan de blev sjuka att analyseras separat, eftersom dessa deltagare kan ha smittats utomlands. Glöm inte att klicka "Skicka in"!
-80	5	55	Har du haft symptom någon gång under de senaste 30 dagarna som du inte rapporterat ännu?
-81	5	56	Öppna enkät för äldre rapporter....
-82	5	57
-83	5	58
-\.
 
 
 --
@@ -7633,49 +7502,2612 @@ SELECT pg_catalog.setval('reminder_userreminderinfo_id_seq', 1, false);
 -- Data for Name: snippet_snippet; Type: TABLE DATA; Schema: public; Owner: epiwork
 --
 
-COPY snippet_snippet (id, name, html, template) FROM stdin;
-1	block_sponsors.html	{% load banner_tags %}\r\n<div class="block sponsors">\r\nSponsorer<br />\r\n<div>{% banner_image "Sponsors" %}</div>\r\n<div><a href="/project/sponsors/">Karolinska institutet</a></div>\r\n</div>\r\n<div class="block partijen">\r\nPartijen<br />\r\n<div>{% banner_image "Epi work" %}</div>\r\n<div><a href="/project/partijen/">Epi work</a></div>\r\n</div>
-15	<br /> 	<br />\r\n
-32	EmailaFriendButton	<FORM>\r\n<INPUT TYPE="button" VALUE="Tipsa en vän om Influensakoll" onClick="parent.location='mailto:Skriv din väns epostadress här?subject=Influensakoll rekommenderas&Body=Hej! Jag hittade just det nya projektet Influensakoll och tyckte det kunde vara intressant för dig! Influensakoll är Smittskyddsinstitutets nya sätt att hålla koll på influensan med allmänhetens hjälp. Här kan man gå med: http://www.influensakoll.se'"> \r\n</FORM> \r\n
-28	Facebook_like	<p>\r\n<FONT COLOR="d30044">\r\n<div id="fb-root"></div>\r\n<script>(function(d, s, id) {\r\n  var js, fjs = d.getElementsByTagName(s)[0];\r\n  if (d.getElementById(id)) {return;}\r\n  js = d.createElement(s); js.id = id;\r\n  js.src = "//connect.facebook.net/sv_SE/all.js#xfbml=1";\r\n  fjs.parentNode.insertBefore(js, fjs);\r\n}(document, 'script', 'facebook-jssdk'));</script>\r\n\r\n<div class="fb-like-box" data-href="http://www.facebook.com/influensakoll" data-width="292" data-show-faces="false" data-stream="false" data-header="true"></div>\r\n</p>\r\n</FONT>
-4	FAQ	<h1><a name="999">Frågor och svar</h1></a>\r\n<p>På den här sidan har vi samlat vanliga frågor och svar. Om du inte hittar svaret på din fråga är du välkommen att <a href="http://www.influensakoll.se/contact/">kontakta oss.</a> </p>\r\n\r\n\r\n<br />\r\n<h2>Frågor om ditt deltagande</h2>\r\n<p>\r\n<a href="#1">Hur gör jag för att gå med?</a>\r\n<br />\r\n<a href="#2">Hur berättar jag att jag är sjuk?</a>\r\n<br />\r\n<a href="#3">Och om jag inte är sjuk?</a>\r\n<br />\r\n<a href="#4">Hur länge måste jag vara med?</a>\r\n<br />\r\n<a href="#5">Vad gör ni med den information jag uppger?</a>\r\n<br />\r\n<a href="#6">Kan någon hitta min adress genom den information jag uppger?</a>\r\n<br />\r\n<a href="#7">Kan jag delta för mina barn?</a>\r\n<br />\r\n<a href="#77">Hur gör jag för att avsluta mitt deltagande i Influensakoll?</a>\r\n<br />\r\n</p>\r\n<br />\r\n<h2>Frågor om influensa och luftvägsinfektioner</h2>\r\n<p>\r\n<a href="#8">Vilka är symtomen på influensa?</a>\r\n<br />\r\n<a href="#9">Hur ser influensavirus ut?</a>\r\n<br />\r\n<a href="#10">Vad händer i kroppen när jag smittas av influensa?</a>\r\n<br />\r\n<a href="#11">Hur sprids influensavirus?</a>\r\n<br />\r\n<a href="#12">Hur kan man undvika att bli smittad?</a>\r\n<br />\r\n<a href="#13">Hur avgör läkaren om jag har influensa?</a>\r\n<br />\r\n<a href="#14">Varför är det så att folk får influensa mest på vintern?</a>\r\n<br />\r\n<a href="#15">Är barn mindre motståndskraftiga mot influensa?</a>\r\n<br />\r\n<a href="#16">Vad är en influensaepidemi?</a>\r\n<br />\r\n<a href="#17">Vad är en pandemi?</a>\r\n<br />\r\n<hr /></p>\r\n<br />\r\n<h2>Frågor om ditt deltagande</h2>\r\n<a name="1"><h3>Hur gör jag för att gå med?</h3></a>\r\n<p>1.\tSkapa ett användarkonto genom att klicka på <b>gå med</b> längst upp till höger på sidan (röd knapp)<br />\r\n<p>2.\tEn aktiveringslänk skickas till den e-postadress du angivit. Klicka på länken för att aktivera ditt konto<br />\r\n<p>3.\tSkapa en eller flera profiler för ditt konto<br />\r\n<p>4.\tBesvara bakgrundsformuläret<br /> \r\n<p>Nu är du en av Influensakolls influensarapportörer. Kom ihåg att rapportera varje vecka oavsett om du har några symtom eller inte. <br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="2"><h3>Hur berättar jag att jag är sjuk?</h3></a>\r\n<p>Varje vecka skickas en e-post till dig med en länk till ett frågeformulär. Det är viktigt att fylla i formuläret oavsett om du har några symptom eller inte. För att rapportera måste du först skapa ett användarkonto (<a href="#1">Se fråga 1.</a>).\r\n<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="3"><h3>Och om jag inte är sjuk?</h3></a>\r\n<p>Då vill vi veta det också. För att kunna dra några slutsatser om hur många som är sjuka är det lika viktigt att de som är friska rapporterar att de är friska som att de som är sjuka rapporterar att de är sjuka. \r\n\r\nDärför skickar vi en gång per vecka ett e-postmeddelande för att påminna dig.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="4"><h3>Hur länge måste jag vara med?</h3></a>\r\n<p>Rapporteringen till influensakoll pågår till och med maj 2012. Vi vet att många redan är sjuka när de går med som influensarapportörer i Influensakoll. Det är ganska naturligt eftersom det ofta är först då som man kommer i kontakt med den här sajten. Detta leder dock till en överskattning av sjukligheten bland dem som är alldeles nya influensarapportörer. Den mest tillförlitliga uppskattningen av sjukligheten kommer därför från dem som varit rapportörer under minst sex veckor i rad.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="5"><h3>Vad gör ni med den information jag uppger?</h3></a>\r\n<p>Läs här: <a href="http://www.influensakoll.se/fakta-om-datainsamlingen/">Fakta om datainsamlingen.</a> \r\n<br /> \r\n<a href="#999">Tillbaka</a></p>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="6"><h3>Kan någon hitta min adress genom den information jag uppger?</h3></a>\r\n<p>Nej, det är inte möjligt. Vi ber influensarapportörerna att endast uppge sitt postnummer. De flesta postnummer täcker flera hundra människor. I Influensakoll finns en spärrfunktion som gör att om ett \r\n\r\npostnummerområde är så litet att det finns risk för att enskilda människor skulle kunna kännas igen så slås det samman med andra postnummerområden. På alla kartor är den minsta geografiska enheten så stor \r\n\r\natt den åtminstone täcker 200 personer. Det är därför inte möjligt att identifiera en specifik adress utifrån kartorna på vår webbplats.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="7"><h3>Kan jag delta för mina barn?</h3></a>\r\n<p>Ja gärna! Du kan rapportera för ditt barn genom att skapa en profil för ditt barn på ditt användarkonto på Influensakoll. Gör så här:<br />\r\n1. Klicka på <b>"Mitt konto"</b>högst upp i högra hörnet på sidan. <br />\r\n2. Här får du får flera val som rör ditt användarkonto. Klicka på <a href="http://www.influensakoll.se/survey/people/add/">"Lägg till profil"</a>. <br />\r\n3. Skriv ett namn på den profil du vill lägga till för ditt barn och klicka på knappen "lägg till". <br />\r\n4. Nu hamnar du på en sida där dina profiler listas. Efter varje profilnamn finns tre länkar till de aktiviteter du kan välja mellan. Klicka på länken "uppdatera bakgrundsinformation" för att fylla i \r\n\r\nbakgrundsformuläret för ditt barns profil. Observera att du måste fylla i ett bakgrundsformulär för profilen innan det är möjligt att rapportera.<br />\r\n5. När du en gång per vecka får en påminnelse till den e-postadress som angivits för ditt användarkonto ska du logga in och göra en rapport för varje profil. <br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="77"><h3>Hur gör jag för att avsluta mitt deltagande i Influensakoll?</h3></a>\r\n<p>Du kan avsluta ditt deltagande genom att skicka ett e-postmeddelande till influensakoll@smi.se där du anger ditt användarnamn.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<br />\r\n<hr /></p>\r\n<br />\r\n<h2>Frågor om influensa och luftvägsinfektioner</h2>\r\n<a name="8"><h3>Vilka är symtomen på influensa?</h3></a>\r\n<p>Symtomen kommer ofta plötsligt och består av frossa, hög feber, huvudvärk, muskelvärk och hosta. Det värsta brukar vara över efter några dagar och efter någon vecka är många så friska att de kan återgå \r\n\r\ntill arbetet, men hosta och trötthet kan hänga i ett tag.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="9"><h3>Hur ser influensavirus ut?</h3></a>\r\n<p>Influensavirus är precis som alla virus: mycket, mycket litet. Enstaka virus ser ut som en mycket liten tennisboll med spikar som sticker ut. Ett virus är 200 nanometer (0,2 miljondels meter) stort. \r\n\r\nSpikarna på utsidan är proteiner med vilka viruset kan tränga sig in i cellerna i de övre luftvägarna och sedan ut igen. <br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="10"><h3>Vad händer i kroppen när jag smittas av influensa?</h3></a>\r\n<p>Influensaviruset sätter sig i luftvägarna och skadar cellerna där.  Immunförsvaret känner snabbt att viruset är främmande för kroppen och en rad processer sätter igång som gör att vi känner oss sjuka i \r\n\r\nhela kroppen. Immunförsvarets vita blodkroppar aktiveras i blodet vid en infektion och skickar ut signaler som påverkar området i hjärnan som reglerar kroppstemperaturen vilket gör att vi får feber. Feber är \r\n\r\nett av naturens sätt att göra miljön i kroppen otrivsam för viruset eftersom virus trivs bäst i 37 grader – den temperatur som de flesta har när de är friska.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="11"><h3>Hur sprids influensavirus?</h3></a>\r\n<p>Influensavirus är ett luftburet virus. Det smittar genom små partiklar som bär viruset i luften (aerosol), saliv- eller sekretdroppar eller kroppskontakt. Viruset tar \r\n\r\nsig in i luftvägarna genom inandningen. Från det att man blir smittat tar det 1 till 3 dygn innan man blir sjuk. \r\n<p>Influensasjukdom kan orsakas av två huvudtyper av influensavirus, influensavirus typ A och B. A-viruset är det som kan ge stora utbrott över hela världen. B-viruset ger mer begränsade utbrott. Sedan mitten på 70-talet har vi haft fyra virus, tre undertyper av influensa A och influensa B, som cirkulerar över världen. Dessa förändrar sig ständigt, och därför kan vi bli sjuka igen, trots att vi haft alla fyra tidigare.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="12"><h3>Hur kan man undvika att bli smittad?</h3></a>\r\n<p>Det är viktigt att den som är sjuk inte hostar och nyser rakt ut. Gör till en vana att alltid hosta och nysa i armvecket och använda pappersnäsdukar som sedan slängs i en soppåse. Handtvätt med tvål och \r\n\r\nvatten kan minska risken att en sjuk sprider smitta och att en frisk smittas. Komplettera gärna med handsprit. Hur vet man att man tvättat händerna tillräckligt länge? Ett tips är att tyst för sig själv \r\n\r\nsjunga ”Blinka lilla stjärna”. En vers tar cirka 20 sekunder vilket är tillräckligt länge. \r\nOm en person med misstänkt influensa måste träffa andra är det bra att hålla så stort avstånd som möjligt och att inte ta i hand eller kyssa på kind.  Friska personer bör om möjligt undvika närkontakt med \r\n\r\nmisstänkta influensasjuka. Friska personer bör undvika att röra vid ögon, näsa och mun eftersom influensavirus kan ha fastnat på ett föremål som de nyligen rört vid.\r\n<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="13"><h3>Hur avgör läkaren om du har influensa?</h3></a>\r\n<p>I allmänhet sätter läkaren sin diagnos baserat på de så kallade kliniska symtomen. Det kan vara svårt att skilja mellan influensa och andra luftvägsinfektioner. Om det verkligen är influensa kan säkrast \r\n\r\nkonstateras genom virusprovtagning från näs- eller halsslem. Slemmet samlas upp med en bomullspinne och skickas till ett viruslaboratorium för analys. Under en influensaepidemi, har endast 60 till 70 % av \r\n\r\ndem som uppvisar symtom på influensa influensavirus.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="14"><h3>Varför är det så att folk får influensa mest på vintern?</h3></a>\r\n<p>Influensavirus sprider sig lättast på vintern och början på våren. Man tror att detta beror på att människor oftare är inomhus och därmed närmare varandra under den "kalla årstiden". Dessutom är luften i \r\n\r\nett hus under den kalla perioden ofta torr, som ett resultat av detta förblir influensavirus aktivt längre.\r\n<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="15"><h3>Är barn mindre motståndskraftiga mot influensa?</h3></a>\r\n<p>Barn löper störst risk att få influensa dels för att deras immunsystem i allmänhet aldrig varit i kontakt med influensavirus innan. Dessutom smittar de varandra i skolan, dagis, etc. Under en \r\n\r\ninfluensaepidemi kan cirka 45% av skol- och dagisbarnen få influensa.\r\n<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="16"><h3>Vad är en influensaepidemi?</h3></a>\r\n<p>En epidemi uppstår när antalet fall av influensa i ett visst område är betydligt högre än antalet influensafall under resten av året.<br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="17"><h3>Vad är en pandemi?</h3></a>\r\n<p>En pandemi är en världsomfattande epidemi som orsakas av en ny virussubtyp. En ny subtyp uppstår när det sker en stor förändring av viruspartikelns yta med vilken slemhinnan i lungorna blir penetrerad. \r\n\r\nEftersom de flesta människor inte har haft chansen att bli immuna mot den nya virussubtypen, kan smittan bli utbredd. <br /> \r\n<a href="#999">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<p>Har du fortfarande frågor? <a href="http://www.influensakoll.se/contact/">Kontakta oss.</a> </p>
-23	filmkort_mitten	<iframe width="420" height="315" src="http://www.youtube.com/embed/kn-RMWFs3vk" frameborder="0" allowfullscreen></iframe>
-27	filmkort_vänster	<iframe width="290" height="218" src="http://www.youtube.com/embed/kn-RMWFs3vk" frameborder="0" allowfullscreen></iframe>
-24	filmlong	<iframe width="420" height="315" src="http://www.youtube.com/embed/8svTNSngqpg" frameborder="0" allowfullscreen></iframe>
-21	FragaromInfluensa	<h1>Frågor och svar</h1>\r\n<p>På den här sidan har vi samlat vanliga frågor och svar om influensa. Hoppas att du hittar vad du söker. Om inte eller om du har synpunkter är du välkommen att <a href="http://192.168.197.66/kontakta-oss/">kontakta \r\n\r\noss.</a> </p>\r\n\r\n\r\n<br />\r\n<h3>Frågor om influensa och luftvägsinfektioner</h3>\r\n\r\n<a name="top"><a href="#8">Vilka är symtomen på influensa?</a></a>\r\n<br />\r\n<a name="top"><a href="#9">Hur ser influensavirus ut?</a></a>\r\n<br />\r\n<a name="top"><a href="#10">Vad händer i kroppen när jag smittas av influensa?</a></a>\r\n<br />\r\n<a name="top"><a href="#11">Hur sprids influensavirus?</a></a>\r\n<br />\r\n<a name="top"><a href="#12">Hur kan man undvika att bli smittad?</a></a>\r\n<br />\r\n<a name="top"><a href="#13">Hur avgör läkaren om du har influensa?</a></a>\r\n<br />\r\n<a name="top"><a href="#14">Varför är det så att folk får influensa mest på vintern?</a></a>\r\n<br />\r\n<a name="top"><a href="#15">Är barn mindre motståndskraftiga mot influensa?</a></a>\r\n<br />\r\n<a name="top"><a href="#16">Vad är en influensaepidemi?</a></a>\r\n<br />\r\n<a name="top"><a href="#17">Vad är en pandemi?</a></a>\r\n<br />\r\n<hr /></p>\r\n<p>\r\n<br />\r\n<h3>Frågor om influensa och luftvägsinfektioner</h3>\r\n<a name="8">Vilka är symtomen på influensa?</a>\r\n<p>Symtomen kommer ofta plötsligt och består av frossa, hög feber, huvudvärk, muskelvärk och hosta. Det värsta brukar vara över efter några dagar och efter någon vecka är många så friska att man kan återgå \r\n\r\ntill arbetet, men hosta och trötthet kan hänga i ett tag.<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="9">Hur ser influensavirus ut?</a>\r\n<p>Influensavirus är precis som alla virus: mycket, mycket litet. Enstaka virus ser ut som en mycket liten tennisboll med spik som sticker ut. Ett virus är 200 nanometer (0,2 miljondels meter) stort. \r\n\r\nSpikarna på utsidan är proteiner med vilka viruset kan tränga sig in i cellerna i de övre luftvägarna och sedan ut igen. <br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="10">Vad händer i kroppen när jag smittas av influensa?</a>\r\n<p>Influensaviruset sätter sig i luftvägarna och skadar cellerna där.  Immunförsvaret känner snabbt att viruset är främmande för kroppen och en rad processer sätter igång som gör att vi känner oss sjuka i \r\n\r\nhela kroppen. Immunförsvarets vita blodkroppar aktiveras i blodet vid en infektion och skickar ut signaler som påverkar området i hjärnan som reglerar kroppstemperaturen vilket gör att vi får feber. Feber är \r\n\r\nett av naturens sätt att göra miljön i kroppen otrivsam för viruset eftersom virus trivs bäst i 37 grader – den temperatur som de flesta har när de är friska.<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="11">Hur sprids influensavirus?</a>\r\n<p>Influensavirus är ett luftburet virus som orsakar infektion i luftvägarna. Det smittar genom aerosol (små partiklar som bär viruset i luften), saliv- eller sekretdroppar eller kroppskontakt. Viruset tar \r\n\r\nsig in i luftvägarna genom inandningen. Från smittotillfället tar det 1-3 dygn innan man blir sjuk. \r\n<p>Influensasjukdom kan orsakas av två huvudtyper av influensavirus, influensavirus typ A och B. A-viruset är det som kan ge stora utbrott över hela världen. B-viruset ger mer begränsade utbrott. Sedan \r\n\r\nmitten på 70-talet har vi haft fyra virus, tre undertyper av influensa A och influensa B, som cirkulerar över världen. Dessa förändrar sig ständigt, och därför kan vi bli sjuka igen, trots att vi haft alla \r\n\r\ntre tidigare.<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="12">Hur kan man undvika att bli smittad?</a>\r\n<p>Det är viktigt att den som är sjuk inte hostar och nyser rakt ut. Gör till en vana att alltid hosta och nysa i armvecket och använda pappersnäsdukar som sedan slängs i en soppåse. Handtvätt med tvål och \r\n\r\nvatten kan minska risken att en sjuk sprider smitta och att en frisk smittas. Komplettera gärna med handsprit. Hur vet man att man tvättat händerna tillräckligt länge? Ett tips är att tyst för sig själv \r\n\r\nsjunga ”Blinka lilla stjärna”. En vers tar cirka 20 sekunder vilket är tillräckligt länge. \r\nOm en person med misstänkt influensa måste träffa andra är det bra att hålla så stort avstånd som möjligt och att inte ta i hand eller kyssa på kind.  Friska personer bör om möjligt undvika närkontakt med \r\n\r\nmisstänkta influensasjuka. Friska personer bör undvika att röra vid ögon, näsa och mun eftersom influensavirus kan ha fastnat på ett föremål som de nyligen rört vid.\r\n<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="13">Hur avgör läkaren om du har influensa?</a>\r\n<p>I allmänhet sätter läkaren sin diagnos baserat på de så kallade kliniska symtomen. Det kan vara svårt att skilja mellan influensa och andra luftvägsinfektioner. Om det verkligen är influensa kan säkrast \r\n\r\nkonstateras genom virusprovtagning från näs- eller halsslem. Slemmet samlas upp med en bomullspinne och skickas till ett viruslaboratorium för analys. Under en influensaepidemi, har endast 60 till 70 % av \r\n\r\ndem som uppvisar symtom på influensa influensavirus.<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="14">Varför är det så att folk får influensa mest på vintern?</a>\r\n<p>Influensavirus sprider sig lättast på vintern och början på våren. Man tror att detta beror på att människor oftare är inomhus och därmed närmare varandra under den "kalla årstiden". Dessutom är luften i \r\n\r\nett hus under den kalla perioden ofta torr, som ett resultat av detta förblir influensavirus aktivt längre.\r\n<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="15">Är barn mindre motståndskraftiga mot influensa?</a>\r\n<p>Barn löper störst risk att få influensa dels för att deras immunsystem i allmänhet aldrig varit i kontakt med influensavirus innan. Dessutom smittar de varandra i skolan, dagis, etc. Under en \r\n\r\ninfluensaepidemi kan cirka 45% av skol- och dagisbarnen få influensa.\r\n<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="16">Vad är en influensaepidemi?</a>\r\n<p>En epidemi uppstår när antalet fall av influensa i ett visst område är betydligt högre än antalet influensafall under resten av året.<br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<a name="17">Vad är en pandemi? </a>\r\n<p>En pandemi är en världsomfattande epidemi som orsakas av en ny virussubtyp. En ny subtyp uppstår när det sker en stor förändring av viruspartikelns yta med vilken slemhinnan i lungorna blir penetrerad. \r\n\r\nEftersom de flesta människor inte har haft chansen att bli immuna mot den nya virussubtypen, kan smittan bli utbredd. <br /> \r\n<a href="#top">Tillbaka</a>\r\n<br />\r\n<hr />\r\n<br />\r\n<p>Har du fortfarande frågor? <a href="http://192.168.197.66/kontakta-oss/">Kontakta oss.</a> </p>
-8	google_map	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"\r\n        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\r\n<head>\r\n\t<meta http-equiv="content-type" content="text/html; charset=utf-8" />\r\n<title>Influensakoll</title>\r\n<link rel="stylesheet" type="text/css" href="/+media-ggm/style.css"/>\r\n<script type="text/javascript" src="/+media/jquery.js"></script>\r\n<script type="text/javascript" src="/+media-ggm/ggm.js"></script>\r\n<script type="text/javascript" src="/+media-ggm/influenzanetbar.js"></script>\r\n   </head><body>\r\n\r\n<script type="text/javascript" src="/+media-ggm/maps/js/polymaps.min.js"></script>\r\n\r\n<div id="map_iw">\r\n    <style type="text/css"> @import url("/+media-ggm/maps/css/map.css"); </style>\r\n    <script type="text/javascript" src="/+media-ggm/maps/js/influensakoll_caps.js"></script>\r\n<br class="clear"/>\r\n</div>\r\n</body></html>
-19	google_map2	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\r\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">\r\n<head>\r\n  <title>UK symptom map</title>\r\n</head>\r\n<body>\r\n\r\n    <div id="cm-example" style="width: 500px; height: 750px"></div>\r\n\r\n  <script type="text/javascript" src="http://tile.cloudmade.com/wml/latest/web-maps-lite.js"></script>\r\n   <script type="text/javascript" src="/+media-ggm/maps/maps/maps/SV_latlong_symptoms.js"></script>\r\n  \r\n  <script type="text/javascript" src="/+media-ggm/maps/maps/maps/makemap_symptoms.js"></script>\r\n\r\n</body>\r\n</html>\r\n
-31	googleplus1_button	<!-- Place this tag where you want the +1 button to render -->\r\n<g:plusone annotation="none"></g:plusone>\r\n\r\n<!-- Place this render call where appropriate -->\r\n<script type="text/javascript">\r\n  (function() {\r\n    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;\r\n    po.src = 'https://apis.google.com/js/plusone.js';\r\n    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);\r\n  })();\r\n</script>
-39	GooglePlusBadge	<!-- Place this tag in the <head> of your document -->\r\n<link href="https://plus.google.com/109191795561126990370" rel="publisher" /><script type="text/javascript">\r\nwindow.___gcfg = {lang: 'sv'};\r\n(function() \r\n{var po = document.createElement("script");\r\npo.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";\r\nvar s = document.getElementsByTagName("script")[0];\r\ns.parentNode.insertBefore(po, s);\r\n})();</script>\r\n\r\n<!-- Place this tag where you want the badge to render -->\r\n<g:plus href="https://plus.google.com/109191795561126990370" size="badge"></g:plus>
-43	Hansvecka9	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3802536%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3802536%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3802536.m4a">Lyssna: Rekordmånga däckade i influensa</a></object></object>
-6	hem	<p>\r\n<a href="http://192.168.197.66/om-influensakoll/">Läs mer om Influensakoll</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.66/accounts/register/">Gå med</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.66/accounts/login/">Logga in</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.66/survey/">Rapportera</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.66/influensaskola/">Influensaskola</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.66/faq/">FAQ</a> \r\n</p>\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<a href="http://www.smittskyddsinstitutet.se/">\r\n<img src="I:/Avdelningar/epi/_Project/sjukrapport/Admin/Epiwork/2010/influenzanet/influensakoll/bilder/SMI_color_mini.GIF" border="0" width="173" height="78"/>\r\n</a></p>\r\n\r\n\r\n
-5	höger kolumn hem	<p>\r\n<a href="http://192.168.197.67/om-influensakoll/">Läs mer om Influensakoll</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.67/accounts/login/">Logga in</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.67/survey/">Rapportera</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.67/influensaskola/">Influensaskola</a> \r\n</p>\r\n<p>\r\n<a href="http://192.168.197.67/faq/">FAQ</a> \r\n</p>
-7	horisontell linje	<hr /></p>\r\n
-18	http://www.smittskyddsinstitutet.se/sjukdomar/forkylning/	<a href="http://www.smittskyddsinstitutet.se/sjukdomar/forkylning/" target="_blank">http://www.smittskyddsinstitutet.se/sjukdomar/forkylning//</a>
-17	http://www.smittskyddsinstitutet.se/sjukdomar/influensa/	<a href="http://www.smittskyddsinstitutet.se/sjukdomar/influensa/" target="_blank">http://www.smittskyddsinstitutet.se/sjukdomar/influensa/</a> \r\n\r\n
-3	Influensa	<html>\r\n<head>\r\n    <title>Influensa</title>\r\n</head>\r\n<body>\r\n\r\n<font size=3>Influensa är en virussjukdom. Det finns tre typer av influensavirus; influensa A, B och C, som alla tillhör gruppen ortomyxovirus. Det är främst A och B som ger upphov till den typiska influensasjukdomen.<p>\r\nSmittämnet finns i svalget hos den sjuke och sprids till andra främst som fin, luftburen droppsmitta (aerosol) men även genom kontakt. Smittsamheten är mycket stor. Inkubationstiden är kort, ett till tre dygn. Av inte helt klarlagda skäl är influensasjukligheten nästan helt koncentrerad till vintersäsongen. Man brukar tala om ”influensasäsongen”, som tidigast brukar bryta ut i oktober-november och vanligtvis inte sträcker sig längre än in i början av maj. Det finns emellertid en ganska stor variation i influensasäsongernas ”timing” och varaktighet. Under influensapandemin 2009 sågs influensa redan under sensommaren. Åren dessförinnan tog inte säsongen fart förrän efter nyår.<p>  \r\nInfluensa börjar ofta akut med frossa, snabbt stigande feber (ofta upp över 40°C), allmän muskelvärk, huvudvärk och därefter tilltagande symtom från luftvägarna, främst hosta. Ibland, och mest hos barn, förekommer symtom från mag- och tarmkanalen som kräkningar och diarré. Efter några dagar brukar tillståndet ge med sig och de flesta har tillfrisknat efter c:a 1 vecka. Sjukdomsbilden är ofta lindrigare än så och kan mer likna en vanlig förkylning.<p>\r\nBehandlingen vid influensa är främst "symtomatisk", d.v.s. inte botande men symtomlindrande (t.ex. febernedsättande och inflammationsdämpande receptfria läkemedel med acetylsalicylsyra, paracetamol eller ibuprofen, näsdroppar, hostdämpande läkemedel etc.). Det finns antivirala medel som angriper det orsakande viruset, men effekten på sjukdomsförloppet är begränsad. För att sjukdomstiden ska förkortas måste antivirala medel ges tidigt i sjukdomsförloppet. Sådana medel kan även användas som profylax, d.v.s. de ges till ännu friska som utsatts för smitta för att förhindra att sjukdomen bryter ut. Baksidan är att virus kan utveckla motståndskraft mot antivirala medel, och om motståndskraftiga virus kommer i omlopp kan det bli till nackdel för alla. Därför används antivirala medel enbart i speciella situationer, t.ex. till riskgrupper som riskerar att få allvarliga komplikationer av influensan. Till de särskilda riskgrupperna räknas äldre personer (över 65 år), personer med allvarlig lungsjukdom som t.ex. astma, KOL eller emfysem, allvarlig hjärt- eller njursjukdom, diabetes, autoimmun sjukdom, eller med nedsatt immunförvar. För att minska behovet av antivirala medel även i dessa grupper erbjuds sådana personer förebyggande vaccination före varje ny influensasäsong. Den vanligaste komplikationen till influensa är att sjukdomsalstrande bakterier angriper de inflammerade luftvägarna så att en bakteriell lunginflammation uppstår. Att en bakteriell komplikation är på gång märker man på att symtomen (oftast febern och hostan), efter att först ha minskat successivt, verkar ta ny fart på femte eller sjätte dagen. Bakteriella komplikationer kräver läkarbedömning och behandlas med antibiotika.<p>\r\nInfluensavirus är mycket föränderligt, och därför kan man insjukna i influensa flera gånger. Ibland räcker skyddet helt eller delvis under några års tid. Ibland, då influensavirus ändrat skepnad totalt, blir alla helt mottagliga. Senast hände detta i världen 2009 då den nya influensan började spridas världen över. Mer om immunitet mot influensan finner du under avsnittet Pandemier [länk]. Vill du veta mer om hur influensan ändrar skepnad från år till år kan du titta på en video med Annika Lindes influensaskola [länk] (xx minuter).  <p>\r\nHar du frågor om influensa? I influensakolls FAQ [länk] hittar du svar på vanliga frågor.<p>\r\n\r\nDu kan också läsa mer om influensa på <a href='http://www.smittskyddsinstitutet.se/sjukdomar/influensa/</a><p>\r\n
-37	kossornasplanet	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3718708%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3718708%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3718708.m4a">Lyssna: Influensakoll</a></object></object>
-12	länk till "ga med"	<a href="/accounts/register/">gå med</a> \r\n\r\n
-13	länk till "gå med" G	<a href="/sv/accounts/register/">Gå med</a>
-14	länk till "gå med" skapa användarkonto	<a href="/accounts/register/">Skapa ett användarkonto</a>
-20	link till Profil	<a href="../survey/people/">välja profilnamn och fylla i bakgrundsformuläret</a>
-10	loggor_nederkant	<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<br />\r\n<a href="http://www.smittskyddsinstitutet.se/">\r\n<img src="/+media/images/SMI_Small_ny_logotyp_2011.gif" border="0" width="173" height="78"/>\r\n</a></p>\r\n<br />\r\n<br />\r\n<br />\r\n<a href="http://ki.se/">\r\n<img src="/+media/images/KIlogo.gif" border="0" width="164" height="68"/>\r\n</a></p>\r\n<br />\r\n\r\n\r\n
-11	loggor_överkant	<br />\r\n<a href="http://www.smittskyddsinstitutet.se/">\r\n<img src="/media/cms_page_media/SMI_Small_ny_logotyp_2011.gif" border="0" width="173" height="78"/>\r\n</a></p>\r\n\r\n\r\n<br />\r\n<a href="http://ki.se/">\r\n<img src="/media/cms_page_media/KIlogo.gif" border="0" width="164" height="68"/>\r\n</a></p>\r\n
-42	P4Vasternorrland24feb	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3dbroadcast%26id%3d3790069%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3dbroadcast%26id%3d3790069%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3790069.m4a">Lyssna: 15.00 - 15.30 fredag 24 feb 2012</a></object></object>
-33	Poll_fraga	<form method=post action="http://poll.pollcode.com/PQAe"><table border=0 width=150 bgcolor="EEEEEE" cellspacing=2 cellpadding=0><tr><td colspan=2><font face="Verdana" size=-1 color="000000"><b>Spanska sjukan var en av de tre stora pandemierna under 1900-talet. Vad kallades de andra två?</b></font></td></tr><tr><td width=5><input type=radio name=answer value="1"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Asiaten och Svininfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="2"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Hongkonginfluensan och Fågelinfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="3"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Asiaten och Hongkonginfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="4"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Svininfluensan och Fågelinfluensan</font></td></tr><tr><td colspan=2><center><input type=submit value="Vote">&nbsp;&nbsp;<input type=submit name=view value="View"></center></td></tr><tr><td colspan=2 align=right><font face="Verdana" size=-2 color="black">pollcode.com <a href=http://pollcode.com/>free polls</a>&nbsp;</font></td></tr></table></form>\r\n
-34	Poll_fraga2	<div id="qp_main70846" style="border:1px solid black;margin:10px;padding:10px;padding-bottom:12px;background-color:rgb(185,0,36)"><div style="font-family:Arial;font-size:12px;font-weight:bold;background-color:rgb(108,0,10);width:100%;color:white"><div style="padding:10px">Vad är en pandemi?</div></div><form id="qp_form70846" action="http://poll.learnmyself.com/results70846xafB342C4" method="post" target="_blank" style="padding:0px;margin-top:10px"><div style="width:100%"><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="1">Ett utbrott av en sjukdom i en viss region</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="2">Ett världsomspännande utbrott av en sjukdom</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="3">Ett sjukdomsutbrott där mer än hälften av de smittade människorna dör</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="4">Ett utbrott av en sjukdom som varar i minst tre månader</span></div></div><div style="padding-top:10px;clear:both"><input name="qp_b70846" style="width:80px;margin-right:5px" type="submit" value="Rösta"><input name="qp_b70846" style="width:80px;margin-right:5px" type="submit" value="Resultat"></div><span style="background-image:url(http://imgs.learnmyself.com/p70846xafB342C4_0_0.gif);"></span></form></div><script src="http://scripts.learnmyself.com/3001/scpolls.js" language="javascript"></script>
-16	<p></p>	<p></p>\r\n<p></p>
-22	quiz	<?xml version="1.0"?>\r\n       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11.dtd">\r\n       <html xmlns="http://www.w3.org/1999/xhtml"\r\n             xml:lang="en"><head><meta name="author" content="Created with Hot Potatoes by Half-Baked Software, registered to annasara."></meta><meta name="keywords" content="Hot Potatoes, Hot Potatoes, Half-Baked Software, Windows, University of Victoria"></meta>\r\n\r\n<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />\r\n<meta name="DC:Creator" content="annasara" />\r\n<meta name="DC:Title" content="Fr&#x00E5;gesport om influensa!" />\r\n\r\n\r\n<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> \r\n\r\n<title>\r\nFr&#x00E5;gesport om influensa!\r\n</title>\r\n\r\n<!-- Made with executable version 6.3 Release 0 Build 4 -->\r\n\r\n<!-- The following insertion allows you to add your own code directly to this head tag from the configuration screen -->\r\n\r\n\r\n\r\n<style type="text/css">\r\n\r\n\r\n/* This is the CSS stylesheet used in the exercise. */\r\n/* Elements in square brackets are replaced by data based on configuration settings when the exercise is built. */\r\n\r\n/* BeginCorePageCSS */\r\n\r\n/* Made with executable version 6.3 Release 0 Build 4 */\r\n\r\n\r\n/* Hack to hide a nested Quicktime player from IE, which can't handle it. */\r\n* html object.MediaPlayerNotForIE {\r\n\tdisplay: none;\r\n}\r\n\r\nbody{\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n\tbackground-color: #c0c0c0;\r\n\tcolor: #000000;\r\n \r\n\tmargin-right: 5%;\r\n\tmargin-left: 5%;\r\n\tfont-size: small;\r\n}\r\n\r\np{\r\n\ttext-align: left;\r\n\tmargin: 0px;\r\n\tfont-size: 100%;\r\n}\r\n\r\ntable,div,span,td{\r\n\tfont-size: 100%;\r\n\tcolor: #000000;\r\n}\r\n\r\ndiv.Titles{\r\n\tpadding: 0.5em;;\r\n\ttext-align: center;\r\n\tcolor: #000000;\r\n}\r\n\r\nbutton{\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n\tfont-size: 100%;\r\n\tdisplay: inline;\r\n}\r\n\r\n.ExerciseTitle{\r\n\tfont-size: 140%;\r\n\tcolor: #000000;\r\n}\r\n\r\n.ExerciseSubtitle{\r\n\tfont-size: 120%;\r\n\tcolor: #000000;\r\n}\r\n\r\ndiv.StdDiv{\r\n\tbackground-color: #ffffff;\r\n\ttext-align: center;\r\n\tfont-size: 100%;\r\n\tcolor: #000000;\r\n\tpadding: 0.5em;\r\n\tborder-style: solid;\r\n\tborder-width: 1px 1px 1px 1px;\r\n\tborder-color: #000000;\r\n\tmargin-bottom: 1px;\r\n}\r\n\r\n/* EndCorePageCSS */\r\n\r\n.RTLText{\r\n\ttext-align: right;\r\n\tfont-size: 150%;\r\n\tdirection: rtl;\r\n\tfont-family: "Simplified Arabic", "Traditional Arabic", "Times New Roman", Geneva,Arial,sans-serif; \r\n}\r\n\r\n.CentredRTLText{\r\n\ttext-align: center;\r\n\tfont-size: 150%;\r\n\tdirection: rtl;\r\n\tfont-family: "Simplified Arabic", "Traditional Arabic", "Times New Roman", Geneva,Arial,sans-serif; \r\n}\r\n\r\nbutton p.RTLText{\r\n\ttext-align: center;\r\n}\r\n\r\n.RTLGapBox{\r\n\ttext-align: right;\r\n\tfont-size: 150%;\r\n\tdirection: rtl;\r\n\tfont-family: "Times New Roman", Geneva,Arial,sans-serif;\r\n}\r\n\r\n.Guess{\r\n\tfont-weight: bold;\r\n}\r\n\r\n.CorrectAnswer{\r\n\tfont-weight: bold;\r\n}\r\n\r\ndiv#Timer{\r\n\tpadding: 0.25em;\r\n\tmargin-left: auto;\r\n\tmargin-right: auto;\r\n\ttext-align: center;\r\n\tcolor: #000000;\r\n}\r\n\r\nspan#TimerText{\r\n\tpadding: 0.25em;\r\n\tborder-width: 1px;\r\n\tborder-style: solid;\r\n\tfont-weight: bold;\r\n\tdisplay: none;\r\n\tcolor: #000000;\r\n}\r\n\r\nspan.Instructions{\r\n\r\n}\r\n\r\ndiv.ExerciseText{\r\n\r\n}\r\n\r\n.FeedbackText, .FeedbackText span.CorrectAnswer, .FeedbackText span.Guess, .FeedbackText span.Answer{\r\n\tcolor: #000000;\r\n}\r\n\r\n.LeftItem{\r\n\tfont-size: 100%;\r\n\tcolor: #000000;\r\n\ttext-align: left;\r\n}\r\n\r\n.RightItem{\r\n\tfont-weight: bold;\r\n\tfont-size: 100%;\r\n\tcolor: #000000;\r\n}\r\n\r\nspan.CorrectMark{\r\n\r\n}\r\n\r\ninput, textarea{\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n\tfont-size: 120%;\r\n}\r\n\r\nselect{\r\n\tfont-size: 100%;\r\n}\r\n\r\ndiv.Feedback {\r\n\tbackground-color: #c0c0c0;\r\n\tleft: 33%;\r\n\twidth: 34%;\r\n\ttop: 33%;\r\n\tz-index: 1;\r\n\tborder-style: solid;\r\n\tborder-width: 1px;\r\n\tpadding: 5px;\r\n\ttext-align: center;\r\n\tcolor: #000000;\r\n\tposition: absolute;\r\n\tdisplay: none;\r\n\tfont-size: 100%;\r\n}\r\n\r\n\r\n\r\n\r\ndiv.ExerciseDiv{\r\n\tcolor: #000000;\r\n}\r\n\r\n/* JMatch flashcard styles */\r\ntable.FlashcardTable{\r\n\tbackground-color: transparent;\r\n\tcolor: #000000;\r\n\tborder-color: #000000;\r\n\tmargin-left: 5%;\r\n\tmargin-right: 5%;\r\n\tmargin-top: 2em;\r\n\tmargin-bottom: 2em;\r\n\twidth: 90%;\r\n\tposition: relative;\r\n\ttext-align: center;\r\n\tpadding: 0px;\r\n}\r\n\r\ntable.FlashcardTable tr{\r\n\tborder-style: none;\r\n\tmargin: 0px;\r\n\tpadding: 0px;\r\n\tbackground-color: #ffffff;\r\n}\r\n\r\ntable.FlashcardTable td.Showing{\r\n\tfont-size: 140%;\r\n\ttext-align: center;\r\n\twidth: 50%;\r\n\tdisplay: table-cell;\r\n\tpadding: 2em;\r\n\tmargin: 0px;\r\n\tborder-style: solid;\r\n\tborder-width: 1px;\r\n\tcolor: #000000;\r\n\tbackground-color: #ffffff;\r\n}\r\n\r\ntable.FlashcardTable td.Hidden{\r\n\tdisplay: none;\r\n}\r\n\r\n/* JMix styles */\r\ndiv#SegmentDiv{\r\n\tmargin-top: 2em;\r\n\tmargin-bottom: 2em;\r\n\ttext-align: center;\r\n}\r\n\r\na.ExSegment{\r\n\tfont-size: 120%;\r\n\tfont-weight: bold;\r\n\ttext-decoration: none;\r\n\tcolor: #000000;\r\n}\r\n\r\nspan.RemainingWordList{\r\n\tfont-style: italic;\r\n}\r\n\r\ndiv.DropLine {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tborder-bottom-style: solid;\r\n\tborder-bottom-width: 1px;\r\n\tborder-bottom-color: #000000;\r\n\twidth: 80%;\r\n}\r\n\r\n/* JCloze styles */\r\n\r\n.ClozeWordList{\r\n\ttext-align: center;\r\n\tfont-weight: bold;\r\n}\r\n\r\ndiv.ClozeBody{\r\n\ttext-align: left;\r\n\tmargin-top: 2em;\r\n\tmargin-bottom: 2em;\r\n\tline-height: 2.0\r\n}\r\n\r\nspan.GapSpan{\r\n\tfont-weight: bold;\r\n}\r\n\r\n/* JCross styles */\r\n\r\ntable.CrosswordGrid{\r\n\tmargin: auto auto 1em auto;\r\n\tborder-collapse: collapse;\r\n\tpadding: 0px;\r\n\tbackground-color: #000000;\r\n}\r\n\r\ntable.CrosswordGrid tbody tr td{\r\n\twidth: 1.5em;\r\n\theight: 1.5em;\r\n\ttext-align: center;\r\n\tvertical-align: middle;\r\n\tfont-size: 140%;\r\n\tpadding: 1px;\r\n\tmargin: 0px;\r\n\tborder-style: solid;\r\n\tborder-width: 1px;\r\n\tborder-color: #000000;\r\n\tcolor: #000000;\r\n}\r\n\r\ntable.CrosswordGrid span{\r\n\tcolor: #000000;\r\n}\r\n\r\ntable.CrosswordGrid td.BlankCell{\r\n\tbackground-color: #000000;\r\n\tcolor: #000000;\r\n}\r\n\r\ntable.CrosswordGrid td.LetterOnlyCell{\r\n\ttext-align: center;\r\n\tvertical-align: middle;\r\n\tbackground-color: #ffffff;\r\n\tcolor: #000000;\r\n\tfont-weight: bold;\r\n}\r\n\r\ntable.CrosswordGrid td.NumLetterCell{\r\n\ttext-align: left;\r\n\tvertical-align: top;\r\n\tbackground-color: #ffffff;\r\n\tcolor: #000000;\r\n\tpadding: 1px;\r\n\tfont-weight: bold;\r\n}\r\n\r\n.NumLetterCellText{\r\n\tcursor: pointer;\r\n\tcolor: #000000;\r\n}\r\n\r\n.GridNum{\r\n\tvertical-align: super;\r\n\tfont-size: 66%;\r\n\tfont-weight: bold;\r\n\ttext-decoration: none;\r\n\tcolor: #000000;\r\n}\r\n\r\n.GridNum:hover, .GridNum:visited{\r\n\tcolor: #000000;\r\n}\r\n\r\ntable#Clues{\r\n\tmargin: auto;\r\n\tvertical-align: top;\r\n}\r\n\r\ntable#Clues td{\r\n\tvertical-align: top;\r\n}\r\n\r\ntable.ClueList{\r\n  margin: auto;\r\n}\r\n\r\ntd.ClueNum{\r\n\ttext-align: right;\r\n\tfont-weight: bold;\r\n\tvertical-align: top;\r\n}\r\n\r\ntd.Clue{\r\n\ttext-align: left;\r\n}\r\n\r\ndiv#ClueEntry{\r\n\ttext-align: left;\r\n\tmargin-bottom: 1em;\r\n}\r\n\r\n/* Keypad styles */\r\n\r\ndiv.Keypad{\r\n\ttext-align: center;\r\n\tdisplay: none; /* initially hidden, shown if needed */\r\n\tmargin-bottom: 0.5em;\r\n}\r\n\r\ndiv.Keypad button{\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n\tfont-size: 120%;\r\n\tbackground-color: #ffffff;\r\n\tcolor: #000000;\r\n\twidth: 2em;\r\n}\r\n\r\n/* JQuiz styles */\r\n\r\ndiv.QuestionNavigation{\r\n\ttext-align: center;\r\n}\r\n\r\n.QNum{\r\n\tmargin: 0em 1em 0.5em 1em;\r\n\tfont-weight: bold;\r\n\tvertical-align: middle;\r\n}\r\n\r\ntextarea{\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n}\r\n\r\n.QuestionText{\r\n\ttext-align: left;\r\n\tmargin: 0px;\r\n\tfont-size: 100%;\r\n}\r\n\r\n.Answer{\r\n\tfont-size: 120%;\r\n\tletter-spacing: 0.1em;\r\n}\r\n\r\n.PartialAnswer{\r\n\tfont-size: 120%;\r\n\tletter-spacing: 0.1em;\r\n\tcolor: #000000;\r\n}\r\n\r\n.Highlight{\r\n\tcolor: #000000;\r\n\tbackground-color: #ffff00;\r\n\tfont-weight: bold;\r\n\tfont-size: 120%;\r\n}\r\n\r\nol.QuizQuestions{\r\n\ttext-align: left;\r\n\tlist-style-type: none;\r\n}\r\n\r\nli.QuizQuestion{\r\n\tpadding: 1em;\r\n\tborder-style: solid;\r\n\tborder-width: 0px 0px 1px 0px;\r\n}\r\n\r\nol.MCAnswers{\r\n\ttext-align: left;\r\n\tlist-style-type: upper-alpha;\r\n\tpadding: 1em;\r\n}\r\n\r\nol.MCAnswers li{\r\n\tmargin-bottom: 1em;\r\n}\r\n\r\nol.MSelAnswers{\r\n\ttext-align: left;\r\n\tlist-style-type: lower-alpha;\r\n\tpadding: 1em;\r\n}\r\n\r\ndiv.ShortAnswer{\r\n\tpadding: 1em;\r\n}\r\n\r\n.FuncButton {\r\n\ttext-align: center;\r\n\tborder-style: solid;\r\n\r\n\tborder-left-color: #ffffff;\r\n\tborder-top-color: #ffffff;\r\n\tborder-right-color: #7f7f7f;\r\n\tborder-bottom-color: #7f7f7f;\r\n\tcolor: #000000;\r\n\tbackground-color: #ffffff;\r\n\r\n\tborder-width: 2px;\r\n\tpadding: 3px 6px 3px 6px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.FuncButtonUp {\r\n\tcolor: #ffffff;\r\n\ttext-align: center;\r\n\tborder-style: solid;\r\n\r\n\tborder-left-color: #ffffff;\r\n\tborder-top-color: #ffffff;\r\n\tborder-right-color: #7f7f7f;\r\n\tborder-bottom-color: #7f7f7f;\r\n\r\n\tbackground-color: #000000;\r\n\tcolor: #ffffff;\r\n\tborder-width: 2px;\r\n\tpadding: 3px 6px 3px 6px;\r\n\tcursor: pointer;\r\n}\r\n\r\n.FuncButtonDown {\r\n\tcolor: #ffffff;\r\n\ttext-align: center;\r\n\tborder-style: solid;\r\n\r\n\tborder-left-color: #7f7f7f;\r\n\tborder-top-color: #7f7f7f;\r\n\tborder-right-color: #ffffff;\r\n\tborder-bottom-color: #ffffff;\r\n\tbackground-color: #000000;\r\n\tcolor: #ffffff;\r\n\r\n\tborder-width: 2px;\r\n\tpadding: 3px 6px 3px 6px;\r\n\tcursor: pointer;\r\n}\r\n\r\n/*BeginNavBarStyle*/\r\n\r\ndiv.NavButtonBar{\r\n\tbackground-color: #2c2c2c;\r\n\ttext-align: center;\r\n\tmargin: 2px 0px 2px 0px;\r\n\tclear: both;\r\n\tfont-size: 100%;\r\n}\r\n\r\n.NavButton {\r\n\tborder-style: solid;\r\n\t\r\n\tborder-left-color: #959595;\r\n\tborder-top-color: #959595;\r\n\tborder-right-color: #161616;\r\n\tborder-bottom-color: #161616;\r\n\tbackground-color: #2c2c2c;\r\n\tcolor: #ffffff;\r\n\r\n\tborder-width: 2px;\r\n\tcursor: pointer;\t\r\n}\r\n\r\n.NavButtonUp {\r\n\tborder-style: solid;\r\n\r\n\tborder-left-color: #959595;\r\n\tborder-top-color: #959595;\r\n\tborder-right-color: #161616;\r\n\tborder-bottom-color: #161616;\r\n\tcolor: #2c2c2c;\r\n\tbackground-color: #ffffff;\r\n\r\n\tborder-width: 2px;\r\n\tcursor: pointer;\t\r\n}\r\n\r\n.NavButtonDown {\r\n\tborder-style: solid;\r\n\r\n\tborder-left-color: #161616;\r\n\tborder-top-color: #161616;\r\n\tborder-right-color: #959595;\r\n\tborder-bottom-color: #959595;\r\n\tcolor: #2c2c2c;\r\n\tbackground-color: #ffffff;\r\n\r\n\tborder-width: 2px;\r\n\tcursor: pointer;\t\r\n}\r\n\r\n/*EndNavBarStyle*/\r\n\r\na{\r\n\tcolor: #ff0080;\r\n}\r\n\r\na:visited{\r\n\tcolor: #808080;\r\n}\r\n\r\na:hover{\r\n\tcolor: #ff0080;\r\n}\r\n\r\ndiv.CardStyle {\r\n\tposition: absolute;\r\n\tfont-family: Geneva,Arial,sans-serif;\r\n\tfont-size: 100%;\r\n\tpadding: 5px;\r\n\tborder-style: solid;\r\n\tborder-width: 1px;\r\n\tcolor: #000000;\r\n\tbackground-color: #ffffff;\r\n\tleft: -50px;\r\n\ttop: -50px;\r\n\toverflow: visible;\r\n}\r\n\r\n.rtl{\r\n\ttext-align: right;\r\n\tfont-size: 140%;\r\n}\r\n\r\n\r\n</style>\r\n\r\n<script type="text/javascript">\r\n\r\n//<![CDATA[\r\n\r\n<!--\r\n\r\n\r\n\r\n\r\nfunction Client(){\r\n//if not a DOM browser, hopeless\r\n\tthis.min = false; if (document.getElementById){this.min = true;};\r\n\r\n\tthis.ua = navigator.userAgent;\r\n\tthis.name = navigator.appName;\r\n\tthis.ver = navigator.appVersion;  \r\n\r\n//Get data about the browser\r\n\tthis.mac = (this.ver.indexOf('Mac') != -1);\r\n\tthis.win = (this.ver.indexOf('Windows') != -1);\r\n\r\n//Look for Gecko\r\n\tthis.gecko = (this.ua.indexOf('Gecko') > 1);\r\n\tif (this.gecko){\r\n\t\tthis.geckoVer = parseInt(this.ua.substring(this.ua.indexOf('Gecko')+6, this.ua.length));\r\n\t\tif (this.geckoVer < 20020000){this.min = false;}\r\n\t}\r\n\t\r\n//Look for Firebird\r\n\tthis.firebird = (this.ua.indexOf('Firebird') > 1);\r\n\t\r\n//Look for Safari\r\n\tthis.safari = (this.ua.indexOf('Safari') > 1);\r\n\tif (this.safari){\r\n\t\tthis.gecko = false;\r\n\t}\r\n\t\r\n//Look for IE\r\n\tthis.ie = (this.ua.indexOf('MSIE') > 0);\r\n\tif (this.ie){\r\n\t\tthis.ieVer = parseFloat(this.ua.substring(this.ua.indexOf('MSIE')+5, this.ua.length));\r\n\t\tif (this.ieVer < 5.5){this.min = false;}\r\n\t}\r\n\t\r\n//Look for Opera\r\n\tthis.opera = (this.ua.indexOf('Opera') > 0);\r\n\tif (this.opera){\r\n\t\tthis.operaVer = parseFloat(this.ua.substring(this.ua.indexOf('Opera')+6, this.ua.length));\r\n\t\tif (this.operaVer < 7.04){this.min = false;}\r\n\t}\r\n\tif (this.min == false){\r\n\t\talert('Your browser may not be able to handle this page.');\r\n\t}\r\n\t\r\n//Special case for the horrible ie5mac\r\n\tthis.ie5mac = (this.ie&&this.mac&&(this.ieVer<6));\r\n}\r\n\r\nvar C = new Client();\r\n\r\n//for (prop in C){\r\n//\talert(prop + ': ' + C[prop]);\r\n//}\r\n\r\n\r\n\r\n//CODE FOR HANDLING NAV BUTTONS AND FUNCTION BUTTONS\r\n\r\n//[strNavBarJS]\r\nfunction NavBtnOver(Btn){\r\n\tif (Btn.className != 'NavButtonDown'){Btn.className = 'NavButtonUp';}\r\n}\r\n\r\nfunction NavBtnOut(Btn){\r\n\tBtn.className = 'NavButton';\r\n}\r\n\r\nfunction NavBtnDown(Btn){\r\n\tBtn.className = 'NavButtonDown';\r\n}\r\n//[/strNavBarJS]\r\n\r\nfunction FuncBtnOver(Btn){\r\n\tif (Btn.className != 'FuncButtonDown'){Btn.className = 'FuncButtonUp';}\r\n}\r\n\r\nfunction FuncBtnOut(Btn){\r\n\tBtn.className = 'FuncButton';\r\n}\r\n\r\nfunction FuncBtnDown(Btn){\r\n\tBtn.className = 'FuncButtonDown';\r\n}\r\n\r\nfunction FocusAButton(){\r\n\tif (document.getElementById('CheckButton1') != null){\r\n\t\tdocument.getElementById('CheckButton1').focus();\r\n\t}\r\n\telse{\r\n\t\tif (document.getElementById('CheckButton2') != null){\r\n\t\t\tdocument.getElementById('CheckButton2').focus();\r\n\t\t}\r\n\t\telse{\r\n\t\t\tdocument.getElementsByTagName('button')[0].focus();\r\n\t\t}\r\n\t}\r\n}\r\n\r\n\r\n\r\n\r\n//CODE FOR HANDLING DISPLAY OF POPUP FEEDBACK BOX\r\n\r\nvar topZ = 1000;\r\n\r\nfunction ShowMessage(Feedback){\r\n\tvar Output = Feedback + '<br /><br />';\r\n\tdocument.getElementById('FeedbackContent').innerHTML = Output;\r\n\tvar FDiv = document.getElementById('FeedbackDiv');\r\n\ttopZ++;\r\n\tFDiv.style.zIndex = topZ;\r\n\tFDiv.style.top = TopSettingWithScrollOffset(30) + 'px';\r\n\r\n\tFDiv.style.display = 'block';\r\n\r\n\tShowElements(false, 'input');\r\n\tShowElements(false, 'select');\r\n\tShowElements(false, 'object');\r\n\tShowElements(true, 'object', 'FeedbackContent');\r\n\r\n//Focus the OK button\r\n\tsetTimeout("document.getElementById('FeedbackOKButton').focus()", 50);\r\n\t\r\n//\r\n}\r\n\r\nfunction ShowElements(Show, TagName, ContainerToReverse){\r\n// added third argument to allow objects in the feedback box to appear\r\n//IE bug -- hide all the form elements that will show through the popup\r\n//FF on Mac bug : doesn't redisplay objects whose visibility is set to visible\r\n//unless the object's display property is changed\r\n\r\n\t//get container object (by Id passed in, or use document otherwise)\r\n\tTopNode = document.getElementById(ContainerToReverse);\r\n\tvar Els;\r\n\tif (TopNode != null) {\r\n\t\tEls = TopNode.getElementsByTagName(TagName);\r\n\t} else {\r\n\t\tEls = document.getElementsByTagName(TagName);\r\n\t}\r\n\r\n\tfor (var i=0; i<Els.length; i++){\r\n\t\tif (TagName == "object") {\r\n\t\t\t//manipulate object elements in all browsers\r\n\t\t\tif (Show == true){\r\n\t\t\t\tEls[i].style.visibility = 'visible';\r\n\t\t\t\t//get Mac FireFox to manipulate display, to force screen redraw\r\n\t\t\t\tif (C.mac && C.gecko) {Els[i].style.display = '';}\r\n\t\t\t}\r\n\t\t\telse{\r\n\t\t\t\tEls[i].style.visibility = 'hidden';\r\n\t\t\t\tif (C.mac && C.gecko) {Els[i].style.display = 'none';}\r\n\t\t\t}\r\n\t\t} \r\n\t\telse {\r\n\t\t\t// tagName is either input or select (that is, Form Elements)\r\n\t\t\t// ie6 has a problem with Form elements, so manipulate those\r\n\t\t\tif (C.ie) {\r\n\t\t\t\tif (C.ieVer < 7) {\r\n\t\t\t\t\tif (Show == true){\r\n\t\t\t\t\t\tEls[i].style.visibility = 'visible';\r\n\t\t\t\t\t}\r\n\t\t\t\t\telse{\r\n\t\t\t\t\t\tEls[i].style.visibility = 'hidden';\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\n\r\n\r\nfunction HideFeedback(){\r\n\tdocument.getElementById('FeedbackDiv').style.display = 'none';\r\n\tShowElements(true, 'input');\r\n\tShowElements(true, 'select');\r\n\tShowElements(true, 'object');\r\n\tif (Finished == true){\r\n\t\tFinish();\r\n\t}\r\n}\r\n\r\n\r\n//GENERAL UTILITY FUNCTIONS AND VARIABLES\r\n\r\n//PAGE DIMENSION FUNCTIONS\r\nfunction PageDim(){\r\n//Get the page width and height\r\n\tthis.W = 600;\r\n\tthis.H = 400;\r\n\tthis.W = document.getElementsByTagName('body')[0].clientWidth;\r\n\tthis.H = document.getElementsByTagName('body')[0].clientHeight;\r\n}\r\n\r\nvar pg = null;\r\n\r\nfunction GetPageXY(El) {\r\n\tvar XY = {x: 0, y: 0};\r\n\twhile(El){\r\n\t\tXY.x += El.offsetLeft;\r\n\t\tXY.y += El.offsetTop;\r\n\t\tEl = El.offsetParent;\r\n\t}\r\n\treturn XY;\r\n}\r\n\r\nfunction GetScrollTop(){\r\n\tif (typeof(window.pageYOffset) == 'number'){\r\n\t\treturn window.pageYOffset;\r\n\t}\r\n\telse{\r\n\t\tif ((document.body)&&(document.body.scrollTop)){\r\n\t\t\treturn document.body.scrollTop;\r\n\t\t}\r\n\t\telse{\r\n\t\t\tif ((document.documentElement)&&(document.documentElement.scrollTop)){\r\n\t\t\t\treturn document.documentElement.scrollTop;\r\n\t\t\t}\r\n\t\t\telse{\r\n\t\t\t\treturn 0;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction GetViewportHeight(){\r\n\tif (typeof window.innerHeight != 'undefined'){\r\n\t\treturn window.innerHeight;\r\n\t}\r\n\telse{\r\n\t\tif (((typeof document.documentElement != 'undefined')&&(typeof document.documentElement.clientHeight !=\r\n     'undefined'))&&(document.documentElement.clientHeight != 0)){\r\n\t\t\treturn document.documentElement.clientHeight;\r\n\t\t}\r\n\t\telse{\r\n\t\t\treturn document.getElementsByTagName('body')[0].clientHeight;\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction TopSettingWithScrollOffset(TopPercent){\r\n\tvar T = Math.floor(GetViewportHeight() * (TopPercent/100));\r\n\treturn GetScrollTop() + T; \r\n}\r\n\r\n//CODE FOR AVOIDING LOSS OF DATA WHEN BACKSPACE KEY INVOKES history.back()\r\nvar InTextBox = false;\r\n\r\nfunction SuppressBackspace(e){ \r\n\tif (InTextBox == true){return;}\r\n\tif (C.ie) {\r\n\t\tthisKey = window.event.keyCode;\r\n\t}\r\n\telse {\r\n\t\tthisKey = e.keyCode;\r\n\t}\r\n\r\n\tvar Suppress = false;\r\n\r\n\tif (thisKey == 8) {\r\n\t\tSuppress = true;\r\n\t}\r\n\r\n\tif (Suppress == true){\r\n\t\tif (C.ie){\r\n\t\t\twindow.event.returnValue = false;\t\r\n\t\t\twindow.event.cancelBubble = true;\r\n\t\t}\r\n\t\telse{\r\n\t\t\te.preventDefault();\r\n\t\t}\r\n\t}\r\n}\r\n\r\nif (C.ie){\r\n\tdocument.attachEvent('onkeydown',SuppressBackspace);\r\n\twindow.attachEvent('onkeydown',SuppressBackspace);\r\n}\r\nelse{\r\n\tif (window.addEventListener){\r\n\t\twindow.addEventListener('keypress',SuppressBackspace,false);\r\n\t}\r\n}\r\n\r\nfunction ReduceItems(InArray, ReduceToSize){\r\n\tvar ItemToDump=0;\r\n\tvar j=0;\r\n\twhile (InArray.length > ReduceToSize){\r\n\t\tItemToDump = Math.floor(InArray.length*Math.random());\r\n\t\tInArray.splice(ItemToDump, 1);\r\n\t}\r\n}\r\n\r\nfunction Shuffle(InArray){\r\n\tvar Num;\r\n\tvar Temp = new Array();\r\n\tvar Len = InArray.length;\r\n\r\n\tvar j = Len;\r\n\r\n\tfor (var i=0; i<Len; i++){\r\n\t\tTemp[i] = InArray[i];\r\n\t}\r\n\r\n\tfor (i=0; i<Len; i++){\r\n\t\tNum = Math.floor(j  *  Math.random());\r\n\t\tInArray[i] = Temp[Num];\r\n\r\n\t\tfor (var k=Num; k < (j-1); k++) {\r\n\t\t\tTemp[k] = Temp[k+1];\r\n\t\t}\r\n\t\tj--;\r\n\t}\r\n\treturn InArray;\r\n}\r\n\r\nfunction WriteToInstructions(Feedback) {\r\n\tdocument.getElementById('InstructionsDiv').innerHTML = Feedback;\r\n\r\n}\r\n\r\n\r\n\r\n\r\nfunction EscapeDoubleQuotes(InString){\r\n\treturn InString.replace(/"/g, '&quot;')\r\n}\r\n\r\nfunction TrimString(InString){\r\n        var x = 0;\r\n\r\n        if (InString.length != 0) {\r\n                while ((InString.charAt(InString.length - 1) == '\\u0020') || (InString.charAt(InString.length - 1) == '\\u000A') || (InString.charAt(InString.length - 1) == '\\u000D')){\r\n                        InString = InString.substring(0, InString.length - 1)\r\n                }\r\n\r\n                while ((InString.charAt(0) == '\\u0020') || (InString.charAt(0) == '\\u000A') || (InString.charAt(0) == '\\u000D')){\r\n                        InString = InString.substring(1, InString.length)\r\n                }\r\n\r\n                while (InString.indexOf('  ') != -1) {\r\n                        x = InString.indexOf('  ')\r\n                        InString = InString.substring(0, x) + InString.substring(x+1, InString.length)\r\n                 }\r\n\r\n                return InString;\r\n        }\r\n\r\n        else {\r\n                return '';\r\n        }\r\n}\r\n\r\nfunction FindLongest(InArray){\r\n\tif (InArray.length < 1){return -1;}\r\n\r\n\tvar Longest = 0;\r\n\tfor (var i=1; i<InArray.length; i++){\r\n\t\tif (InArray[i].length > InArray[Longest].length){\r\n\t\t\tLongest = i;\r\n\t\t}\r\n\t}\r\n\treturn Longest;\r\n}\r\n\r\n//UNICODE CHARACTER FUNCTIONS\r\nfunction IsCombiningDiacritic(CharNum){\r\n\tvar Result = (((CharNum >= 0x0300)&&(CharNum <= 0x370))||((CharNum >= 0x20d0)&&(CharNum <= 0x20ff)));\r\n\tResult = Result || (((CharNum >= 0x3099)&&(CharNum <= 0x309a))||((CharNum >= 0xfe20)&&(CharNum <= 0xfe23)));\r\n\treturn Result;\r\n}\r\n\r\nfunction IsCJK(CharNum){\r\n\treturn ((CharNum >= 0x3000)&&(CharNum < 0xd800));\r\n}\r\n\r\n//SETUP FUNCTIONS\r\n//BROWSER WILL REFILL TEXT BOXES FROM CACHE IF NOT PREVENTED\r\nfunction ClearTextBoxes(){\r\n\tvar NList = document.getElementsByTagName('input');\r\n\tfor (var i=0; i<NList.length; i++){\r\n\t\tif ((NList[i].id.indexOf('Guess') > -1)||(NList[i].id.indexOf('Gap') > -1)){\r\n\t\t\tNList[i].value = '';\r\n\t\t}\r\n\t\tif (NList[i].id.indexOf('Chk') > -1){\r\n\t\t\tNList[i].checked = '';\r\n\t\t}\r\n\t}\r\n}\r\n\r\n//EXTENSION TO ARRAY OBJECT\r\nfunction Array_IndexOf(Input){\r\n\tvar Result = -1;\r\n\tfor (var i=0; i<this.length; i++){\r\n\t\tif (this[i] == Input){\r\n\t\t\tResult = i;\r\n\t\t}\r\n\t}\r\n\treturn Result;\r\n}\r\nArray.prototype.indexOf = Array_IndexOf;\r\n\r\n//IE HAS RENDERING BUG WITH BOTTOM NAVBAR\r\nfunction RemoveBottomNavBarForIE(){\r\n\tif ((C.ie)&&(document.getElementById('Reading') != null)){\r\n\t\tif (document.getElementById('BottomNavBar') != null){\r\n\t\t\tdocument.getElementById('TheBody').removeChild(document.getElementById('BottomNavBar'));\r\n\t\t}\r\n\t}\r\n}\r\n\r\n\r\n\r\n\r\n//HOTPOTNET-RELATED CODE\r\n\r\nvar HPNStartTime = (new Date()).getTime();\r\nvar SubmissionTimeout = 30000;\r\nvar Detail = ''; //Global that is used to submit tracking data\r\n\r\nfunction Finish(){\r\n//If there's a form, fill it out and submit it\r\n\tif (document.store != null){\r\n\t\tFrm = document.store;\r\n\t\tFrm.starttime.value = HPNStartTime;\r\n\t\tFrm.endtime.value = (new Date()).getTime();\r\n\t\tFrm.mark.value = Score;\r\n\t\tFrm.detail.value = Detail;\r\n\t\tFrm.submit();\r\n\t}\r\n}\r\n\r\n\r\n\r\n\r\n\r\n//JQUIZ CORE JAVASCRIPT CODE\r\n\r\nvar CurrQNum = 0;\r\nvar CorrectIndicator = 'r&#x00E4;tt';\r\nvar IncorrectIndicator = 'fel';\r\nvar YourScoreIs = 'Ditt betyg: ';\r\n\r\n//New for 6.2.2.0\r\nvar CompletedSoFar = 'Fr&#x00E5;gor du besvarat helt: ';\r\nvar ExerciseCompleted = 'Nu &#x00E4;r du klar med fr&#x00E5;gan.';\r\nvar ShowCompletedSoFar = true;\r\n\r\nvar ContinuousScoring = true;\r\nvar CorrectFirstTime = 'Fr&#x00E5;gor som du klarade f&#x00F6;rsta g&#x00E5;ngen: ';\r\nvar ShowCorrectFirstTime = true;\r\nvar ShuffleQs = true;\r\nvar ShuffleAs = true;\r\nvar DefaultRight = 'Korrekt!';\r\nvar DefaultWrong = 'Nej, f&#x00F6;rs&#x00F6;k igen!';\r\nvar QsToShow = 14;\r\nvar Score = 0;\r\nvar Finished = false;\r\nvar Qs = null;\r\nvar QArray = new Array();\r\nvar ShowingAllQuestions = false;\r\nvar ShowAllQuestionsCaption = 'Visa alla fr&#x00E5;gor och dina svar';\r\nvar ShowOneByOneCaption = 'Visa fr&#x00E5;gorna en och en';\r\nvar State = new Array();\r\nvar Feedback = '';\r\nvar TimeOver = false;\r\nvar strInstructions = '';\r\nvar Locked = false;\r\n\r\n//The following variable can be used to add a message explaining that\r\n//the question is finished, so no further marking will take place.\r\nvar strQuestionFinished = '';\r\n\r\nfunction CompleteEmptyFeedback(){\r\n\tvar QNum, ANum;\r\n\tfor (QNum=0; QNum<I.length; QNum++){\r\n//Only do this if not multi-select\r\n\t\tif (I[QNum][2] != '3'){\r\n  \t\tfor (ANum = 0; ANum<I[QNum][3].length; ANum++){\r\n  \t\t\tif (I[QNum][3][ANum][1].length < 1){\r\n  \t\t\t\tif (I[QNum][3][ANum][2] > 0){\r\n  \t\t\t\t\tI[QNum][3][ANum][1] = DefaultRight;\r\n  \t\t\t\t}\r\n  \t\t\t\telse{\r\n  \t\t\t\t\tI[QNum][3][ANum][1] = DefaultWrong;\r\n  \t\t\t\t}\r\n  \t\t\t}\r\n  \t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction SetUpQuestions(){\r\n\tvar AList = new Array(); \r\n\tvar QList = new Array();\r\n\tvar i, j;\r\n\tQs = document.getElementById('Questions');\r\n\twhile (Qs.getElementsByTagName('li').length > 0){\r\n\t\tQList.push(Qs.removeChild(Qs.getElementsByTagName('li')[0]));\r\n\t}\r\n\tvar DumpItem = 0;\r\n\tif (QsToShow > QList.length){\r\n\t\tQsToShow = QList.length;\r\n\t}\r\n\twhile (QsToShow < QList.length){\r\n\t\tDumpItem = Math.floor(QList.length*Math.random());\r\n\t\tfor (j=DumpItem; j<(QList.length-1); j++){\r\n\t\t\tQList[j] = QList[j+1];\r\n\t\t}\r\n\t\tQList.length = QList.length-1;\r\n\t}\r\n\tif (ShuffleQs == true){\r\n\t\tQList = Shuffle(QList);\r\n\t}\r\n\tif (ShuffleAs == true){\r\n\t\tvar As;\r\n\t\tfor (var i=0; i<QList.length; i++){\r\n\t\t\tAs = QList[i].getElementsByTagName('ol')[0];\r\n\t\t\tif (As != null){\r\n  \t\t\tAList.length = 0;\r\n\t\t\t\twhile (As.getElementsByTagName('li').length > 0){\r\n\t\t\t\t\tAList.push(As.removeChild(As.getElementsByTagName('li')[0]));\r\n\t\t\t\t}\r\n\t\t\t\tAList = Shuffle(AList);\r\n\t\t\t\tfor (j=0; j<AList.length; j++){\r\n\t\t\t\t\tAs.appendChild(AList[j]);\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\t\r\n\tfor (i=0; i<QList.length; i++){\r\n\t\tQs.appendChild(QList[i]);\r\n\t\tQArray[QArray.length] = QList[i];\r\n\t}\r\n\r\n//Show the first item\r\n\tQArray[0].style.display = '';\r\n\t\r\n//Now hide all except the first item\r\n\tfor (i=1; i<QArray.length; i++){\r\n\t\tQArray[i].style.display = 'none';\r\n\t}\t\t\r\n\tSetQNumReadout();\r\n\t\r\n\tSetFocusToTextbox();\r\n}\r\n\r\nfunction SetFocusToTextbox(){\r\n//if there's a textbox, set the focus in it\r\n\tif (QArray[CurrQNum].getElementsByTagName('input')[0] != null){\r\n\t\tQArray[CurrQNum].getElementsByTagName('input')[0].focus();\r\n//and show a keypad if there is one\r\n\t\tif (document.getElementById('CharacterKeypad') != null){\r\n\t\t\tdocument.getElementById('CharacterKeypad').style.display = 'block';\r\n\t\t}\r\n\t}\r\n\telse{\r\n  \tif (QArray[CurrQNum].getElementsByTagName('textarea')[0] != null){\r\n  \t\tQArray[CurrQNum].getElementsByTagName('textarea')[0].focus();\t\r\n//and show a keypad if there is one\r\n\t\t\tif (document.getElementById('CharacterKeypad') != null){\r\n\t\t\t\tdocument.getElementById('CharacterKeypad').style.display = 'block';\r\n\t\t\t}\r\n\t\t}\r\n//This added for 6.0.4.11: hide accented character buttons if no textbox\r\n\t\telse{\r\n\t\t\tif (document.getElementById('CharacterKeypad') != null){\r\n\t\t\t\tdocument.getElementById('CharacterKeypad').style.display = 'none';\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction ChangeQ(ChangeBy){\r\n//The following line prevents moving to another question until the current\r\n//question is answered correctly. Uncomment it to enable this behaviour. \r\n//\tif (State[CurrQNum][0] == -1){return;}\r\n\tif (((CurrQNum + ChangeBy) < 0)||((CurrQNum + ChangeBy) >= QArray.length)){return;}\r\n\tQArray[CurrQNum].style.display = 'none';\r\n\tCurrQNum += ChangeBy;\r\n\tQArray[CurrQNum].style.display = '';\r\n//Undocumented function added 10/12/2004\r\n\tShowSpecialReadingForQuestion();\r\n\tSetQNumReadout();\r\n\tSetFocusToTextbox();\r\n}\r\n\r\nvar HiddenReadingShown = false;\r\nfunction ShowSpecialReadingForQuestion(){\r\n//Undocumented function for showing specific reading text elements which change with each question\r\n//Added on 10/12/2004\r\n\tif (document.getElementById('ReadingDiv') != null){\r\n\t\tif (HiddenReadingShown == true){\r\n\t\t\tdocument.getElementById('ReadingDiv').innerHTML = '';\r\n\t\t}\r\n\t\tif (QArray[CurrQNum] != null){\r\n//Fix for 6.0.4.25\r\n\t\t\tvar Children = QArray[CurrQNum].getElementsByTagName('div');\r\n\t\t\tfor (var i=0; i<Children.length; i++){\r\n\t\t\tif (Children[i].className=="HiddenReading"){\r\n\t\t\t\t\tdocument.getElementById('ReadingDiv').innerHTML = Children[i].innerHTML;\r\n\t\t\t\t\tHiddenReadingShown = true;\r\n//Hide the ShowAllQuestions button to avoid confusion\r\n\t\t\t\t\tif (document.getElementById('ShowMethodButton') != null){\r\n\t\t\t\t\t\tdocument.getElementById('ShowMethodButton').style.display = 'none';\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\t\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction SetQNumReadout(){\r\n\tdocument.getElementById('QNumReadout').innerHTML = (CurrQNum+1) + ' / ' + QArray.length;\r\n\tif ((CurrQNum+1) >= QArray.length){\r\n\t\tif (document.getElementById('NextQButton') != null){\r\n\t\t\tdocument.getElementById('NextQButton').style.visibility = 'hidden';\r\n\t\t}\r\n\t}\r\n\telse{\r\n\t\tif (document.getElementById('NextQButton') != null){\r\n\t\t\tdocument.getElementById('NextQButton').style.visibility = 'visible';\r\n\t\t}\r\n\t}\r\n\tif (CurrQNum <= 0){\r\n\t\tif (document.getElementById('PrevQButton') != null){\r\n\t\t\tdocument.getElementById('PrevQButton').style.visibility = 'hidden';\r\n\t\t}\r\n\t}\r\n\telse{\r\n\t\tif (document.getElementById('PrevQButton') != null){\r\n\t\t\tdocument.getElementById('PrevQButton').style.visibility = 'visible';\r\n\t\t}\r\n\t}\r\n}\r\n\r\nvar I=new Array();\r\nI[0]=new Array();I[0][0]=100;\r\nI[0][1]='';\r\nI[0][2]='0';\r\nI[0][3]=new Array();\r\nI[0][3][0]=new Array('Asiaten och Svininfluensan','Asiaten \\u00E4r en av dem, men den s\\u00E5 kallade "svininfluensan" kom inte f\\u00F6rr\\u00E4n 2000-talet.',0,0,1);\r\nI[0][3][1]=new Array('Hongkonginfluensan och F\\u00E5gelinfluensan','Hongkonginfluensan \\u00E4r en av dem, men den s\\u00E5 kallade "f\\u00E5gelinfluensan" har \\u00E4nnu inte orsakat en pandemi trots att m\\u00E4nniskor ibland smittas.',0,0,1);\r\nI[0][3][2]=new Array('Asiaten och Hongkonginfluensan','Ja! Asiaten kom 1955 och Hongkonginfluensan kom 1968-69.',1,100,1);\r\nI[0][3][3]=new Array('Svininfluensan och F\\u00E5gelinfluensan','Den s\\u00E5 kallade "svininfluensan" kom inte f\\u00F6rr\\u00E4n 2000-talet och "f\\u00E5gelinfluensan" har \\u00E4nnu inte orsakat en pandemi.',0,0,1);\r\nI[1]=new Array();I[1][0]=100;\r\nI[1][1]='';\r\nI[1][2]='0';\r\nI[1][3]=new Array();\r\nI[1][3][0]=new Array('Ett utbrott av en sjukdom i en viss region','N\\u00E4r ett utbrott h\\u00E5ller sig till en viss region (till exempel endast Sverige eller Skandinavien) kallas det f\\u00F6r en epidemi.',0,0,1);\r\nI[1][3][1]=new Array('Ett v\\u00E4rldsomsp\\u00E4nnande utbrott av en sjukdom','Ja! En pandemi \\u00E4r n\\u00E4r samma sjukdom infekterar m\\u00E4nniskor runtom p\\u00E5 jorden samtidigt. Under 2009 drabbades Sverige och m\\u00E5nga andra l\\u00E4nder av en pandemi av influensa AH1N1)2009.',1,100,1);\r\nI[1][3][2]=new Array('Ett utbrott av ett virus som varar i minst tre m\\u00E5nader','Det \\u00E4r inte l\\u00E4ngden p\\u00E5 utbrottet som g\\u00F6r det till en pandemi - men en pandemi varar ofta \\u00E4nnu l\\u00E4ngre \\u00E4n tre m\\u00E5nader.',0,0,1);\r\nI[1][3][3]=new Array('Ett utbrott d\\u00E4r mer \\u00E4n h\\u00E4lften av de smittade m\\u00E4nniskorna d\\u00F6r','Det \\u00E4r inte hur stor andel som d\\u00F6r som g\\u00F6r det till en pandemi. Vissa pandemier kr\\u00E4ver m\\u00E5nga d\\u00F6dsoffer, medan andra \\u00E4r relativt milda.',0,0,1);\r\nI[2]=new Array();I[2][0]=100;\r\nI[2][1]='';\r\nI[2][2]='0';\r\nI[2][3]=new Array();\r\nI[2][3][0]=new Array('Ett insektsbett','Insektsbett kan ge andra smittor, men inte influensa.',0,0,1);\r\nI[2][3][1]=new Array('Ett virus','Ja! Influensa \\u00E4r en virussjukdom. Det finns tre typer av influensavirus; influensa A, B och C, som alla tillh\\u00F6r gruppen ortomyxovirus.',1,100,1);\r\nI[2][3][2]=new Array('M\\u00F6gel','M\\u00F6gel kan man f\\u00E5 besv\\u00E4r av, men inte influensa.',0,0,1);\r\nI[2][3][3]=new Array('Att \\u00E4ta d\\u00E5lig mat','Ibland kallas magsjuka som man f\\u00E5r av till exempel d\\u00E5lig mat f\\u00F6r maginfluensa, men den orsakas inte av influensa.',0,0,1);\r\nI[3]=new Array();I[3][0]=100;\r\nI[3][1]='';\r\nI[3][2]='0';\r\nI[3][3]=new Array();\r\nI[3][3][0]=new Array('Ordet betyder "farliga partiklar"','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[3][3][1]=new Array('Ordet betyder "gift"','Ja! Ordet \\u00E4r latin och betyder gift.',1,100,1);\r\nI[3][3][2]=new Array('Ordet betyder "mycket smittsam"','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[3][3][3]=new Array('Ordet h\\u00E4rstammar fr\\u00E5n namnet p\\u00E5 den irl\\u00E4ndska l\\u00E4karen Donald McVirus som uppt\\u00E4ckte den sjukdomsalstrande mikroorganismen','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[4]=new Array();I[4][0]=100;\r\nI[4][1]='';\r\nI[4][2]='0';\r\nI[4][3]=new Array();\r\nI[4][3][0]=new Array('Med hj\\u00E4lp av deras storlek','Influensapartiklar \\u00E4r alla r\\u00E4tts\\u00E5 lika i storlek (cirka 80-120 nm i diameter).',0,0,1);\r\nI[4][3][1]=new Array('Med hj\\u00E4lp av allvarlighetsgraden p\\u00E5 sjukdomen som viruset kan orsaka','Det \\u00E4r inte s\\u00E5 man skiljer dem \\u00E5t.',0,0,1);\r\nI[4][3][2]=new Array('Med hj\\u00E4lp av proteiner p\\u00E5 utsidan av viruset','Ja! P\\u00E5 utsidan av viruset finns proteinerna hemagglutinin och neuraminidas (H och N). Det finns olika typer av H och N som heter, till exempel H1, H2, osv. Olika influensavirus ben\\u00E4mns efter deras H och N typer - som till exempel influensa A(H2N3) eller A(H1N1).',1,100,1);\r\nI[4][3][3]=new Array('Med hj\\u00E4lp av deras f\\u00E4rg','Det \\u00E4r inte f\\u00E4rgen som skiljer dem \\u00E5t.',0,0,1);\r\nI[5]=new Array();I[5][0]=100;\r\nI[5][1]='';\r\nI[5][2]='3';\r\nI[5][3]=new Array();\r\nI[5][3][0]=new Array('Droppar fr\\u00E5n n\\u00E4san eller saliv fr\\u00E5n en person som \\u00E4r smittad','Man kan smittas n\\u00E4r n\\u00E5gon snyter sig, nyser, hostar, och s\\u00E5 vidare. Men finns det andra s\\u00E4tt?',1,100,1);\r\nI[5][3][1]=new Array('Att vidr\\u00F6ra en person som \\u00E4r smittad','Man kan smittas om man tar i en smittad person. Men finns det andra s\\u00E4tt?',1,100,1);\r\nI[5][3][2]=new Array('Att r\\u00F6ra vid f\\u00F6rem\\u00E5l som har smitto\\u00E4mnen p\\u00E5 sin yta','Det kan finnas viruspartiklar p\\u00E5 olika ytor som en smittad person har vidr\\u00F6rt. Men finns det andra s\\u00E4tt?',1,100,1);\r\nI[5][3][3]=new Array('Ingen av dess s\\u00E4tt','Jod\\u00E5, p\\u00E5 alla dessa s\\u00E4tt kan man smittas.',0,0,1);\r\nI[6]=new Array();I[6][0]=100;\r\nI[6][1]='';\r\nI[6][2]='0';\r\nI[6][3]=new Array();\r\nI[6][3][0]=new Array('750','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[6][3][1]=new Array('7 500','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[6][3][2]=new Array('75 000','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[6][3][3]=new Array('750 000','Ja! Det kan finnas upp till 750 000 viruspartiklar i en milliliter av n\\u00E4ssekret, och en hel del kan ju flyga ut n\\u00E4r man nyser!',1,100,1);\r\nI[7]=new Array();I[7][0]=100;\r\nI[7][1]='';\r\nI[7][2]='0';\r\nI[7][3]=new Array();\r\nI[7][3][0]=new Array('cirka 1 dag','Nja, s\\u00E5 snabbt brukar man inte bli frisk.',0,0,1);\r\nI[7][3][1]=new Array('cirka 1 vecka','Ja! De flesta som f\\u00E5r influensa har tillfrisknat efter cirka en vecka.',1,100,1);\r\nI[7][3][2]=new Array('l\\u00E4ngre \\u00E4n 2 veckor','Om man \\u00E4r sjuk i influensa-liknande sjukdom i mer \\u00E4n 2 veckor kan man mist\\u00E4nka att det \\u00E4r n\\u00E5gon annan sjukdom.',0,0,1);\r\nI[7][3][3]=new Array('cirka 1 m\\u00E5nad','Om man \\u00E4r sjuk i influensa-liknande sjukdom i flera veckor kan man mist\\u00E4nka att det \\u00E4r n\\u00E5gon annan sjukdom.',0,0,1);\r\nI[8]=new Array();I[8][0]=100;\r\nI[8][1]='';\r\nI[8][2]='0';\r\nI[8][3]=new Array();\r\nI[8][3][0]=new Array('Utmattning efter kampen mellan kroppen och viruspartiklarna','Visst kan man bli utmattad av influensa, men det \\u00E4r inte fr\\u00E4mst det som orsakar d\\u00F6dsfall.',0,0,1);\r\nI[8][3][1]=new Array('Lunginflammation','Ja, s\\u00E4rkillt hos \\u00E4ldre \\u00E4r det ganska vanligt att man p\\u00E5 grund av influensainfektionen drabbas av lunginflammation orsakad av bakterier som normalt finns inom luftv\\u00E4garna. Det \\u00E4r framf\\u00F6rallt dessa sekund\\u00E4ra lunginflammationer tillsammans med hj\\u00E4rtsvikt som orsakar den influensaassocierade \\u00F6verd\\u00F6dligheten hos \\u00E4ldre.',1,100,1);\r\nI[8][3][2]=new Array('Hj\\u00E4rtinfarkt','Hj\\u00E4rtinfarkt \\u00E4r en ledande d\\u00F6dorsak i allm\\u00E4nhet, men inte i direkt relation till influensa.',0,0,1);\r\nI[8][3][3]=new Array('Uttorkning','D\\u00F6dsfall p\\u00E5 grund av uttorkning brukar snarare drabba magsjuka personer \\u00E4n de som har influensa.',0,0,1);\r\nI[9]=new Array();I[9][0]=100;\r\nI[9][1]='';\r\nI[9][2]='0';\r\nI[9][3]=new Array();\r\nI[9][3][0]=new Array('Sommar','Det \\u00E4r inte s\\u00E5 m\\u00E5nga som f\\u00E5r influensa under sommaren.',0,0,1);\r\nI[9][3][1]=new Array('Vinter','Ja! Den st\\u00F6rsta influensav\\u00E5gen brukar komma i midvintertider.',1,100,1);\r\nI[9][3][2]=new Array('V\\u00E5r','S\\u00E4songsepidemin av influensa avtar n\\u00E4r det blir v\\u00E5r.',0,0,1);\r\nI[9][3][3]=new Array('H\\u00F6st','Det \\u00E4r m\\u00E5nga som f\\u00E5r influensa under h\\u00F6sten, men det \\u00E4r \\u00E4nnu fler under en annan \\u00E5rstid.',0,0,1);\r\nI[10]=new Array();I[10][0]=100;\r\nI[10][1]='';\r\nI[10][2]='0';\r\nI[10][3]=new Array();\r\nI[10][3][0]=new Array('1933','Nej, men 1933 var f\\u00F6rsta g\\u00E5ngen man isolerade influensaviruset. F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[10][3][1]=new Array('1942','Ja!',1,100,1);\r\nI[10][3][2]=new Array('1950','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[10][3][3]=new Array('1967','F\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[11]=new Array();I[11][0]=100;\r\nI[11][1]='';\r\nI[11][2]='0';\r\nI[11][3]=new Array();\r\nI[11][3][0]=new Array('Viruset odlas i befruktade h\\u00F6ns\\u00E4gg, avd\\u00F6das och renas fram','Ja, det \\u00E4r s\\u00E5 det fungerar. Det tar flera m\\u00E5nader att framst\\u00E4lla varje s\\u00E4songs influensavaccin. Vilka variationer av influensa som ska vara med i vaccinet best\\u00E4ms vintern f\\u00F6re s\\u00E4songen som sedan b\\u00F6rjar p\\u00E5 h\\u00F6sten.',1,100,1);\r\nI[11][3][1]=new Array('Viruset odlas i kycklingar som injiceras med influensavirus. Efter fem dagar tas blod fr\\u00E5n kycklingen och vaccinet renas fram.','Visst involverar det kycklingar, men inte p\\u00E5 det h\\u00E4r s\\u00E4ttet.',0,0,1);\r\nI[11][3][2]=new Array('Viruset renas fram ur blodet fr\\u00E5n m\\u00E4nniskor som har influensa','Blodprov p\\u00E5 m\\u00E4nniskor som \\u00E4r smittade med influensa anv\\u00E4nds f\\u00E4mst f\\u00F6r att diagnosera vilken typ av influensa de har.',0,0,1);\r\nI[12]=new Array();I[12][0]=100;\r\nI[12][1]='';\r\nI[12][2]='0';\r\nI[12][3]=new Array();\r\nI[12][3][0]=new Array('En sorts antibiotika','Nej, men det \\u00E4r ocks\\u00E5 en medicin mot sjukdom. Antibiotika fungerar bara mot bakterier, inte virus som influensa.',0,0,1);\r\nI[12][3][1]=new Array('Ett nytt vaccin mot influensa','Nej, men det \\u00E4r n\\u00E5got som har med influensa att g\\u00F6ra.',0,0,1);\r\nI[12][3][2]=new Array('En medicin som bromsar f\\u00F6r\\u00F6kning av ett virus','Ja, Tamiflu \\u00E4r ett s\\u00E5 kallat antiviralt l\\u00E4kemedel.',1,100,1);\r\nI[12][3][3]=new Array('En ny sorts tandkr\\u00E4m f\\u00F6r vita t\\u00E4nder','Nej, f\\u00F6rs\\u00F6k igen!',0,0,1);\r\nI[13]=new Array();I[13][0]=100;\r\nI[13][1]='';\r\nI[13][2]='0';\r\nI[13][3]=new Array();\r\nI[13][3][0]=new Array('P\\u00E5st\\u00E5ende 2','Det \\u00E4r sant, men det \\u00E4r ocks\\u00E5 sant att man kan smitta andra n\\u00E4r man skrattar!',0,0,1);\r\nI[13][3][1]=new Array('P\\u00E5st\\u00E5ende 1','Det \\u00E4r sant, men det \\u00E4r ocks\\u00E5 sant att mer smittsamma virus sprider sig snabbare!',0,0,1);\r\nI[13][3][2]=new Array('Inget av p\\u00E5st\\u00E5endena','Jo, b\\u00E5da \\u00E4r korrekta.',0,0,1);\r\nI[13][3][3]=new Array('B\\u00E5da p\\u00E5st\\u00E5endena','Ja! B\\u00E5da p\\u00E5st\\u00E5endena \\u00E4r korrekta!',1,100,1);\r\n\r\n\r\nfunction StartUp(){\r\n\tRemoveBottomNavBarForIE();\r\n\r\n//If there's only one question, no need for question navigation controls\r\n\tif (QsToShow < 2){\r\n\t\tdocument.getElementById('QNav').style.display = 'none';\r\n\t}\r\n\t\r\n//Stash the instructions so they can be redisplayed\r\n\tstrInstructions = document.getElementById('InstructionsDiv').innerHTML;\r\n\t\r\n\r\n\t\r\n\r\n\t\r\n\r\n\t\r\n\tCompleteEmptyFeedback();\r\n\r\n\tSetUpQuestions();\r\n\tClearTextBoxes();\r\n\tCreateStatusArray();\r\n\t\r\n\r\n\t\r\n//Check search string for q parameter\r\n\tif (document.location.search.length > 0){\r\n\t\tif (ShuffleQs == false){\r\n\t\t\tvar JumpTo = parseInt(document.location.search.substring(1,document.location.search.length))-1;\r\n\t\t\tif (JumpTo <= QsToShow){\r\n\t\t\t\tChangeQ(JumpTo);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n//Undocumented function added 10/12/2004\r\n\tShowSpecialReadingForQuestion();\r\n}\r\n\r\nfunction ShowHideQuestions(){\r\n\tFuncBtnOut(document.getElementById('ShowMethodButton'));\r\n\tdocument.getElementById('ShowMethodButton').style.display = 'none';\r\n\tif (ShowingAllQuestions == false){\r\n\t\tfor (var i=0; i<QArray.length; i++){\r\n\t\t\t\tQArray[i].style.display = '';\r\n\t\t\t}\r\n\t\tdocument.getElementById('Questions').style.listStyleType = 'decimal';\r\n\t\tdocument.getElementById('OneByOneReadout').style.display = 'none';\r\n\t\tdocument.getElementById('ShowMethodButton').innerHTML = ShowOneByOneCaption;\r\n\t\tShowingAllQuestions = true;\r\n\t}\r\n\telse{\r\n\t\tfor (var i=0; i<QArray.length; i++){\r\n\t\t\t\tif (i != CurrQNum){\r\n\t\t\t\t\tQArray[i].style.display = 'none';\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\tdocument.getElementById('Questions').style.listStyleType = 'none';\r\n\t\tdocument.getElementById('OneByOneReadout').style.display = '';\r\n\t\tdocument.getElementById('ShowMethodButton').innerHTML = ShowAllQuestionsCaption;\r\n\t\tShowingAllQuestions = false;\t\r\n\t}\r\n\tdocument.getElementById('ShowMethodButton').style.display = 'inline';\r\n}\r\n\r\nfunction CreateStatusArray(){\r\n\tvar QNum, ANum;\r\n//For each item in the item array\r\n\tfor (QNum=0; QNum<I.length; QNum++){\r\n//Check if the question still exists (hasn't been nuked by showing a random selection)\r\n\t\tif (document.getElementById('Q_' + QNum) != null){\r\n\t\t\tState[QNum] = new Array();\r\n\t\t\tState[QNum][0] = -1; //Score for this q; -1 shows question not done yet\r\n\t\t\tState[QNum][1] = new Array(); //answers\r\n\t\t\tfor (ANum = 0; ANum<I[QNum][3].length; ANum++){\r\n\t\t\t\tState[QNum][1][ANum] = 0; //answer not chosen yet; when chosen, will store its position in the series of choices\r\n\t\t\t}\r\n\t\t\tState[QNum][2] = 0; //tries at this q so far\r\n\t\t\tState[QNum][3] = 0; //incrementing percent-correct values of selected answers\r\n\t\t\tState[QNum][4] = 0; //penalties incurred for hints\r\n\t\t\tState[QNum][5] = ''; //Sequence of answers chosen by number\r\n\t\t}\r\n\t\telse{\r\n\t\t\tState[QNum] = null;\r\n\t\t}\r\n\t}\r\n}\r\n\r\n\r\n\r\nfunction CheckMCAnswer(QNum, ANum, Btn){\r\n//if question doesn't exist, bail\r\n\tif (State[QNum].length < 1){return;}\r\n\t\r\n//Get the feedback\r\n\tFeedback = I[QNum][3][ANum][1];\r\n\t\r\n//Now show feedback and bail if question already complete\r\n\tif (State[QNum][0] > -1){\r\n//Add an extra message explaining that the question\r\n// is finished if defined by the user\r\n\t\tif (strQuestionFinished.length > 0){Feedback += '<br />' + strQuestionFinished;}\r\n//Show the feedback\r\n\t\tShowMessage(Feedback);\r\n//New for 6.2.2.1: If you want to mark an answer as correct even when it's the final choice, uncomment this line.\r\n//\t\tif (I[QNum][3][ANum][2] >= 1){Btn.innerHTML = CorrectIndicator;}else{Btn.innerHTML = IncorrectIndicator;}\t\r\n\t\treturn;\r\n\t}\r\n\t\r\n//Hide the button while processing\r\n\tBtn.style.display = 'none';\r\n\r\n//Increment the number of tries\r\n\tState[QNum][2]++;\r\n\t\r\n//Add the percent-correct value of this answer\r\n\tState[QNum][3] += I[QNum][3][ANum][3];\r\n\t\r\n//Store the try number in the answer part of the State array, for tracking purposes\r\n\tState[QNum][1][ANum] = State[QNum][2];\r\n\tif (State[QNum][5].length > 0){State[QNum][5] += ' | ';}\r\n\tState[QNum][5] += String.fromCharCode(65+ANum);\r\n\t\r\n//Should this answer be accepted as correct?\r\n\tif (I[QNum][3][ANum][2] < 1){\r\n//It's wrong\r\n\r\n//Mark the answer\r\n\t\tBtn.innerHTML = IncorrectIndicator;\r\n\t\t\r\n//Remove any previous score unless exercise is finished (6.0.3.8+)\r\n\t\tif (Finished == false){\r\n\t\t\tWriteToInstructions(strInstructions);\r\n\t\t}\t\r\n\t\t\r\n//Check whether this leaves just one MC answer unselected, in which case the Q is terminated\r\n\t\tvar RemainingAnswer = FinalAnswer(QNum);\r\n\t\tif (RemainingAnswer > -1){\r\n//Behave as if the last answer had been selected, but give no credit for it\r\n//Increment the number of tries\r\n\t\t\tState[QNum][2]++;\t\t\r\n\t\t\r\n//Calculate the score for this question\r\n\t\t\tCalculateMCQuestionScore(QNum);\r\n\t\t\t\r\n//Get the overall score and add it to the feedback\r\n\t\t\tCalculateOverallScore();\r\n//New for 6.2.2.1\r\n\t\t\tvar QsDone = CheckQuestionsCompleted();\r\n\t\t\tif ((ContinuousScoring == true)||(Finished == true)){\r\n\t\t\t\tFeedback += '<br />' + YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone;\r\n\t\t\t\tWriteToInstructions(YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone);\r\n\t\t\t}\r\n\t\t\telse{\r\n\t\t\t\tWriteToInstructions(QsDone);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\telse{\r\n//It's right\r\n//Mark the answer\r\n\t\tBtn.innerHTML = CorrectIndicator;\r\n\t\t\t\t\r\n//Calculate the score for this question\r\n\t\tCalculateMCQuestionScore(QNum);\r\n\t\t\r\n//New for 6.2.2.0\r\n\t\tvar QsDone = CheckQuestionsCompleted();\r\n\r\n//Get the overall score and add it to the feedback\r\n\t\tif (ContinuousScoring == true){\r\n\t\t\tCalculateOverallScore();\r\n\t\t\tif ((ContinuousScoring == true)||(Finished == true)){\r\n\t\t\t\tFeedback += '<br />' + YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone;\r\n\t\t\t\tWriteToInstructions(YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone);\r\n\t\t\t}\r\n\t\t}\r\n\t\telse{\r\n\t\t\tWriteToInstructions(QsDone);\r\n\t\t}\r\n\t}\r\n\t\r\n//Show the button again\r\n\tBtn.style.display = 'inline';\r\n\t\r\n//Finally, show the feedback\t\r\n\tShowMessage(Feedback);\r\n\t\r\n//Check whether all questions are now done\r\n\tCheckFinished();\r\n}\r\n\r\nfunction CalculateMCQuestionScore(QNum){\r\n\tvar Tries = State[QNum][2] + State[QNum][4]; //include tries and hint penalties\r\n\tvar PercentCorrect = State[QNum][3];\r\n\tvar TotAns = GetTotalMCAnswers(QNum);\r\n\tvar HintPenalties = State[QNum][4];\r\n\t\r\n//Make sure it's not already complete\r\n\r\n\tif (State[QNum][0] < 0){\r\n//Allow for Hybrids\r\n\t\tif (HintPenalties >= 1){\r\n\t\t\tState[QNum][0] = 0;\r\n\t\t}\r\n\t\telse{\r\n//This line calculates the score for this question\r\n\t\t\tif (TotAns == 1){\r\n\t\t\t\tState[QNum][0] = 1;\r\n\t\t\t}\r\n\t\t\telse{\r\n\t\t\t\tState[QNum][0] = ((TotAns-((Tries*100)/State[QNum][3]))/(TotAns-1));\r\n\t\t\t}\r\n\t\t}\r\n//Fix for Safari bug added for version 6.0.3.42 (negative infinity problem)\r\n\t\tif ((State[QNum][0] < 0)||(State[QNum][0] == Number.NEGATIVE_INFINITY)){\r\n\t\t\tState[QNum][0] = 0;\r\n\t\t}\r\n\t}\r\n}\r\n\r\nfunction GetTotalMCAnswers(QNum){\r\n\tvar Result = 0;\r\n\tfor (var ANum=0; ANum<I[QNum][3].length; ANum++){\r\n\t\tif (I[QNum][3][ANum][4] == 1){ //This is an MC answer\r\n\t\t\tResult++;\r\n\t\t}\r\n\t}\r\n\treturn Result;\r\n}\r\n\r\nfunction FinalAnswer(QNum){\r\n\tvar UnchosenAnswers = 0;\r\n\tvar FinalAnswer = -1;\r\n\tfor (var ANum=0; ANum<I[QNum][3].length; ANum++){\r\n\t\tif (I[QNum][3][ANum][4] == 1){ //This is an MC answer\r\n\t\t\tif (State[QNum][1][ANum] < 1){ //This answer hasn't been chosen yet\r\n\t\t\t\tUnchosenAnswers++;\r\n\t\t\t\tFinalAnswer = ANum;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tif (UnchosenAnswers == 1){\r\n\t\treturn FinalAnswer;\r\n\t}\r\n\telse{\r\n\t\treturn -1;\r\n\t}\r\n}\r\n\r\n\r\n\r\n\r\n\r\nfunction CheckMultiSelAnswer(QNum){\r\n//bail if question doesn't exist or exercise finished\r\n\tif ((State[QNum].length < 1)||(Finished == true)){return;}\r\n\r\n//Increment the tries for this question\r\n\tState[QNum][2]++;\r\n\t\r\n\tvar ShouldBeChecked;\r\n\tvar Matches = 0;\r\n\tif (State[QNum][5].length > 0){State[QNum][5] += ' | ';}\r\n\t\r\n//Check if there are any mismatches\r\n\tFeedback = '';\r\n\tvar CheckBox = null;\r\n\tfor (var ANum=0; ANum<I[QNum][3].length; ANum++){\r\n\t\tCheckBox = document.getElementById('Q_' + QNum + '_' + ANum + '_Chk');\r\n\t\tif (CheckBox.checked == true){\r\n\t\t\tState[QNum][5] += 'Y';\r\n\t\t}\r\n\t\telse{\r\n\t\t\tState[QNum][5] += 'N';\r\n\t\t}\r\n\t\tShouldBeChecked = (I[QNum][3][ANum][2] == 1);\r\n\t\tif (ShouldBeChecked == CheckBox.checked){\r\n\t\t\tMatches++;\r\n\t\t}\r\n\t\telse{\r\n\t\t\tFeedback = I[QNum][3][ANum][1];\r\n\t\t}\r\n\t}\r\n//Add the hit readout\r\n\tFeedback = Matches + ' / ' + I[QNum][3].length + '<br />' + Feedback;\r\n\tif (Matches == I[QNum][3].length){\r\n//It's right\r\n\t\tCalculateMultiSelQuestionScore(QNum);\r\n\t\t\r\n//New for 6.2.2.0\r\n\t\tvar QsDone = CheckQuestionsCompleted();\r\n\t\t\r\n\t\tif (ContinuousScoring == true){\r\n\t\t\tCalculateOverallScore();\r\n\t\t\tif ((ContinuousScoring == true)||(Finished == true)){\r\n\t\t\t\tFeedback += '<br />' + YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone;\r\n\t\t\t\tWriteToInstructions(YourScoreIs + ' ' + Score + '%.' + '<br />' + QsDone);\r\n\t\t\t}\r\n\t\t\telse{\r\n\t\t\t\tWriteToInstructions(QsDone);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\telse{\r\n//It's wrong -- Remove any previous score unless exercise is finished (6.0.3.8+)\r\n\t\tif (Finished == false){\r\n\t\t\tWriteToInstructions(strInstructions);\r\n\t\t}\t\r\n\t}\r\n\t\t\r\n//Show the feedback\r\n\tShowMessage(Feedback);\r\n\t\r\n//Check whether all questions are now done\r\n\tCheckFinished();\r\n}\r\n\r\nfunction CalculateMultiSelQuestionScore(QNum){\r\n\tvar Tries = State[QNum][2];\r\n\tvar TotAns = State[QNum][1].length;\r\n\t\r\n//Make sure it's not already complete\r\n\tif (State[QNum][0] < 0){\r\n\t\tState[QNum][0] = (TotAns - (Tries-1)) / TotAns;\r\n\t\tif (State[QNum][0] < 0){\r\n\t\t\tState[QNum][0] = 0;\r\n\t\t}\r\n\t}\r\n}\r\n\r\n\r\n\r\nfunction CalculateOverallScore(){\r\n\tvar TotalWeighting = 0;\r\n\tvar TotalScore = 0;\r\n\t\r\n\tfor (var QNum=0; QNum<State.length; QNum++){\r\n\t\tif (State[QNum] != null){\r\n\t\t\tif (State[QNum][0] > -1){\r\n\t\t\t\tTotalWeighting += I[QNum][0];\r\n\t\t\t\tTotalScore += (I[QNum][0] * State[QNum][0]);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tif (TotalWeighting > 0){\r\n\t\tScore = Math.floor((TotalScore/TotalWeighting)*100);\r\n\t}\r\n\telse{\r\n//if TotalWeighting is 0, no questions so far have any value, so \r\n//no penalty should be shown.\r\n\t\tScore = 100; \r\n\t}\r\n}\r\n\r\n//New for 6.2.2.0\r\nfunction CheckQuestionsCompleted(){\r\n\tif (ShowCompletedSoFar == false){return '';}\r\n\tvar QsCompleted = 0;\r\n\tfor (var QNum=0; QNum<State.length; QNum++){\r\n\t\tif (State[QNum] != null){\r\n\t\t\tif (State[QNum][0] >= 0){\r\n\t\t\t\tQsCompleted++;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n//Fixes for 6.2.2.2\r\n\tif (QsCompleted >= QArray.length){\r\n\t\treturn ExerciseCompleted;\r\n\t}\r\n\telse{\r\n\t\treturn CompletedSoFar + ' ' + QsCompleted + '/' + QArray.length + '.';\r\n\t}\r\n}\r\n\r\nfunction CheckFinished(){\r\n\tvar FB = '';\r\n\tvar AllDone = true;\r\n\tfor (var QNum=0; QNum<State.length; QNum++){\r\n\t\tif (State[QNum] != null){\r\n\t\t\tif (State[QNum][0] < 0){\r\n\t\t\t\tAllDone = false;\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n\tif (AllDone == true){\r\n\t\r\n//Report final score and submit if necessary\r\n\t\tCalculateOverallScore();\r\n\t\tFB = YourScoreIs + ' ' + Score + '%.';\r\n\t\tif (ShowCorrectFirstTime == true){\r\n\t\t\tvar CFT = 0;\r\n\t\t\tfor (QNum=0; QNum<State.length; QNum++){\r\n\t\t\t\tif (State[QNum] != null){\r\n\t\t\t\t\tif (State[QNum][0] >= 1){\r\n\t\t\t\t\t\tCFT++;\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t\tFB += '<br />' + CorrectFirstTime + ' ' + CFT + '/' + QsToShow;\r\n\t\t}\r\n\t\t\r\n//New for 6.2.2.0\r\n\t\tFB += '<br />' + ExerciseCompleted;\r\n\t\t\r\n\t\tWriteToInstructions(FB);\r\n\t\t\r\n\t\tFinished == true;\r\n\r\n\r\n\r\n\r\n\t\tTimeOver = true;\r\n\t\tLocked = true;\r\n\t\t\r\n\r\n\r\n\t\tFinished = true;\r\n\t\tDetail = '<?xml version="1.0"?><hpnetresult><fields>';\r\n\t\tfor (QNum=0; QNum<State.length; QNum++){\r\n\t\t\tif (State[QNum] != null){\r\n\t\t\t\tif (State[QNum][5].length > 0){\r\n\t\t\t\t\tDetail += '<field><fieldname>Question #' + (QNum+1) + '</fieldname><fieldtype>question-tracking</fieldtype><fieldlabel>Q ' + (QNum+1) + '</fieldlabel><fieldlabelid>QuestionTrackingField</fieldlabelid><fielddata>' + State[QNum][5] + '</fielddata></field>';\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t\tDetail += '</fields></hpnetresult>';\r\n\t\tsetTimeout('Finish()', SubmissionTimeout);\r\n\t}\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n//-->\r\n\r\n//]]>\r\n\r\n</script>\r\n\r\n\r\n</head>\r\n\r\n<body onload="StartUp()" id="TheBody" >\r\n\r\n<!-- BeginTopNavButtons -->\r\n\r\n\r\n<div class="NavButtonBar" id="TopNavBar">\r\n\r\n\r\n\r\n\r\n<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)"  onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location='contents.htm'; return false;"> Tillbaka till Influensakoll.se </button>\r\n\r\n\r\n\r\n<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)" onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location='nextpage.htm'; return false;">=&gt;</button>\r\n\r\n\r\n</div>\r\n\r\n\r\n\r\n<!-- EndTopNavButtons -->\r\n\r\n<div class="Titles">\r\n\t<h2 class="ExerciseTitle">Fr&#x00E5;gesport om influensa!</h2>\r\n\r\n\t<h3 class="ExerciseSubtitle">Hur mycket kan du om influensa?</h3>\r\n\r\n\r\n\r\n</div>\r\n\r\n<div id="InstructionsDiv" class="StdDiv">\r\n\t<div id="Instructions">Klicka p&#x00E5; r&#x00E4;tt svar! Du f&#x00E5;r veta direkt om du hade r&#x00E4;tt. Om du vill l&#x00E4;sa mer kan du klicka p&#x00E5; de andra svaren. </div>\r\n</div>\r\n\r\n\r\n\r\n\r\n<div id="MainDiv" class="StdDiv">\r\n \r\n<div id="QNav" class="QuestionNavigation">\r\n\r\n<p style="text-align: right;">\r\n<button id="ShowMethodButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ShowHideQuestions(); return false;">Visa alla fr&#x00E5;gor och dina svar</button>\r\n</p>\r\n\r\n<div id="OneByOneReadout">\r\n<button id="PrevQButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ChangeQ(-1); return false;">&lt;bak&#x00E5;t</button>\r\n\r\n<span id="QNumReadout" class="QNum">&nbsp;</span>\r\n\r\n<button id="NextQButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ChangeQ(1); return false;">n&#x00E4;sta fr&#x00E5;ga&gt;</button>\r\n<br />\r\n</div>\r\n\r\n</div>\r\n \r\n<ol class="QuizQuestions" id="Questions">\r\n<li class="QuizQuestion" id="Q_0" style="display: none;"><div class="QuestionText">Spanska sjukan var en av de tre stora pandemierna under 1900-talet. Vad kallades de andra tv&#x00E5;?</div><ol class="MCAnswers"><li id="Q_0_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_0_Btn" onclick="CheckMCAnswer(0,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Asiaten och Svininfluensan</li><li id="Q_0_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_1_Btn" onclick="CheckMCAnswer(0,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Hongkonginfluensan och F&#x00E5;gelinfluensan</li><li id="Q_0_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_2_Btn" onclick="CheckMCAnswer(0,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Asiaten och Hongkonginfluensan</li><li id="Q_0_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_3_Btn" onclick="CheckMCAnswer(0,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Svininfluensan och F&#x00E5;gelinfluensan</li></ol></li>\r\n<li class="QuizQuestion" id="Q_1" style="display: none;"><div class="QuestionText">Vad &#x00E4;r en pandemi?</div><ol class="MCAnswers"><li id="Q_1_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_0_Btn" onclick="CheckMCAnswer(1,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott av en sjukdom i en viss region</li><li id="Q_1_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_1_Btn" onclick="CheckMCAnswer(1,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett v&#x00E4;rldsomsp&#x00E4;nnande utbrott av en sjukdom</li><li id="Q_1_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_2_Btn" onclick="CheckMCAnswer(1,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott av ett virus som varar i minst tre m&#x00E5;nader</li><li id="Q_1_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_3_Btn" onclick="CheckMCAnswer(1,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott d&#x00E4;r mer &#x00E4;n h&#x00E4;lften av de smittade m&#x00E4;nniskorna d&#x00F6;r</li></ol></li>\r\n<li class="QuizQuestion" id="Q_2" style="display: none;"><div class="QuestionText">Influensainfektion orskas av:</div><ol class="MCAnswers"><li id="Q_2_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_0_Btn" onclick="CheckMCAnswer(2,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett insektsbett</li><li id="Q_2_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_1_Btn" onclick="CheckMCAnswer(2,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett virus</li><li id="Q_2_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_2_Btn" onclick="CheckMCAnswer(2,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;M&#x00F6;gel</li><li id="Q_2_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_3_Btn" onclick="CheckMCAnswer(2,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Att &#x00E4;ta d&#x00E5;lig mat</li></ol></li>\r\n<li class="QuizQuestion" id="Q_3" style="display: none;"><div class="QuestionText">Vad betyder ordet virus?</div><ol class="MCAnswers"><li id="Q_3_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_0_Btn" onclick="CheckMCAnswer(3,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "farliga partiklar"</li><li id="Q_3_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_1_Btn" onclick="CheckMCAnswer(3,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "gift"</li><li id="Q_3_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_2_Btn" onclick="CheckMCAnswer(3,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "mycket smittsam"</li><li id="Q_3_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_3_Btn" onclick="CheckMCAnswer(3,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet h&#x00E4;rstammar fr&#x00E5;n namnet p&#x00E5; den irl&#x00E4;ndska l&#x00E4;karen Donald McVirus som uppt&#x00E4;ckte den sjukdomsalstrande mikroorganismen</li></ol></li>\r\n<li class="QuizQuestion" id="Q_4" style="display: none;"><div class="QuestionText">Hur skiljer man olika influensavirus &#x00E5;t?</div><ol class="MCAnswers"><li id="Q_4_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_0_Btn" onclick="CheckMCAnswer(4,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av deras storlek</li><li id="Q_4_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_1_Btn" onclick="CheckMCAnswer(4,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av allvarlighetsgraden p&#x00E5; sjukdomen som viruset kan orsaka</li><li id="Q_4_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_2_Btn" onclick="CheckMCAnswer(4,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av proteiner p&#x00E5; utsidan av viruset</li><li id="Q_4_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_3_Btn" onclick="CheckMCAnswer(4,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av deras f&#x00E4;rg</li></ol></li>\r\n<li class="QuizQuestion" id="Q_5" style="display: none;"><div class="QuestionText">Du kan smittas av influensa genom:</div><ol class="MSelAnswers"><li id="Q_5_0"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_0_Chk" class="MSelCheckbox" />Droppar fr&#x00E5;n n&#x00E4;san eller saliv fr&#x00E5;n en person som &#x00E4;r smittad</div></form></li><li id="Q_5_1"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_1_Chk" class="MSelCheckbox" />Att vidr&#x00F6;ra en person som &#x00E4;r smittad</div></form></li><li id="Q_5_2"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_2_Chk" class="MSelCheckbox" />Att r&#x00F6;ra vid f&#x00F6;rem&#x00E5;l som har smitto&#x00E4;mnen p&#x00E5; sin yta</div></form></li><li id="Q_5_3"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_3_Chk" class="MSelCheckbox" />Ingen av dess s&#x00E4;tt</div></form></li></ol><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" onclick="CheckMultiSelAnswer(5)">Kolla ditt svar!</button></li>\r\n<li class="QuizQuestion" id="Q_6" style="display: none;"><div class="QuestionText">En nysning kan ses som ett stort virusmoln. Vilket nummer kommer i n&#x00E4;rheten av den m&#x00E4;ngd av viruspartiklar som en nysning kan inneh&#x00E5;lla?</div><ol class="MCAnswers"><li id="Q_6_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_0_Btn" onclick="CheckMCAnswer(6,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;750</li><li id="Q_6_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_1_Btn" onclick="CheckMCAnswer(6,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;7 500</li><li id="Q_6_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_2_Btn" onclick="CheckMCAnswer(6,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;75 000</li><li id="Q_6_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_3_Btn" onclick="CheckMCAnswer(6,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;750 000</li></ol></li>\r\n<li class="QuizQuestion" id="Q_7" style="display: none;"><div class="QuestionText">Hos annars friska personer varar influensa vanligtvis:</div><ol class="MCAnswers"><li id="Q_7_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_0_Btn" onclick="CheckMCAnswer(7,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 dag</li><li id="Q_7_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_1_Btn" onclick="CheckMCAnswer(7,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 vecka</li><li id="Q_7_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_2_Btn" onclick="CheckMCAnswer(7,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;l&#x00E4;ngre &#x00E4;n 2 veckor</li><li id="Q_7_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_3_Btn" onclick="CheckMCAnswer(7,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 m&#x00E5;nad</li></ol></li>\r\n<li class="QuizQuestion" id="Q_8" style="display: none;"><div class="QuestionText">N&#x00E4;r m&#x00E4;nniskor d&#x00F6;r av influensa, vad &#x00E4;r den vanligaste slutliga d&#x00F6;dsorsaken?</div><ol class="MCAnswers"><li id="Q_8_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_0_Btn" onclick="CheckMCAnswer(8,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Utmattning efter kampen mellan kroppen och viruspartiklarna</li><li id="Q_8_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_1_Btn" onclick="CheckMCAnswer(8,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Lunginflammation</li><li id="Q_8_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_2_Btn" onclick="CheckMCAnswer(8,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Hj&#x00E4;rtinfarkt</li><li id="Q_8_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_3_Btn" onclick="CheckMCAnswer(8,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Uttorkning</li></ol></li>\r\n<li class="QuizQuestion" id="Q_9" style="display: none;"><div class="QuestionText">Under vilken &#x00E5;rstid &#x00E4;r det st&#x00F6;rst risk att smittas av influensa i Sverige?</div><ol class="MCAnswers"><li id="Q_9_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_0_Btn" onclick="CheckMCAnswer(9,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Sommar</li><li id="Q_9_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_1_Btn" onclick="CheckMCAnswer(9,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Vinter</li><li id="Q_9_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_2_Btn" onclick="CheckMCAnswer(9,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;V&#x00E5;r</li><li id="Q_9_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_3_Btn" onclick="CheckMCAnswer(9,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;H&#x00F6;st</li></ol></li>\r\n<li class="QuizQuestion" id="Q_10" style="display: none;"><div class="QuestionText">Vilket &#x00E5;r utvecklades det f&#x00F6;rsta influensavaccinet?</div><ol class="MCAnswers"><li id="Q_10_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_0_Btn" onclick="CheckMCAnswer(10,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1933</li><li id="Q_10_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_1_Btn" onclick="CheckMCAnswer(10,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1942</li><li id="Q_10_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_2_Btn" onclick="CheckMCAnswer(10,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1950</li><li id="Q_10_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_3_Btn" onclick="CheckMCAnswer(10,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1967</li></ol></li>\r\n<li class="QuizQuestion" id="Q_11" style="display: none;"><div class="QuestionText">Hur g&#x00F6;r man influensavaccin?</div><ol class="MCAnswers"><li id="Q_11_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_0_Btn" onclick="CheckMCAnswer(11,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset odlas i befruktade h&#x00F6;ns&#x00E4;gg, avd&#x00F6;das och renas fram</li><li id="Q_11_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_1_Btn" onclick="CheckMCAnswer(11,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset odlas i kycklingar som injiceras med influensavirus. Efter fem dagar tas blod fr&#x00E5;n kycklingen och vaccinet renas fram.</li><li id="Q_11_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_2_Btn" onclick="CheckMCAnswer(11,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset renas fram ur blodet fr&#x00E5;n m&#x00E4;nniskor som har influensa</li></ol></li>\r\n<li class="QuizQuestion" id="Q_12" style="display: none;"><div class="QuestionText">Vad &#x00E4;r Tamiflu?</div><ol class="MCAnswers"><li id="Q_12_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_0_Btn" onclick="CheckMCAnswer(12,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En sorts antibiotika</li><li id="Q_12_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_1_Btn" onclick="CheckMCAnswer(12,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett nytt vaccin mot influensa</li><li id="Q_12_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_2_Btn" onclick="CheckMCAnswer(12,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En medicin som bromsar f&#x00F6;r&#x00F6;kning av ett virus</li><li id="Q_12_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_3_Btn" onclick="CheckMCAnswer(12,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En ny sorts tandkr&#x00E4;m f&#x00F6;r vita t&#x00E4;nder</li></ol></li>\r\n<li class="QuizQuestion" id="Q_13" style="display: none;"><div class="QuestionText">Vilket av de f&#x00F6;ljande p&#x00E5;st&#x00E5;enden &#x00E4;r r&#x00E4;tt? <br />P&#x00E5;st&#x00E5;ende 1: En smittad person kan sprida ett virus n&#x00E4;r han/hon skrattar. <br />P&#x00E5;st&#x00E5;ende 2: Ju mer smittsamt viruset &#x00E4;r, desto snabbare sprider det sig.</div><ol class="MCAnswers"><li id="Q_13_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_0_Btn" onclick="CheckMCAnswer(13,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;P&#x00E5;st&#x00E5;ende 2</li><li id="Q_13_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_1_Btn" onclick="CheckMCAnswer(13,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;P&#x00E5;st&#x00E5;ende 1</li><li id="Q_13_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_2_Btn" onclick="CheckMCAnswer(13,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Inget av p&#x00E5;st&#x00E5;endena</li><li id="Q_13_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_3_Btn" onclick="CheckMCAnswer(13,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;B&#x00E5;da p&#x00E5;st&#x00E5;endena</li></ol></li></ol>\r\n\r\n\r\n\r\n</div>\r\n\r\n\r\n\r\n<div class="Feedback" id="FeedbackDiv">\r\n<div class="FeedbackText" id="FeedbackContent"></div>\r\n<button id="FeedbackOKButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" onclick="HideFeedback(); return false;">&nbsp;OK&nbsp;</button>\r\n</div>\r\n\r\n<!-- BeginBottomNavButtons -->\r\n\r\n\r\n<div class="NavButtonBar" id="BottomNavBar">\r\n\r\n\r\n\r\n\r\n<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)"  onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location='contents.htm'; return false;"> Tillbaka till Influensakoll.se </button>\r\n\r\n\r\n\r\n<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)" onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location='nextpage.htm'; return false;">=&gt;</button>\r\n\r\n\r\n</div>\r\n\r\n\r\n\r\n<!-- EndBottomNavButtons -->\r\n\r\n<!-- BeginSubmissionForm -->\r\n\r\n<!-- EndSubmissionForm -->\r\n\r\n</body>\r\n\r\n</html>\r\n
-41	RadioEpstein	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3747441%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3747441%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3747441.m4a">Lyssna: Influensakoll</a></object></object>
-26	RSS-111031v2	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n    <html xmlns="http://www.w3.org/1999/xhtml">\r\n    <head>\r\n<meta http-equiv="pragma" content="no-cache">\r\n        <title>Untitled Page</title>\r\n \r\n\r\n<script src="../+media/js/jquery.js" type="text/javascript"></script>\r\n    <script type="text/javascript">\r\n\r\n\r\nvar defaultXMLPath = '/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5';\r\n\r\n    </script>\r\n    <script src="../+media/js/jquery_drs.js" type="text/javascript"></script>\r\n       <!--[if IE 6]>\r\n        <link rel="stylesheet" href="css/iefix.css" type="text/css" media="screen, print" />\r\n       <![endif]-->\r\n    </head>\r\n    <body>\r\n    <div id="javascriptWarning">  \r\n        <noscript>\r\n            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.\r\n        </noscript>\r\n    </div>     \r\n            <div id="contentlist">\r\n\r\n            </div>\r\n    </body>\r\n    </html>\r\n\r\n
-2	RSSgammalt	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\r\n    <html xmlns="http://www.w3.org/1999/xhtml">\r\n    <head>\r\n<meta http-equiv="pragma" content="no-cache">\r\n        <title>Untitled Page</title>\r\n       <script src="/media/js/jquery.js" type="text/javascript"></script>\r\n    <script type="text/javascript">\r\n\r\n\r\nvar defaultXMLPath = '/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5';\r\n\r\n    </script>\r\n    <script src="/media/js/jquery_drs.js" type="text/javascript"></script>\r\n       <!--[if IE 6]>\r\n        <link rel="stylesheet" href="css/iefix.css" type="text/css" media="screen, print" />\r\n       <![endif]-->\r\n    </head>\r\n    <body>\r\n    <div id="javascriptWarning">  \r\n        <noscript>\r\n            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.\r\n        </noscript>\r\n    </div>     \r\n            <div id="contentlist">\r\n\r\n            </div>\r\n    </body>\r\n    </html>\r\n
-38	RSSnytt	<script src="/media/js/jquery.js" type="text/javascript"></script>\r\n    <script type="text/javascript">\r\nvar defaultXMLPath = '/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5';\r\n\r\n    </script>\r\n    <script src="/media/js/jquery_drs.js" type="text/javascript"></script>\r\n    <div id="javascriptWarning">  \r\n        <noscript>\r\n            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.\r\n        </noscript>\r\n    </div>     \r\n\r\n
-35	SR_Annikaintervju	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="124" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3584616%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="124" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3584616%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3584616.m4a">Lyssna: "Annika Linde: Jätteviktigt att veta"</a></object></object>
-44	svtorebro	<object width="416" height="258"><param name="movie" value="http://svt.se/embededflash/2749275/play.swf"></param><param name="wmode" value="transparent"></param><param name="allowfullscreen" value="true"></param><param name="allowScriptAccess" value="sameDomain"></param><embed src="http://svt.se/embededflash/2749275/play.swf" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowScriptAccess="sameDomain" width="416" height="258"></embed></object>
-30	Twitterbutton	<a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="Influensakoll">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-29	Twitterfollow	<a href="https://twitter.com/Influensakoll" class="twitter-follow-button" data-show-count="false">Follow @Influensakoll</a>\r\n<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
-9	vanster_hem_nyheter	<p>\r\n<a href="http://www.bwz.se/smi/b.aspx?l=4966A86C-CBA5-47E8-A141-6CEC767C1D12&r=1&rcrc=8C7F66C3" \r\ntarget="_blank"><font color="black"><B>Vinterkräksjukan är här<font></B></a> \r\n<br>Smittskyddsinstitutet (SMI) håller koll på vinterkräksjuka på flera sätt. Ett sätt är en analys av sökningar där ordet kräk ingår på webbplatsen Vårdguiden.se. Nu tyder sökdata på att vinterkräksjukan är här.<br>\r\n2011-12-13<br>\r\n\r\n\r\n<a href="http://www.influensakoll.se/sv/nyheter/" \r\ntarget="_blank"><font color="black"><B>Kolla in alla nyheter<font></B></a> \r\n<br>Nu har vi lagt upp en samlingssida för alla nyheter, både om influensa och influensakoll i media.<br>\r\n2011-12-02<br>\r\n\r\n\r\n<font color="black"><B>Mer än 750 deltagare!</font></B></a> \r\n<br>Tack till alla som anmält sig. Influensakolls deltagare bor över hela landet. Sprid gärna länken <a href = "www.influensakoll.se">www.influensakoll.se</a> vidare till vänner och bekanta. Ju fler som deltar desto säkrare blir resultaten!<br>\r\n2011-12-02<br>\r\n\r\n\r\n\r\n<a href="http://arkiv.mitti.se:4711/2011/48/sodermalm/MIIS-20111129-A-016-A.pdf" \r\ntarget="_blank"><font color="black"><B>Influensakoll med i Mitt-i-tidningarna</font></B></a> \r\n<br>I flera av veckans Mitt-i-tidningarna i Stockholmområdet finns Influensakoll med!<br>\r\n2011-11-30<br>\r\n\r\n\r\n\r\n<a href="http://www.smittskyddsinstitutet.se/publikationer/veckorapporter/influensarapporter/sasongen-20112012/influensarapport-vecka-46-1411---2011--2011/" \r\ntarget="_blank"><font color="black"><B>Influensaaktiviteten fortsatt låg</font></B></a> \r\n<br>I SMI:s influensarapport för vecka 46 rapporteras att influensaaktiviteten var fortsatt låg, inte bara i hela Europa men också i övriga världen. Första studier om dubbelinfektioner och virusblandningar har publicerats.<br>\r\n2011-11-26<br>\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n</p>\r\n\r\n</body>\r\n</html> \r\n
-\.
+INSERT INTO snippet_snippet VALUES (1, 'block_sponsors.html', '{% load banner_tags %}
+<div class="block sponsors">
+Sponsorer<br />
+<div>{% banner_image "Sponsors" %}</div>
+<div><a href="/project/sponsors/">Karolinska institutet</a></div>
+</div>
+<div class="block partijen">
+Partijen<br />
+<div>{% banner_image "Epi work" %}</div>
+<div><a href="/project/partijen/">Epi work</a></div>
+</div>', '');
+INSERT INTO snippet_snippet VALUES (15, '<br /> ', '<br />
+', '');
+INSERT INTO snippet_snippet VALUES (32, 'EmailaFriendButton', '<FORM>
+<INPUT TYPE="button" VALUE="Tipsa en vän om Influensakoll" onClick="parent.location=''mailto:Skriv din väns epostadress här?subject=Influensakoll rekommenderas&Body=Hej! Jag hittade just det nya projektet Influensakoll och tyckte det kunde vara intressant för dig! Influensakoll är Smittskyddsinstitutets nya sätt att hålla koll på influensan med allmänhetens hjälp. Här kan man gå med: http://www.influensakoll.se''"> 
+</FORM> 
+', '');
+INSERT INTO snippet_snippet VALUES (28, 'Facebook_like', '<p>
+<FONT COLOR="d30044">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/sv_SE/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, ''script'', ''facebook-jssdk''));</script>
+
+<div class="fb-like-box" data-href="http://www.facebook.com/influensakoll" data-width="292" data-show-faces="false" data-stream="false" data-header="true"></div>
+</p>
+</FONT>', '');
+INSERT INTO snippet_snippet VALUES (4, 'FAQ', '<h1><a name="999">Frågor och svar</h1></a>
+<p>På den här sidan har vi samlat vanliga frågor och svar. Om du inte hittar svaret på din fråga är du välkommen att <a href="http://www.influensakoll.se/contact/">kontakta oss.</a> </p>
+
+
+<br />
+<h2>Frågor om ditt deltagande</h2>
+<p>
+<a href="#1">Hur gör jag för att gå med?</a>
+<br />
+<a href="#2">Hur berättar jag att jag är sjuk?</a>
+<br />
+<a href="#3">Och om jag inte är sjuk?</a>
+<br />
+<a href="#4">Hur länge måste jag vara med?</a>
+<br />
+<a href="#5">Vad gör ni med den information jag uppger?</a>
+<br />
+<a href="#6">Kan någon hitta min adress genom den information jag uppger?</a>
+<br />
+<a href="#7">Kan jag delta för mina barn?</a>
+<br />
+<a href="#77">Hur gör jag för att avsluta mitt deltagande i Influensakoll?</a>
+<br />
+</p>
+<br />
+<h2>Frågor om influensa och luftvägsinfektioner</h2>
+<p>
+<a href="#8">Vilka är symtomen på influensa?</a>
+<br />
+<a href="#9">Hur ser influensavirus ut?</a>
+<br />
+<a href="#10">Vad händer i kroppen när jag smittas av influensa?</a>
+<br />
+<a href="#11">Hur sprids influensavirus?</a>
+<br />
+<a href="#12">Hur kan man undvika att bli smittad?</a>
+<br />
+<a href="#13">Hur avgör läkaren om jag har influensa?</a>
+<br />
+<a href="#14">Varför är det så att folk får influensa mest på vintern?</a>
+<br />
+<a href="#15">Är barn mindre motståndskraftiga mot influensa?</a>
+<br />
+<a href="#16">Vad är en influensaepidemi?</a>
+<br />
+<a href="#17">Vad är en pandemi?</a>
+<br />
+<hr /></p>
+<br />
+<h2>Frågor om ditt deltagande</h2>
+<a name="1"><h3>Hur gör jag för att gå med?</h3></a>
+<p>1.	Skapa ett användarkonto genom att klicka på <b>gå med</b> längst upp till höger på sidan (röd knapp)<br />
+<p>2.	En aktiveringslänk skickas till den e-postadress du angivit. Klicka på länken för att aktivera ditt konto<br />
+<p>3.	Skapa en eller flera profiler för ditt konto<br />
+<p>4.	Besvara bakgrundsformuläret<br /> 
+<p>Nu är du en av Influensakolls influensarapportörer. Kom ihåg att rapportera varje vecka oavsett om du har några symtom eller inte. <br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="2"><h3>Hur berättar jag att jag är sjuk?</h3></a>
+<p>Varje vecka skickas en e-post till dig med en länk till ett frågeformulär. Det är viktigt att fylla i formuläret oavsett om du har några symptom eller inte. För att rapportera måste du först skapa ett användarkonto (<a href="#1">Se fråga 1.</a>).
+<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="3"><h3>Och om jag inte är sjuk?</h3></a>
+<p>Då vill vi veta det också. För att kunna dra några slutsatser om hur många som är sjuka är det lika viktigt att de som är friska rapporterar att de är friska som att de som är sjuka rapporterar att de är sjuka. 
+
+Därför skickar vi en gång per vecka ett e-postmeddelande för att påminna dig.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="4"><h3>Hur länge måste jag vara med?</h3></a>
+<p>Rapporteringen till influensakoll pågår till och med maj 2012. Vi vet att många redan är sjuka när de går med som influensarapportörer i Influensakoll. Det är ganska naturligt eftersom det ofta är först då som man kommer i kontakt med den här sajten. Detta leder dock till en överskattning av sjukligheten bland dem som är alldeles nya influensarapportörer. Den mest tillförlitliga uppskattningen av sjukligheten kommer därför från dem som varit rapportörer under minst sex veckor i rad.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="5"><h3>Vad gör ni med den information jag uppger?</h3></a>
+<p>Läs här: <a href="http://www.influensakoll.se/fakta-om-datainsamlingen/">Fakta om datainsamlingen.</a> 
+<br /> 
+<a href="#999">Tillbaka</a></p>
+<br />
+<hr />
+<br />
+<a name="6"><h3>Kan någon hitta min adress genom den information jag uppger?</h3></a>
+<p>Nej, det är inte möjligt. Vi ber influensarapportörerna att endast uppge sitt postnummer. De flesta postnummer täcker flera hundra människor. I Influensakoll finns en spärrfunktion som gör att om ett 
+
+postnummerområde är så litet att det finns risk för att enskilda människor skulle kunna kännas igen så slås det samman med andra postnummerområden. På alla kartor är den minsta geografiska enheten så stor 
+
+att den åtminstone täcker 200 personer. Det är därför inte möjligt att identifiera en specifik adress utifrån kartorna på vår webbplats.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="7"><h3>Kan jag delta för mina barn?</h3></a>
+<p>Ja gärna! Du kan rapportera för ditt barn genom att skapa en profil för ditt barn på ditt användarkonto på Influensakoll. Gör så här:<br />
+1. Klicka på <b>"Mitt konto"</b>högst upp i högra hörnet på sidan. <br />
+2. Här får du får flera val som rör ditt användarkonto. Klicka på <a href="http://www.influensakoll.se/survey/people/add/">"Lägg till profil"</a>. <br />
+3. Skriv ett namn på den profil du vill lägga till för ditt barn och klicka på knappen "lägg till". <br />
+4. Nu hamnar du på en sida där dina profiler listas. Efter varje profilnamn finns tre länkar till de aktiviteter du kan välja mellan. Klicka på länken "uppdatera bakgrundsinformation" för att fylla i 
+
+bakgrundsformuläret för ditt barns profil. Observera att du måste fylla i ett bakgrundsformulär för profilen innan det är möjligt att rapportera.<br />
+5. När du en gång per vecka får en påminnelse till den e-postadress som angivits för ditt användarkonto ska du logga in och göra en rapport för varje profil. <br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="77"><h3>Hur gör jag för att avsluta mitt deltagande i Influensakoll?</h3></a>
+<p>Du kan avsluta ditt deltagande genom att skicka ett e-postmeddelande till influensakoll@smi.se där du anger ditt användarnamn.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<br />
+<hr /></p>
+<br />
+<h2>Frågor om influensa och luftvägsinfektioner</h2>
+<a name="8"><h3>Vilka är symtomen på influensa?</h3></a>
+<p>Symtomen kommer ofta plötsligt och består av frossa, hög feber, huvudvärk, muskelvärk och hosta. Det värsta brukar vara över efter några dagar och efter någon vecka är många så friska att de kan återgå 
+
+till arbetet, men hosta och trötthet kan hänga i ett tag.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="9"><h3>Hur ser influensavirus ut?</h3></a>
+<p>Influensavirus är precis som alla virus: mycket, mycket litet. Enstaka virus ser ut som en mycket liten tennisboll med spikar som sticker ut. Ett virus är 200 nanometer (0,2 miljondels meter) stort. 
+
+Spikarna på utsidan är proteiner med vilka viruset kan tränga sig in i cellerna i de övre luftvägarna och sedan ut igen. <br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="10"><h3>Vad händer i kroppen när jag smittas av influensa?</h3></a>
+<p>Influensaviruset sätter sig i luftvägarna och skadar cellerna där.  Immunförsvaret känner snabbt att viruset är främmande för kroppen och en rad processer sätter igång som gör att vi känner oss sjuka i 
+
+hela kroppen. Immunförsvarets vita blodkroppar aktiveras i blodet vid en infektion och skickar ut signaler som påverkar området i hjärnan som reglerar kroppstemperaturen vilket gör att vi får feber. Feber är 
+
+ett av naturens sätt att göra miljön i kroppen otrivsam för viruset eftersom virus trivs bäst i 37 grader – den temperatur som de flesta har när de är friska.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="11"><h3>Hur sprids influensavirus?</h3></a>
+<p>Influensavirus är ett luftburet virus. Det smittar genom små partiklar som bär viruset i luften (aerosol), saliv- eller sekretdroppar eller kroppskontakt. Viruset tar 
+
+sig in i luftvägarna genom inandningen. Från det att man blir smittat tar det 1 till 3 dygn innan man blir sjuk. 
+<p>Influensasjukdom kan orsakas av två huvudtyper av influensavirus, influensavirus typ A och B. A-viruset är det som kan ge stora utbrott över hela världen. B-viruset ger mer begränsade utbrott. Sedan mitten på 70-talet har vi haft fyra virus, tre undertyper av influensa A och influensa B, som cirkulerar över världen. Dessa förändrar sig ständigt, och därför kan vi bli sjuka igen, trots att vi haft alla fyra tidigare.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="12"><h3>Hur kan man undvika att bli smittad?</h3></a>
+<p>Det är viktigt att den som är sjuk inte hostar och nyser rakt ut. Gör till en vana att alltid hosta och nysa i armvecket och använda pappersnäsdukar som sedan slängs i en soppåse. Handtvätt med tvål och 
+
+vatten kan minska risken att en sjuk sprider smitta och att en frisk smittas. Komplettera gärna med handsprit. Hur vet man att man tvättat händerna tillräckligt länge? Ett tips är att tyst för sig själv 
+
+sjunga ”Blinka lilla stjärna”. En vers tar cirka 20 sekunder vilket är tillräckligt länge. 
+Om en person med misstänkt influensa måste träffa andra är det bra att hålla så stort avstånd som möjligt och att inte ta i hand eller kyssa på kind.  Friska personer bör om möjligt undvika närkontakt med 
+
+misstänkta influensasjuka. Friska personer bör undvika att röra vid ögon, näsa och mun eftersom influensavirus kan ha fastnat på ett föremål som de nyligen rört vid.
+<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="13"><h3>Hur avgör läkaren om du har influensa?</h3></a>
+<p>I allmänhet sätter läkaren sin diagnos baserat på de så kallade kliniska symtomen. Det kan vara svårt att skilja mellan influensa och andra luftvägsinfektioner. Om det verkligen är influensa kan säkrast 
+
+konstateras genom virusprovtagning från näs- eller halsslem. Slemmet samlas upp med en bomullspinne och skickas till ett viruslaboratorium för analys. Under en influensaepidemi, har endast 60 till 70 % av 
+
+dem som uppvisar symtom på influensa influensavirus.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="14"><h3>Varför är det så att folk får influensa mest på vintern?</h3></a>
+<p>Influensavirus sprider sig lättast på vintern och början på våren. Man tror att detta beror på att människor oftare är inomhus och därmed närmare varandra under den "kalla årstiden". Dessutom är luften i 
+
+ett hus under den kalla perioden ofta torr, som ett resultat av detta förblir influensavirus aktivt längre.
+<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="15"><h3>Är barn mindre motståndskraftiga mot influensa?</h3></a>
+<p>Barn löper störst risk att få influensa dels för att deras immunsystem i allmänhet aldrig varit i kontakt med influensavirus innan. Dessutom smittar de varandra i skolan, dagis, etc. Under en 
+
+influensaepidemi kan cirka 45% av skol- och dagisbarnen få influensa.
+<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="16"><h3>Vad är en influensaepidemi?</h3></a>
+<p>En epidemi uppstår när antalet fall av influensa i ett visst område är betydligt högre än antalet influensafall under resten av året.<br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="17"><h3>Vad är en pandemi?</h3></a>
+<p>En pandemi är en världsomfattande epidemi som orsakas av en ny virussubtyp. En ny subtyp uppstår när det sker en stor förändring av viruspartikelns yta med vilken slemhinnan i lungorna blir penetrerad. 
+
+Eftersom de flesta människor inte har haft chansen att bli immuna mot den nya virussubtypen, kan smittan bli utbredd. <br /> 
+<a href="#999">Tillbaka</a>
+<br />
+<hr />
+<br />
+<p>Har du fortfarande frågor? <a href="http://www.influensakoll.se/contact/">Kontakta oss.</a> </p>', '');
+INSERT INTO snippet_snippet VALUES (23, 'filmkort_mitten', '<iframe width="420" height="315" src="http://www.youtube.com/embed/kn-RMWFs3vk" frameborder="0" allowfullscreen></iframe>', '');
+INSERT INTO snippet_snippet VALUES (27, 'filmkort_vänster', '<iframe width="290" height="218" src="http://www.youtube.com/embed/kn-RMWFs3vk" frameborder="0" allowfullscreen></iframe>', '');
+INSERT INTO snippet_snippet VALUES (24, 'filmlong', '<iframe width="420" height="315" src="http://www.youtube.com/embed/8svTNSngqpg" frameborder="0" allowfullscreen></iframe>', '');
+INSERT INTO snippet_snippet VALUES (21, 'FragaromInfluensa', '<h1>Frågor och svar</h1>
+<p>På den här sidan har vi samlat vanliga frågor och svar om influensa. Hoppas att du hittar vad du söker. Om inte eller om du har synpunkter är du välkommen att <a href="http://192.168.197.66/kontakta-oss/">kontakta 
+
+oss.</a> </p>
+
+
+<br />
+<h3>Frågor om influensa och luftvägsinfektioner</h3>
+
+<a name="top"><a href="#8">Vilka är symtomen på influensa?</a></a>
+<br />
+<a name="top"><a href="#9">Hur ser influensavirus ut?</a></a>
+<br />
+<a name="top"><a href="#10">Vad händer i kroppen när jag smittas av influensa?</a></a>
+<br />
+<a name="top"><a href="#11">Hur sprids influensavirus?</a></a>
+<br />
+<a name="top"><a href="#12">Hur kan man undvika att bli smittad?</a></a>
+<br />
+<a name="top"><a href="#13">Hur avgör läkaren om du har influensa?</a></a>
+<br />
+<a name="top"><a href="#14">Varför är det så att folk får influensa mest på vintern?</a></a>
+<br />
+<a name="top"><a href="#15">Är barn mindre motståndskraftiga mot influensa?</a></a>
+<br />
+<a name="top"><a href="#16">Vad är en influensaepidemi?</a></a>
+<br />
+<a name="top"><a href="#17">Vad är en pandemi?</a></a>
+<br />
+<hr /></p>
+<p>
+<br />
+<h3>Frågor om influensa och luftvägsinfektioner</h3>
+<a name="8">Vilka är symtomen på influensa?</a>
+<p>Symtomen kommer ofta plötsligt och består av frossa, hög feber, huvudvärk, muskelvärk och hosta. Det värsta brukar vara över efter några dagar och efter någon vecka är många så friska att man kan återgå 
+
+till arbetet, men hosta och trötthet kan hänga i ett tag.<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="9">Hur ser influensavirus ut?</a>
+<p>Influensavirus är precis som alla virus: mycket, mycket litet. Enstaka virus ser ut som en mycket liten tennisboll med spik som sticker ut. Ett virus är 200 nanometer (0,2 miljondels meter) stort. 
+
+Spikarna på utsidan är proteiner med vilka viruset kan tränga sig in i cellerna i de övre luftvägarna och sedan ut igen. <br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="10">Vad händer i kroppen när jag smittas av influensa?</a>
+<p>Influensaviruset sätter sig i luftvägarna och skadar cellerna där.  Immunförsvaret känner snabbt att viruset är främmande för kroppen och en rad processer sätter igång som gör att vi känner oss sjuka i 
+
+hela kroppen. Immunförsvarets vita blodkroppar aktiveras i blodet vid en infektion och skickar ut signaler som påverkar området i hjärnan som reglerar kroppstemperaturen vilket gör att vi får feber. Feber är 
+
+ett av naturens sätt att göra miljön i kroppen otrivsam för viruset eftersom virus trivs bäst i 37 grader – den temperatur som de flesta har när de är friska.<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="11">Hur sprids influensavirus?</a>
+<p>Influensavirus är ett luftburet virus som orsakar infektion i luftvägarna. Det smittar genom aerosol (små partiklar som bär viruset i luften), saliv- eller sekretdroppar eller kroppskontakt. Viruset tar 
+
+sig in i luftvägarna genom inandningen. Från smittotillfället tar det 1-3 dygn innan man blir sjuk. 
+<p>Influensasjukdom kan orsakas av två huvudtyper av influensavirus, influensavirus typ A och B. A-viruset är det som kan ge stora utbrott över hela världen. B-viruset ger mer begränsade utbrott. Sedan 
+
+mitten på 70-talet har vi haft fyra virus, tre undertyper av influensa A och influensa B, som cirkulerar över världen. Dessa förändrar sig ständigt, och därför kan vi bli sjuka igen, trots att vi haft alla 
+
+tre tidigare.<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="12">Hur kan man undvika att bli smittad?</a>
+<p>Det är viktigt att den som är sjuk inte hostar och nyser rakt ut. Gör till en vana att alltid hosta och nysa i armvecket och använda pappersnäsdukar som sedan slängs i en soppåse. Handtvätt med tvål och 
+
+vatten kan minska risken att en sjuk sprider smitta och att en frisk smittas. Komplettera gärna med handsprit. Hur vet man att man tvättat händerna tillräckligt länge? Ett tips är att tyst för sig själv 
+
+sjunga ”Blinka lilla stjärna”. En vers tar cirka 20 sekunder vilket är tillräckligt länge. 
+Om en person med misstänkt influensa måste träffa andra är det bra att hålla så stort avstånd som möjligt och att inte ta i hand eller kyssa på kind.  Friska personer bör om möjligt undvika närkontakt med 
+
+misstänkta influensasjuka. Friska personer bör undvika att röra vid ögon, näsa och mun eftersom influensavirus kan ha fastnat på ett föremål som de nyligen rört vid.
+<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="13">Hur avgör läkaren om du har influensa?</a>
+<p>I allmänhet sätter läkaren sin diagnos baserat på de så kallade kliniska symtomen. Det kan vara svårt att skilja mellan influensa och andra luftvägsinfektioner. Om det verkligen är influensa kan säkrast 
+
+konstateras genom virusprovtagning från näs- eller halsslem. Slemmet samlas upp med en bomullspinne och skickas till ett viruslaboratorium för analys. Under en influensaepidemi, har endast 60 till 70 % av 
+
+dem som uppvisar symtom på influensa influensavirus.<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="14">Varför är det så att folk får influensa mest på vintern?</a>
+<p>Influensavirus sprider sig lättast på vintern och början på våren. Man tror att detta beror på att människor oftare är inomhus och därmed närmare varandra under den "kalla årstiden". Dessutom är luften i 
+
+ett hus under den kalla perioden ofta torr, som ett resultat av detta förblir influensavirus aktivt längre.
+<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="15">Är barn mindre motståndskraftiga mot influensa?</a>
+<p>Barn löper störst risk att få influensa dels för att deras immunsystem i allmänhet aldrig varit i kontakt med influensavirus innan. Dessutom smittar de varandra i skolan, dagis, etc. Under en 
+
+influensaepidemi kan cirka 45% av skol- och dagisbarnen få influensa.
+<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="16">Vad är en influensaepidemi?</a>
+<p>En epidemi uppstår när antalet fall av influensa i ett visst område är betydligt högre än antalet influensafall under resten av året.<br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<a name="17">Vad är en pandemi? </a>
+<p>En pandemi är en världsomfattande epidemi som orsakas av en ny virussubtyp. En ny subtyp uppstår när det sker en stor förändring av viruspartikelns yta med vilken slemhinnan i lungorna blir penetrerad. 
+
+Eftersom de flesta människor inte har haft chansen att bli immuna mot den nya virussubtypen, kan smittan bli utbredd. <br /> 
+<a href="#top">Tillbaka</a>
+<br />
+<hr />
+<br />
+<p>Har du fortfarande frågor? <a href="http://192.168.197.66/kontakta-oss/">Kontakta oss.</a> </p>', '');
+INSERT INTO snippet_snippet VALUES (8, 'google_map', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Influensakoll</title>
+<link rel="stylesheet" type="text/css" href="/+media-ggm/style.css"/>
+<script type="text/javascript" src="/+media/jquery.js"></script>
+<script type="text/javascript" src="/+media-ggm/ggm.js"></script>
+<script type="text/javascript" src="/+media-ggm/influenzanetbar.js"></script>
+   </head><body>
+
+<script type="text/javascript" src="/+media-ggm/maps/js/polymaps.min.js"></script>
+
+<div id="map_iw">
+    <style type="text/css"> @import url("/+media-ggm/maps/css/map.css"); </style>
+    <script type="text/javascript" src="/+media-ggm/maps/js/influensakoll_caps.js"></script>
+<br class="clear"/>
+</div>
+</body></html>', '');
+INSERT INTO snippet_snippet VALUES (19, 'google_map2', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+  <title>UK symptom map</title>
+</head>
+<body>
+
+    <div id="cm-example" style="width: 500px; height: 750px"></div>
+
+  <script type="text/javascript" src="http://tile.cloudmade.com/wml/latest/web-maps-lite.js"></script>
+   <script type="text/javascript" src="/+media-ggm/maps/maps/maps/SV_latlong_symptoms.js"></script>
+  
+  <script type="text/javascript" src="/+media-ggm/maps/maps/maps/makemap_symptoms.js"></script>
+
+</body>
+</html>
+', '');
+INSERT INTO snippet_snippet VALUES (31, 'googleplus1_button', '<!-- Place this tag where you want the +1 button to render -->
+<g:plusone annotation="none"></g:plusone>
+
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement(''script''); po.type = ''text/javascript''; po.async = true;
+    po.src = ''https://apis.google.com/js/plusone.js'';
+    var s = document.getElementsByTagName(''script'')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>', '');
+INSERT INTO snippet_snippet VALUES (39, 'GooglePlusBadge', '<!-- Place this tag in the <head> of your document -->
+<link href="https://plus.google.com/109191795561126990370" rel="publisher" /><script type="text/javascript">
+window.___gcfg = {lang: ''sv''};
+(function() 
+{var po = document.createElement("script");
+po.type = "text/javascript"; po.async = true;po.src = "https://apis.google.com/js/plusone.js";
+var s = document.getElementsByTagName("script")[0];
+s.parentNode.insertBefore(po, s);
+})();</script>
+
+<!-- Place this tag where you want the badge to render -->
+<g:plus href="https://plus.google.com/109191795561126990370" size="badge"></g:plus>', '');
+INSERT INTO snippet_snippet VALUES (43, 'Hansvecka9', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3802536%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3802536%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3802536.m4a">Lyssna: Rekordmånga däckade i influensa</a></object></object>', '');
+INSERT INTO snippet_snippet VALUES (6, 'hem', '<p>
+<a href="http://192.168.197.66/om-influensakoll/">Läs mer om Influensakoll</a> 
+</p>
+<p>
+<a href="http://192.168.197.66/accounts/register/">Gå med</a> 
+</p>
+<p>
+<a href="http://192.168.197.66/accounts/login/">Logga in</a> 
+</p>
+<p>
+<a href="http://192.168.197.66/survey/">Rapportera</a> 
+</p>
+<p>
+<a href="http://192.168.197.66/influensaskola/">Influensaskola</a> 
+</p>
+<p>
+<a href="http://192.168.197.66/faq/">FAQ</a> 
+</p>
+<br />
+<br />
+<br />
+<br />
+<a href="http://www.smittskyddsinstitutet.se/">
+<img src="I:/Avdelningar/epi/_Project/sjukrapport/Admin/Epiwork/2010/influenzanet/influensakoll/bilder/SMI_color_mini.GIF" border="0" width="173" height="78"/>
+</a></p>
+
+
+', '');
+INSERT INTO snippet_snippet VALUES (5, 'höger kolumn hem', '<p>
+<a href="http://192.168.197.67/om-influensakoll/">Läs mer om Influensakoll</a> 
+</p>
+<p>
+<a href="http://192.168.197.67/accounts/login/">Logga in</a> 
+</p>
+<p>
+<a href="http://192.168.197.67/survey/">Rapportera</a> 
+</p>
+<p>
+<a href="http://192.168.197.67/influensaskola/">Influensaskola</a> 
+</p>
+<p>
+<a href="http://192.168.197.67/faq/">FAQ</a> 
+</p>', '');
+INSERT INTO snippet_snippet VALUES (7, 'horisontell linje', '<hr /></p>
+', '');
+INSERT INTO snippet_snippet VALUES (18, 'http://www.smittskyddsinstitutet.se/sjukdomar/forkylning/', '<a href="http://www.smittskyddsinstitutet.se/sjukdomar/forkylning/" target="_blank">http://www.smittskyddsinstitutet.se/sjukdomar/forkylning//</a> ', '');
+INSERT INTO snippet_snippet VALUES (17, 'http://www.smittskyddsinstitutet.se/sjukdomar/influensa/', '<a href="http://www.smittskyddsinstitutet.se/sjukdomar/influensa/" target="_blank">http://www.smittskyddsinstitutet.se/sjukdomar/influensa/</a> 
+
+', '');
+INSERT INTO snippet_snippet VALUES (3, 'Influensa', '<html>
+<head>
+    <title>Influensa</title>
+</head>
+<body>
+
+<font size=3>Influensa är en virussjukdom. Det finns tre typer av influensavirus; influensa A, B och C, som alla tillhör gruppen ortomyxovirus. Det är främst A och B som ger upphov till den typiska influensasjukdomen.<p>
+Smittämnet finns i svalget hos den sjuke och sprids till andra främst som fin, luftburen droppsmitta (aerosol) men även genom kontakt. Smittsamheten är mycket stor. Inkubationstiden är kort, ett till tre dygn. Av inte helt klarlagda skäl är influensasjukligheten nästan helt koncentrerad till vintersäsongen. Man brukar tala om ”influensasäsongen”, som tidigast brukar bryta ut i oktober-november och vanligtvis inte sträcker sig längre än in i början av maj. Det finns emellertid en ganska stor variation i influensasäsongernas ”timing” och varaktighet. Under influensapandemin 2009 sågs influensa redan under sensommaren. Åren dessförinnan tog inte säsongen fart förrän efter nyår.<p>  
+Influensa börjar ofta akut med frossa, snabbt stigande feber (ofta upp över 40°C), allmän muskelvärk, huvudvärk och därefter tilltagande symtom från luftvägarna, främst hosta. Ibland, och mest hos barn, förekommer symtom från mag- och tarmkanalen som kräkningar och diarré. Efter några dagar brukar tillståndet ge med sig och de flesta har tillfrisknat efter c:a 1 vecka. Sjukdomsbilden är ofta lindrigare än så och kan mer likna en vanlig förkylning.<p>
+Behandlingen vid influensa är främst "symtomatisk", d.v.s. inte botande men symtomlindrande (t.ex. febernedsättande och inflammationsdämpande receptfria läkemedel med acetylsalicylsyra, paracetamol eller ibuprofen, näsdroppar, hostdämpande läkemedel etc.). Det finns antivirala medel som angriper det orsakande viruset, men effekten på sjukdomsförloppet är begränsad. För att sjukdomstiden ska förkortas måste antivirala medel ges tidigt i sjukdomsförloppet. Sådana medel kan även användas som profylax, d.v.s. de ges till ännu friska som utsatts för smitta för att förhindra att sjukdomen bryter ut. Baksidan är att virus kan utveckla motståndskraft mot antivirala medel, och om motståndskraftiga virus kommer i omlopp kan det bli till nackdel för alla. Därför används antivirala medel enbart i speciella situationer, t.ex. till riskgrupper som riskerar att få allvarliga komplikationer av influensan. Till de särskilda riskgrupperna räknas äldre personer (över 65 år), personer med allvarlig lungsjukdom som t.ex. astma, KOL eller emfysem, allvarlig hjärt- eller njursjukdom, diabetes, autoimmun sjukdom, eller med nedsatt immunförvar. För att minska behovet av antivirala medel även i dessa grupper erbjuds sådana personer förebyggande vaccination före varje ny influensasäsong. Den vanligaste komplikationen till influensa är att sjukdomsalstrande bakterier angriper de inflammerade luftvägarna så att en bakteriell lunginflammation uppstår. Att en bakteriell komplikation är på gång märker man på att symtomen (oftast febern och hostan), efter att först ha minskat successivt, verkar ta ny fart på femte eller sjätte dagen. Bakteriella komplikationer kräver läkarbedömning och behandlas med antibiotika.<p>
+Influensavirus är mycket föränderligt, och därför kan man insjukna i influensa flera gånger. Ibland räcker skyddet helt eller delvis under några års tid. Ibland, då influensavirus ändrat skepnad totalt, blir alla helt mottagliga. Senast hände detta i världen 2009 då den nya influensan började spridas världen över. Mer om immunitet mot influensan finner du under avsnittet Pandemier [länk]. Vill du veta mer om hur influensan ändrar skepnad från år till år kan du titta på en video med Annika Lindes influensaskola [länk] (xx minuter).  <p>
+Har du frågor om influensa? I influensakolls FAQ [länk] hittar du svar på vanliga frågor.<p>
+
+Du kan också läsa mer om influensa på <a href=''http://www.smittskyddsinstitutet.se/sjukdomar/influensa/</a><p>
+', '');
+INSERT INTO snippet_snippet VALUES (37, 'kossornasplanet', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3718708%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3718708%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3718708.m4a">Lyssna: Influensakoll</a></object></object>', '');
+INSERT INTO snippet_snippet VALUES (12, 'länk till "ga med"', '<a href="/accounts/register/">gå med</a> 
+
+', '');
+INSERT INTO snippet_snippet VALUES (13, 'länk till "gå med" G', '<a href="/sv/accounts/register/">Gå med</a> ', '');
+INSERT INTO snippet_snippet VALUES (14, 'länk till "gå med" skapa användarkonto', '<a href="/accounts/register/">Skapa ett användarkonto</a> ', '');
+INSERT INTO snippet_snippet VALUES (20, 'link till Profil', '<a href="../survey/people/">välja profilnamn och fylla i bakgrundsformuläret</a> ', '');
+INSERT INTO snippet_snippet VALUES (10, 'loggor_nederkant', '<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<a href="http://www.smittskyddsinstitutet.se/">
+<img src="/+media/images/SMI_Small_ny_logotyp_2011.gif" border="0" width="173" height="78"/>
+</a></p>
+<br />
+<br />
+<br />
+<a href="http://ki.se/">
+<img src="/+media/images/KIlogo.gif" border="0" width="164" height="68"/>
+</a></p>
+<br />
+
+
+', '');
+INSERT INTO snippet_snippet VALUES (11, 'loggor_överkant', '<br />
+<a href="http://www.smittskyddsinstitutet.se/">
+<img src="/media/cms_page_media/SMI_Small_ny_logotyp_2011.gif" border="0" width="173" height="78"/>
+</a></p>
+
+
+<br />
+<a href="http://ki.se/">
+<img src="/media/cms_page_media/KIlogo.gif" border="0" width="164" height="68"/>
+</a></p>
+', '');
+INSERT INTO snippet_snippet VALUES (42, 'P4Vasternorrland24feb', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3dbroadcast%26id%3d3790069%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3dbroadcast%26id%3d3790069%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3790069.m4a">Lyssna: 15.00 - 15.30 fredag 24 feb 2012</a></object></object>', '');
+INSERT INTO snippet_snippet VALUES (33, 'Poll_fraga', '<form method=post action="http://poll.pollcode.com/PQAe"><table border=0 width=150 bgcolor="EEEEEE" cellspacing=2 cellpadding=0><tr><td colspan=2><font face="Verdana" size=-1 color="000000"><b>Spanska sjukan var en av de tre stora pandemierna under 1900-talet. Vad kallades de andra två?</b></font></td></tr><tr><td width=5><input type=radio name=answer value="1"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Asiaten och Svininfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="2"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Hongkonginfluensan och Fågelinfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="3"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Asiaten och Hongkonginfluensan</font></td></tr><tr><td width=5><input type=radio name=answer value="4"></td><td>&nbsp;<font face="Verdana" size=-1 color="000000">Svininfluensan och Fågelinfluensan</font></td></tr><tr><td colspan=2><center><input type=submit value="Vote">&nbsp;&nbsp;<input type=submit name=view value="View"></center></td></tr><tr><td colspan=2 align=right><font face="Verdana" size=-2 color="black">pollcode.com <a href=http://pollcode.com/>free polls</a>&nbsp;</font></td></tr></table></form>
+', '');
+INSERT INTO snippet_snippet VALUES (34, 'Poll_fraga2', '<div id="qp_main70846" style="border:1px solid black;margin:10px;padding:10px;padding-bottom:12px;background-color:rgb(185,0,36)"><div style="font-family:Arial;font-size:12px;font-weight:bold;background-color:rgb(108,0,10);width:100%;color:white"><div style="padding:10px">Vad är en pandemi?</div></div><form id="qp_form70846" action="http://poll.learnmyself.com/results70846xafB342C4" method="post" target="_blank" style="padding:0px;margin-top:10px"><div style="width:100%"><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="1">Ett utbrott av en sjukdom i en viss region</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="2">Ett världsomspännande utbrott av en sjukdom</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="3">Ett sjukdomsutbrott där mer än hälften av de smittade människorna dör</span></div><div style="display:block;font-family:Arial;font-size:12px;color:white;padding-top:5px;padding-bottom:5px;clear:both;width:100%"><span style="display:block;padding-left:30px"><input style="float:left;width:25px;margin-left:-25px;margin-top:-1px;padding:0px;height:18px" name="qp_v70846" type="radio" value="4">Ett utbrott av en sjukdom som varar i minst tre månader</span></div></div><div style="padding-top:10px;clear:both"><input name="qp_b70846" style="width:80px;margin-right:5px" type="submit" value="Rösta"><input name="qp_b70846" style="width:80px;margin-right:5px" type="submit" value="Resultat"></div><span style="background-image:url(http://imgs.learnmyself.com/p70846xafB342C4_0_0.gif);"></span></form></div><script src="http://scripts.learnmyself.com/3001/scpolls.js" language="javascript"></script>', '');
+INSERT INTO snippet_snippet VALUES (16, '<p></p>', '<p></p>
+<p></p>', '');
+INSERT INTO snippet_snippet VALUES (22, 'quiz', '<?xml version="1.0"?>
+       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "xhtml11.dtd">
+       <html xmlns="http://www.w3.org/1999/xhtml"
+             xml:lang="en"><head><meta name="author" content="Created with Hot Potatoes by Half-Baked Software, registered to annasara."></meta><meta name="keywords" content="Hot Potatoes, Hot Potatoes, Half-Baked Software, Windows, University of Victoria"></meta>
+
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+<meta name="DC:Creator" content="annasara" />
+<meta name="DC:Title" content="Fr&#x00E5;gesport om influensa!" />
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+
+<title>
+Fr&#x00E5;gesport om influensa!
+</title>
+
+<!-- Made with executable version 6.3 Release 0 Build 4 -->
+
+<!-- The following insertion allows you to add your own code directly to this head tag from the configuration screen -->
+
+
+
+<style type="text/css">
+
+
+/* This is the CSS stylesheet used in the exercise. */
+/* Elements in square brackets are replaced by data based on configuration settings when the exercise is built. */
+
+/* BeginCorePageCSS */
+
+/* Made with executable version 6.3 Release 0 Build 4 */
+
+
+/* Hack to hide a nested Quicktime player from IE, which can''t handle it. */
+* html object.MediaPlayerNotForIE {
+	display: none;
+}
+
+body{
+	font-family: Geneva,Arial,sans-serif;
+	background-color: #c0c0c0;
+	color: #000000;
+ 
+	margin-right: 5%;
+	margin-left: 5%;
+	font-size: small;
+}
+
+p{
+	text-align: left;
+	margin: 0px;
+	font-size: 100%;
+}
+
+table,div,span,td{
+	font-size: 100%;
+	color: #000000;
+}
+
+div.Titles{
+	padding: 0.5em;;
+	text-align: center;
+	color: #000000;
+}
+
+button{
+	font-family: Geneva,Arial,sans-serif;
+	font-size: 100%;
+	display: inline;
+}
+
+.ExerciseTitle{
+	font-size: 140%;
+	color: #000000;
+}
+
+.ExerciseSubtitle{
+	font-size: 120%;
+	color: #000000;
+}
+
+div.StdDiv{
+	background-color: #ffffff;
+	text-align: center;
+	font-size: 100%;
+	color: #000000;
+	padding: 0.5em;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	border-color: #000000;
+	margin-bottom: 1px;
+}
+
+/* EndCorePageCSS */
+
+.RTLText{
+	text-align: right;
+	font-size: 150%;
+	direction: rtl;
+	font-family: "Simplified Arabic", "Traditional Arabic", "Times New Roman", Geneva,Arial,sans-serif; 
+}
+
+.CentredRTLText{
+	text-align: center;
+	font-size: 150%;
+	direction: rtl;
+	font-family: "Simplified Arabic", "Traditional Arabic", "Times New Roman", Geneva,Arial,sans-serif; 
+}
+
+button p.RTLText{
+	text-align: center;
+}
+
+.RTLGapBox{
+	text-align: right;
+	font-size: 150%;
+	direction: rtl;
+	font-family: "Times New Roman", Geneva,Arial,sans-serif;
+}
+
+.Guess{
+	font-weight: bold;
+}
+
+.CorrectAnswer{
+	font-weight: bold;
+}
+
+div#Timer{
+	padding: 0.25em;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	color: #000000;
+}
+
+span#TimerText{
+	padding: 0.25em;
+	border-width: 1px;
+	border-style: solid;
+	font-weight: bold;
+	display: none;
+	color: #000000;
+}
+
+span.Instructions{
+
+}
+
+div.ExerciseText{
+
+}
+
+.FeedbackText, .FeedbackText span.CorrectAnswer, .FeedbackText span.Guess, .FeedbackText span.Answer{
+	color: #000000;
+}
+
+.LeftItem{
+	font-size: 100%;
+	color: #000000;
+	text-align: left;
+}
+
+.RightItem{
+	font-weight: bold;
+	font-size: 100%;
+	color: #000000;
+}
+
+span.CorrectMark{
+
+}
+
+input, textarea{
+	font-family: Geneva,Arial,sans-serif;
+	font-size: 120%;
+}
+
+select{
+	font-size: 100%;
+}
+
+div.Feedback {
+	background-color: #c0c0c0;
+	left: 33%;
+	width: 34%;
+	top: 33%;
+	z-index: 1;
+	border-style: solid;
+	border-width: 1px;
+	padding: 5px;
+	text-align: center;
+	color: #000000;
+	position: absolute;
+	display: none;
+	font-size: 100%;
+}
+
+
+
+
+div.ExerciseDiv{
+	color: #000000;
+}
+
+/* JMatch flashcard styles */
+table.FlashcardTable{
+	background-color: transparent;
+	color: #000000;
+	border-color: #000000;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	width: 90%;
+	position: relative;
+	text-align: center;
+	padding: 0px;
+}
+
+table.FlashcardTable tr{
+	border-style: none;
+	margin: 0px;
+	padding: 0px;
+	background-color: #ffffff;
+}
+
+table.FlashcardTable td.Showing{
+	font-size: 140%;
+	text-align: center;
+	width: 50%;
+	display: table-cell;
+	padding: 2em;
+	margin: 0px;
+	border-style: solid;
+	border-width: 1px;
+	color: #000000;
+	background-color: #ffffff;
+}
+
+table.FlashcardTable td.Hidden{
+	display: none;
+}
+
+/* JMix styles */
+div#SegmentDiv{
+	margin-top: 2em;
+	margin-bottom: 2em;
+	text-align: center;
+}
+
+a.ExSegment{
+	font-size: 120%;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000000;
+}
+
+span.RemainingWordList{
+	font-style: italic;
+}
+
+div.DropLine {
+	position: absolute;
+	text-align: center;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #000000;
+	width: 80%;
+}
+
+/* JCloze styles */
+
+.ClozeWordList{
+	text-align: center;
+	font-weight: bold;
+}
+
+div.ClozeBody{
+	text-align: left;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	line-height: 2.0
+}
+
+span.GapSpan{
+	font-weight: bold;
+}
+
+/* JCross styles */
+
+table.CrosswordGrid{
+	margin: auto auto 1em auto;
+	border-collapse: collapse;
+	padding: 0px;
+	background-color: #000000;
+}
+
+table.CrosswordGrid tbody tr td{
+	width: 1.5em;
+	height: 1.5em;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 140%;
+	padding: 1px;
+	margin: 0px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	color: #000000;
+}
+
+table.CrosswordGrid span{
+	color: #000000;
+}
+
+table.CrosswordGrid td.BlankCell{
+	background-color: #000000;
+	color: #000000;
+}
+
+table.CrosswordGrid td.LetterOnlyCell{
+	text-align: center;
+	vertical-align: middle;
+	background-color: #ffffff;
+	color: #000000;
+	font-weight: bold;
+}
+
+table.CrosswordGrid td.NumLetterCell{
+	text-align: left;
+	vertical-align: top;
+	background-color: #ffffff;
+	color: #000000;
+	padding: 1px;
+	font-weight: bold;
+}
+
+.NumLetterCellText{
+	cursor: pointer;
+	color: #000000;
+}
+
+.GridNum{
+	vertical-align: super;
+	font-size: 66%;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000000;
+}
+
+.GridNum:hover, .GridNum:visited{
+	color: #000000;
+}
+
+table#Clues{
+	margin: auto;
+	vertical-align: top;
+}
+
+table#Clues td{
+	vertical-align: top;
+}
+
+table.ClueList{
+  margin: auto;
+}
+
+td.ClueNum{
+	text-align: right;
+	font-weight: bold;
+	vertical-align: top;
+}
+
+td.Clue{
+	text-align: left;
+}
+
+div#ClueEntry{
+	text-align: left;
+	margin-bottom: 1em;
+}
+
+/* Keypad styles */
+
+div.Keypad{
+	text-align: center;
+	display: none; /* initially hidden, shown if needed */
+	margin-bottom: 0.5em;
+}
+
+div.Keypad button{
+	font-family: Geneva,Arial,sans-serif;
+	font-size: 120%;
+	background-color: #ffffff;
+	color: #000000;
+	width: 2em;
+}
+
+/* JQuiz styles */
+
+div.QuestionNavigation{
+	text-align: center;
+}
+
+.QNum{
+	margin: 0em 1em 0.5em 1em;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+textarea{
+	font-family: Geneva,Arial,sans-serif;
+}
+
+.QuestionText{
+	text-align: left;
+	margin: 0px;
+	font-size: 100%;
+}
+
+.Answer{
+	font-size: 120%;
+	letter-spacing: 0.1em;
+}
+
+.PartialAnswer{
+	font-size: 120%;
+	letter-spacing: 0.1em;
+	color: #000000;
+}
+
+.Highlight{
+	color: #000000;
+	background-color: #ffff00;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+ol.QuizQuestions{
+	text-align: left;
+	list-style-type: none;
+}
+
+li.QuizQuestion{
+	padding: 1em;
+	border-style: solid;
+	border-width: 0px 0px 1px 0px;
+}
+
+ol.MCAnswers{
+	text-align: left;
+	list-style-type: upper-alpha;
+	padding: 1em;
+}
+
+ol.MCAnswers li{
+	margin-bottom: 1em;
+}
+
+ol.MSelAnswers{
+	text-align: left;
+	list-style-type: lower-alpha;
+	padding: 1em;
+}
+
+div.ShortAnswer{
+	padding: 1em;
+}
+
+.FuncButton {
+	text-align: center;
+	border-style: solid;
+
+	border-left-color: #ffffff;
+	border-top-color: #ffffff;
+	border-right-color: #7f7f7f;
+	border-bottom-color: #7f7f7f;
+	color: #000000;
+	background-color: #ffffff;
+
+	border-width: 2px;
+	padding: 3px 6px 3px 6px;
+	cursor: pointer;
+}
+
+.FuncButtonUp {
+	color: #ffffff;
+	text-align: center;
+	border-style: solid;
+
+	border-left-color: #ffffff;
+	border-top-color: #ffffff;
+	border-right-color: #7f7f7f;
+	border-bottom-color: #7f7f7f;
+
+	background-color: #000000;
+	color: #ffffff;
+	border-width: 2px;
+	padding: 3px 6px 3px 6px;
+	cursor: pointer;
+}
+
+.FuncButtonDown {
+	color: #ffffff;
+	text-align: center;
+	border-style: solid;
+
+	border-left-color: #7f7f7f;
+	border-top-color: #7f7f7f;
+	border-right-color: #ffffff;
+	border-bottom-color: #ffffff;
+	background-color: #000000;
+	color: #ffffff;
+
+	border-width: 2px;
+	padding: 3px 6px 3px 6px;
+	cursor: pointer;
+}
+
+/*BeginNavBarStyle*/
+
+div.NavButtonBar{
+	background-color: #2c2c2c;
+	text-align: center;
+	margin: 2px 0px 2px 0px;
+	clear: both;
+	font-size: 100%;
+}
+
+.NavButton {
+	border-style: solid;
+	
+	border-left-color: #959595;
+	border-top-color: #959595;
+	border-right-color: #161616;
+	border-bottom-color: #161616;
+	background-color: #2c2c2c;
+	color: #ffffff;
+
+	border-width: 2px;
+	cursor: pointer;	
+}
+
+.NavButtonUp {
+	border-style: solid;
+
+	border-left-color: #959595;
+	border-top-color: #959595;
+	border-right-color: #161616;
+	border-bottom-color: #161616;
+	color: #2c2c2c;
+	background-color: #ffffff;
+
+	border-width: 2px;
+	cursor: pointer;	
+}
+
+.NavButtonDown {
+	border-style: solid;
+
+	border-left-color: #161616;
+	border-top-color: #161616;
+	border-right-color: #959595;
+	border-bottom-color: #959595;
+	color: #2c2c2c;
+	background-color: #ffffff;
+
+	border-width: 2px;
+	cursor: pointer;	
+}
+
+/*EndNavBarStyle*/
+
+a{
+	color: #ff0080;
+}
+
+a:visited{
+	color: #808080;
+}
+
+a:hover{
+	color: #ff0080;
+}
+
+div.CardStyle {
+	position: absolute;
+	font-family: Geneva,Arial,sans-serif;
+	font-size: 100%;
+	padding: 5px;
+	border-style: solid;
+	border-width: 1px;
+	color: #000000;
+	background-color: #ffffff;
+	left: -50px;
+	top: -50px;
+	overflow: visible;
+}
+
+.rtl{
+	text-align: right;
+	font-size: 140%;
+}
+
+
+</style>
+
+<script type="text/javascript">
+
+//<![CDATA[
+
+<!--
+
+
+
+
+function Client(){
+//if not a DOM browser, hopeless
+	this.min = false; if (document.getElementById){this.min = true;};
+
+	this.ua = navigator.userAgent;
+	this.name = navigator.appName;
+	this.ver = navigator.appVersion;  
+
+//Get data about the browser
+	this.mac = (this.ver.indexOf(''Mac'') != -1);
+	this.win = (this.ver.indexOf(''Windows'') != -1);
+
+//Look for Gecko
+	this.gecko = (this.ua.indexOf(''Gecko'') > 1);
+	if (this.gecko){
+		this.geckoVer = parseInt(this.ua.substring(this.ua.indexOf(''Gecko'')+6, this.ua.length));
+		if (this.geckoVer < 20020000){this.min = false;}
+	}
+	
+//Look for Firebird
+	this.firebird = (this.ua.indexOf(''Firebird'') > 1);
+	
+//Look for Safari
+	this.safari = (this.ua.indexOf(''Safari'') > 1);
+	if (this.safari){
+		this.gecko = false;
+	}
+	
+//Look for IE
+	this.ie = (this.ua.indexOf(''MSIE'') > 0);
+	if (this.ie){
+		this.ieVer = parseFloat(this.ua.substring(this.ua.indexOf(''MSIE'')+5, this.ua.length));
+		if (this.ieVer < 5.5){this.min = false;}
+	}
+	
+//Look for Opera
+	this.opera = (this.ua.indexOf(''Opera'') > 0);
+	if (this.opera){
+		this.operaVer = parseFloat(this.ua.substring(this.ua.indexOf(''Opera'')+6, this.ua.length));
+		if (this.operaVer < 7.04){this.min = false;}
+	}
+	if (this.min == false){
+		alert(''Your browser may not be able to handle this page.'');
+	}
+	
+//Special case for the horrible ie5mac
+	this.ie5mac = (this.ie&&this.mac&&(this.ieVer<6));
+}
+
+var C = new Client();
+
+//for (prop in C){
+//	alert(prop + '': '' + C[prop]);
+//}
+
+
+
+//CODE FOR HANDLING NAV BUTTONS AND FUNCTION BUTTONS
+
+//[strNavBarJS]
+function NavBtnOver(Btn){
+	if (Btn.className != ''NavButtonDown''){Btn.className = ''NavButtonUp'';}
+}
+
+function NavBtnOut(Btn){
+	Btn.className = ''NavButton'';
+}
+
+function NavBtnDown(Btn){
+	Btn.className = ''NavButtonDown'';
+}
+//[/strNavBarJS]
+
+function FuncBtnOver(Btn){
+	if (Btn.className != ''FuncButtonDown''){Btn.className = ''FuncButtonUp'';}
+}
+
+function FuncBtnOut(Btn){
+	Btn.className = ''FuncButton'';
+}
+
+function FuncBtnDown(Btn){
+	Btn.className = ''FuncButtonDown'';
+}
+
+function FocusAButton(){
+	if (document.getElementById(''CheckButton1'') != null){
+		document.getElementById(''CheckButton1'').focus();
+	}
+	else{
+		if (document.getElementById(''CheckButton2'') != null){
+			document.getElementById(''CheckButton2'').focus();
+		}
+		else{
+			document.getElementsByTagName(''button'')[0].focus();
+		}
+	}
+}
+
+
+
+
+//CODE FOR HANDLING DISPLAY OF POPUP FEEDBACK BOX
+
+var topZ = 1000;
+
+function ShowMessage(Feedback){
+	var Output = Feedback + ''<br /><br />'';
+	document.getElementById(''FeedbackContent'').innerHTML = Output;
+	var FDiv = document.getElementById(''FeedbackDiv'');
+	topZ++;
+	FDiv.style.zIndex = topZ;
+	FDiv.style.top = TopSettingWithScrollOffset(30) + ''px'';
+
+	FDiv.style.display = ''block'';
+
+	ShowElements(false, ''input'');
+	ShowElements(false, ''select'');
+	ShowElements(false, ''object'');
+	ShowElements(true, ''object'', ''FeedbackContent'');
+
+//Focus the OK button
+	setTimeout("document.getElementById(''FeedbackOKButton'').focus()", 50);
+	
+//
+}
+
+function ShowElements(Show, TagName, ContainerToReverse){
+// added third argument to allow objects in the feedback box to appear
+//IE bug -- hide all the form elements that will show through the popup
+//FF on Mac bug : doesn''t redisplay objects whose visibility is set to visible
+//unless the object''s display property is changed
+
+	//get container object (by Id passed in, or use document otherwise)
+	TopNode = document.getElementById(ContainerToReverse);
+	var Els;
+	if (TopNode != null) {
+		Els = TopNode.getElementsByTagName(TagName);
+	} else {
+		Els = document.getElementsByTagName(TagName);
+	}
+
+	for (var i=0; i<Els.length; i++){
+		if (TagName == "object") {
+			//manipulate object elements in all browsers
+			if (Show == true){
+				Els[i].style.visibility = ''visible'';
+				//get Mac FireFox to manipulate display, to force screen redraw
+				if (C.mac && C.gecko) {Els[i].style.display = '''';}
+			}
+			else{
+				Els[i].style.visibility = ''hidden'';
+				if (C.mac && C.gecko) {Els[i].style.display = ''none'';}
+			}
+		} 
+		else {
+			// tagName is either input or select (that is, Form Elements)
+			// ie6 has a problem with Form elements, so manipulate those
+			if (C.ie) {
+				if (C.ieVer < 7) {
+					if (Show == true){
+						Els[i].style.visibility = ''visible'';
+					}
+					else{
+						Els[i].style.visibility = ''hidden'';
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+function HideFeedback(){
+	document.getElementById(''FeedbackDiv'').style.display = ''none'';
+	ShowElements(true, ''input'');
+	ShowElements(true, ''select'');
+	ShowElements(true, ''object'');
+	if (Finished == true){
+		Finish();
+	}
+}
+
+
+//GENERAL UTILITY FUNCTIONS AND VARIABLES
+
+//PAGE DIMENSION FUNCTIONS
+function PageDim(){
+//Get the page width and height
+	this.W = 600;
+	this.H = 400;
+	this.W = document.getElementsByTagName(''body'')[0].clientWidth;
+	this.H = document.getElementsByTagName(''body'')[0].clientHeight;
+}
+
+var pg = null;
+
+function GetPageXY(El) {
+	var XY = {x: 0, y: 0};
+	while(El){
+		XY.x += El.offsetLeft;
+		XY.y += El.offsetTop;
+		El = El.offsetParent;
+	}
+	return XY;
+}
+
+function GetScrollTop(){
+	if (typeof(window.pageYOffset) == ''number''){
+		return window.pageYOffset;
+	}
+	else{
+		if ((document.body)&&(document.body.scrollTop)){
+			return document.body.scrollTop;
+		}
+		else{
+			if ((document.documentElement)&&(document.documentElement.scrollTop)){
+				return document.documentElement.scrollTop;
+			}
+			else{
+				return 0;
+			}
+		}
+	}
+}
+
+function GetViewportHeight(){
+	if (typeof window.innerHeight != ''undefined''){
+		return window.innerHeight;
+	}
+	else{
+		if (((typeof document.documentElement != ''undefined'')&&(typeof document.documentElement.clientHeight !=
+     ''undefined''))&&(document.documentElement.clientHeight != 0)){
+			return document.documentElement.clientHeight;
+		}
+		else{
+			return document.getElementsByTagName(''body'')[0].clientHeight;
+		}
+	}
+}
+
+function TopSettingWithScrollOffset(TopPercent){
+	var T = Math.floor(GetViewportHeight() * (TopPercent/100));
+	return GetScrollTop() + T; 
+}
+
+//CODE FOR AVOIDING LOSS OF DATA WHEN BACKSPACE KEY INVOKES history.back()
+var InTextBox = false;
+
+function SuppressBackspace(e){ 
+	if (InTextBox == true){return;}
+	if (C.ie) {
+		thisKey = window.event.keyCode;
+	}
+	else {
+		thisKey = e.keyCode;
+	}
+
+	var Suppress = false;
+
+	if (thisKey == 8) {
+		Suppress = true;
+	}
+
+	if (Suppress == true){
+		if (C.ie){
+			window.event.returnValue = false;	
+			window.event.cancelBubble = true;
+		}
+		else{
+			e.preventDefault();
+		}
+	}
+}
+
+if (C.ie){
+	document.attachEvent(''onkeydown'',SuppressBackspace);
+	window.attachEvent(''onkeydown'',SuppressBackspace);
+}
+else{
+	if (window.addEventListener){
+		window.addEventListener(''keypress'',SuppressBackspace,false);
+	}
+}
+
+function ReduceItems(InArray, ReduceToSize){
+	var ItemToDump=0;
+	var j=0;
+	while (InArray.length > ReduceToSize){
+		ItemToDump = Math.floor(InArray.length*Math.random());
+		InArray.splice(ItemToDump, 1);
+	}
+}
+
+function Shuffle(InArray){
+	var Num;
+	var Temp = new Array();
+	var Len = InArray.length;
+
+	var j = Len;
+
+	for (var i=0; i<Len; i++){
+		Temp[i] = InArray[i];
+	}
+
+	for (i=0; i<Len; i++){
+		Num = Math.floor(j  *  Math.random());
+		InArray[i] = Temp[Num];
+
+		for (var k=Num; k < (j-1); k++) {
+			Temp[k] = Temp[k+1];
+		}
+		j--;
+	}
+	return InArray;
+}
+
+function WriteToInstructions(Feedback) {
+	document.getElementById(''InstructionsDiv'').innerHTML = Feedback;
+
+}
+
+
+
+
+function EscapeDoubleQuotes(InString){
+	return InString.replace(/"/g, ''&quot;'')
+}
+
+function TrimString(InString){
+        var x = 0;
+
+        if (InString.length != 0) {
+                while ((InString.charAt(InString.length - 1) == ''\u0020'') || (InString.charAt(InString.length - 1) == ''\u000A'') || (InString.charAt(InString.length - 1) == ''\u000D'')){
+                        InString = InString.substring(0, InString.length - 1)
+                }
+
+                while ((InString.charAt(0) == ''\u0020'') || (InString.charAt(0) == ''\u000A'') || (InString.charAt(0) == ''\u000D'')){
+                        InString = InString.substring(1, InString.length)
+                }
+
+                while (InString.indexOf(''  '') != -1) {
+                        x = InString.indexOf(''  '')
+                        InString = InString.substring(0, x) + InString.substring(x+1, InString.length)
+                 }
+
+                return InString;
+        }
+
+        else {
+                return '''';
+        }
+}
+
+function FindLongest(InArray){
+	if (InArray.length < 1){return -1;}
+
+	var Longest = 0;
+	for (var i=1; i<InArray.length; i++){
+		if (InArray[i].length > InArray[Longest].length){
+			Longest = i;
+		}
+	}
+	return Longest;
+}
+
+//UNICODE CHARACTER FUNCTIONS
+function IsCombiningDiacritic(CharNum){
+	var Result = (((CharNum >= 0x0300)&&(CharNum <= 0x370))||((CharNum >= 0x20d0)&&(CharNum <= 0x20ff)));
+	Result = Result || (((CharNum >= 0x3099)&&(CharNum <= 0x309a))||((CharNum >= 0xfe20)&&(CharNum <= 0xfe23)));
+	return Result;
+}
+
+function IsCJK(CharNum){
+	return ((CharNum >= 0x3000)&&(CharNum < 0xd800));
+}
+
+//SETUP FUNCTIONS
+//BROWSER WILL REFILL TEXT BOXES FROM CACHE IF NOT PREVENTED
+function ClearTextBoxes(){
+	var NList = document.getElementsByTagName(''input'');
+	for (var i=0; i<NList.length; i++){
+		if ((NList[i].id.indexOf(''Guess'') > -1)||(NList[i].id.indexOf(''Gap'') > -1)){
+			NList[i].value = '''';
+		}
+		if (NList[i].id.indexOf(''Chk'') > -1){
+			NList[i].checked = '''';
+		}
+	}
+}
+
+//EXTENSION TO ARRAY OBJECT
+function Array_IndexOf(Input){
+	var Result = -1;
+	for (var i=0; i<this.length; i++){
+		if (this[i] == Input){
+			Result = i;
+		}
+	}
+	return Result;
+}
+Array.prototype.indexOf = Array_IndexOf;
+
+//IE HAS RENDERING BUG WITH BOTTOM NAVBAR
+function RemoveBottomNavBarForIE(){
+	if ((C.ie)&&(document.getElementById(''Reading'') != null)){
+		if (document.getElementById(''BottomNavBar'') != null){
+			document.getElementById(''TheBody'').removeChild(document.getElementById(''BottomNavBar''));
+		}
+	}
+}
+
+
+
+
+//HOTPOTNET-RELATED CODE
+
+var HPNStartTime = (new Date()).getTime();
+var SubmissionTimeout = 30000;
+var Detail = ''''; //Global that is used to submit tracking data
+
+function Finish(){
+//If there''s a form, fill it out and submit it
+	if (document.store != null){
+		Frm = document.store;
+		Frm.starttime.value = HPNStartTime;
+		Frm.endtime.value = (new Date()).getTime();
+		Frm.mark.value = Score;
+		Frm.detail.value = Detail;
+		Frm.submit();
+	}
+}
+
+
+
+
+
+//JQUIZ CORE JAVASCRIPT CODE
+
+var CurrQNum = 0;
+var CorrectIndicator = ''r&#x00E4;tt'';
+var IncorrectIndicator = ''fel'';
+var YourScoreIs = ''Ditt betyg: '';
+
+//New for 6.2.2.0
+var CompletedSoFar = ''Fr&#x00E5;gor du besvarat helt: '';
+var ExerciseCompleted = ''Nu &#x00E4;r du klar med fr&#x00E5;gan.'';
+var ShowCompletedSoFar = true;
+
+var ContinuousScoring = true;
+var CorrectFirstTime = ''Fr&#x00E5;gor som du klarade f&#x00F6;rsta g&#x00E5;ngen: '';
+var ShowCorrectFirstTime = true;
+var ShuffleQs = true;
+var ShuffleAs = true;
+var DefaultRight = ''Korrekt!'';
+var DefaultWrong = ''Nej, f&#x00F6;rs&#x00F6;k igen!'';
+var QsToShow = 14;
+var Score = 0;
+var Finished = false;
+var Qs = null;
+var QArray = new Array();
+var ShowingAllQuestions = false;
+var ShowAllQuestionsCaption = ''Visa alla fr&#x00E5;gor och dina svar'';
+var ShowOneByOneCaption = ''Visa fr&#x00E5;gorna en och en'';
+var State = new Array();
+var Feedback = '''';
+var TimeOver = false;
+var strInstructions = '''';
+var Locked = false;
+
+//The following variable can be used to add a message explaining that
+//the question is finished, so no further marking will take place.
+var strQuestionFinished = '''';
+
+function CompleteEmptyFeedback(){
+	var QNum, ANum;
+	for (QNum=0; QNum<I.length; QNum++){
+//Only do this if not multi-select
+		if (I[QNum][2] != ''3''){
+  		for (ANum = 0; ANum<I[QNum][3].length; ANum++){
+  			if (I[QNum][3][ANum][1].length < 1){
+  				if (I[QNum][3][ANum][2] > 0){
+  					I[QNum][3][ANum][1] = DefaultRight;
+  				}
+  				else{
+  					I[QNum][3][ANum][1] = DefaultWrong;
+  				}
+  			}
+  		}
+		}
+	}
+}
+
+function SetUpQuestions(){
+	var AList = new Array(); 
+	var QList = new Array();
+	var i, j;
+	Qs = document.getElementById(''Questions'');
+	while (Qs.getElementsByTagName(''li'').length > 0){
+		QList.push(Qs.removeChild(Qs.getElementsByTagName(''li'')[0]));
+	}
+	var DumpItem = 0;
+	if (QsToShow > QList.length){
+		QsToShow = QList.length;
+	}
+	while (QsToShow < QList.length){
+		DumpItem = Math.floor(QList.length*Math.random());
+		for (j=DumpItem; j<(QList.length-1); j++){
+			QList[j] = QList[j+1];
+		}
+		QList.length = QList.length-1;
+	}
+	if (ShuffleQs == true){
+		QList = Shuffle(QList);
+	}
+	if (ShuffleAs == true){
+		var As;
+		for (var i=0; i<QList.length; i++){
+			As = QList[i].getElementsByTagName(''ol'')[0];
+			if (As != null){
+  			AList.length = 0;
+				while (As.getElementsByTagName(''li'').length > 0){
+					AList.push(As.removeChild(As.getElementsByTagName(''li'')[0]));
+				}
+				AList = Shuffle(AList);
+				for (j=0; j<AList.length; j++){
+					As.appendChild(AList[j]);
+				}
+			}
+		}
+	}
+	
+	for (i=0; i<QList.length; i++){
+		Qs.appendChild(QList[i]);
+		QArray[QArray.length] = QList[i];
+	}
+
+//Show the first item
+	QArray[0].style.display = '''';
+	
+//Now hide all except the first item
+	for (i=1; i<QArray.length; i++){
+		QArray[i].style.display = ''none'';
+	}		
+	SetQNumReadout();
+	
+	SetFocusToTextbox();
+}
+
+function SetFocusToTextbox(){
+//if there''s a textbox, set the focus in it
+	if (QArray[CurrQNum].getElementsByTagName(''input'')[0] != null){
+		QArray[CurrQNum].getElementsByTagName(''input'')[0].focus();
+//and show a keypad if there is one
+		if (document.getElementById(''CharacterKeypad'') != null){
+			document.getElementById(''CharacterKeypad'').style.display = ''block'';
+		}
+	}
+	else{
+  	if (QArray[CurrQNum].getElementsByTagName(''textarea'')[0] != null){
+  		QArray[CurrQNum].getElementsByTagName(''textarea'')[0].focus();	
+//and show a keypad if there is one
+			if (document.getElementById(''CharacterKeypad'') != null){
+				document.getElementById(''CharacterKeypad'').style.display = ''block'';
+			}
+		}
+//This added for 6.0.4.11: hide accented character buttons if no textbox
+		else{
+			if (document.getElementById(''CharacterKeypad'') != null){
+				document.getElementById(''CharacterKeypad'').style.display = ''none'';
+			}
+		}
+	}
+}
+
+function ChangeQ(ChangeBy){
+//The following line prevents moving to another question until the current
+//question is answered correctly. Uncomment it to enable this behaviour. 
+//	if (State[CurrQNum][0] == -1){return;}
+	if (((CurrQNum + ChangeBy) < 0)||((CurrQNum + ChangeBy) >= QArray.length)){return;}
+	QArray[CurrQNum].style.display = ''none'';
+	CurrQNum += ChangeBy;
+	QArray[CurrQNum].style.display = '''';
+//Undocumented function added 10/12/2004
+	ShowSpecialReadingForQuestion();
+	SetQNumReadout();
+	SetFocusToTextbox();
+}
+
+var HiddenReadingShown = false;
+function ShowSpecialReadingForQuestion(){
+//Undocumented function for showing specific reading text elements which change with each question
+//Added on 10/12/2004
+	if (document.getElementById(''ReadingDiv'') != null){
+		if (HiddenReadingShown == true){
+			document.getElementById(''ReadingDiv'').innerHTML = '''';
+		}
+		if (QArray[CurrQNum] != null){
+//Fix for 6.0.4.25
+			var Children = QArray[CurrQNum].getElementsByTagName(''div'');
+			for (var i=0; i<Children.length; i++){
+			if (Children[i].className=="HiddenReading"){
+					document.getElementById(''ReadingDiv'').innerHTML = Children[i].innerHTML;
+					HiddenReadingShown = true;
+//Hide the ShowAllQuestions button to avoid confusion
+					if (document.getElementById(''ShowMethodButton'') != null){
+						document.getElementById(''ShowMethodButton'').style.display = ''none'';
+					}
+				}
+			}	
+		}
+	}
+}
+
+function SetQNumReadout(){
+	document.getElementById(''QNumReadout'').innerHTML = (CurrQNum+1) + '' / '' + QArray.length;
+	if ((CurrQNum+1) >= QArray.length){
+		if (document.getElementById(''NextQButton'') != null){
+			document.getElementById(''NextQButton'').style.visibility = ''hidden'';
+		}
+	}
+	else{
+		if (document.getElementById(''NextQButton'') != null){
+			document.getElementById(''NextQButton'').style.visibility = ''visible'';
+		}
+	}
+	if (CurrQNum <= 0){
+		if (document.getElementById(''PrevQButton'') != null){
+			document.getElementById(''PrevQButton'').style.visibility = ''hidden'';
+		}
+	}
+	else{
+		if (document.getElementById(''PrevQButton'') != null){
+			document.getElementById(''PrevQButton'').style.visibility = ''visible'';
+		}
+	}
+}
+
+var I=new Array();
+I[0]=new Array();I[0][0]=100;
+I[0][1]='''';
+I[0][2]=''0'';
+I[0][3]=new Array();
+I[0][3][0]=new Array(''Asiaten och Svininfluensan'',''Asiaten \u00E4r en av dem, men den s\u00E5 kallade "svininfluensan" kom inte f\u00F6rr\u00E4n 2000-talet.'',0,0,1);
+I[0][3][1]=new Array(''Hongkonginfluensan och F\u00E5gelinfluensan'',''Hongkonginfluensan \u00E4r en av dem, men den s\u00E5 kallade "f\u00E5gelinfluensan" har \u00E4nnu inte orsakat en pandemi trots att m\u00E4nniskor ibland smittas.'',0,0,1);
+I[0][3][2]=new Array(''Asiaten och Hongkonginfluensan'',''Ja! Asiaten kom 1955 och Hongkonginfluensan kom 1968-69.'',1,100,1);
+I[0][3][3]=new Array(''Svininfluensan och F\u00E5gelinfluensan'',''Den s\u00E5 kallade "svininfluensan" kom inte f\u00F6rr\u00E4n 2000-talet och "f\u00E5gelinfluensan" har \u00E4nnu inte orsakat en pandemi.'',0,0,1);
+I[1]=new Array();I[1][0]=100;
+I[1][1]='''';
+I[1][2]=''0'';
+I[1][3]=new Array();
+I[1][3][0]=new Array(''Ett utbrott av en sjukdom i en viss region'',''N\u00E4r ett utbrott h\u00E5ller sig till en viss region (till exempel endast Sverige eller Skandinavien) kallas det f\u00F6r en epidemi.'',0,0,1);
+I[1][3][1]=new Array(''Ett v\u00E4rldsomsp\u00E4nnande utbrott av en sjukdom'',''Ja! En pandemi \u00E4r n\u00E4r samma sjukdom infekterar m\u00E4nniskor runtom p\u00E5 jorden samtidigt. Under 2009 drabbades Sverige och m\u00E5nga andra l\u00E4nder av en pandemi av influensa AH1N1)2009.'',1,100,1);
+I[1][3][2]=new Array(''Ett utbrott av ett virus som varar i minst tre m\u00E5nader'',''Det \u00E4r inte l\u00E4ngden p\u00E5 utbrottet som g\u00F6r det till en pandemi - men en pandemi varar ofta \u00E4nnu l\u00E4ngre \u00E4n tre m\u00E5nader.'',0,0,1);
+I[1][3][3]=new Array(''Ett utbrott d\u00E4r mer \u00E4n h\u00E4lften av de smittade m\u00E4nniskorna d\u00F6r'',''Det \u00E4r inte hur stor andel som d\u00F6r som g\u00F6r det till en pandemi. Vissa pandemier kr\u00E4ver m\u00E5nga d\u00F6dsoffer, medan andra \u00E4r relativt milda.'',0,0,1);
+I[2]=new Array();I[2][0]=100;
+I[2][1]='''';
+I[2][2]=''0'';
+I[2][3]=new Array();
+I[2][3][0]=new Array(''Ett insektsbett'',''Insektsbett kan ge andra smittor, men inte influensa.'',0,0,1);
+I[2][3][1]=new Array(''Ett virus'',''Ja! Influensa \u00E4r en virussjukdom. Det finns tre typer av influensavirus; influensa A, B och C, som alla tillh\u00F6r gruppen ortomyxovirus.'',1,100,1);
+I[2][3][2]=new Array(''M\u00F6gel'',''M\u00F6gel kan man f\u00E5 besv\u00E4r av, men inte influensa.'',0,0,1);
+I[2][3][3]=new Array(''Att \u00E4ta d\u00E5lig mat'',''Ibland kallas magsjuka som man f\u00E5r av till exempel d\u00E5lig mat f\u00F6r maginfluensa, men den orsakas inte av influensa.'',0,0,1);
+I[3]=new Array();I[3][0]=100;
+I[3][1]='''';
+I[3][2]=''0'';
+I[3][3]=new Array();
+I[3][3][0]=new Array(''Ordet betyder "farliga partiklar"'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[3][3][1]=new Array(''Ordet betyder "gift"'',''Ja! Ordet \u00E4r latin och betyder gift.'',1,100,1);
+I[3][3][2]=new Array(''Ordet betyder "mycket smittsam"'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[3][3][3]=new Array(''Ordet h\u00E4rstammar fr\u00E5n namnet p\u00E5 den irl\u00E4ndska l\u00E4karen Donald McVirus som uppt\u00E4ckte den sjukdomsalstrande mikroorganismen'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[4]=new Array();I[4][0]=100;
+I[4][1]='''';
+I[4][2]=''0'';
+I[4][3]=new Array();
+I[4][3][0]=new Array(''Med hj\u00E4lp av deras storlek'',''Influensapartiklar \u00E4r alla r\u00E4tts\u00E5 lika i storlek (cirka 80-120 nm i diameter).'',0,0,1);
+I[4][3][1]=new Array(''Med hj\u00E4lp av allvarlighetsgraden p\u00E5 sjukdomen som viruset kan orsaka'',''Det \u00E4r inte s\u00E5 man skiljer dem \u00E5t.'',0,0,1);
+I[4][3][2]=new Array(''Med hj\u00E4lp av proteiner p\u00E5 utsidan av viruset'',''Ja! P\u00E5 utsidan av viruset finns proteinerna hemagglutinin och neuraminidas (H och N). Det finns olika typer av H och N som heter, till exempel H1, H2, osv. Olika influensavirus ben\u00E4mns efter deras H och N typer - som till exempel influensa A(H2N3) eller A(H1N1).'',1,100,1);
+I[4][3][3]=new Array(''Med hj\u00E4lp av deras f\u00E4rg'',''Det \u00E4r inte f\u00E4rgen som skiljer dem \u00E5t.'',0,0,1);
+I[5]=new Array();I[5][0]=100;
+I[5][1]='''';
+I[5][2]=''3'';
+I[5][3]=new Array();
+I[5][3][0]=new Array(''Droppar fr\u00E5n n\u00E4san eller saliv fr\u00E5n en person som \u00E4r smittad'',''Man kan smittas n\u00E4r n\u00E5gon snyter sig, nyser, hostar, och s\u00E5 vidare. Men finns det andra s\u00E4tt?'',1,100,1);
+I[5][3][1]=new Array(''Att vidr\u00F6ra en person som \u00E4r smittad'',''Man kan smittas om man tar i en smittad person. Men finns det andra s\u00E4tt?'',1,100,1);
+I[5][3][2]=new Array(''Att r\u00F6ra vid f\u00F6rem\u00E5l som har smitto\u00E4mnen p\u00E5 sin yta'',''Det kan finnas viruspartiklar p\u00E5 olika ytor som en smittad person har vidr\u00F6rt. Men finns det andra s\u00E4tt?'',1,100,1);
+I[5][3][3]=new Array(''Ingen av dess s\u00E4tt'',''Jod\u00E5, p\u00E5 alla dessa s\u00E4tt kan man smittas.'',0,0,1);
+I[6]=new Array();I[6][0]=100;
+I[6][1]='''';
+I[6][2]=''0'';
+I[6][3]=new Array();
+I[6][3][0]=new Array(''750'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[6][3][1]=new Array(''7 500'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[6][3][2]=new Array(''75 000'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[6][3][3]=new Array(''750 000'',''Ja! Det kan finnas upp till 750 000 viruspartiklar i en milliliter av n\u00E4ssekret, och en hel del kan ju flyga ut n\u00E4r man nyser!'',1,100,1);
+I[7]=new Array();I[7][0]=100;
+I[7][1]='''';
+I[7][2]=''0'';
+I[7][3]=new Array();
+I[7][3][0]=new Array(''cirka 1 dag'',''Nja, s\u00E5 snabbt brukar man inte bli frisk.'',0,0,1);
+I[7][3][1]=new Array(''cirka 1 vecka'',''Ja! De flesta som f\u00E5r influensa har tillfrisknat efter cirka en vecka.'',1,100,1);
+I[7][3][2]=new Array(''l\u00E4ngre \u00E4n 2 veckor'',''Om man \u00E4r sjuk i influensa-liknande sjukdom i mer \u00E4n 2 veckor kan man mist\u00E4nka att det \u00E4r n\u00E5gon annan sjukdom.'',0,0,1);
+I[7][3][3]=new Array(''cirka 1 m\u00E5nad'',''Om man \u00E4r sjuk i influensa-liknande sjukdom i flera veckor kan man mist\u00E4nka att det \u00E4r n\u00E5gon annan sjukdom.'',0,0,1);
+I[8]=new Array();I[8][0]=100;
+I[8][1]='''';
+I[8][2]=''0'';
+I[8][3]=new Array();
+I[8][3][0]=new Array(''Utmattning efter kampen mellan kroppen och viruspartiklarna'',''Visst kan man bli utmattad av influensa, men det \u00E4r inte fr\u00E4mst det som orsakar d\u00F6dsfall.'',0,0,1);
+I[8][3][1]=new Array(''Lunginflammation'',''Ja, s\u00E4rkillt hos \u00E4ldre \u00E4r det ganska vanligt att man p\u00E5 grund av influensainfektionen drabbas av lunginflammation orsakad av bakterier som normalt finns inom luftv\u00E4garna. Det \u00E4r framf\u00F6rallt dessa sekund\u00E4ra lunginflammationer tillsammans med hj\u00E4rtsvikt som orsakar den influensaassocierade \u00F6verd\u00F6dligheten hos \u00E4ldre.'',1,100,1);
+I[8][3][2]=new Array(''Hj\u00E4rtinfarkt'',''Hj\u00E4rtinfarkt \u00E4r en ledande d\u00F6dorsak i allm\u00E4nhet, men inte i direkt relation till influensa.'',0,0,1);
+I[8][3][3]=new Array(''Uttorkning'',''D\u00F6dsfall p\u00E5 grund av uttorkning brukar snarare drabba magsjuka personer \u00E4n de som har influensa.'',0,0,1);
+I[9]=new Array();I[9][0]=100;
+I[9][1]='''';
+I[9][2]=''0'';
+I[9][3]=new Array();
+I[9][3][0]=new Array(''Sommar'',''Det \u00E4r inte s\u00E5 m\u00E5nga som f\u00E5r influensa under sommaren.'',0,0,1);
+I[9][3][1]=new Array(''Vinter'',''Ja! Den st\u00F6rsta influensav\u00E5gen brukar komma i midvintertider.'',1,100,1);
+I[9][3][2]=new Array(''V\u00E5r'',''S\u00E4songsepidemin av influensa avtar n\u00E4r det blir v\u00E5r.'',0,0,1);
+I[9][3][3]=new Array(''H\u00F6st'',''Det \u00E4r m\u00E5nga som f\u00E5r influensa under h\u00F6sten, men det \u00E4r \u00E4nnu fler under en annan \u00E5rstid.'',0,0,1);
+I[10]=new Array();I[10][0]=100;
+I[10][1]='''';
+I[10][2]=''0'';
+I[10][3]=new Array();
+I[10][3][0]=new Array(''1933'',''Nej, men 1933 var f\u00F6rsta g\u00E5ngen man isolerade influensaviruset. F\u00F6rs\u00F6k igen!'',0,0,1);
+I[10][3][1]=new Array(''1942'',''Ja!'',1,100,1);
+I[10][3][2]=new Array(''1950'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[10][3][3]=new Array(''1967'',''F\u00F6rs\u00F6k igen!'',0,0,1);
+I[11]=new Array();I[11][0]=100;
+I[11][1]='''';
+I[11][2]=''0'';
+I[11][3]=new Array();
+I[11][3][0]=new Array(''Viruset odlas i befruktade h\u00F6ns\u00E4gg, avd\u00F6das och renas fram'',''Ja, det \u00E4r s\u00E5 det fungerar. Det tar flera m\u00E5nader att framst\u00E4lla varje s\u00E4songs influensavaccin. Vilka variationer av influensa som ska vara med i vaccinet best\u00E4ms vintern f\u00F6re s\u00E4songen som sedan b\u00F6rjar p\u00E5 h\u00F6sten.'',1,100,1);
+I[11][3][1]=new Array(''Viruset odlas i kycklingar som injiceras med influensavirus. Efter fem dagar tas blod fr\u00E5n kycklingen och vaccinet renas fram.'',''Visst involverar det kycklingar, men inte p\u00E5 det h\u00E4r s\u00E4ttet.'',0,0,1);
+I[11][3][2]=new Array(''Viruset renas fram ur blodet fr\u00E5n m\u00E4nniskor som har influensa'',''Blodprov p\u00E5 m\u00E4nniskor som \u00E4r smittade med influensa anv\u00E4nds f\u00E4mst f\u00F6r att diagnosera vilken typ av influensa de har.'',0,0,1);
+I[12]=new Array();I[12][0]=100;
+I[12][1]='''';
+I[12][2]=''0'';
+I[12][3]=new Array();
+I[12][3][0]=new Array(''En sorts antibiotika'',''Nej, men det \u00E4r ocks\u00E5 en medicin mot sjukdom. Antibiotika fungerar bara mot bakterier, inte virus som influensa.'',0,0,1);
+I[12][3][1]=new Array(''Ett nytt vaccin mot influensa'',''Nej, men det \u00E4r n\u00E5got som har med influensa att g\u00F6ra.'',0,0,1);
+I[12][3][2]=new Array(''En medicin som bromsar f\u00F6r\u00F6kning av ett virus'',''Ja, Tamiflu \u00E4r ett s\u00E5 kallat antiviralt l\u00E4kemedel.'',1,100,1);
+I[12][3][3]=new Array(''En ny sorts tandkr\u00E4m f\u00F6r vita t\u00E4nder'',''Nej, f\u00F6rs\u00F6k igen!'',0,0,1);
+I[13]=new Array();I[13][0]=100;
+I[13][1]='''';
+I[13][2]=''0'';
+I[13][3]=new Array();
+I[13][3][0]=new Array(''P\u00E5st\u00E5ende 2'',''Det \u00E4r sant, men det \u00E4r ocks\u00E5 sant att man kan smitta andra n\u00E4r man skrattar!'',0,0,1);
+I[13][3][1]=new Array(''P\u00E5st\u00E5ende 1'',''Det \u00E4r sant, men det \u00E4r ocks\u00E5 sant att mer smittsamma virus sprider sig snabbare!'',0,0,1);
+I[13][3][2]=new Array(''Inget av p\u00E5st\u00E5endena'',''Jo, b\u00E5da \u00E4r korrekta.'',0,0,1);
+I[13][3][3]=new Array(''B\u00E5da p\u00E5st\u00E5endena'',''Ja! B\u00E5da p\u00E5st\u00E5endena \u00E4r korrekta!'',1,100,1);
+
+
+function StartUp(){
+	RemoveBottomNavBarForIE();
+
+//If there''s only one question, no need for question navigation controls
+	if (QsToShow < 2){
+		document.getElementById(''QNav'').style.display = ''none'';
+	}
+	
+//Stash the instructions so they can be redisplayed
+	strInstructions = document.getElementById(''InstructionsDiv'').innerHTML;
+	
+
+	
+
+	
+
+	
+	CompleteEmptyFeedback();
+
+	SetUpQuestions();
+	ClearTextBoxes();
+	CreateStatusArray();
+	
+
+	
+//Check search string for q parameter
+	if (document.location.search.length > 0){
+		if (ShuffleQs == false){
+			var JumpTo = parseInt(document.location.search.substring(1,document.location.search.length))-1;
+			if (JumpTo <= QsToShow){
+				ChangeQ(JumpTo);
+			}
+		}
+	}
+//Undocumented function added 10/12/2004
+	ShowSpecialReadingForQuestion();
+}
+
+function ShowHideQuestions(){
+	FuncBtnOut(document.getElementById(''ShowMethodButton''));
+	document.getElementById(''ShowMethodButton'').style.display = ''none'';
+	if (ShowingAllQuestions == false){
+		for (var i=0; i<QArray.length; i++){
+				QArray[i].style.display = '''';
+			}
+		document.getElementById(''Questions'').style.listStyleType = ''decimal'';
+		document.getElementById(''OneByOneReadout'').style.display = ''none'';
+		document.getElementById(''ShowMethodButton'').innerHTML = ShowOneByOneCaption;
+		ShowingAllQuestions = true;
+	}
+	else{
+		for (var i=0; i<QArray.length; i++){
+				if (i != CurrQNum){
+					QArray[i].style.display = ''none'';
+				}
+			}
+		document.getElementById(''Questions'').style.listStyleType = ''none'';
+		document.getElementById(''OneByOneReadout'').style.display = '''';
+		document.getElementById(''ShowMethodButton'').innerHTML = ShowAllQuestionsCaption;
+		ShowingAllQuestions = false;	
+	}
+	document.getElementById(''ShowMethodButton'').style.display = ''inline'';
+}
+
+function CreateStatusArray(){
+	var QNum, ANum;
+//For each item in the item array
+	for (QNum=0; QNum<I.length; QNum++){
+//Check if the question still exists (hasn''t been nuked by showing a random selection)
+		if (document.getElementById(''Q_'' + QNum) != null){
+			State[QNum] = new Array();
+			State[QNum][0] = -1; //Score for this q; -1 shows question not done yet
+			State[QNum][1] = new Array(); //answers
+			for (ANum = 0; ANum<I[QNum][3].length; ANum++){
+				State[QNum][1][ANum] = 0; //answer not chosen yet; when chosen, will store its position in the series of choices
+			}
+			State[QNum][2] = 0; //tries at this q so far
+			State[QNum][3] = 0; //incrementing percent-correct values of selected answers
+			State[QNum][4] = 0; //penalties incurred for hints
+			State[QNum][5] = ''''; //Sequence of answers chosen by number
+		}
+		else{
+			State[QNum] = null;
+		}
+	}
+}
+
+
+
+function CheckMCAnswer(QNum, ANum, Btn){
+//if question doesn''t exist, bail
+	if (State[QNum].length < 1){return;}
+	
+//Get the feedback
+	Feedback = I[QNum][3][ANum][1];
+	
+//Now show feedback and bail if question already complete
+	if (State[QNum][0] > -1){
+//Add an extra message explaining that the question
+// is finished if defined by the user
+		if (strQuestionFinished.length > 0){Feedback += ''<br />'' + strQuestionFinished;}
+//Show the feedback
+		ShowMessage(Feedback);
+//New for 6.2.2.1: If you want to mark an answer as correct even when it''s the final choice, uncomment this line.
+//		if (I[QNum][3][ANum][2] >= 1){Btn.innerHTML = CorrectIndicator;}else{Btn.innerHTML = IncorrectIndicator;}	
+		return;
+	}
+	
+//Hide the button while processing
+	Btn.style.display = ''none'';
+
+//Increment the number of tries
+	State[QNum][2]++;
+	
+//Add the percent-correct value of this answer
+	State[QNum][3] += I[QNum][3][ANum][3];
+	
+//Store the try number in the answer part of the State array, for tracking purposes
+	State[QNum][1][ANum] = State[QNum][2];
+	if (State[QNum][5].length > 0){State[QNum][5] += '' | '';}
+	State[QNum][5] += String.fromCharCode(65+ANum);
+	
+//Should this answer be accepted as correct?
+	if (I[QNum][3][ANum][2] < 1){
+//It''s wrong
+
+//Mark the answer
+		Btn.innerHTML = IncorrectIndicator;
+		
+//Remove any previous score unless exercise is finished (6.0.3.8+)
+		if (Finished == false){
+			WriteToInstructions(strInstructions);
+		}	
+		
+//Check whether this leaves just one MC answer unselected, in which case the Q is terminated
+		var RemainingAnswer = FinalAnswer(QNum);
+		if (RemainingAnswer > -1){
+//Behave as if the last answer had been selected, but give no credit for it
+//Increment the number of tries
+			State[QNum][2]++;		
+		
+//Calculate the score for this question
+			CalculateMCQuestionScore(QNum);
+			
+//Get the overall score and add it to the feedback
+			CalculateOverallScore();
+//New for 6.2.2.1
+			var QsDone = CheckQuestionsCompleted();
+			if ((ContinuousScoring == true)||(Finished == true)){
+				Feedback += ''<br />'' + YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone;
+				WriteToInstructions(YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone);
+			}
+			else{
+				WriteToInstructions(QsDone);
+			}
+		}
+	}
+	else{
+//It''s right
+//Mark the answer
+		Btn.innerHTML = CorrectIndicator;
+				
+//Calculate the score for this question
+		CalculateMCQuestionScore(QNum);
+		
+//New for 6.2.2.0
+		var QsDone = CheckQuestionsCompleted();
+
+//Get the overall score and add it to the feedback
+		if (ContinuousScoring == true){
+			CalculateOverallScore();
+			if ((ContinuousScoring == true)||(Finished == true)){
+				Feedback += ''<br />'' + YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone;
+				WriteToInstructions(YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone);
+			}
+		}
+		else{
+			WriteToInstructions(QsDone);
+		}
+	}
+	
+//Show the button again
+	Btn.style.display = ''inline'';
+	
+//Finally, show the feedback	
+	ShowMessage(Feedback);
+	
+//Check whether all questions are now done
+	CheckFinished();
+}
+
+function CalculateMCQuestionScore(QNum){
+	var Tries = State[QNum][2] + State[QNum][4]; //include tries and hint penalties
+	var PercentCorrect = State[QNum][3];
+	var TotAns = GetTotalMCAnswers(QNum);
+	var HintPenalties = State[QNum][4];
+	
+//Make sure it''s not already complete
+
+	if (State[QNum][0] < 0){
+//Allow for Hybrids
+		if (HintPenalties >= 1){
+			State[QNum][0] = 0;
+		}
+		else{
+//This line calculates the score for this question
+			if (TotAns == 1){
+				State[QNum][0] = 1;
+			}
+			else{
+				State[QNum][0] = ((TotAns-((Tries*100)/State[QNum][3]))/(TotAns-1));
+			}
+		}
+//Fix for Safari bug added for version 6.0.3.42 (negative infinity problem)
+		if ((State[QNum][0] < 0)||(State[QNum][0] == Number.NEGATIVE_INFINITY)){
+			State[QNum][0] = 0;
+		}
+	}
+}
+
+function GetTotalMCAnswers(QNum){
+	var Result = 0;
+	for (var ANum=0; ANum<I[QNum][3].length; ANum++){
+		if (I[QNum][3][ANum][4] == 1){ //This is an MC answer
+			Result++;
+		}
+	}
+	return Result;
+}
+
+function FinalAnswer(QNum){
+	var UnchosenAnswers = 0;
+	var FinalAnswer = -1;
+	for (var ANum=0; ANum<I[QNum][3].length; ANum++){
+		if (I[QNum][3][ANum][4] == 1){ //This is an MC answer
+			if (State[QNum][1][ANum] < 1){ //This answer hasn''t been chosen yet
+				UnchosenAnswers++;
+				FinalAnswer = ANum;
+			}
+		}
+	}
+	if (UnchosenAnswers == 1){
+		return FinalAnswer;
+	}
+	else{
+		return -1;
+	}
+}
+
+
+
+
+
+function CheckMultiSelAnswer(QNum){
+//bail if question doesn''t exist or exercise finished
+	if ((State[QNum].length < 1)||(Finished == true)){return;}
+
+//Increment the tries for this question
+	State[QNum][2]++;
+	
+	var ShouldBeChecked;
+	var Matches = 0;
+	if (State[QNum][5].length > 0){State[QNum][5] += '' | '';}
+	
+//Check if there are any mismatches
+	Feedback = '''';
+	var CheckBox = null;
+	for (var ANum=0; ANum<I[QNum][3].length; ANum++){
+		CheckBox = document.getElementById(''Q_'' + QNum + ''_'' + ANum + ''_Chk'');
+		if (CheckBox.checked == true){
+			State[QNum][5] += ''Y'';
+		}
+		else{
+			State[QNum][5] += ''N'';
+		}
+		ShouldBeChecked = (I[QNum][3][ANum][2] == 1);
+		if (ShouldBeChecked == CheckBox.checked){
+			Matches++;
+		}
+		else{
+			Feedback = I[QNum][3][ANum][1];
+		}
+	}
+//Add the hit readout
+	Feedback = Matches + '' / '' + I[QNum][3].length + ''<br />'' + Feedback;
+	if (Matches == I[QNum][3].length){
+//It''s right
+		CalculateMultiSelQuestionScore(QNum);
+		
+//New for 6.2.2.0
+		var QsDone = CheckQuestionsCompleted();
+		
+		if (ContinuousScoring == true){
+			CalculateOverallScore();
+			if ((ContinuousScoring == true)||(Finished == true)){
+				Feedback += ''<br />'' + YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone;
+				WriteToInstructions(YourScoreIs + '' '' + Score + ''%.'' + ''<br />'' + QsDone);
+			}
+			else{
+				WriteToInstructions(QsDone);
+			}
+		}
+	}
+	else{
+//It''s wrong -- Remove any previous score unless exercise is finished (6.0.3.8+)
+		if (Finished == false){
+			WriteToInstructions(strInstructions);
+		}	
+	}
+		
+//Show the feedback
+	ShowMessage(Feedback);
+	
+//Check whether all questions are now done
+	CheckFinished();
+}
+
+function CalculateMultiSelQuestionScore(QNum){
+	var Tries = State[QNum][2];
+	var TotAns = State[QNum][1].length;
+	
+//Make sure it''s not already complete
+	if (State[QNum][0] < 0){
+		State[QNum][0] = (TotAns - (Tries-1)) / TotAns;
+		if (State[QNum][0] < 0){
+			State[QNum][0] = 0;
+		}
+	}
+}
+
+
+
+function CalculateOverallScore(){
+	var TotalWeighting = 0;
+	var TotalScore = 0;
+	
+	for (var QNum=0; QNum<State.length; QNum++){
+		if (State[QNum] != null){
+			if (State[QNum][0] > -1){
+				TotalWeighting += I[QNum][0];
+				TotalScore += (I[QNum][0] * State[QNum][0]);
+			}
+		}
+	}
+	if (TotalWeighting > 0){
+		Score = Math.floor((TotalScore/TotalWeighting)*100);
+	}
+	else{
+//if TotalWeighting is 0, no questions so far have any value, so 
+//no penalty should be shown.
+		Score = 100; 
+	}
+}
+
+//New for 6.2.2.0
+function CheckQuestionsCompleted(){
+	if (ShowCompletedSoFar == false){return '''';}
+	var QsCompleted = 0;
+	for (var QNum=0; QNum<State.length; QNum++){
+		if (State[QNum] != null){
+			if (State[QNum][0] >= 0){
+				QsCompleted++;
+			}
+		}
+	}
+//Fixes for 6.2.2.2
+	if (QsCompleted >= QArray.length){
+		return ExerciseCompleted;
+	}
+	else{
+		return CompletedSoFar + '' '' + QsCompleted + ''/'' + QArray.length + ''.'';
+	}
+}
+
+function CheckFinished(){
+	var FB = '''';
+	var AllDone = true;
+	for (var QNum=0; QNum<State.length; QNum++){
+		if (State[QNum] != null){
+			if (State[QNum][0] < 0){
+				AllDone = false;
+			}
+		}
+	}
+	if (AllDone == true){
+	
+//Report final score and submit if necessary
+		CalculateOverallScore();
+		FB = YourScoreIs + '' '' + Score + ''%.'';
+		if (ShowCorrectFirstTime == true){
+			var CFT = 0;
+			for (QNum=0; QNum<State.length; QNum++){
+				if (State[QNum] != null){
+					if (State[QNum][0] >= 1){
+						CFT++;
+					}
+				}
+			}
+			FB += ''<br />'' + CorrectFirstTime + '' '' + CFT + ''/'' + QsToShow;
+		}
+		
+//New for 6.2.2.0
+		FB += ''<br />'' + ExerciseCompleted;
+		
+		WriteToInstructions(FB);
+		
+		Finished == true;
+
+
+
+
+		TimeOver = true;
+		Locked = true;
+		
+
+
+		Finished = true;
+		Detail = ''<?xml version="1.0"?><hpnetresult><fields>'';
+		for (QNum=0; QNum<State.length; QNum++){
+			if (State[QNum] != null){
+				if (State[QNum][5].length > 0){
+					Detail += ''<field><fieldname>Question #'' + (QNum+1) + ''</fieldname><fieldtype>question-tracking</fieldtype><fieldlabel>Q '' + (QNum+1) + ''</fieldlabel><fieldlabelid>QuestionTrackingField</fieldlabelid><fielddata>'' + State[QNum][5] + ''</fielddata></field>'';
+				}
+			}
+		}
+		Detail += ''</fields></hpnetresult>'';
+		setTimeout(''Finish()'', SubmissionTimeout);
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+//-->
+
+//]]>
+
+</script>
+
+
+</head>
+
+<body onload="StartUp()" id="TheBody" >
+
+<!-- BeginTopNavButtons -->
+
+
+<div class="NavButtonBar" id="TopNavBar">
+
+
+
+
+<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)"  onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location=''contents.htm''; return false;"> Tillbaka till Influensakoll.se </button>
+
+
+
+<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)" onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location=''nextpage.htm''; return false;">=&gt;</button>
+
+
+</div>
+
+
+
+<!-- EndTopNavButtons -->
+
+<div class="Titles">
+	<h2 class="ExerciseTitle">Fr&#x00E5;gesport om influensa!</h2>
+
+	<h3 class="ExerciseSubtitle">Hur mycket kan du om influensa?</h3>
+
+
+
+</div>
+
+<div id="InstructionsDiv" class="StdDiv">
+	<div id="Instructions">Klicka p&#x00E5; r&#x00E4;tt svar! Du f&#x00E5;r veta direkt om du hade r&#x00E4;tt. Om du vill l&#x00E4;sa mer kan du klicka p&#x00E5; de andra svaren. </div>
+</div>
+
+
+
+
+<div id="MainDiv" class="StdDiv">
+ 
+<div id="QNav" class="QuestionNavigation">
+
+<p style="text-align: right;">
+<button id="ShowMethodButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ShowHideQuestions(); return false;">Visa alla fr&#x00E5;gor och dina svar</button>
+</p>
+
+<div id="OneByOneReadout">
+<button id="PrevQButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ChangeQ(-1); return false;">&lt;bak&#x00E5;t</button>
+
+<span id="QNumReadout" class="QNum">&nbsp;</span>
+
+<button id="NextQButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOver(this)" onclick="ChangeQ(1); return false;">n&#x00E4;sta fr&#x00E5;ga&gt;</button>
+<br />
+</div>
+
+</div>
+ 
+<ol class="QuizQuestions" id="Questions">
+<li class="QuizQuestion" id="Q_0" style="display: none;"><div class="QuestionText">Spanska sjukan var en av de tre stora pandemierna under 1900-talet. Vad kallades de andra tv&#x00E5;?</div><ol class="MCAnswers"><li id="Q_0_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_0_Btn" onclick="CheckMCAnswer(0,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Asiaten och Svininfluensan</li><li id="Q_0_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_1_Btn" onclick="CheckMCAnswer(0,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Hongkonginfluensan och F&#x00E5;gelinfluensan</li><li id="Q_0_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_2_Btn" onclick="CheckMCAnswer(0,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Asiaten och Hongkonginfluensan</li><li id="Q_0_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_0_3_Btn" onclick="CheckMCAnswer(0,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Svininfluensan och F&#x00E5;gelinfluensan</li></ol></li>
+<li class="QuizQuestion" id="Q_1" style="display: none;"><div class="QuestionText">Vad &#x00E4;r en pandemi?</div><ol class="MCAnswers"><li id="Q_1_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_0_Btn" onclick="CheckMCAnswer(1,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott av en sjukdom i en viss region</li><li id="Q_1_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_1_Btn" onclick="CheckMCAnswer(1,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett v&#x00E4;rldsomsp&#x00E4;nnande utbrott av en sjukdom</li><li id="Q_1_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_2_Btn" onclick="CheckMCAnswer(1,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott av ett virus som varar i minst tre m&#x00E5;nader</li><li id="Q_1_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_1_3_Btn" onclick="CheckMCAnswer(1,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett utbrott d&#x00E4;r mer &#x00E4;n h&#x00E4;lften av de smittade m&#x00E4;nniskorna d&#x00F6;r</li></ol></li>
+<li class="QuizQuestion" id="Q_2" style="display: none;"><div class="QuestionText">Influensainfektion orskas av:</div><ol class="MCAnswers"><li id="Q_2_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_0_Btn" onclick="CheckMCAnswer(2,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett insektsbett</li><li id="Q_2_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_1_Btn" onclick="CheckMCAnswer(2,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett virus</li><li id="Q_2_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_2_Btn" onclick="CheckMCAnswer(2,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;M&#x00F6;gel</li><li id="Q_2_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_2_3_Btn" onclick="CheckMCAnswer(2,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Att &#x00E4;ta d&#x00E5;lig mat</li></ol></li>
+<li class="QuizQuestion" id="Q_3" style="display: none;"><div class="QuestionText">Vad betyder ordet virus?</div><ol class="MCAnswers"><li id="Q_3_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_0_Btn" onclick="CheckMCAnswer(3,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "farliga partiklar"</li><li id="Q_3_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_1_Btn" onclick="CheckMCAnswer(3,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "gift"</li><li id="Q_3_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_2_Btn" onclick="CheckMCAnswer(3,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet betyder "mycket smittsam"</li><li id="Q_3_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_3_3_Btn" onclick="CheckMCAnswer(3,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ordet h&#x00E4;rstammar fr&#x00E5;n namnet p&#x00E5; den irl&#x00E4;ndska l&#x00E4;karen Donald McVirus som uppt&#x00E4;ckte den sjukdomsalstrande mikroorganismen</li></ol></li>
+<li class="QuizQuestion" id="Q_4" style="display: none;"><div class="QuestionText">Hur skiljer man olika influensavirus &#x00E5;t?</div><ol class="MCAnswers"><li id="Q_4_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_0_Btn" onclick="CheckMCAnswer(4,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av deras storlek</li><li id="Q_4_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_1_Btn" onclick="CheckMCAnswer(4,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av allvarlighetsgraden p&#x00E5; sjukdomen som viruset kan orsaka</li><li id="Q_4_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_2_Btn" onclick="CheckMCAnswer(4,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av proteiner p&#x00E5; utsidan av viruset</li><li id="Q_4_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_4_3_Btn" onclick="CheckMCAnswer(4,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Med hj&#x00E4;lp av deras f&#x00E4;rg</li></ol></li>
+<li class="QuizQuestion" id="Q_5" style="display: none;"><div class="QuestionText">Du kan smittas av influensa genom:</div><ol class="MSelAnswers"><li id="Q_5_0"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_0_Chk" class="MSelCheckbox" />Droppar fr&#x00E5;n n&#x00E4;san eller saliv fr&#x00E5;n en person som &#x00E4;r smittad</div></form></li><li id="Q_5_1"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_1_Chk" class="MSelCheckbox" />Att vidr&#x00F6;ra en person som &#x00E4;r smittad</div></form></li><li id="Q_5_2"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_2_Chk" class="MSelCheckbox" />Att r&#x00F6;ra vid f&#x00F6;rem&#x00E5;l som har smitto&#x00E4;mnen p&#x00E5; sin yta</div></form></li><li id="Q_5_3"><form method="post" action="" onsubmit="return false;"><div><input type="checkbox" id="Q_5_3_Chk" class="MSelCheckbox" />Ingen av dess s&#x00E4;tt</div></form></li></ol><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" onclick="CheckMultiSelAnswer(5)">Kolla ditt svar!</button></li>
+<li class="QuizQuestion" id="Q_6" style="display: none;"><div class="QuestionText">En nysning kan ses som ett stort virusmoln. Vilket nummer kommer i n&#x00E4;rheten av den m&#x00E4;ngd av viruspartiklar som en nysning kan inneh&#x00E5;lla?</div><ol class="MCAnswers"><li id="Q_6_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_0_Btn" onclick="CheckMCAnswer(6,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;750</li><li id="Q_6_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_1_Btn" onclick="CheckMCAnswer(6,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;7 500</li><li id="Q_6_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_2_Btn" onclick="CheckMCAnswer(6,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;75 000</li><li id="Q_6_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_6_3_Btn" onclick="CheckMCAnswer(6,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;750 000</li></ol></li>
+<li class="QuizQuestion" id="Q_7" style="display: none;"><div class="QuestionText">Hos annars friska personer varar influensa vanligtvis:</div><ol class="MCAnswers"><li id="Q_7_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_0_Btn" onclick="CheckMCAnswer(7,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 dag</li><li id="Q_7_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_1_Btn" onclick="CheckMCAnswer(7,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 vecka</li><li id="Q_7_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_2_Btn" onclick="CheckMCAnswer(7,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;l&#x00E4;ngre &#x00E4;n 2 veckor</li><li id="Q_7_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_7_3_Btn" onclick="CheckMCAnswer(7,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;cirka 1 m&#x00E5;nad</li></ol></li>
+<li class="QuizQuestion" id="Q_8" style="display: none;"><div class="QuestionText">N&#x00E4;r m&#x00E4;nniskor d&#x00F6;r av influensa, vad &#x00E4;r den vanligaste slutliga d&#x00F6;dsorsaken?</div><ol class="MCAnswers"><li id="Q_8_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_0_Btn" onclick="CheckMCAnswer(8,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Utmattning efter kampen mellan kroppen och viruspartiklarna</li><li id="Q_8_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_1_Btn" onclick="CheckMCAnswer(8,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Lunginflammation</li><li id="Q_8_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_2_Btn" onclick="CheckMCAnswer(8,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Hj&#x00E4;rtinfarkt</li><li id="Q_8_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_8_3_Btn" onclick="CheckMCAnswer(8,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Uttorkning</li></ol></li>
+<li class="QuizQuestion" id="Q_9" style="display: none;"><div class="QuestionText">Under vilken &#x00E5;rstid &#x00E4;r det st&#x00F6;rst risk att smittas av influensa i Sverige?</div><ol class="MCAnswers"><li id="Q_9_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_0_Btn" onclick="CheckMCAnswer(9,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Sommar</li><li id="Q_9_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_1_Btn" onclick="CheckMCAnswer(9,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Vinter</li><li id="Q_9_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_2_Btn" onclick="CheckMCAnswer(9,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;V&#x00E5;r</li><li id="Q_9_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_9_3_Btn" onclick="CheckMCAnswer(9,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;H&#x00F6;st</li></ol></li>
+<li class="QuizQuestion" id="Q_10" style="display: none;"><div class="QuestionText">Vilket &#x00E5;r utvecklades det f&#x00F6;rsta influensavaccinet?</div><ol class="MCAnswers"><li id="Q_10_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_0_Btn" onclick="CheckMCAnswer(10,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1933</li><li id="Q_10_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_1_Btn" onclick="CheckMCAnswer(10,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1942</li><li id="Q_10_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_2_Btn" onclick="CheckMCAnswer(10,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1950</li><li id="Q_10_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_10_3_Btn" onclick="CheckMCAnswer(10,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;1967</li></ol></li>
+<li class="QuizQuestion" id="Q_11" style="display: none;"><div class="QuestionText">Hur g&#x00F6;r man influensavaccin?</div><ol class="MCAnswers"><li id="Q_11_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_0_Btn" onclick="CheckMCAnswer(11,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset odlas i befruktade h&#x00F6;ns&#x00E4;gg, avd&#x00F6;das och renas fram</li><li id="Q_11_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_1_Btn" onclick="CheckMCAnswer(11,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset odlas i kycklingar som injiceras med influensavirus. Efter fem dagar tas blod fr&#x00E5;n kycklingen och vaccinet renas fram.</li><li id="Q_11_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_11_2_Btn" onclick="CheckMCAnswer(11,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Viruset renas fram ur blodet fr&#x00E5;n m&#x00E4;nniskor som har influensa</li></ol></li>
+<li class="QuizQuestion" id="Q_12" style="display: none;"><div class="QuestionText">Vad &#x00E4;r Tamiflu?</div><ol class="MCAnswers"><li id="Q_12_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_0_Btn" onclick="CheckMCAnswer(12,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En sorts antibiotika</li><li id="Q_12_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_1_Btn" onclick="CheckMCAnswer(12,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Ett nytt vaccin mot influensa</li><li id="Q_12_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_2_Btn" onclick="CheckMCAnswer(12,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En medicin som bromsar f&#x00F6;r&#x00F6;kning av ett virus</li><li id="Q_12_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_12_3_Btn" onclick="CheckMCAnswer(12,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;En ny sorts tandkr&#x00E4;m f&#x00F6;r vita t&#x00E4;nder</li></ol></li>
+<li class="QuizQuestion" id="Q_13" style="display: none;"><div class="QuestionText">Vilket av de f&#x00F6;ljande p&#x00E5;st&#x00E5;enden &#x00E4;r r&#x00E4;tt? <br />P&#x00E5;st&#x00E5;ende 1: En smittad person kan sprida ett virus n&#x00E4;r han/hon skrattar. <br />P&#x00E5;st&#x00E5;ende 2: Ju mer smittsamt viruset &#x00E4;r, desto snabbare sprider det sig.</div><ol class="MCAnswers"><li id="Q_13_0"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_0_Btn" onclick="CheckMCAnswer(13,0,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;P&#x00E5;st&#x00E5;ende 2</li><li id="Q_13_1"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_1_Btn" onclick="CheckMCAnswer(13,1,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;P&#x00E5;st&#x00E5;ende 1</li><li id="Q_13_2"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_2_Btn" onclick="CheckMCAnswer(13,2,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;Inget av p&#x00E5;st&#x00E5;endena</li><li id="Q_13_3"><button class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)"  onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" id="Q_13_3_Btn" onclick="CheckMCAnswer(13,3,this)">&nbsp;&nbsp;?&nbsp;&nbsp;</button>&nbsp;&nbsp;B&#x00E5;da p&#x00E5;st&#x00E5;endena</li></ol></li></ol>
+
+
+
+</div>
+
+
+
+<div class="Feedback" id="FeedbackDiv">
+<div class="FeedbackText" id="FeedbackContent"></div>
+<button id="FeedbackOKButton" class="FuncButton" onfocus="FuncBtnOver(this)" onblur="FuncBtnOut(this)" onmouseover="FuncBtnOver(this)" onmouseout="FuncBtnOut(this)" onmousedown="FuncBtnDown(this)" onmouseup="FuncBtnOut(this)" onclick="HideFeedback(); return false;">&nbsp;OK&nbsp;</button>
+</div>
+
+<!-- BeginBottomNavButtons -->
+
+
+<div class="NavButtonBar" id="BottomNavBar">
+
+
+
+
+<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)"  onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location=''contents.htm''; return false;"> Tillbaka till Influensakoll.se </button>
+
+
+
+<button class="NavButton" onfocus="NavBtnOver(this)" onblur="NavBtnOut(this)" onmouseover="NavBtnOver(this)" onmouseout="NavBtnOut(this)" onmousedown="NavBtnDown(this)" onmouseup="NavBtnOut(this)" onclick="location=''nextpage.htm''; return false;">=&gt;</button>
+
+
+</div>
+
+
+
+<!-- EndBottomNavButtons -->
+
+<!-- BeginSubmissionForm -->
+
+<!-- EndSubmissionForm -->
+
+</body>
+
+</html>
+', '');
+INSERT INTO snippet_snippet VALUES (41, 'RadioEpstein', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="77" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3747441%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="77" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3747441%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb&flashSmal=true" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3747441.m4a">Lyssna: Influensakoll</a></object></object>', '');
+INSERT INTO snippet_snippet VALUES (26, 'RSS-111031v2', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+<meta http-equiv="pragma" content="no-cache">
+        <title>Untitled Page</title>
+ 
+
+<script src="../+media/js/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+var defaultXMLPath = ''/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5'';
+
+    </script>
+    <script src="../+media/js/jquery_drs.js" type="text/javascript"></script>
+       <!--[if IE 6]>
+        <link rel="stylesheet" href="css/iefix.css" type="text/css" media="screen, print" />
+       <![endif]-->
+    </head>
+    <body>
+    <div id="javascriptWarning">  
+        <noscript>
+            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.
+        </noscript>
+    </div>     
+            <div id="contentlist">
+
+            </div>
+    </body>
+    </html>
+
+', '');
+INSERT INTO snippet_snippet VALUES (2, 'RSSgammalt', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+<meta http-equiv="pragma" content="no-cache">
+        <title>Untitled Page</title>
+       <script src="/media/js/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+
+var defaultXMLPath = ''/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5'';
+
+    </script>
+    <script src="/media/js/jquery_drs.js" type="text/javascript"></script>
+       <!--[if IE 6]>
+        <link rel="stylesheet" href="css/iefix.css" type="text/css" media="screen, print" />
+       <![endif]-->
+    </head>
+    <body>
+    <div id="javascriptWarning">  
+        <noscript>
+            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.
+        </noscript>
+    </div>     
+            <div id="contentlist">
+
+            </div>
+    </body>
+    </html>
+', '');
+INSERT INTO snippet_snippet VALUES (38, 'RSSnytt', '<script src="/media/js/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+var defaultXMLPath = ''/xml/12.738383ed12c0734710e80001200.portlet?state=rss&sv.contenttype=text/xml;charset=UTF-8&searchQuery=svininfluensa%20H1N1%20"influensa"%20f%C3%B6rkylning%20influensavaccin%20f%C3%A5gelinfluensa%20snuva%20vaccination%20pandemi%20f%C3%B6rkylningsvirus%20smittskyddsinstitutet%20feber%20hosta&sort=cat_date&KATEGORI=Nyhet&nbrOfHits=5'';
+
+    </script>
+    <script src="/media/js/jquery_drs.js" type="text/javascript"></script>
+    <div id="javascriptWarning">  
+        <noscript>
+            För att kunna använda RSS måste du först aktivera JavaScript i din webbläsare.
+        </noscript>
+    </div>     
+
+', '');
+INSERT INTO snippet_snippet VALUES (35, 'SR_Annikaintervju', '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="475" height="124" id="srembeddedplayer" align="middle"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3584616%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb" /><object name="flash" data="http://sverigesradio.se/api/flash/player_embed.swf?8" width="475" height="124" type="application/x-shockwave-flash"><param name="allowFullScreen" value="false" /><param name="movie" value="http://sverigesradio.se/api/flash/player_embed.swf?8" /><param name="quality" value="high" /><param name="flashvars" value="playlist=http%3a%2f%2fsverigesradio.se%2fapi%2fradio%2fradio.aspx%3ftype%3ddb%26id%3d3584616%26codingformat%3d.m4a%26metafile%3dasx%26preview%3ddb" /><param name="pluginurl" value="http://get.adobe.com/se/flashplayer/" /><a href="http://sverigesradio.se/topsy/ljudfil/3584616.m4a">Lyssna: "Annika Linde: Jätteviktigt att veta"</a></object></object>', '');
+INSERT INTO snippet_snippet VALUES (44, 'svtorebro', '<object width="416" height="258"><param name="movie" value="http://svt.se/embededflash/2749275/play.swf"></param><param name="wmode" value="transparent"></param><param name="allowfullscreen" value="true"></param><param name="allowScriptAccess" value="sameDomain"></param><embed src="http://svt.se/embededflash/2749275/play.swf" type="application/x-shockwave-flash" wmode="transparent" allowfullscreen="true" allowScriptAccess="sameDomain" width="416" height="258"></embed></object>', '');
+INSERT INTO snippet_snippet VALUES (30, 'Twitterbutton', '<a href="https://twitter.com/share" class="twitter-share-button" data-count="none" data-via="Influensakoll">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>', '');
+INSERT INTO snippet_snippet VALUES (29, 'Twitterfollow', '<a href="https://twitter.com/Influensakoll" class="twitter-follow-button" data-show-count="false">Follow @Influensakoll</a>
+<script src="//platform.twitter.com/widgets.js" type="text/javascript"></script>', '');
+INSERT INTO snippet_snippet VALUES (9, 'vanster_hem_nyheter', '<p>
+<a href="http://www.bwz.se/smi/b.aspx?l=4966A86C-CBA5-47E8-A141-6CEC767C1D12&r=1&rcrc=8C7F66C3" 
+target="_blank"><font color="black"><B>Vinterkräksjukan är här<font></B></a> 
+<br>Smittskyddsinstitutet (SMI) håller koll på vinterkräksjuka på flera sätt. Ett sätt är en analys av sökningar där ordet kräk ingår på webbplatsen Vårdguiden.se. Nu tyder sökdata på att vinterkräksjukan är här.<br>
+2011-12-13<br>
+
+
+<a href="http://www.influensakoll.se/sv/nyheter/" 
+target="_blank"><font color="black"><B>Kolla in alla nyheter<font></B></a> 
+<br>Nu har vi lagt upp en samlingssida för alla nyheter, både om influensa och influensakoll i media.<br>
+2011-12-02<br>
+
+
+<font color="black"><B>Mer än 750 deltagare!</font></B></a> 
+<br>Tack till alla som anmält sig. Influensakolls deltagare bor över hela landet. Sprid gärna länken <a href = "www.influensakoll.se">www.influensakoll.se</a> vidare till vänner och bekanta. Ju fler som deltar desto säkrare blir resultaten!<br>
+2011-12-02<br>
+
+
+
+<a href="http://arkiv.mitti.se:4711/2011/48/sodermalm/MIIS-20111129-A-016-A.pdf" 
+target="_blank"><font color="black"><B>Influensakoll med i Mitt-i-tidningarna</font></B></a> 
+<br>I flera av veckans Mitt-i-tidningarna i Stockholmområdet finns Influensakoll med!<br>
+2011-11-30<br>
+
+
+
+<a href="http://www.smittskyddsinstitutet.se/publikationer/veckorapporter/influensarapporter/sasongen-20112012/influensarapport-vecka-46-1411---2011--2011/" 
+target="_blank"><font color="black"><B>Influensaaktiviteten fortsatt låg</font></B></a> 
+<br>I SMI:s influensarapport för vecka 46 rapporteras att influensaaktiviteten var fortsatt låg, inte bara i hela Europa men också i övriga världen. Första studier om dubbelinfektioner och virusblandningar har publicerats.<br>
+2011-11-26<br>
+
+
+
+
+
+
+
+
+</p>
+
+</body>
+</html> 
+', '');
+
 
 
 --
