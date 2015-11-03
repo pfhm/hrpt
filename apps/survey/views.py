@@ -101,30 +101,22 @@ def _get_health_history(request, survey):
 
 @login_required
 def thanks(request):
-
     try:
         survey_user = get_active_survey_user(request)
-        if(survey_user is None):
+        if not survey_user:
             specialPrint('No gid in url go to select page!')
-            url = '%s?next=%s' % (reverse(select_user), '/valkommen/')
+            #url = '%s?next=%s' % (reverse(select_user), '/valkommen/')
+            url = '%s?next=%s' % (reverse(select_user), reverse(thanks))
             return HttpResponseRedirect(url)
     except ValueError:
         pass
 
     #Check idcode
-    redirect = checkIdCode('apps.survey.views.thanks',survey_user)
-    if redirect != None:
+    redirect = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
+    if redirect:
         return HttpResponseRedirect(redirect)
 
-    view_data = {
-        'base_template': "base/twocol.html",
-        'mobile': False,
-        'multi_profile_allowed': settings.MULTI_PROFILE_ALLOWED,
-        'person': survey_user,
-        'persons': [],
-        'history': []
-    }
-    return render_to_response('survey/thanks.html', view_data, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/valkommen/')
 
 
 
@@ -253,7 +245,7 @@ def idcode_open(request):
         context_instance=RequestContext(request)
     )
 
-def checkIdCode(str_url_next,survey_user):
+def _get_redirect_url_if_not_idcode(str_url_next,survey_user):
     idcode = models.SurveyIdCode.objects.filter(surveyuser_global_id=survey_user.global_id)
     if not idcode:
         specialPrint("redirect to idcode page!!")
@@ -262,8 +254,7 @@ def checkIdCode(str_url_next,survey_user):
         url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
         specialPrint(url)
         return url
-    else:
-        return None
+    return None
 
 @login_required
 def index(request):
@@ -278,9 +269,9 @@ def index(request):
         return HttpResponseRedirect(url)
 
     #Check idcode
-    redirect = checkIdCode('apps.survey.views.index',survey_user)
-    if redirect != None:
-        return HttpResponseRedirect(redirect)
+    redirect_url = _get_redirect_url_if_not_idcode('apps.survey.views.index',survey_user)
+    if redirect_url:
+        return HttpResponseRedirect(redirect_url)
 
     # Check if the user has filled user profile
     profile = pollster_utils.get_user_profile(request.user.id, survey_user.global_id)
@@ -329,9 +320,9 @@ def profile_index(request):
         return HttpResponseRedirect(url)
 
     #Check idcode
-    redirect = checkIdCode('apps.survey.views.profile_index',survey_user)
-    if redirect != None:
-        return HttpResponseRedirect(redirect)
+    redirect_url = _get_redirect_url_if_not_idcode('apps.survey.views.profile_index',survey_user)
+    if redirect_url:
+        return HttpResponseRedirect(redirect_url)
 
 
     #this is crazy, let's not check if an 'intake' survey exists
@@ -363,6 +354,12 @@ def show_survey(request, survey_short_name):
 
     language = get_language()
     #locale_code = locale.locale_alias.get(language)
+
+    #Check idcode
+    redirect_url = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
+    if redirect_url:
+        return HttpResponseRedirect(redirect_url)
+
 
     survey = pollster.models.Survey.get_by_shortname(survey_short_name)
 
