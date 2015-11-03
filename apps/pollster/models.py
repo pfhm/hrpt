@@ -465,7 +465,7 @@ class Survey(models.Model):
             backup = table+'_vx_'+format(now, '%Y%m%d%H%M%s')
             connection.cursor().execute('ALTER TABLE '+table+' RENAME TO '+backup)
         dynamicmodels.install(model)
-        db = get_db_type(connection)
+        db = "postgresql"
         for extra_sql in SURVEY_EXTRA_SQL[db].get(self.shortname, []):
             connection.cursor().execute(extra_sql)
         for extra_sql in SURVEY_EXTRA_SQL_HRPT20131[db].get(self.shortname, []):
