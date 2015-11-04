@@ -319,9 +319,13 @@ class Survey(models.Model):
 
     update = False
 
+
+    #TODO: remove this method. just call whatever you want with django api
+
     @staticmethod
     def get_by_shortname(shortname):
         return Survey.objects.all().get(shortname=shortname, status="PUBLISHED")
+
 
     # Seriously, what the hell are all these mathods doing in here?
 

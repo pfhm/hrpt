@@ -6,7 +6,7 @@ from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.db import connection, transaction, DatabaseError
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils.safestring import mark_safe
@@ -32,6 +32,8 @@ from django.contrib.auth import logout
 import sys
 import datetime
 from django.conf import settings
+import json
+
 
 survey_form_helper = None
 profile_form_helper = None
@@ -105,18 +107,23 @@ def thanks(request):
         survey_user = get_active_survey_user(request)
         if not survey_user:
             specialPrint('No gid in url go to select page!')
-            #url = '%s?next=%s' % (reverse(select_user), '/valkommen/')
-            url = '%s?next=%s' % (reverse(select_user), reverse(thanks))
+            url = '%s?next=%s' % (reverse(select_survey_user), reverse(thanks))
             return HttpResponseRedirect(url)
     except ValueError:
+        #TODO: this cannot be... we should probably remove thte try...except
         pass
 
     #Check idcode
     redirect = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
     if redirect:
+        # it didn't have an idcode in the url, so we got a url in redirect, now with idcode
+        # don't balme me for this spaghetti
         return HttpResponseRedirect(redirect)
 
-    return HttpResponseRedirect('/valkommen/')
+    # if we're here, he have an idcode!!!!! And a survey_user!!!
+    # the road was long and painful
+
+    return HttpResponseRedirect('/valkommen/?gid=%s' % survey_user.global_id)
 
 
 
@@ -202,7 +209,7 @@ def idcode_save(request):
 
 
 @login_required
-def select_user(request, template='survey/select_user.html'):
+def select_survey_user(request, template='survey/select_user.html'):
     next = request.GET.get('next', None)
     if next is None:
         next = reverse(index)
@@ -256,6 +263,13 @@ def _get_redirect_url_if_not_idcode(str_url_next,survey_user):
         return url
     return None
 
+
+# The goal is to get rid of everything from here...
+# ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+# ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ
+
+#TODO: remove this sucker!!!!!!!!!
+# I thin we don't need this anymore. This relies on the damned pollster/views.py/survey_run
 @login_required
 def index(request):
     try:
@@ -265,7 +279,7 @@ def index(request):
         #pass
     #return render_to_response('survey/utvardering.html',{'person': survey_user}, context_instance=RequestContext(request))
     if survey_user is None:
-        url = '%s?next=%s' % (reverse(select_user), reverse(index))
+        url = '%s?next=%s' % (reverse(select_survey_user), reverse(index))
         return HttpResponseRedirect(url)
 
     #Check idcode
@@ -306,6 +320,10 @@ def index(request):
 
     return pollster_views.survey_run(request, survey.shortname, next=next,update=upd)
 
+
+
+#TODO: remove this sucker!!!!!!!!!
+# I thin we don't need this anymore. This relies on the damned pollster/views.py/survey_run
 @login_required
 def profile_index(request):
     #TODO: get rid of this crazyness. This is painful.
@@ -316,7 +334,7 @@ def profile_index(request):
     except ValueError:
         raise Http404()
     if survey_user is None:
-        url = '%s?next=%s' % (reverse(select_user), reverse(profile_index))
+        url = '%s?next=%s' % (reverse(select_survey_user), reverse(profile_index))
         return HttpResponseRedirect(url)
 
     #Check idcode
@@ -339,39 +357,36 @@ def profile_index(request):
     return pollster_views.survey_run(request, survey.shortname, next=next,update=True)
 
 
-################################################################################
-################################################################################
 
+###... till here!
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+# Some sane code...
 @login_required
 def show_survey(request, survey_short_name):
-
-    #TODO: get replies to This
-    #TODO: Load the replies from db
-    #TODO: inject replies in form and see if they show
-    #TODO: update if data exists? Or maybe just save a new row and allways retrieve the most recent one.
-    #TODO: set the translation???? maybe? Like this: survey.set_translation_survey(translation)
-
 
     language = get_language()
     #locale_code = locale.locale_alias.get(language)
 
-    #Check idcode
-    redirect_url = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
-    if redirect_url:
-        return HttpResponseRedirect(redirect_url)
 
+    survey = get_object_or_404(pollster.models.Survey, shortname=survey_short_name, status="PUBLISHED")
 
-    survey = pollster.models.Survey.get_by_shortname(survey_short_name)
+    #survey = pollster.models.Survey.get_by_shortname(survey_short_name)
+
+    #TODO: show 404 or do something if survey does not exist
 
     global_id = request.GET.get('gid', None)
     survey_user = models.SurveyUser.objects.get(global_id=global_id, user=request.user)
 
-    last_participation_data = survey.get_last_participation_data(request.user.id, global_id)
-
-    if last_participation_data:
+    if survey.get_last_participation_data(request.user.id, global_id):
         return HttpResponseRedirect('svarad-enkat')
 
-    form = survey.as_form()(last_participation_data)
+    IdCodeObject = get_object_or_404(models.SurveyIdCode, surveyuser_global_id=global_id)
+
+    prefilled_data = {"PREFIL_BIRTHYEAR": IdCodeObject.fodelsedatum}
+
+    form = survey.as_form()(prefilled_data)
 
     if request.method == 'POST':
         data = request.POST.copy()
@@ -394,7 +409,7 @@ def show_survey(request, survey_short_name):
             "locale_code": "sv-SE", # let's just hardcode this for now
             "survey": survey,
             "default_postal_code_format": pollser_field_types.PostalCodeField.get_default_postal_code_format(),
-            "last_participation_data_json": {}, # try removing this crap # Edit: soooo... this is injected inside javascript code. The horror!
+            "last_participation_data_json": json.dumps(prefilled_data),
             "form": form,
             "person": survey_user
         },
@@ -402,9 +417,9 @@ def show_survey(request, survey_short_name):
     )
 
 
-################################################################################
-################################################################################
 
+# end of sane code.
+# ------------------------------------------------------------------------------
 
 
 @login_required
@@ -414,7 +429,7 @@ def people_edit(request):
     except ValueError:
         raise Http404()
     if survey_user is None:
-        url = '%s?next=%s' % (reverse(select_user), reverse(people_edit))
+        url = '%s?next=%s' % (reverse(select_survey_user), reverse(people_edit))
         return HttpResponseRedirect(url)
     elif survey_user.deleted == True:
         raise Http404()
