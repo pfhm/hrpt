@@ -18,6 +18,8 @@ from apps.survey.models import SurveyUser, SurveyIdCode
 from .utils import get_user_profile
 from . import models, forms, fields, parser, json
 import re, datetime, locale, csv, urlparse, urllib
+import sys
+
 
 
 
@@ -119,10 +121,16 @@ def survey_unpublish(request, id):
         return redirect(survey)
     return redirect(survey)
 
+
 @staff_member_required
 def survey_test(request, id, language=None):
     survey = get_object_or_404(models.Survey, pk=id)
+
+
+    # Move this language mambo jambo to its own place... or remove it alltogether
     if language:
+        # we should really let this throw an error if that is what we want.
+        # What do we gain by sending a 404?
         translation = get_object_or_404(models.TranslationSurvey, survey=survey, language=language)
         survey.set_translation_survey(translation)
     if language is None:
@@ -132,19 +140,20 @@ def survey_test(request, id, language=None):
         locale_code = locale_code.split('.')[0].replace('_', '-')
         if locale_code == "en-US":
             locale_code = "en-GB"
-    survey_user = _get_active_survey_user(request)
-    user = _get_active_survey_user(request)
-    form = None
-    user_id = request.user.id
-    global_id = survey_user and survey_user.global_id
 
+    survey_user = SurveyUser.objects.get(user=request.user)
+    IdCodeObject = get_object_or_404(SurveyIdCode, surveyuser_global_id=survey_user.global_id)
+    prefilled_data = {"PREFIL_BIRTHYEAR": IdCodeObject.fodelsedatum}
+    form = None
 
     if request.method == 'POST':
         data = request.POST.copy()
-        data['user'] = user_id
-        data['global_id'] = global_id
+        data['user'] = request.user.id
+        data['global_id'] = survey_user.global_id
         data['timestamp'] = datetime.datetime.now()
         form = survey.as_form()(data)
+
+        #TODO: probably want to remove this next url crap
         if form.is_valid():
             if language:
                 next_url = _get_next_url(request, reverse(survey_test, kwargs={'id':id, 'language': language}))
@@ -153,11 +162,6 @@ def survey_test(request, id, language=None):
             return HttpResponseRedirect(next_url)
         else:
             survey.set_form(form)
-
-    idcode = get_object_or_404(SurveyIdCode, surveyuser_global_id=global_id)
-
-
-    prefilled_data = {"PREFIL_BIRTHYEAR": idcode.fodelsedatum}
 
     return request_render_to_response(request, 'pollster/survey_test.html', {
         "language": language,
@@ -184,9 +188,6 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         return redirect_to_login(request.path)
 
     survey = get_object_or_404(models.Survey, shortname=shortname, status='PUBLISHED')
-
-    #return HttpResponse("survey fetchado!!! weeeheee")
-
 
     language = get_language()
     locale_code = locale.locale_alias.get(language)
@@ -240,8 +241,6 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
 
 
     #TODO: this really needs to be cleaned up, very messy!!!!!
-    # EDIT: aaaaannnd... its already deprecated!!!
-
 
     #...then inject birthdate from id code
     last_participation_data_json = None
@@ -288,8 +287,6 @@ def survey_map(request, survey_shortname, chart_shortname):
 def survey_translation_list_or_add(request, id):
     survey = get_object_or_404(models.Survey, pk=id)
     form_add = forms.SurveyTranslationAddForm()
-
-
     if request.method == 'POST':
         form_add = forms.SurveyTranslationAddForm(request.POST)
         if form_add.is_valid():
@@ -555,3 +552,7 @@ def _get_next_url(request, default):
     if survey_user:
         url = '%s?gid=%s' % (url, survey_user.global_id)
     return url
+
+
+def specialPrint(msg):
+    print >> sys.stderr,msg
