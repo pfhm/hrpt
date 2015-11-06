@@ -18,6 +18,8 @@ from django.utils.translation import to_locale, get_language
 import re, locale
 
 from apps.survey import utils, models, forms
+
+from apps.pollster.models import TranslationSurvey
 from apps.pollster import views as pollster_views
 from apps.pollster import utils as pollster_utils
 from apps.pollster import fields as pollser_field_types
@@ -369,10 +371,13 @@ def show_survey(request, survey_short_name):
     language = get_language()
     #locale_code = locale.locale_alias.get(language)
 
-
     survey = get_object_or_404(pollster.models.Survey, shortname=survey_short_name, status="PUBLISHED")
 
-    #survey = pollster.models.Survey.get_by_shortname(survey_short_name)
+    # Translation must exist!!! otherwies this will fail with an error...
+    # But I seriously think this should be only in one language
+
+    translation = get_object_or_404(TranslationSurvey, survey=survey, language=language, status="PUBLISHED")
+    survey.set_translation_survey(translation)
 
     #TODO: show 404 or do something if survey does not exist
 
