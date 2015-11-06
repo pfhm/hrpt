@@ -6,21 +6,30 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.core.urlresolvers import reverse
 from django.db import connection, transaction
+from cms.models import CMSPlugin
 
 from times import epoch
 
 def create_global_id():
     return str(uuid.uuid4())
 
+
+
+class SurveyListPlugin(CMSPlugin):
+    pass
+
+
 class SurveyIdCode(models.Model):
-    
+
     surveyuser_global_id = models.CharField(max_length=36,unique=True,blank=True,null=True)
+    #surveyuser_global_id = models.ForeignKey('SurveyUser',null=True)
+
     idcode = models.CharField(max_length=10,unique=True)
     fodelsedatum = models.CharField(max_length=10,blank=True,null=True)
-    
+
     def __unicode__(self):
         return self.idcode
-    
+
 
 class SurveyUser(models.Model):
     user = models.ForeignKey(User, null=True) # null=True: only so because this happens 'in the wild', i.e.
@@ -56,7 +65,7 @@ class SurveyUser(models.Model):
     def get_remove_url(self):
         from . import views
         return '%s?gid=%s' % (reverse(views.people_remove), self.global_id)
-    
+
     def get_last_weekly_survey_date(self):
         try:
             cursor = connection.cursor()
@@ -73,9 +82,9 @@ class SurveyUser(models.Model):
 
         if result is None:
             return self.user.date_joined
-       
+
         return result
-    
+
     def get_last_weekly_survey_date_text(self):
         try:
             cursor = connection.cursor()
@@ -91,7 +100,7 @@ class SurveyUser(models.Model):
         result = row[0]
         #if result is None:
         #    return self.user.date_joined
-       
+
         return result
 
 class Survey(models.Model):
@@ -212,5 +221,3 @@ class LocalFluSurvey(models.Model):
     age_user = models.SmallIntegerField()
     data = models.TextField() # pickled
     survey_id = models.CharField(max_length=50)
-
-
