@@ -1,12 +1,21 @@
 (function($) {
-    // COMMON UTILITIES
 
-    // BUILTIN VIRTUAL OPTION TYPE
+  /*
+  READ FIRST
+  This is where the derived value types are defined. Those that can be used to
+  derive an extra data value from a question, when in the survey editor.
+
+  This crappy code is full of copy paste. The juice should be squeezed out.
+
+  Also, instead of sticking forks in your eyes while trying to find out how this
+  whole thing work, here's an important bit of information:
+  The relation between these derived values and the value types they apply to, is
+  defined in the database. The table is: pollster_virtualoptiontype.
+
+  */
 
     function TextRangeType(option, inf, sup, regex) {
         var self = this;
-
-        // Public methods.
 
         $.extend(this, {
             option: option,
@@ -26,8 +35,6 @@
 
     function NumericRangeType(option, inf, sup, regex) {
         var self = this;
-
-        // Public methods.
 
         $.extend(this, {
             option: option,
@@ -52,8 +59,6 @@
     function DateRangeType(option, inf, sup, regex) {
         var self = this;
 
-        // Public methods.
-
         $.extend(this, {
             option: option,
             match: function(val) {
@@ -77,15 +82,13 @@
     function DateYearsAgoType(option, inf, sup, regex) {
         var self = this;
 
-        // Public methods.
-
         $.extend(this, {
             option: option,
             match: function(val) {
                 val = Date.parse(val);
                 inf = parseInt(inf);
                 sup = parseInt(sup);
-                
+
                 if (!inf && !sup)
                     return false;
                 else if (!inf)
@@ -100,26 +103,53 @@
     DateYearsAgoType.isRange = true;
     DateYearsAgoType.isRegularExpression = false;
 
+
+    function NumericYearsAgo(option, inf, sup, regex) {
+        var self = this;
+        $.extend(this, {
+            option: option,
+            match: function(val) {
+                inf = parseInt(inf);
+                sup = parseInt(sup);
+
+                current_year = new Date().getFullYear();
+                years_since_birth = current_year - val;
+
+                // console.log({
+                //   'inf': inf,
+                //   'sup': sup,
+                //   'val': val,
+                //   'current_year': current_year,
+                //   'years_since_birth': years_since_birth
+                // });
+
+                if (!inf && !sup){
+                  return false;
+                }else if (!inf){
+                  return  years_since_birth <= sup;
+                }else if (!sup){
+                  return years_since_birth >= inf;
+                }
+                return  years_since_birth >= inf && years_since_birth <= sup;
+            }
+        });
+    }
+    NumericYearsAgo.isRange = true;
+    NumericYearsAgo.isRegularExpression = false;
+
+
     function YearMonthYearsAgoType(option, inf, sup, regex) {
         var self = this;
 
-        // Public methods.
 
         $.extend(this, {
             option: option,
             match: function(val) {
             	val = Date.parse('1/'+val);
-            	
-            	// val is on format MM/YYYY, ex 10/2014 for october 2014. Built in date parsing
-            	// has proven unreliable, so we create the date object explicitly instead.
-            	// This fix has been tested ok, but postponed for production
-                /*
-            	var parts = val.split('/');
-                val = new Date(parts[1], parts[0]-1, 1, 1, 0, 0);
-                */
+
                 inf = parseInt(inf);
                 sup = parseInt(sup);
-                
+
                 var ret;
                 if (!val)
                     ret = false;
@@ -141,7 +171,6 @@
     function TimestampWeeksAgoType(option, inf, sup, regex) {
         var self = this;
 
-        // Public methods.
 
         $.extend(this, {
             option: option,
@@ -166,7 +195,6 @@
     function RegularExpressionType(option, inf, sup, regex) {
         var self = this;
 
-        // Public methods.
 
         $.extend(this, {
             option: option,
@@ -187,7 +215,8 @@
         "RegularExpression": RegularExpressionType,
         "DateYearsAgo": DateYearsAgoType,
         "YearMonthYearsAgo": YearMonthYearsAgoType,
-        "TimestampWeeksAgo": TimestampWeeksAgoType
+        "TimestampWeeksAgo": TimestampWeeksAgoType,
+        "NumericYearsAgo": NumericYearsAgo
     };
 
 })(jQuery);
