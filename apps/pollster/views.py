@@ -21,8 +21,6 @@ import re, datetime, locale, csv, urlparse, urllib
 import sys
 
 
-
-
 #This stuff is ... intense
 # get rid of it!
 #From here....
@@ -126,20 +124,12 @@ def survey_unpublish(request, id):
 def survey_test(request, id, language=None):
     survey = get_object_or_404(models.Survey, pk=id)
 
+    #Notice that the language parameter passed to this as a url paramter _is ignored!_
+    #TODO hardcode language, update urls, remove language paramter on this method
+    language = get_language()
+    translation = models.TranslationSurvey.objects.get(survey=survey, language=language)
 
-    # Move this language mambo jambo to its own place... or remove it alltogether
-    if language:
-        # we should really let this throw an error if that is what we want.
-        # What do we gain by sending a 404?
-        translation = get_object_or_404(models.TranslationSurvey, survey=survey, language=language)
-        survey.set_translation_survey(translation)
-    if language is None:
-        language = get_language()
-    locale_code = locale.locale_alias.get(language)
-    if locale_code:
-        locale_code = locale_code.split('.')[0].replace('_', '-')
-        if locale_code == "en-US":
-            locale_code = "en-GB"
+    survey.set_translation_survey(translation)
 
     survey_user = SurveyUser.objects.get(user=request.user)
     IdCodeObject = get_object_or_404(SurveyIdCode, surveyuser_global_id=survey_user.global_id)
@@ -165,7 +155,7 @@ def survey_test(request, id, language=None):
 
     return request_render_to_response(request, 'pollster/survey_test.html', {
         "language": language,
-        "locale_code": locale_code,
+        "locale_code": "sv-SE", #TODO: oh well... remove internationalization
         "survey": survey,
         "default_postal_code_format": fields.PostalCodeField.get_default_postal_code_format(),
         "last_participation_data_json": json.dumps(prefilled_data),
@@ -173,6 +163,9 @@ def survey_test(request, id, language=None):
         "form": form
     })
 
+
+
+#TODO: remove this... we don't use this
 def survey_run(request, shortname, next=None, clean_template=False,bootstrap=False,update=False):
 
     if 'login_key' in request.GET:

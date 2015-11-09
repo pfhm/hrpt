@@ -52,6 +52,8 @@ def get_active_survey_user(request):
             if survey_user.user == None:
                 err = True
             else:
+                # WTF... why isn't this in the above query? Kill me now.
+                #TODO: fix it, obviously.
                 if survey_user.user.is_active == False:
                         err = True
 
@@ -63,43 +65,6 @@ def get_active_survey_user(request):
             return survey_user
         except models.SurveyUser.DoesNotExist:
             raise ValueError()
-
-def _decode_person_health_status(status):
-    if status == "NO-SYMPTOMS":
-        diag = _('No symptoms')
-    elif status == "ILI":
-        diag = _('Flu symptoms')
-    elif status == "COMMON-COLD":
-       diag = _('Cold / allergy')
-    elif status == "GASTROINTESTINAL":
-       diag = _('Gastrointestinal symptoms')
-    elif status == "NON-SPECIFIC-SYMPTOMS":
-       diag = _('Other non-influenza symptons')
-    elif status == "ILI-and-GASTROINTESTINAL":
-       diag = _('ILI / gastro')
-    elif status == "COMMON-COLD-and-GASTROINTESTINAL":
-       diag = _('Cold / gastro')
-    else:
-       diag = _('Unknown')
-    return diag
-
-def _get_person_health_status(request, survey, global_id):
-    data = survey.get_last_participation_data(request.user.id, global_id)
-    status = None
-    if data:
-        cursor = connection.cursor()
-        params = { 'weekly_id': data["id"] }
-        query = """
-            SELECT S.status
-              FROM pollster_health_status_hrpt20131 S
-             WHERE S.pollster_results_weekly_id = %(weekly_id)s"""
-
-        cursor.execute(query, params)
-        status = cursor.fetchone()[0]
-    return (status, _decode_person_health_status(status))
-
-def _get_health_history(request, survey):
-    return []
 
 
 
@@ -368,18 +333,16 @@ def profile_index(request):
 @login_required
 def show_survey(request, survey_short_name):
 
+    # until we update to django 1.8, get_language() will allways return LANGUAGE_CODE
+    # which is defined in the settings. But the best at this point, is removing translations altogether
     language = get_language()
+
     #locale_code = locale.locale_alias.get(language)
 
     survey = get_object_or_404(pollster.models.Survey, shortname=survey_short_name, status="PUBLISHED")
 
-    # Translation must exist!!! otherwies this will fail with an error...
-    # But I seriously think this should be only in one language
-
-    translation = get_object_or_404(TranslationSurvey, survey=survey, language=language, status="PUBLISHED")
+    translation = TranslationSurvey.objects.get(survey=survey, language=language, status="PUBLISHED")
     survey.set_translation_survey(translation)
-
-    #TODO: show 404 or do something if survey does not exist
 
     global_id = request.GET.get('gid', None)
     survey_user = models.SurveyUser.objects.get(global_id=global_id, user=request.user)
@@ -389,6 +352,9 @@ def show_survey(request, survey_short_name):
 
     IdCodeObject = get_object_or_404(models.SurveyIdCode, surveyuser_global_id=global_id)
 
+    # we inject the birthyear that was provided with the idcode so we know how old
+    # the user is. There must be a question with this name in the survey for this to be usable
+    # tipically it would be set to hidden.
     prefilled_data = {"PREFIL_BIRTHYEAR": IdCodeObject.fodelsedatum}
 
     form = survey.as_form()(prefilled_data)
@@ -420,8 +386,6 @@ def show_survey(request, survey_short_name):
         },
         context_instance=RequestContext(request)  #don't know why this is necessairy, nobody does apparently. See https://github.com/django-compressor/django-compressor/issues/483#issuecomment-52243164
     )
-
-
 
 # end of sane code.
 # ------------------------------------------------------------------------------

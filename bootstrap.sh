@@ -47,8 +47,9 @@ apt-get install -y libjpeg8 libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-de
 sed -i 's/PermitRootLogin\swithout-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 sudo service ssh reload
 
-#these are necessairy for pil, no ideia why they aren't linked or placed under /usr/lib
 
+#Unfortunately, this fragile hack is necessairy in order for the following links to be
+# properly set up. This depends on the output of 'uname -i'.
 
 ARCHITECTURE="i386"
 
@@ -56,6 +57,7 @@ if [ "$(uname -i)" == 'x86_64' ]; then
     ARCHITECTURE="x86_64"
 fi
 
+#these are necessairy for pil, no ideia why they aren't linked or placed under /usr/lib
 ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libfreetype.so /usr/lib/
 ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libz.so /usr/lib/
 ln -s /usr/lib/$ARCHITECTURE-linux-gnu/libjpeg.so /usr/lib/
