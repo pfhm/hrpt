@@ -8,4 +8,20 @@ class ListUserSurveysPlugin(CMSPluginBase):
     render_template = "survey/cms_plugin_survey_list.html"
     name = "User Survey List"
 
+
+
+    def render(self, context, instance, placeholder):
+        request = context['request']
+        #global_id = request.GET.get('gid', None)
+        #profile = None
+        #if global_id:
+        #    profile = get_user_profile(request.user.id, global_id)
+        context.update({
+            #'profile': profile,
+            'user_id': request.user.id,
+            'object': instance,
+            'placeholder': placeholder
+        })
+        return context
+
 plugin_pool.register_plugin(ListUserSurveysPlugin)
