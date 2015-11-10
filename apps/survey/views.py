@@ -348,7 +348,7 @@ def show_survey(request, survey_short_name):
     survey_user = models.SurveyUser.objects.get(global_id=global_id, user=request.user)
 
     if survey.get_last_participation_data(request.user.id, global_id):
-        return HttpResponseRedirect('svarad-enkat')
+        return HttpResponseRedirect('/already-answered')
 
     IdCodeObject = get_object_or_404(models.SurveyIdCode, surveyuser_global_id=global_id)
 
@@ -369,7 +369,7 @@ def show_survey(request, survey_short_name):
 
         if form.is_valid():
             form.save()
-            return HttpResponse("Form submited successfully!!!!!")
+            return HttpResponseRedirect('/survey-successfully-submited')
         else:
             survey.set_form(form)
 
