@@ -12,12 +12,12 @@ class ListUserSurveysPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         request = context['request']
-        #global_id = request.GET.get('gid', None)
+        global_id = request.GET.get('gid', None)
         #profile = None
         #if global_id:
         #    profile = get_user_profile(request.user.id, global_id)
         context.update({
-            #'profile': profile,
+            'global_id': global_id, # I think this is already in request.user. #TODO: clean up
             'user_id': request.user.id,
             'object': instance,
             'placeholder': placeholder

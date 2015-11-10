@@ -320,15 +320,47 @@ class Survey(models.Model):
     update = False
 
 
+
+    @staticmethod
+    def get_user_open_surveys(guid):
+        #TODO: implement to return a list of surveys.
+        #right now let's display the intake only
+
+        #published_surveys = Survey.objects.all().get(status="PUBLISHED")
+
+        #for survey in published_surveys:
+        # SQL query(since there is apparently no model for the results)
+        # to filter surveys that have an entry for this user in "survey_results_[survey_name]"
+        # or even better, just implement this whole stuff in PLSQL
+        #    pass
+
+        # surveys = Survey.objects.all().get(shortname="intake", status="PUBLISHED")
+        #
+        # cursor = connection.cursor()
+        # sql = "SELECT count(*) FROM pollster_results_intake where global_id ='" + guid + "'"
+        # cursor.execute(sql)
+        # num_rows = cursor.fetchone()[0]
+        #
+        # #user already answered this survey
+        # if num_rows > 0:
+        #     return []
+        # else:
+        #
+        return []
+
+
+
+
+
+
+
     #TODO: remove this method. just call whatever you want with django api
 
     @staticmethod
     def get_by_shortname(shortname):
         return Survey.objects.all().get(shortname=shortname, status="PUBLISHED")
 
-
     # Seriously, what the hell are all these mathods doing in here?
-
     @staticmethod
     def getUser(user_id):
         user = User.objects.get(id=user_id)
