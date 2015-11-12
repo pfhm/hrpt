@@ -524,47 +524,6 @@ ul.map_buttons li {
  margin: 0 0 0 3px;  
 }
 
-#searchbar {
- float: right;
-}
-
-#searchbar input {
- margin: 0;
- vertical-align: middle;
-}
-
-#searchbar input#searchfield {
- float: left;
- height: 2em;
- width: 111px;
- padding: 0 4px 0 4px;
- font-size: 0.7em;
- line-height: 2em;
- background-color: #ffffff;
- border: 1px solid #cccccc;
-}
-
-#searchbar input#searchfield:focus {
- background-color: #f0f0f0;
- border: 1px solid #000000;
-}
-
-#searchbar input#searchsubmit {
- height: 2.2em;
- width: auto;
- margin: 0 0 0 8px;
- padding: 0 6px 2px 6px;
- font-size: 0.7em;
- line-height: 2.2em;
- border: 0;
- color: #f8f8f8;
- text-align: center;
- cursor: pointer;
-}
-
-#searchbar input#searchsubmit:hover {
- cursor: pointer;
-}
 
 
 /* Forms */
