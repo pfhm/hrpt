@@ -12,17 +12,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'influenzanet.db',             # Or path to database file if using sqlite3.
-        'USER': '',             # Not used with sqlite3.
-        'PASSWORD': '',         # Not used with sqlite3.
-        'HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',             # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
 
 SITE_ID = 1
 
@@ -197,14 +186,11 @@ CMSPLUGIN_NEWS_RSS_DESCRIPTION = "News List"
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-EMAIL_HOST = '127.0.0.1'
-
 # Default e-mail address to use for various automated correspondence from
 # the site managers.
 DEFAULT_FROM_EMAIL = 'Influenzanet <webmaster@influenzanet.eu>'
 
-if DEBUG:
-	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Subject-line prefix for email messages send with django.core.mail.mail_admins
 # or ...mail_managers.  Make sure to include the trailing space.
@@ -219,11 +205,6 @@ SURVEY_PROFILE_ID = 'gold-standard-intake-1.5'
 MOBILE_INTERFACE_ACTIVE = False
 
 STORE_RESPONSES_LOCALLY = False
-
-try:
-    from local_settings import *
-except ImportError:
-    pass
 
 CACHES = {
     'default': {
@@ -241,5 +222,10 @@ SESSION_COOKIE_AGE = 60 * 60 * 2
 
 LOGIN_REDIRECT_URL = '/survey/thanks/'
 
-
 MULTI_PROFILE_ALLOWED = 'false' #pekka
+
+
+# Now let's load overrides for the specific environmt.
+# local_settings.py is generated from local_settings.py.in in the bootstrap script
+# and it is not commited to git.
+from local_settings import *

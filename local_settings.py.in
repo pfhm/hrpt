@@ -44,3 +44,12 @@ POLLSTER_USER_ZIP_CODE_DATA_NAME = 'Q3'
 # used to match the zip code for the right country
 # in the pollster_zip_codes table
 POLLSTER_USER_COUNTRY_DATA_NAME = None
+
+
+
+#EMAIL_HOST = 'smtp.fohmdev.local' # this is for test machines
+#EMAIL_HOST = 'smtp.fohm.local'  # this is for the production server
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#DEBUG=False
+#TEMPLATE_DEBUG = False
+#ADMIN_MEDIA_PREFIX = '/media/admin/'
