@@ -53,3 +53,4 @@ POLLSTER_USER_COUNTRY_DATA_NAME = None
 #DEBUG=False
 #TEMPLATE_DEBUG = False
 #ADMIN_MEDIA_PREFIX = '/media/admin/'
+#SECRET_KEY="Insert a random secret key here"
