@@ -188,7 +188,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 # Default e-mail address to use for various automated correspondence from
 # the site managers.
-DEFAULT_FROM_EMAIL = 'Influenzanet <webmaster@influenzanet.eu>'
+DEFAULT_FROM_EMAIL = 'Hälsorapport <halsorapport@folkhalsomyndigheten.se>'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
