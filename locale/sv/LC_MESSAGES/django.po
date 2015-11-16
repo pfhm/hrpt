@@ -830,7 +830,7 @@ msgstr ""
 "\n\nLänken är giltig i %(expiration_days)s dagar.\n\nNär du har aktiverat "
 "ditt konto kan du logga in.\n\nFörsta gången du loggar in på ditt "
 "användarkonto behöver du ange den kod som står på din personliga inbjudan och fylla i en bakgrundsenkät. "
-"Först när du fyllt i bakgrundsenkäten kan du rapportera om du känner dig frisk eller sjuk.\n\nBästa "
+"\n\nBästa "
 "hälsningar\n\nVi som jobbar med Hälsorapport\nhalsorapport@folkhalsomyndigheten.se"
 
 msgid "Activate your account! %(site)s"
