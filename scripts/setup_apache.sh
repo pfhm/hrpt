@@ -14,7 +14,6 @@ mv testhalsorapport.crt /etc/apache2/certificate-test/
 mkdir /etc/apache2/certificate-test
 ls -s /etc/apache2/certificate-test /etc/apache2/certificate
 
-
 rm -rf /etc/apache/sites-enabled/*
 rm -rf /etc/apache/sites-available/*
 
@@ -24,6 +23,9 @@ cp /var/www/hrpt/scripts/halsorapport-ssl.conf /etc/apache/sites-available/
 ln -s /etc/apache/sites-available/halsorapport.conf /etc/apache/sites-enabled/halsorapport.conf
 ln -s /etc/apache/sites-available/halsorapport-ssl.conf /etc/apache/sites-enabled/halsorapport-ssl.conf
 
+
+
+#TODO: we might need to chmod wsgy.py to 755, let's see
 
 
 #static assets from the admin and the cms admin need to be copied in the media folder server by apache
@@ -42,4 +44,3 @@ echo -e "\n\nADMIN_MEDIA_PREFIX = '/media/admin/'\n" >> /var/www/hrpt/local_sett
 
 
 sudo service apace2 restart
-
