@@ -1,4 +1,4 @@
-	#!/bin/bash
+#!/bin/bash
 
 DB_ENGINE="postgresql"
 POSTGRES_SUPERUSER_USERNAME="admin"
