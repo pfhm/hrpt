@@ -19,10 +19,10 @@ class SurveyUserAdmin(admin.ModelAdmin):
 
 #Pekka
 class SurveyIdCodeAdmin(admin.ModelAdmin):
-    list_display = ('idcode', 'surveyuser_global_id')
+    list_display = ('idcode', 'surveyuser_global_id', 'fodelsedatum')
     ordering = ('idcode',)
     search_fields = ('idcode',)
-    
+
     def save_model(self, request, obj, form, change):
         if(obj.surveyuser_global_id == ''):
             obj.surveyuser_global_id = None
@@ -34,4 +34,3 @@ admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Participation, ParticipationAdmin)
 admin.site.register(SurveyUser, SurveyUserAdmin)
 admin.site.register(SurveyIdCode, SurveyIdCodeAdmin)
-
