@@ -27,10 +27,10 @@ openssl req -new \
       -out /etc/apache2/certificate-test/testhalsorapport.csr
 
 #signing it
-openssl x509 –req –days 730 \
-      –in /etc/apache2/certificate-test/testhalsorapport.csr \
-      –signkey /etc/apache2/certificate-test/testhalsorapport.key \
-      –out /etc/apache2/certificate-test/testhalsorapport.crt
+openssl x509 -req -days 730 \
+      -in /etc/apache2/certificate-test/testhalsorapport.csr \
+      -signkey /etc/apache2/certificate-test/testhalsorapport.key \
+      -out /etc/apache2/certificate-test/testhalsorapport.crt
 
 
 # decrypt the key so we are not required to enter the passphrase on each restart
