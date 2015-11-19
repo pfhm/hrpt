@@ -14,7 +14,7 @@ a2enmod rewrite
 echo -e "Now we're going to generate the SSL certificates am place them in the right location...\n"
 
 mkdir /etc/apache2/certificate-test
-ls -s /etc/apache2/certificate-test /etc/apache2/certificate
+ln -s /etc/apache2/certificate-test /etc/apache2/certificate
 
 #generate key
 openssl genrsa -des3 -out /etc/apache2/certificate-test/testhalsorapport.key 4096
