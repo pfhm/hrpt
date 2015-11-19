@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 #this can be executed after bootstrap.sh to set up apache2 and mod-wsgi
 
 
@@ -21,7 +23,7 @@ openssl genrsa -des3 -out /etc/apache2/certificate-test/testhalsorapport.key 409
 
 #generate csr
 openssl req -new \
-      -key /etc/apache2/certificate-test/server.key \
+      -key /etc/apache2/certificate-test/testhalsorapport.key \
       -out /etc/apache2/certificate-test/testhalsorapport.csr
 
 #signing it
