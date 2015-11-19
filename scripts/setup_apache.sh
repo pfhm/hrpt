@@ -53,11 +53,11 @@ rm -rf /etc/apache2/sites-enabled/*
 rm -rf /etc/apache2/sites-available/*
 
 #We are going to do it the ubuntu way. Place the configs in sites-available and link them from sites-enabled
-cp /var/www/hrpt/scripts/halsorapport.conf /etc/apache/sites-available/
-cp /var/www/hrpt/scripts/halsorapport-ssl.conf /etc/apache/sites-available/
+cp /var/www/hrpt/scripts/halsorapport.conf /etc/apache2/sites-available/
+cp /var/www/hrpt/scripts/halsorapport-ssl.conf /etc/apache2/sites-available/
 
-ln -s /etc/apache/sites-available/halsorapport.conf /etc/apache/sites-enabled/halsorapport.conf
-ln -s /etc/apache/sites-available/halsorapport-ssl.conf /etc/apache/sites-enabled/halsorapport-ssl.conf
+ln -s /etc/apache/sites-available/halsorapport.conf /etc/apache2/sites-enabled/halsorapport.conf
+ln -s /etc/apache/sites-available/halsorapport-ssl.conf /etc/apache2/sites-enabled/halsorapport-ssl.conf
 
 echo -e "\nchmoding wsgi.py...\n"
 chmod 755 /var/www/hrpt/wsgi.py
