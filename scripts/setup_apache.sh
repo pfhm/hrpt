@@ -27,7 +27,7 @@ openssl req -new \
       -out /etc/apache2/certificate-test/testhalsorapport.csr
 
 #signing it
-openssl x509 -req -days 730 \
+openssl x509 -req -days 5000 \
       -in /etc/apache2/certificate-test/testhalsorapport.csr \
       -signkey /etc/apache2/certificate-test/testhalsorapport.key \
       -out /etc/apache2/certificate-test/testhalsorapport.crt
@@ -35,8 +35,8 @@ openssl x509 -req -days 730 \
 
 # decrypt the key so we are not required to enter the passphrase on each restart
 openssl rsa \
-      –in /etc/apache2/certificate-test/testhalsorapport.key \
-      –out /etc/apache2/certificate-test/testhalsorapport.key.insecure
+      -in /etc/apache2/certificate-test/testhalsorapport.key \
+      -out /etc/apache2/certificate-test/testhalsorapport.key.insecure
 
 #Changing names a little bit for clarity, we are going to use the insecure key
 #we don't really need the secure one, but oh well, let's leave it
