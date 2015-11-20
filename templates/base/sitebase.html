@@ -88,66 +88,11 @@
 		
 			<div id="influenzabar">
 				{% block masthead %}
-					<p class="_toggle influenzanet">{% trans "Influenzanet is a system to monitor the activity of influenza-like-illness (ILI) with the aid of volunteers via the internet" %}</p>
-					<div class="_toggle influenzabarcontent" id="top">
-						<div id="epiwork">
-							<a href="http://www.influenzanet.eu/" title="Influenzanet website" rel="external">http://www.influenzanet.eu/</a><br /><br />
-							<img src="{{ MEDIA_URL }}base/img/influbar/epiwork.gif" alt="Epiwork Logo" title="Epiwork" /><br />
-							Developing the framework for an epidemic forecast infrastructure.<br />
-							<a href="http://www.epiwork.eu/" title="Epiwork website" rel="external">http://www.epiwork.eu/</a><br /><br />
-							The Seventh Framework Programme (FP7) bundles all research-related EU initiatives.<br /><br />
-							<img src="{{ MEDIA_URL }}base/img/influbar/7thframework.gif" alt="7th Framework Logo" title="7th Framework" />
-						</div>
-					    <div id="participants">
-							Participating countries and volunteers:<br /><br />
-							<a href="http://www.degrotegriepmeting.nl/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/nl.png" title="The Netherlands" alt="The Netherlands" /></a> {% member_count "nl" %}<br />
-							<a href="http://www.degrotegriepmeting.be/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/be.png" title="Belgium" alt="Belgium" /></a> {% member_count "be" %}<br />
-							<a href="http://www.gripenet.pt/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/pt.png" title="Portugal" alt="Portugal" /></a> {% member_count "pt" %}<br />
-							<a href="http://www.influweb.it/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/it.png" title="Italy" alt="Italy" /></a> {% member_count "it" %}<br />
-							<a href="http://flusurvey.org.uk/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/gb.png" title="Great Britain" alt="Great Britain" /></a> {% member_count "uk" %}<br />
-							<a href="http://www.halsorapport.se/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/se.png" title="Sweden" alt="Sweden" /></a> {% member_count "se" %}<br />
-							<a href="http://www.aktivgegengrippe.de/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/de.png" title="Germany" alt="Germany" /></a> {% member_count "de" %}<br />
-							<a href="http://www.aktivgegengrippe.at/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/at.png" title="Austria" alt="Austria" /></a> {% member_count "at" %}<br />
-							<a href="http://www.aktivgegengrippe.ch/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/ch.png" title="Switzerland" alt="Switzerland" /></a> {% member_count "ch" %}<br />
-							<a href="http://www.grippenet.fr/" rel="external"><img src="{{ MEDIA_URL }}base/img/influbar/fr.png" title="France" alt="France" /></a> {% member_count "fr" %}<br />
-						</div>
-					    <div id="influenzatext">
-							InfluenzaNet is a system to monitor the activity of influenza-like-illness (ILI) with the aid of volunteers via the internet. It has been operational in The Netherlands and Belgium (since 2003), Portugal (since 2005) and Italy (since 2008), and the current objective is to implement InfluenzaNet in more European countries.<br /><br />
-							In contrast with the traditional system of sentinel networks of mainly primary care physicians coordinated by the European Influenza Surveillance Scheme (EISS), InfluenzaNet obtains its data directly from the population. This creates a fast and flexible monitoring system whose uniformity allows for direct comparison of ILI rates between countries.<br /><br />
-							Any resident of a country where InfluenzaNet is implemented can participate by completing an online application form, which contains various medical, geographic and behavioural questions. Participants are reminded weekly to report any symptoms they have experienced since their last visit. The incidence of ILI is determined on the basis of a uniform case definition.<br /><br />
-							<a href="#top" class="jsclose" title="Close">Hide this information</a>
-					    </div>
-					</div>
+					<p class="influenzanet">{% trans "Influenzanet is a system to monitor the activity of influenza-like-illness (ILI) with the aid of volunteers via the internet" %}</p>
+
 				{% endblock masthead %}
 			</div>
 		
-            {% if site_footer %}
-				<!-- 
-				<div id="footercontent-client">
-                	{{ site_footer }}
-				</div>
-				 -->
-            {% else %}
-            	<!-- 
-				<div id="footercontent-main">
-					<div id="footercol1"><img src="{{ MEDIA_URL }}base/img/main/influenzanetlogo.png" alt="Influenzanet logo" /><p>Influenzanet is a system to monitor the activity of influenza-like-illness (ILI) via the internet with the aid of volunteers.<br />We have tried to ensure that all information we provide through this website is correct at the time we include it.</p></div>
-					<div id="footercol2"><h2>Partners</h2>
-							<a href="http://www.aktivgegengrippe.de/" rel="external" title="Aktiv gegen Grippe Deutschland">Aktiv gegen Grippe Deutschland</a><br />
-							<a href="http://www.aktivgegengrippe.at/" rel="external" title="Aktiv gegen Grippe Österreich">Aktiv gegen Grippe Österreich</a><br />
-							<a href="http://www.aktivgegengrippe.ch/" rel="external" title="Aktiv gegen Grippe Schweiz">Aktiv gegen Grippe Schweiz</a><br />
-							<a href="http://www.degrotegriepmeting.nl/" rel="external" title="De Grote Griepmeting Nederland">De Grote Griepmeting Nederland</a><br />
-							<a href="http://www.degrotegriepmeting.be/" rel="external" title="De Grote Griepmeting België">De Grote Griepmeting België</a><br />
-						</div>
-						<div id="footercol3"><h2>&nbsp;</h2>
-							<a href="http://www.grippenet.fr/" rel="external" title="Grippenet France">Grippenet France</a><br />
-							<a href="http://flusurvey.org.uk/" rel="external" title="Flusurvey United Kingdom">Flusurvey United Kingdom</a><br />
-							<a href="http://www.gripenet.pt/" rel="external" title="Gripenet Portugal">Gripenet Portugal</a><br />
-							<a href="http://www.halsorapport.se/" rel="external" title="Hälsorapport Sverige">Hälsorapport Sverige</a><br />
-							<a href="http://www.influweb.it/" rel="external" title="Influweb Italia">Influweb Italy</a><br />				
-					</div>
-				</div>
-				 -->
-            {% endif %}
             <div id="footerclose">
                 &copy; {% now "Y" %} {{ site_name }} &nbsp;|&nbsp;
                 <span class="disable">{% language_chooser %}</span>
