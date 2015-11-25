@@ -209,7 +209,7 @@ def survey_run(request, shortname, next=None, clean_template=False,bootstrap=Fal
         #Force merge behaviour instead of add if prev data exists
         if update and last_participation_data != None:
             data['id'] = last_participation_data.get('id')
-            survey.as_form_update()
+            survey.update = True
 
         form = survey.as_form()(data)
 
@@ -416,17 +416,22 @@ def survey_results_csv(request, id):
 
 @staff_member_required
 def survey_results_csv_extended(request, id):
+    #TODO: Refactor this nightmare... jesus... how is it possible, so much crap in a single tiny function
+
+    #TODO: initialize the form variable here, later assign its contents if the request is post
     survey = get_object_or_404(models.Survey, pk=id)
     if request.method == 'POST': # If the form has been submitted...
         form = forms.SurveyExtendedResultsForm(request.POST) # A form bound to the POST data
-        if form.is_valid(): # All validation rules pass
+        if form.is_valid():
             # Process the data in form.cleaned_data
             now = datetime.datetime.now()
             response = HttpResponse(mimetype='text/csv')
             response['Content-Disposition'] = 'attachment; filename=survey-results-%d-%s.csv' % (survey.id, format(now, '%Y%m%d%H%M'))
             response.write(u'\ufeff'.encode('utf8'))
+            #side effecting the response... great...
             writer = csv.writer(response)
-            survey.write_csv(writer, intake_fields = form.cleaned_data)
+
+            survey.write_csv(writer, extra_fields = form.cleaned_data)
             return response
 
     else:

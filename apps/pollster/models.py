@@ -63,229 +63,6 @@ CHART_SQLFILTER_CHOICES = (
 IDENTIFIER_REGEX = r'^[a-zA-Z][a-zA-Z0-9_]*$'
 IDENTIFIER_OPTION_REGEX = r'^[a-zA-Z0-9_]*$'
 
-SURVEY_EXTRA_SQL_HRPT20131 = {
-    'postgresql': {
-        'weekly': [
-            """DROP VIEW IF EXISTS pollster_health_status_hrpt20131""",
-            """CREATE VIEW pollster_health_status_hrpt20131 AS
-               SELECT id as pollster_results_weekly_id,
-                      case true
-                          when ("Q1a" = 0 or "Q1aa" = 0)
-                              then 'NO-SYMPTOMS'
-
-                          when
-              (
-                (
-                ("Q5" = 0 or "Q6b" = 0)
-                            and ("Q1_1" or "Q1_2"  or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
-                            and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
-                )
-                and
-                (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
-                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
-                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
-                (
-                    ("Q1_17" or "Q111_17") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                ) or
-                (
-                    ("Q1_16" or "Q111_16") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                )
-                            )
-                       ) then 'ILI-and-GASTROINTESTINAL'
-
-              when
-              (
-                (
-                                case true when "Q1_3" or "Q111_3" then 1 else 0 end +
-                                case true when "Q1_7" or "Q111_7" then 1 else 0 end +
-                                case true when "Q1_6" or "Q111_6" then 1 else 0 end +
-                                case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
-                )
-                and
-                (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
-                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
-                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
-                (
-                    ("Q1_17" or "Q111_17") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                ) or
-                (
-                    ("Q1_16" or "Q111_16") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                )
-                            )
-                       ) then 'COMMON-COLD-and-GASTROINTESTINAL'
-
-
-                          when ("Q5" = 0 or "Q6b" = 0)
-                           and ("Q1_1" or "Q1_2"  or "Q1_8" or "Q1_9" or "Q111_1" or "Q111_2" or "Q111_11" or "Q111_8" or "Q111_9")
-                           and ("Q1_5" or "Q1_6" or "Q1_7" or "Q111_5" or "Q111_6" or "Q111_7")
-                              then 'ILI'
-
-                          when
-                            (
-                ("Q6e" = 3 or "Q6e" = 4 or "Q6e" = 6) or
-                ("Q6ee" = 3 or "Q6ee" = 4 or "Q6ee" = 6)  or
-                ("Q6f" = 3 or "Q6f" = 4 or "Q6f" = 6) or
-                ("Q6ff" = 3 or "Q6ff" = 4 or "Q6ff" = 6) or
-                (
-                    ("Q1_17" or "Q111_17") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_16" or "Q111_16" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                ) or
-                (
-                    ("Q1_16" or "Q111_16") and
-                    (
-                                    case true when "Q1_1"or "Q111_1" then 1 else 0 end +
-                                    case true when "Q1_18" or "Q111_18" then 1 else 0 end +
-                                    case true when "Q1_22"or "Q111_22" then 1 else 0 end +
-                                    case true when "Q1_15"or "Q111_15" then 1 else 0 end +
-                                    case true when "Q1_17" or "Q111_17" then 1 else 0 end +
-                                    case true when "Q1_20"or "Q111_20" then 1 else 0 end +
-                                    case true when "Q1_21"or "Q111_21" then 1 else 0 end >= 2
-                    )
-                )
-                            ) then 'GASTROINTESTINAL'
-
-                          when
-                              ((((not "Q1_1") and (not "Q1_2")) or ((not "Q111_1") and (not "Q111_2")))
-                           and (("Q6d" = 0) or ("Q6d" is null))
-                           and ("Q1_3" or "Q1_4" or "Q1_14" or "Q111_3" or "Q111_4" or "Q111_14")
-                           and ("Q11" = 2)
-                              ) then 'ALLERGY-or-HAY-FEVER'
-
-                          when
-                            (
-                (
-                                case true when "Q1_3" or "Q111_3" then 1 else 0 end +
-                                case true when "Q1_7" or "Q111_7" then 1 else 0 end +
-                                case true when "Q1_6" or "Q111_6" then 1 else 0 end +
-                                case true when "Q1_5" or "Q111_5" then 1 else 0 end >= 1
-                )
-                            )  then 'COMMON-COLD'
-
-                          else 'NON-SPECIFIC-SYMPTOMS'
-                      end as status
-                 FROM pollster_results_weekly"""
-        ]
-    }
-}
-
-SURVEY_EXTRA_SQL = {
-    'postgresql': {
-        'weekly': [
-            """DROP VIEW IF EXISTS pollster_health_status""",
-            """CREATE VIEW pollster_health_status AS
-               SELECT id as pollster_results_weekly_id,
-                      case true
-                          when "Q1_0"
-                              then 'NO-SYMPTOMS'
-
-                          when ("Q5" = 0 or "Q6b" = 0)
-                           and ("Q1_1" or "Q1_2"  or "Q6d" = 3 or "Q6d" = 4 or "Q6d" = 5 or "Q1_11" or "Q1_8" or "Q1_9")
-                           and ("Q1_5" or "Q1_6" or "Q1_7")
-                              then 'ILI'
-
-                          when
-                            (
-                                (not "Q1_1") and (not "Q1_2")
-                                and (("Q6d" = 0) or ("Q6d" is null))
-                                and ("Q1_3" or "Q1_4" or "Q1_14")
-                                and ("Q11" = 2)
-                            ) and (
-                                case true when "Q1_17" then 1 else 0 end +
-                                case true when "Q1_15" then 1 else 0 end +
-                                case true when "Q1_16" then 1 else 0 end +
-                                case true when "Q1_18" then 1 else 0 end >= 2
-                            ) then 'ALLERGY-or-HAY-FEVER-and-GASTROINTESTINAL'
-
-                          when (not "Q1_1") and (not "Q1_2")
-                           and (("Q6d" = 0) or ("Q6d" is null))
-                           and ("Q1_3" or "Q1_4" or "Q1_14")
-                           and ("Q11" = 2)
-                              then 'ALLERGY-or-HAY-FEVER'
-
-                          when
-                            (
-                                case true when "Q1_3" then 1 else 0 end +
-                                case true when "Q1_4" then 1 else 0 end +
-                                case true when "Q1_6" then 1 else 0 end +
-                                case true when "Q1_5" then 1 else 0 end >= 2
-                                  -- note: common cold after all allergy-related branches
-                            ) and (
-                                case true when "Q1_17" then 1 else 0 end +
-                                case true when "Q1_15" then 1 else 0 end +
-                                case true when "Q1_16" then 1 else 0 end +
-                                case true when "Q1_18" then 1 else 0 end >= 2
-                            ) then 'COMMON-COLD-and-GASTROINTESTINAL'
-
-                          when
-                            case true when "Q1_3" then 1 else 0 end +
-                            case true when "Q1_4" then 1 else 0 end +
-                            case true when "Q1_6" then 1 else 0 end +
-                            case true when "Q1_5" then 1 else 0 end >= 2
-                              -- note: common cold after all allergy-related branches
-                              then 'COMMON-COLD'
-
-                          when
-                            case true when "Q1_17" then 1 else 0 end +
-                            case true when "Q1_15" then 1 else 0 end +
-                            case true when "Q1_16" then 1 else 0 end +
-                            case true when "Q1_18" then 1 else 0 end >= 2
-                              then 'GASTROINTESTINAL'
-
-                          else 'NON-SPECIFIC-SYMPTOMS'
-                      end as status
-                 FROM pollster_results_weekly"""
-        ]
-    }
-}
-
 
 # really???
 def _get_or_default(queryset, default=None):
@@ -293,6 +70,18 @@ def _get_or_default(queryset, default=None):
     if r:
         return r[0]
     return default
+
+
+#this was extracted from the huge csv export function when it was refactored
+# not that it ins't still disturbing... (it is), just trying to tidying things a little bit
+def _get_fieldval_survery(result_row, field_name):
+    val = getattr(result_row, field_name)
+    if callable(val):
+        val = val()
+    if type(val) is unicode:
+        val = val.encode('utf-8')
+    return val
+
 
 
 class Survey(models.Model):
@@ -347,10 +136,6 @@ class Survey(models.Model):
         # else:
         #
         return []
-
-
-
-
 
 
 
@@ -448,8 +233,6 @@ class Survey(models.Model):
         model = dynamicmodels.create(self.get_table_name(), fields=dict(fields), app_label='pollster')
         return model
 
-    def as_form_update(self):
-        self.update = True
 
     def as_form(self):
         model = self.as_model()
@@ -468,12 +251,14 @@ class Survey(models.Model):
                 form.base_fields[question.data_name].required = True
         return form
 
+    #I cannot for the love of me understand what value do such setters offer...
     def set_form(self, form):
         self.form = form
 
     def set_translation_survey(self, translation_survey):
         self.translation_survey = translation_survey
 
+    #should be called get_errors() or semething
     def check(self):
         errors = []
         if not self.shortname:
@@ -501,11 +286,6 @@ class Survey(models.Model):
             backup = table+'_vx_'+format(now, '%Y%m%d%H%M%s')
             connection.cursor().execute('ALTER TABLE '+table+' RENAME TO '+backup)
         dynamicmodels.install(model)
-        db = "postgresql"
-        for extra_sql in SURVEY_EXTRA_SQL[db].get(self.shortname, []):
-            connection.cursor().execute(extra_sql)
-        for extra_sql in SURVEY_EXTRA_SQL_HRPT20131[db].get(self.shortname, []):
-            connection.cursor().execute(extra_sql)
         self.save()
         return None
 
@@ -521,87 +301,30 @@ class Survey(models.Model):
         self.status = 'UNPUBLISHED'
         self.save()
 
-    def write_csv(self, writer, intake_fields = None):
+    def write_csv(self, writer, extra_fields = []):
         model = self.as_model()
         fields = model._meta.fields
-        addExtraWeekly = self.shortname == 'weekly'
-        addExtraIntake = self.shortname == 'intake' and intake_fields != None
-        lastParticipationData = {}
-
-        fieldNames = []
-        for field in fields:
-            fieldNames += [field.verbose_name or field.name]
-        if addExtraWeekly:
-            fieldNames += ["status","email"]
-        if addExtraIntake:
-            if (intake_fields["email"]):
-                fieldNames += ["email"]
-            if (intake_fields["is_active"]):
-                fieldNames += ["active"]
-            if (intake_fields["id_code"]):
-                fieldNames += ["idcode"]
-            if (intake_fields["dob_from_idcode"]):
-                fieldNames += ["dob_from_idcode"]
-            if (intake_fields["last_report"]):
-                fieldNames += ["last_report"]
-
-            cursor = connection.cursor()
-            cursor.execute('SELECT DISTINCT on (global_id) global_id, timestamp FROM pollster_results_weekly ORDER BY global_id, timestamp DESC')
-            lastParticipation = cursor.fetchall()
-            for participation in lastParticipation:
-                lastParticipationData[participation[0]] = participation[1]
-
-        #writer.writerow([field.verbose_name or field.name for field in fields])
+        fieldNames = [field.name for field in fields]
+        fieldNames.extend(extra_fields)
         writer.writerow(fieldNames)
-        for result in model.objects.all():
-            row = []
-            for field in fields:
-                val = getattr(result, field.name)
-                if callable(val):
-                    val = val()
-                if type(val) is unicode:
-                    val = val.encode('utf-8')
-                row.append(val)
-            if addExtraWeekly:
-                #Add extra fields for weekly export
-                row.append(Survey.getHealthStatus(result.id))
-                try:
-                    row.append(Survey.getUser(result.user).email)
-                except ObjectDoesNotExist:
-                    row.append("")
-            if addExtraIntake:
-                # Add extra fields for the intake export
-                rowUser = None
-                rowIdCode = None
-                try:
-                    rowUser = Survey.getUser(result.user)
-                    if (intake_fields["email"]):
-                        row.append(rowUser.email)
-                    if (intake_fields["is_active"]):
-                        row.append(rowUser.is_active)
-                except ObjectDoesNotExist:
-                    if (intake_fields["email"]):
-                        row.append("")
-                    if (intake_fields["is_active"]):
-                        row.append("")
-                try:
-                    rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result.global_id)
-                    if (intake_fields["id_code"]):
-                        row.append(rowIdCode.idcode)
-                    if (intake_fields["dob_from_idcode"]):
-                        row.append(rowIdCode.fodelsedatum)
-                except ObjectDoesNotExist:
-                    if (intake_fields["id_code"]):
-                        row.append("")
-                    if (intake_fields["dob_from_idcode"]):
-                        row.append("")
-                try:
-                    if (intake_fields["last_report"]):
-                        row.append(lastParticipationData[result.global_id].strftime('%Y-%m-%d %H:%M'))
-                except (AttributeError, KeyError, TypeError) as e:
-                    if (intake_fields["last_report"]):
-                        row.append("")
+        for result_row in model.objects.all():
+            row = [_get_fieldval_survery(result_row, field.name) for field in fields]
+            rowUser = Survey.getUser(result_row.user)
+            rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result_row.global_id)
 
+            for extra_field in extra_fields:
+                #TODO: use strategy pattern instead
+                if (extra_field == "email"):
+                    row.append(rowUser.email)
+                elif (extra_field == "is_active"):
+                    row.append(rowUser.is_active)
+                elif (extra_field == "id_code"):
+                    row.append(rowIdCode.idcode)
+                elif (extra_field == "dob_from_idcode"):
+                    row.append(rowIdCode.fodelsedatum)
+
+                #what about others?!?!??! That is another reason to use strategy pattern
+                # to fail in the absense of a means to get the desired value
             writer.writerow(row)
 
 class RuleType(models.Model):
@@ -1243,6 +966,7 @@ class Chart(models.Model):
                             country = str(country).upper()
                     data["center"] = self.load_zip_coords(zip_code, country)
             except:
+                # really? The good old except pass?... ok then
                 pass
 
         return json.dumps(data)
@@ -1255,7 +979,7 @@ class Chart(models.Model):
             for i in range(len(data[0])):
                 if description[i][0] not in skip_cols:
                     result[description[i][0]] = str(data[0][i])
-        return json.dumps(result)
+        return json.dumps(resu1lt)
 
     def get_map_tile(self, user_id, global_id, z, x, y):
         filename = self.get_map_tile_filename(z, x, y)
