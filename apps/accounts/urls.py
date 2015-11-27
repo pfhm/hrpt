@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     # confusing 404.
     url(r'^activate/(?P<activation_key>\w+)/$',
         activate,
-        { 'backend': 'registration.backends.default.DefaultBackend',
+        { 'backend': 'apps.accounts.backend.TweakedDefaultBackend',
           'template_name': 'registration/activate.html' },
         name='registration_activate'),
     url(r'^register/$',
@@ -84,4 +84,3 @@ urlpatterns = patterns('',
     # Additional URLs
     url(r'^$', views.index),
 )
-
