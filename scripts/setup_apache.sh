@@ -9,42 +9,7 @@ echo -e "\ninstalling apache and all necessairy mods\n..."
 
 apt-get -y install apache2 libapache2-mod-wsgi
 a2enmod wsgi
-a2enmod ssl
 a2enmod rewrite
-
-
-echo -e "Now we're going to generate the SSL certificates am place them in the right location...\n"
-
-mkdir /etc/apache2/certificate-test
-ln -s /etc/apache2/certificate-test /etc/apache2/certificate
-
-#generate key
-openssl genrsa -des3 -out /etc/apache2/certificate-test/testhalsorapport.key 4096
-
-#generate csr
-openssl req -new \
-      -key /etc/apache2/certificate-test/testhalsorapport.key \
-      -out /etc/apache2/certificate-test/testhalsorapport.csr
-
-#signing it
-openssl x509 -req -days 5000 \
-      -in /etc/apache2/certificate-test/testhalsorapport.csr \
-      -signkey /etc/apache2/certificate-test/testhalsorapport.key \
-      -out /etc/apache2/certificate-test/testhalsorapport.crt
-
-
-# decrypt the key so we are not required to enter the passphrase on each restart
-openssl rsa \
-      -in /etc/apache2/certificate-test/testhalsorapport.key \
-      -out /etc/apache2/certificate-test/testhalsorapport.key.insecure
-
-#Changing names a little bit for clarity, we are going to use the insecure key
-#we don't really need the secure one, but oh well, let's leave it
-mv /etc/apache2/certificate-test/testhalsorapport.key /etc/apache2/certificate-test/testhalsorapport.key.secure
-mv /etc/apache2/certificate-test/testhalsorapport.key.insecure /etc/apache2/certificate-test/testhalsorapport.key
-
-
-###########################################################################
 
 
 echo -e "\nAlright, next step is to copy the configs from our working copy to the apache config folder...\n"
@@ -54,10 +19,8 @@ rm -rf /etc/apache2/sites-available/*
 
 #We are going to do it the ubuntu way. Place the configs in sites-available and link them from sites-enabled
 cp /var/www/hrpt/scripts/halsorapport.conf /etc/apache2/sites-available/
-cp /var/www/hrpt/scripts/halsorapport-ssl.conf /etc/apache2/sites-available/
 
 ln -s /etc/apache2/sites-available/halsorapport.conf /etc/apache2/sites-enabled/halsorapport.conf
-ln -s /etc/apache2/sites-available/halsorapport-ssl.conf /etc/apache2/sites-enabled/halsorapport-ssl.conf
 
 echo -e "\nchmoding wsgi.py...\n"
 chmod 755 /var/www/hrpt/wsgi.py
