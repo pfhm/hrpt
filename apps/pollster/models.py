@@ -112,31 +112,24 @@ class Survey(models.Model):
 
     @staticmethod
     def get_user_open_surveys(guid):
-        #TODO: implement to return a list of surveys.
-        #right now let's display the intake only
+        published_surveys = Survey.objects.all().filter(status="PUBLISHED")
+        open_surveys = []
+        replied_surveys = []
 
-        #published_surveys = Survey.objects.all().get(status="PUBLISHED")
+        for survey in published_surveys:
+            results_table_name = "pollster_results_" + survey.shortname
+            sql = "SELECT count(*) FROM " + results_table_name + " WHERE global_id = '" +guid+ "';"
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            num_rows = cursor.fetchone()[0]
 
-        #for survey in published_surveys:
-        # SQL query(since there is apparently no model for the results)
-        # to filter surveys that have an entry for this user in "survey_results_[survey_name]"
-        # or even better, just implement this whole stuff in PLSQL
-        #    pass
+            #user already answered this survey
+            if num_rows > 0:
+                replied_surveys.append(survey)
+            else:
+                open_surveys.append(survey)
 
-        # surveys = Survey.objects.all().get(shortname="intake", status="PUBLISHED")
-        #
-        # cursor = connection.cursor()
-        # sql = "SELECT count(*) FROM pollster_results_intake where global_id ='" + guid + "'"
-        # cursor.execute(sql)
-        # num_rows = cursor.fetchone()[0]
-        #
-        # #user already answered this survey
-        # if num_rows > 0:
-        #     return []
-        # else:
-        #
-        return []
-
+        return (replied_surveys, open_surveys)
 
 
     #TODO: remove this method. just call whatever you want with django api
