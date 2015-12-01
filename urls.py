@@ -21,17 +21,10 @@ urlpatterns = patterns('',
     (r'^surveys/(?P<shortname>.+)/$', 'apps.pollster.views.survey_run'),
     (r'^survey/', include('apps.survey.urls')),
     (r'^reminder/', include('apps.reminder.urls')),
-    (r'^influenzanet/', 'django.views.generic.simple.direct_to_template', {'template': 'influenzanet.html'}),
     (r'^googlec96088c11ef7e5c4.html$', 'django.views.generic.simple.direct_to_template', {'template': 'googlec96088c11ef7e5c4.html'}),
-    (r'nu.html$', 'django.views.generic.simple.direct_to_template', {'template': 'nu.html'}),
     (r'^nejtack', 'django.views.generic.simple.redirect_to', {'url': 'https://reply.surveygenerator.com/go.aspx?U=22277ih5v4DGFEKv7gWjt'}),
 
     url(r'^captcha/', include('captcha.urls')),
-
-    url(r'^search/$', search_view_factory(
-        view_class=SearchView,
-        form_class=SearchForm
-    ), name='haystack_search'),
 
     (r'^accounts/', include('apps.accounts.urls')),
     url(r'^login/$', redirect_to, {'url': settings.LOGIN_URL},
