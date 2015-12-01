@@ -2,9 +2,13 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
-#from apps.pollster import models as pollster_models
-from .models import SurveyListPlugin
+from .models import SurveyListPlugin, SurveyUser
 from apps.pollster.models import Survey as pollster_survey_model
+
+
+
+# Oh well, this doesn't really belong in the survey apps, should probably be in
+# the pollster app instead
 
 
 class ListUserSurveysPlugin(CMSPluginBase):
@@ -24,16 +28,18 @@ class ListUserSurveysPlugin(CMSPluginBase):
         if not global_id:
             return context
 
-        open_surveys, replied_surveys = pollster_survey_model.get_user_open_surveys(global_id)
+        open_surveys = []
+        replied_surveys = []
 
-        #pollster_models.get_user_open_surveys(global_id)
+        # this is so we make sure that the global_id belongs to the authenticated user
+        survey_user = SurveyUser.objects.get(global_id=global_id, user=request.user)
+        if survey_user:
+            replied_surveys, open_surveys = pollster_survey_model.get_user_open_surveys(global_id)
 
-        #print >> sys.stderr, global_id
+        import sys
+        #print >> sys.stderr,profile
+        #print >> sys.stderr, request.user.id
 
-        #replied_surveys, open_surveys = pollster_models.get_user_open_surveys(global_id)
-        #profile = None
-        #if global_id:
-        #    profile = get_user_profile(request.user.id, global_id)
         context.update({
             'global_id': global_id, # I think this is already in request.user. #TODO: clean up
             'user_id': request.user.id,

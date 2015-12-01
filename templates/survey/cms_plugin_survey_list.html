@@ -1,20 +1,39 @@
-<p><a href=/survey/show/intake/?gid={{global_id}} >Bakgrundsenkät</a></p>
+<style>
+.survey_list_table{
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 13.44px;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
 
-Open surveys
+.survey_list_table  td{
+  border: 1px solid #ddd;
+  padding-left: 15px;
+  padding-right: 15px;
+
+}
+</style>
 
 
-<ul>
-{% for s in open_surveys %}
-    <li>{{ s.shortname }}</li>
-{% endfor %}
-</ul>
 
+{%if replied_surveys or open_surveys %}
+Enkäter
+<table class="survey_list_table">
+        <tbody>
+          {% for s in open_surveys %}
+              <tr>
+                <td style="min-width:200px">{{ s.title }}</td>
+                <td><a href="/survey/show/{{s.shortname}}/?gid={{global_id}}">svara pa den här ankät</a></td>
+              </tr>
+          {% endfor %}
+          {% for s in replied_surveys %}
+              <tr><td>{{ s.title }}</td><td>redan svarat</td></tr>
+          {% endfor %}
+        </tbody>
+</table>
 
+{%else %}
 
-Replied surveys
+<p><i>Det finns ingen enkäter</i><p>
 
-<ul>
-{% for s in replied_surveys %}
-    <li>{{ s.shortname }}</li>
-{% endfor %}
-</ul>
+{%endif %}
