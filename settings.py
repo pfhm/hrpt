@@ -157,7 +157,6 @@ INSTALLED_APPS = (
     'publisher',
     'haystack',
     'apps.pollster',
-    'apps.contest',
     'captcha',
     'pytils',
     'sorl.thumbnail',
