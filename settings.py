@@ -141,7 +141,6 @@ INSTALLED_APPS = (
     'apps.reminder',
     'apps.search',
     'apps.journal',
-    'apps.sander',
     'contact_form',
     'apps.ew_contact_form',
     'apps.partnersites',
