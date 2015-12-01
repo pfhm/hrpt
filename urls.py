@@ -2,9 +2,6 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.views.generic.simple import redirect_to
 
-from haystack.views import SearchView, search_view_factory
-from haystack.forms import SearchForm
-
 from apps.ew_contact_form.forms import CaptchaContactForm
 
 from django.contrib import admin

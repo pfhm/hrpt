@@ -139,7 +139,6 @@ INSTALLED_APPS = (
     'apps.accounts',
     'apps.survey',
     'apps.reminder',
-    'apps.search',
     'apps.journal',
     'contact_form',
     'apps.ew_contact_form',
@@ -155,22 +154,12 @@ INSTALLED_APPS = (
     'mptt',
     'appmedia',
     'publisher',
-    'haystack',
     'apps.pollster',
     'captcha',
     'pytils',
     'sorl.thumbnail',
     'pure_pagination',
 )
-
-HAYSTACK_SITECONF = 'search_sites'
-
-try:
-    import xapian
-    HAYSTACK_SEARCH_ENGINE = 'xapian'
-    HAYSTACK_XAPIAN_PATH = '/tmp/xapian'
-except:
-    HAYSTACK_SEARCH_ENGINE = 'simple'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
