@@ -90,7 +90,7 @@ def report_data(report):
         spec = load_specification(surv_v)
     except:
         return {'status': 3, 'error': 'survey with id %s not known' % surv_v}
-    
+
     participation = utils.add_survey_participation(survey_user, surv_v)
     utils.add_response_queue(participation, spec, data)
     utils.save_last_response(survey_user, participation, data)
@@ -170,6 +170,7 @@ class GetError(Exception):
     def __str__(self):
         return repr(dict)
 
+#Unhash... learn something new every day
 def code_unhash(activation_code):
     """Takes an activation code.
     Returns the corresponding global user ID.
@@ -188,4 +189,3 @@ def code_unhash(activation_code):
                              activation_code)
     else:
         return matches[0]
-
