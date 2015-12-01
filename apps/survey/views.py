@@ -40,6 +40,7 @@ import json
 survey_form_helper = None
 profile_form_helper = None
 
+
 def get_active_survey_user(request):
     gid = request.GET.get('gid', None)
     if gid is None:
@@ -386,6 +387,14 @@ def show_survey(request, survey_short_name):
         },
         context_instance=RequestContext(request)  #don't know why this is necessairy, nobody does apparently. See https://github.com/django-compressor/django-compressor/issues/483#issuecomment-52243164
     )
+
+
+def no_thanks(request):
+    """
+    redirects to link in survey generator.
+    This is the main
+    """
+    return HttpResponseRedirect('https://reply.surveygenerator.com/go.aspx?U=22277ih5v4DGFEKv7gWjt')
 
 # end of sane code.
 # ------------------------------------------------------------------------------
