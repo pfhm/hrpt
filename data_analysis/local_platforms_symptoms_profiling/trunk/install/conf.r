@@ -1,1 +1,0 @@
-source('../global.inc.r')
