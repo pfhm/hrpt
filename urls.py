@@ -50,16 +50,6 @@ if settings.DEBUG:
     ) + urlpatterns
 
 
-
-
-
-
-
-
-#REMOVE THIS!!!!!!! hopefully is the gateway to removing the whole api crap!!!!!
-if settings.MOBILE_INTERFACE_ACTIVE:
-    urlpatterns += patterns('', (r'^ema/', include('apps.survey.api.urls')))
-
 # Catchall
 urlpatterns += patterns('', url(r'^', include('cms.urls')))
 

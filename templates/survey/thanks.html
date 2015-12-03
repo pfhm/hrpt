@@ -18,83 +18,19 @@
 </script>
 {% endblock %}
 
-{% if mobile %}
-
-{% else %}
-
-{% endif %}
 
 {% block col1 %}
 
 <h2>{% trans "Thanks for taking the time to fill out this survey." %}</h2>
-<!--<p>
-{% trans "Here is a summary of the information you entered for you and the members of your group or family:" %}
-</p>-->
-<p>
-{% if multi_profile_allowed == 'true' %}
-På den här sidan kan du se alla profiler som du redan skapat under ditt användarkonto, 
-uppdatera bakgrundsinformation för varje profil, och välja vilket profilnamn du vill rapportera för. 
-Du kan även lägga till nya profiler. <a href="/flera-profiler/"> Här</a> kan du läsa mer om att hantera fler profiler. 
-<br>
-När du har skapat en profil och fyllt i bakgrundsinformationen kan du rapportera direkt för den profilen. 
-Vi hoppas att du kan rapportera varje vecka, oavsett om du är frisk eller sjuk. 
-Samma sak gäller alla profiler - all information hjälper oss att få koll på influensaläget i Sverige!
 
-</p>
-<p>
-<a href="/survey/people/add/"> Lägg till profil </a>
-</p>
-{% else %}
-På denna sida kan du rapportera för veckan som varit och uppdatera bakgrundsenkäten. 
-Nedanför i din hälsologg kan du också se hur du rapporterat. Om du vill uppdatera din rapport för veckan 
-som varit kan du klicka på Rapportera i tabellen för att ändra dina svar. 
-{% endif %}
 
-{% if mobile %}
-<table class="table table-striped table-bordered table-condensed">
-<tr>
-<th>{% trans "Group members" %}</th>
-<td>{{ person.name }}<br/><!--<a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a>--></td>
-</tr>
-<tr>
-<th>{% trans "Manage " %}</th>
-<td><a href="{{ person.get_profile_url }}">{% trans "Change profile" %}</a><br/>
-<a href="{{ person.get_survey_url }}">{% trans "Enter symptoms" %}</a></td>
-</tr>
-{% else %}
-<table class="imagetable" style="width:500px;">
-<tr>
-<!--<th colspan="2">{% trans "Health status" %}</th>-->
-   <th colspan="2">{% trans "Group members" %}</th>
-    <!--<th colspan="2">{% trans "Manage " %}</th>-->
-{% if persons|length > 1 %}
-    <th colspan="3">{% trans "Manage " %}</th>
-{% else %}
-    <th colspan="2">{% trans "Manage " %}</th>
-{% endif %}
-   <!--<th colspan="2">Datum för senaste rapport</th>-->
-</tr>
-{% for person in persons %}
-<tr><td colspan="2">{{ person.name }}</td>
-	<!--<td><b>{{ person.diag }}</b></td>-->
-    <!--<td><img class="diag-icon" src="{{ MEDIA_URL }}/survey/img/diag-{{ person.health_status|default:'UNKNOWN' }}-small.png"/></td>-->
-        <!--<td><a href="{{ person.get_edit_url }}">{% trans "Change name" %}</a></td>-->
-        <td><a href="{{ person.get_profile_url }}">{% trans "Change profile" %}</a></td>
-        <td><a href="{{ person.get_survey_url }}">{% trans "Enter symptoms" %}</a></td>
-{% if persons|length > 1 %}
-        <td><a href="{{ person.get_remove_url }}">{% trans "Remove" %}</a></td>
-{% endif %}
-<!--
-    <td>
-    {% for h in person.health_history %}
-        {{ h.timestamp }} / {{ h.status }} / {{ h.diag }}<br>
-    {% endfor %}
-    </td>
--->
-</tr>
-{% endfor %}
-{% endif %}
-</table>
+<p>
+På denna sida kan du rapportera för veckan som varit och uppdatera bakgrundsenkäten.
+Nedanför i din hälsologg kan du också se hur du rapporterat. Om du vill uppdatera din rapport för veckan
+som varit kan du klicka på Rapportera i tabellen för att ändra dina svar.
+</p>
+
+
 
 <br/>
 
@@ -104,11 +40,9 @@ som varit kan du klicka på Rapportera i tabellen för att ändra dina svar.
 
 <br/>
 
-{% if mobile %}
-<table class="table table-striped table-bordered table-condensed">
-{% else %}
+
 <table class="imagetable" style="width:500px;">
-{% endif %}
+
 <thead>
 <tr>
     <th>{% trans "Fill out date" %}</th>
@@ -134,29 +68,7 @@ som varit kan du klicka på Rapportera i tabellen för att ändra dina svar.
 {% if mobile %}
 <a href="/accounts/logout">{% trans "Logout" %}</a>|<a href="/">{% trans "Start" %}</a>
 {% endif %}
-<!--
-<ul class="diag">
-{% for person in persons %}
-{% if person.health_history %}
-<li class="diag-person">
-    <h5 class="diag-name">{{ person.name }}</h5>
-    <ul>
-    {% for item in person.health_history %}
-    <li class="diag-item diag-{{ item.status|default:'UNKNOWN' }}">
-    	<alt="{{ item.diag }}:">
-        <img class="diag-icon" src="{{ MEDIA_URL }}/survey/img/diag-{{ item.status|default:'UNKNOWN' }}.png" alt="{{ item.diag }}:" title="{{ item.diag }}"/>
-	<img class="diag-icon" src="{{ MEDIA_URL }}/survey/img/diag-COMMON-COLD.png"/>
-        <span title="{{ item.timestamp }}" class="diag-timestamp">
-            <font size="2">{{ item.timestamp|date:'SHORT_DATE_FORMAT' }}</font>
-        </span>
-    </li>
-    {% endfor %}
-    </ul>
-</li>
-{% endif %}
-{% endfor %}
-</ul>
--->
+>
 <br/>
 
 <h2>Rapporteringskartor</h2>
@@ -176,4 +88,3 @@ som varit kan du klicka på Rapportera i tabellen för att ändra dina svar.
 
 <br/>
 {% endblock %}
-
