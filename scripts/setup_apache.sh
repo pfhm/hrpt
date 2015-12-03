@@ -20,6 +20,9 @@ rm -rf /etc/apache2/sites-available/*
 #We are going to do it the ubuntu way. Place the configs in sites-available and link them from sites-enabled
 cp /var/www/hrpt/scripts/halsorapport.conf /etc/apache2/sites-available/
 
+
+#TODO: pass the hostname as acommand line argument and replace in the config file
+
 ln -s /etc/apache2/sites-available/halsorapport.conf /etc/apache2/sites-enabled/halsorapport.conf
 
 echo -e "\nchmoding wsgi.py...\n"
