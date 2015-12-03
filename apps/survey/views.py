@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import time
 
 from django import forms
 from django.template import Context, loader, RequestContext
@@ -59,8 +60,6 @@ def get_active_survey_user(request):
                         err = True
 
             if err:
-                specialPrint("User not active, logout this one!")
-                messages.error(request,_('This account is inactive.'))
                 logout(request)
 
             return survey_user
@@ -334,6 +333,12 @@ def profile_index(request):
 @login_required
 def show_survey(request, survey_short_name):
 
+    #Saving the response drafts so the users don't loose their replies
+    #this should be put in its own route
+    if "draft" in request.GET and request.method == 'POST':
+        _save_survey_response_draft(request)
+        return HttpResponse("Form state saved")
+
     # until we update to django 1.8, get_language() will allways return LANGUAGE_CODE
     # which is defined in the settings. But the best at this point, is removing translations altogether
     language = get_language()
@@ -353,12 +358,20 @@ def show_survey(request, survey_short_name):
 
     IdCodeObject = get_object_or_404(models.SurveyIdCode, surveyuser_global_id=global_id)
 
+
+    try:
+        survey_response_draft = models.SurveyResposeDraft.objects.get( global_id = global_id, survey_id=survey.id)
+        prefilled_data = json.loads(survey_response_draft.form_data)
+    except:
+        prefilled_data = {}
+
     # we inject the birthyear that was provided with the idcode so we know how old
     # the user is. There must be a question with this name in the survey for this to be usable
     # tipically it would be set to hidden.
-    prefilled_data = {"PREFIL_BIRTHYEAR": IdCodeObject.fodelsedatum}
+    prefilled_data['PREFIL_BIRTHYEAR'] = IdCodeObject.fodelsedatum
 
     form = survey.as_form()(prefilled_data)
+    #survey.set_form(form)
 
     if request.method == 'POST':
         data = request.POST.copy()
@@ -387,6 +400,30 @@ def show_survey(request, survey_short_name):
         },
         context_instance=RequestContext(request)  #don't know why this is necessairy, nobody does apparently. See https://github.com/django-compressor/django-compressor/issues/483#issuecomment-52243164
     )
+
+
+def _save_survey_response_draft(request):
+    raw_data = json.loads(request.raw_post_data) # on django 1.4 and latter, this changes to request.body instead
+    survey_id = raw_data['survey_id']
+    questions_data = raw_data['form_data']
+
+    global_id = request.GET.get('gid')
+
+    #this is to make sure the guid belongs to this user
+    # it will blow up otherwise as it should.
+    models.SurveyUser.objects.get(global_id=global_id, user=request.user)
+
+    try:
+        survey_draft = models.SurveyResposeDraft.objects.get( global_id = global_id, survey_id=survey_id)
+    except:
+        survey_draft = models.SurveyResposeDraft(
+            global_id = global_id,
+            survey_id = survey_id
+        )
+
+    survey_draft.timestamp = int(time.time())
+    survey_draft.form_data = json.dumps(raw_data['form_data'])
+    survey_draft.save()
 
 
 def no_thanks(request):

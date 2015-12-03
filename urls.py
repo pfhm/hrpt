@@ -49,6 +49,14 @@ if settings.DEBUG:
         (r'^' + settings.MEDIA_URL.lstrip('/'), include('appmedia.urls'), {'show_indexes': True}),
     ) + urlpatterns
 
+
+
+
+
+
+
+
+#REMOVE THIS!!!!!!! hopefully is the gateway to removing the whole api crap!!!!!
 if settings.MOBILE_INTERFACE_ACTIVE:
     urlpatterns += patterns('', (r'^ema/', include('apps.survey.api.urls')))
 

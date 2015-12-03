@@ -2,6 +2,8 @@
 
   /*
   READ FIRST
+
+
   This is where the derived value types are defined. Those that can be used to
   derive an extra data value from a question, when in the survey editor.
 
@@ -114,14 +116,6 @@
 
                 current_year = new Date().getFullYear();
                 years_since_birth = current_year - val;
-
-                console.log({
-                  'inf': inf,
-                  'sup': sup,
-                  'val': val,
-                  'current_year': current_year,
-                  'years_since_birth': years_since_birth
-                });
 
                 if (!inf && !sup){
                   return false;

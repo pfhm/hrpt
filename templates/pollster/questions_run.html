@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form class="survey {% if survey.form.errors %}error{% endif %}" id="survey-{{ survey.id }}" method="POST">    
+<form class="survey {% if survey.form.errors %}error{% endif %}" id="survey-{{ survey.id }}" method="POST">
     {% csrf_token %}
     <!--<div class="survey-message">
         {% trans "Questionnaire for participant" %} {{ person }}
@@ -42,8 +42,7 @@
             	{% if not question.option_set.all %}
             		<textarea rows="3" name="{{ question.data_name }}" id="question-{{ question.id }}-field" class="user-field">{{ question.form_value }}</textarea>
             	{% else %}
-            		<input type="text" name="{{ question.data_name }}" id="question-{{ question.id }}-field"
-						value="{{ question.form_value }}" class="user-field" />
+            		<input type="text" name="{{ question.data_name }}" id="question-{{ question.id }}-field" value="{{ question.form_value }}" class="user-field" />
             	{% endif %}
             <p class="error-message">{{ question.translated_error_message }}</p>
             <ul class="derived-values">
@@ -205,11 +204,56 @@
     {% endfor %}
     <div class="actions">
 		<input type="submit" id="commentsubmit" value="{% trans "Submit" %}" />
+
+
     </div>
     <script type="text/javascript" class="pollster-fill">
+
+
+        function save_response_draft(){
+          var survey_id = {{ survey.id }};
+          var form_data_array = $('form.survey').serializeArray()
+          var form_data_obj = {}
+          form_data_array.forEach(
+            function(f){
+              form_data_obj[f.name] = f.value;
+            }
+          );
+
+          //this is included on the form by default but it is not used
+          delete form_data_obj['csrfmiddlewaretoken'];
+
+          var request_body = JSON.stringify({ "survey_id": survey_id, "form_data":form_data_obj });
+
+          $.post( window.location + '&draft=save', request_body );
+
+        }
+
+        $('input,textarea').focus(function() {
+          save_response_draft();
+        });
+
+
+        //This is really hacky
+        var data_from_draft =  pollster_last_participation_data();
+
+        $("form  textarea, form input[type=text]").each(
+
+          function(){
+            var attr_name = $(this).attr('name');
+            var saved_val = data_from_draft[attr_name];
+            console.log(attr_name,saved_val);
+            $(this).val(saved_val);
+          }
+        );
+
+        //End of crazy hack!!! we now restore data in the form from three diferent paths!!!!! Crazy!!!!
+
         function pollster_last_participation_data() {
             return {{ last_participation_data_json|safe|default:'{}' }};
         }
+
+
         function pollster_fill_data_types(d) {
             {% for question in survey.questions %}
             d[{{question.id}}] = new {{question.data_type.js_class}}();
