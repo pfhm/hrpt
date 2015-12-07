@@ -17,28 +17,30 @@ class SurveyMenu(CMSAttachMenu):
         """
         This method is used to build the menu tree.
         """
-        nodes = [
-            NavigationNode(
-                _("Symptoms survey"),
-                reverse(views.index),
-                "views.index",
-            ),
-            NavigationNode(
-                _("Manage household"),
-                reverse(views.people),
-                "views.people",
-            ),
-            NavigationNode(
-                _("My settings"),
-                reverse(accounts_views.my_settings),
-                "accounts_views.my_settings",
-            ),
-            NavigationNode(
-                _("Change password"),
-                reverse(auth_views.password_change),
-                "auth_views.password_change",
-            ),
-        ]
+        # nodes = [
+        #     NavigationNode(
+        #         _("Symptoms survey"),
+        #         reverse(views.index),
+        #         "views.index",
+        #     ),
+        #     NavigationNode(
+        #         _("Manage household"),
+        #         reverse(views.people),
+        #         "views.people",
+        #     ),
+        #     NavigationNode(
+        #         _("My settings"),
+        #         reverse(accounts_views.my_settings),
+        #         "accounts_views.my_settings",
+        #     ),
+        #     NavigationNode(
+        #         _("Change password"),
+        #         reverse(auth_views.password_change),
+        #         "auth_views.password_change",
+        #     ),
+        # ]
+
+        nodes = []
 
         return nodes
 
