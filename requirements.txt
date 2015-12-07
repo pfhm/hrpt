@@ -6,7 +6,7 @@ django-annoying==0.7.7
 django-appmedia==1.0.1
 django-classy-tags==0.4
 django-cms==2.1.4
-egg=django-contact-form==0.3
+django-contact-form==0.3
 django-haystack==1.2.0
 -e git+https://github.com/ojii/django-nani.git@bb47153e05b46b775658887f214a486412fe25a5#egg=django_nani-dev
 django-pure-pagination==0.2.1
