@@ -166,6 +166,7 @@ def survey_test(request, id, language=None):
 
 @staff_member_required
 def survey_translation_list_or_add(request, id):
+    #TODO: refactor this... python pyramids of doom only take half the work to refactor! we're lucky!
     survey = get_object_or_404(models.Survey, pk=id)
     form_add = forms.SurveyTranslationAddForm()
     if request.method == 'POST':
@@ -318,11 +319,13 @@ def survey_results_csv_extended(request, id):
             response.write(u'\ufeff'.encode('utf8'))
             #side effecting the response... great...
             writer = csv.writer(response)
-
             survey.write_csv(writer, extra_fields = form.cleaned_data)
             return response
 
     else:
+        #this is stupid
+        # Create the form in the right block (above the if) then just bind it in here
+        #http://stackoverflow.com/questions/5263722/in-django-how-do-i-late-bind-an-unbound-form
         form = forms.SurveyExtendedResultsForm() # An unbound form
 
     return render_to_response('pollster/extended_results.html', {

@@ -4,6 +4,20 @@ from django.db import models, connection
 from django.db.models.loading import cache
 from django.core.management import color
 
+"""
+This module is cancer. This is a contradition on itself.
+The motivation to this kind of code is the reason _NOT_ to do it.
+From the links above:
+
+"The advantages of not having to declare a model in Python source should become clear shortly."
+
+... except that they never do, only the problems of doing this do. Though they were already
+crystal clear to any season programmer.
+
+Waste of anyone's time. Kill with fire!
+
+"""
+
 def create(name, fields=None, app_label='', module='', options=None, admin_opts=None):
     """
     Create specified model

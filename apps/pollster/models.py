@@ -91,7 +91,7 @@ class Survey(models.Model):
     version = models.SlugField(max_length=255, blank=True, default='')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    status = models.CharField(max_length=255, default='DRAFT', choices=SURVEY_STATUS_CHOICES)
+    status = models.CharField(max_length=255, default='DRAFT', choices=SURVEY_STATUS_CHOICES, help_text="Use full editor to publish and unpublish")
 
     form = None
     translation_survey = None
@@ -107,7 +107,6 @@ class Survey(models.Model):
     ]
 
     update = False
-
 
 
     @staticmethod
@@ -137,13 +136,6 @@ class Survey(models.Model):
     @staticmethod
     def get_by_shortname(shortname):
         return Survey.objects.all().get(shortname=shortname, status="PUBLISHED")
-
-    # Seriously, what the hell are all these mathods doing in here?
-    @staticmethod
-    def getUser(user_id):
-        user = User.objects.get(id=user_id)
-        return user
-
 
     #TODO: delete this crazynes, this is insane
     @staticmethod
@@ -302,22 +294,21 @@ class Survey(models.Model):
         writer.writerow(fieldNames)
         for result_row in model.objects.all():
             row = [_get_fieldval_survery(result_row, field.name) for field in fields]
-            rowUser = Survey.getUser(result_row.user)
+            rowUser = User.objects.get(id=result_row.user)
             rowIdCode = SurveyIdCode.objects.get(surveyuser_global_id = result_row.global_id)
 
-            for extra_field in extra_fields:
-                #TODO: use strategy pattern instead
-                if (extra_field == "email"):
-                    row.append(rowUser.email)
-                elif (extra_field == "is_active"):
-                    row.append(rowUser.is_active)
-                elif (extra_field == "id_code"):
-                    row.append(rowIdCode.idcode)
-                elif (extra_field == "dob_from_idcode"):
-                    row.append(rowIdCode.fodelsedatum)
+            #note that this should contain a means to getch the data, not the data itself
+            # but oh well, let's leave it be for now
+            possible_extra_fields = {
+                "email" : rowUser.email,
+                "is_active": rowUser.is_active,
+                "id_code": rowIdCode.idcode,
+                "dob_from_idcode": rowIdCode.fodelsedatum
+            }
 
-                #what about others?!?!??! That is another reason to use strategy pattern
-                # to fail in the absense of a means to get the desired value
+            for extra_field in extra_fields:
+                row.append(possible_extra_fields[extra_field])
+
             writer.writerow(row)
 
 class RuleType(models.Model):
