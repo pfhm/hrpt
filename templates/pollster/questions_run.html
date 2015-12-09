@@ -1,10 +1,15 @@
 {% load i18n %}
 
+
+<!-- Dear lord almighty have mercy on us, give us strength and courage to:
+  * stop generating javascript code in a django template, fetch the data via ajax instead
+  * remove this monstrous switch for the tipe of field, break it up in template per type
+  * put the javascript its own script
+-->
+
 <form class="survey {% if survey.form.errors %}error{% endif %}" id="survey-{{ survey.id }}" method="POST">
     {% csrf_token %}
-    <!--<div class="survey-message">
-        {% trans "Questionnaire for participant" %} {{ person }}
-    </div>-->
+
     {% if survey.form.errors %}
     <div class="survey-error-message">
         {% trans "Please check the answers for the highlighted questions." %}
@@ -220,11 +225,9 @@
             }
           );
 
-          //this is included on the form by default but it is not used
-          delete form_data_obj['csrfmiddlewaretoken'];
 
+          delete form_data_obj['csrfmiddlewaretoken']; //this is included on the form by default but it is not used
           var request_body = JSON.stringify({ "survey_id": survey_id, "form_data":form_data_obj });
-
           $.post( window.location + '&draft=save', request_body );
 
         }
@@ -242,8 +245,16 @@
           function(){
             var attr_name = $(this).attr('name');
             var saved_val = data_from_draft[attr_name];
-            console.log(attr_name,saved_val);
             $(this).val(saved_val);
+          }
+        );
+
+        $("form input[type=checkbox]").each(
+          function(){
+            var attr_name = $(this).attr('name');
+            if(data_from_draft.hasOwnProperty(attr_name)){
+                $(this).attr('checked', true);
+            }
           }
         );
 

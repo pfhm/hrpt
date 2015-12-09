@@ -155,6 +155,9 @@ class Survey(models.Model):
 
     # jesus christ, just check the freaking status whenever you need it
 
+    # this is great, blurring the clearity for what is a an attribute and what is dynamically computed
+    #..... /sarcasm
+
     @property
     def is_draft(self):
         return self.status == 'DRAFT'
@@ -173,6 +176,8 @@ class Survey(models.Model):
 
     @property
     def questions(self):
+        # WOW... setting the save form for every questions
+        # this is really bad code
         for question in self.question_set.all():
             question.set_form(self.form)
             question.set_translation_survey(self.translation_survey)
@@ -328,6 +333,7 @@ class QuestionDataType(models.Model):
         return "QuestionDataType #%d %s" % (self.id, self.title)
 
     def as_field_type(self, verbose_name=None, regex=None):
+        #really? just copy pasting code from the web without knowing what it does????
         import django.db.models
         import db.models
         field = eval(self.db_type)
@@ -404,6 +410,11 @@ class Question(models.Model):
             errors.append((self.data_name, self.form.errors[self.data_name]))
         return dict(errors)
 
+
+    #So, somebody learned the keyword yield.. alright, cool..
+
+    #TODO: refactor all these with list comprehensions... save a few lines, this file is horribly large
+
     @property
     def rows(self):
         for row in self.row_set.all():
@@ -452,11 +463,20 @@ class Question(models.Model):
             c.append('error')
         return c
 
+
+    # This smells
     @property
     def form_value(self):
         if not self.form:
             return ''
         return self.form.data.get(self.data_name, '')
+
+
+    # So... after a zillion facepalms I think I cracked the mistery of the attack-of-the-@property-tag situation.
+    # The motivation was to use these in the templates.
+    # Here's an alternaitve: Read the f**in django documentation on template tags FFS!
+    # or even better, stop picking a value from a list by manually if-ing every possivel value...?
+
 
     @property
     def is_builtin(self):
@@ -524,6 +544,8 @@ class Question(models.Model):
                     title = "%s (%s, %s)" % (self.title, r, c)
                     fields.append( (column.data_name, self.data_type.as_field_type(verbose_name=title)) )
         else:
+            # Just because NotImplementedError looks badass or what?
+            # I'll think of another reason why this would be here ... when I get bored
             raise NotImplementedError(self.type)
         return fields
 
