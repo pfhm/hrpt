@@ -3,7 +3,7 @@
 
 <!-- Dear lord almighty have mercy on us, give us strength and courage to:
   * stop generating javascript code in a django template, fetch the data via ajax instead
-  * remove this monstrous switch for the tipe of field, break it up in template per type
+  * remove this monstrous switch for the type of field, break it up in template per type
   * put the javascript its own script
 -->
 
@@ -232,7 +232,7 @@
 
         }
 
-        $('input,textarea').focus(function() {
+        $('input,textarea,select').focus(function() {
           save_response_draft();
         });
 
@@ -240,8 +240,7 @@
         //This is really hacky
         var data_from_draft =  pollster_last_participation_data();
 
-        $("form  textarea, form input[type=text]").each(
-
+        $("form  textarea, form input[type=text], form select").each(
           function(){
             var attr_name = $(this).attr('name');
             var saved_val = data_from_draft[attr_name];
