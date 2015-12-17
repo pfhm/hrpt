@@ -40,7 +40,7 @@
              data-regex="{{ question.regex|default:'' }}">
             <p class="data">
                 {% if question.is_mandatory %}<span class="star">*</span>{% endif %}
-                <span class="title">{{ question.translated_title|safe }}</span>
+                <span class="title">{{ question.translated_title|safe }}</span><br />
                 {{ question.translated_description|safe }}
             </p>
             {% if question.is_text %}
