@@ -40,8 +40,8 @@
              data-regex="{{ question.regex|default:'' }}">
             <p class="data">
                 {% if question.is_mandatory %}<span class="star">*</span>{% endif %}
-                <span class="title">{{ question.translated_title }}</span>
-                {{ question.translated_description }}
+                <span class="title">{{ question.translated_title|safe }}</span>
+                {{ question.translated_description|safe }}
             </p>
             {% if question.is_text %}
             	{% if not question.option_set.all %}
@@ -237,7 +237,7 @@
         });
 
 
-        //This is really hacky
+        //This is really hacky, restoring form data from the saved draft replies
         var data_from_draft =  pollster_last_participation_data();
 
         $("form  textarea, form input[type=text], form select").each(
