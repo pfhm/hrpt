@@ -225,7 +225,6 @@
             }
           );
 
-
           delete form_data_obj['csrfmiddlewaretoken']; //this is included on the form by default but it is not used
           var request_body = JSON.stringify({ "survey_id": survey_id, "form_data":form_data_obj });
           $.post( window.location + '&draft=save', request_body );
@@ -253,6 +252,18 @@
             var attr_name = $(this).attr('name');
             if(data_from_draft.hasOwnProperty(attr_name)){
                 $(this).attr('checked', true);
+            }
+          }
+        );
+
+        $("form input[type=radio]").each(
+          function(){
+            var attr_name = $(this).attr('name');
+            if(data_from_draft.hasOwnProperty(attr_name)){
+                var saved_val = data_from_draft[attr_name];
+                if($(this).attr('value') == saved_val ){
+                    $(this).attr('checked', 'checked');
+                }
             }
           }
         );
