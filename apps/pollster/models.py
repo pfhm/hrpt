@@ -13,6 +13,11 @@ from . import dynamicmodels, json
 import os, re, shutil, warnings, datetime, csv
 from django.conf import settings
 from apps.survey.models import SurveyIdCode, SurveyUser
+import sys
+
+def specialPrint(msg):
+    print >> sys.stderr,msg
+
 
 DEG_TO_RAD = pi/180
 RAD_TO_DEG = 180/pi
@@ -114,6 +119,13 @@ class Survey(models.Model):
         published_surveys = Survey.objects.all().filter(status="PUBLISHED")
         open_surveys = []
         replied_surveys = []
+        locked_surveys = []
+
+        # If there is an intake survey and the user has not replied to it
+        # then all other open surveys should not be acessible to the user
+        all_locked_by_intake = False
+
+        intake_survey_temp = None # just a variable to hold the intake survey while the look moves on
 
         for survey in published_surveys:
             results_table_name = "pollster_results_" + survey.shortname
@@ -122,13 +134,22 @@ class Survey(models.Model):
             cursor.execute(sql)
             num_rows = cursor.fetchone()[0]
 
+            if num_rows == 0 and survey.shortname == 'intake':
+                all_locked_by_intake = True
+                intake_survey_temp = survey
+
             #user already answered this survey
             if num_rows > 0:
                 replied_surveys.append(survey)
             else:
                 open_surveys.append(survey)
 
-        return (replied_surveys, open_surveys)
+
+        if all_locked_by_intake:
+            locked_surveys = [ s for s in open_surveys if not s.shortname == 'intake']
+            open_surveys = [intake_survey_temp]
+
+        return (replied_surveys, open_surveys, locked_surveys)
 
 
     #TODO: remove this method. just call whatever you want with django api

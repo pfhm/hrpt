@@ -10,7 +10,6 @@
   border: 1px solid #ddd;
   padding-left: 15px;
   padding-right: 15px;
-
 }
 </style>
 
@@ -23,11 +22,17 @@ Enkäter
           {% for s in open_surveys %}
               <tr>
                 <td style="min-width:200px">{{ s.title }}</td>
-                <td><a href="/survey/show/{{s.shortname}}/?gid={{global_id}}">svara pa den här ankät</a></td>
+                <td><a href="/survey/show/{{s.shortname}}/?gid={{global_id}}">Tryck här för att besvara enkäten</a></td>
+              </tr>
+          {% endfor %}
+          {% for s in locked_surveys %}
+              <tr>
+                <td style="min-width:200px">{{ s.title }}</td>
+                <td>Besvara bakgrundsenkäten först</td>
               </tr>
           {% endfor %}
           {% for s in replied_surveys %}
-              <tr><td>{{ s.title }}</td><td>redan svarat</td></tr>
+              <tr><td>{{ s.title }}</td><td>Redan besvarad enkät</td></tr>
           {% endfor %}
         </tbody>
 </table>
