@@ -566,7 +566,7 @@ class Question(models.Model):
                     fields.append( (column.data_name, self.data_type.as_field_type(verbose_name=title)) )
         else:
             # Just because NotImplementedError looks badass or what?
-            # I'll think of another reason why this would be here ... when I get bored
+            # I'll try to guess another reason why this would be here ... when I get bored
             raise NotImplementedError(self.type)
         return fields
 
@@ -964,6 +964,8 @@ class Chart(models.Model):
         else:
             return True
 
+    # Pretty sure, just by looking at graphical mass of uninteligeable code,
+    # that this method does more than 'to_json'.How difficult can it be, really
     def to_json(self, user_id, global_id):
         data = {}
         if self.type.shortname == "google-charts":
@@ -993,10 +995,13 @@ class Chart(models.Model):
                             country = str(country).upper()
                     data["center"] = self.load_zip_coords(zip_code, country)
             except:
-                # really? The good old except pass?... ok then
+                # really? The old school except pass?... ok then
                 pass
 
         return json.dumps(data)
+
+
+
 
     def get_map_click(self, lat, lng):
         result = {}
@@ -1142,7 +1147,8 @@ class Chart(models.Model):
         if table_query:
             table = self.get_table_name()
             view = self.get_view_name()
-
+            # So what we do next is determined by a regex search on an SQL we wrote somewhere...
+            # I'm not sure one can continue reading this without the risk of serious psicological health consequences
             if re.search(r'\bzip_code_country\b', table_query):
                 view_query = """SELECT A.*, B.id AS OGC_FID, B.geometry
                                   FROM %s B, (SELECT * FROM %s) A
@@ -1153,7 +1159,6 @@ class Chart(models.Model):
                                   FROM %s B, (SELECT * FROM %s) A
                                  WHERE upper(A.zip_code_key) = upper(B.zip_code_key)""" % (geo_table, table,)
             cursor = connection.cursor()
-            #try:
             cursor.execute("DROP VIEW IF EXISTS %s" % (view,))
             cursor.execute("DROP TABLE IF EXISTS %s" % (table,))
             cursor.execute("CREATE TABLE %s AS %s" % (table, table_query))
@@ -1162,10 +1167,6 @@ class Chart(models.Model):
             transaction.commit_unless_managed()
             self.clear_map_tile_cache()
             return True
-            #except IntegrityError:
-            #    return False
-            #except DatabaseError:
-            #    return False
         return False
 
     def update_data(self):

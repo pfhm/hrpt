@@ -24,7 +24,7 @@ table.imagetable th {
 
 #menubar li.selected,
 #menubar li.ancestor {
- padding: 0 0px 0 0px; 
+ padding: 0 0px 0 0px;
  background: #0085b0;
  font-weight: bold;
  color: #ffffff;
@@ -67,7 +67,7 @@ textarea.user-field {
 
 /* Survey ID-code form */
 #fodelsedatum {
-	margin-bottom: 0.5em; 
+	margin-bottom: 0.5em;
 }
 
 /* Registration form */
@@ -133,4 +133,8 @@ form.contact_form .helptext {
 
 .contact_form #commentsubmit {
 	margin-top: 0.7em;
+}
+
+.matrix{
+	font-size:12px;
 }

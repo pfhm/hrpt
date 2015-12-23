@@ -12,7 +12,7 @@ There appear to be no upcoming reminders. Please check you <a href="/admin/sites
         <tr>
             <td>{{ upcoming_reminder.date }}</td>
             <td>{{ upcoming_reminder.description }}</td>
-            <td><a href="/reminder/manage/{{ upcoming_reminder.date.year }}/{{ upcoming_reminder.date.month }}/{{ upcoming_reminder.date.day }}/{{ upcoming_reminder.date.hour }}/{{ upcoming_reminder.date.minute }}/">View</a></td> 
+            <td><a href="/reminder/manage/{{ upcoming_reminder.date.year }}/{{ upcoming_reminder.date.month }}/{{ upcoming_reminder.date.day }}/{{ upcoming_reminder.date.hour }}/{{ upcoming_reminder.date.minute }}/">View</a></td>
 
     {% endfor %}
     </tbody></table>

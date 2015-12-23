@@ -14,7 +14,6 @@ def create_global_id():
     return str(uuid.uuid4())
 
 
-
 class SurveyListPlugin(CMSPlugin):
     pass
 

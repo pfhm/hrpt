@@ -5,8 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 from .models import SurveyListPlugin, SurveyUser
 from apps.pollster.models import Survey as pollster_survey_model
 
-
-
 # Oh well, this doesn't really belong in the survey apps, should probably be in
 # the pollster app instead
 

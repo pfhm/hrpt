@@ -1,0 +1,47 @@
+{% extends "base/twocol.html" %}
+
+{% block col1 %}
+
+<button type="button" style="float:right; padding:3px; margin:3px;" id="btn_send_email">Send</button>
+<button type="button" style="float:right; padding:3px; margin:3px;" id="btn_send_email_to_me">Send only to myself</button>
+
+<script type="text/javascript">
+
+  //putting here a script... Bam! Slap! this is old school (in a bad way!)
+
+  //http://stackoverflow.com/questions/9162933/make-iframe-height-dynamic-based-on-content-inside-jquery-javascript
+  function iframeLoaded(iframe_id) {
+      var iFrameID = document.getElementById(iframe_id);
+      if(iFrameID) {
+            // here you can make the height, I delete it first, then I make it again
+            iFrameID.height = "";
+            iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+      }
+  }
+</script>
+
+
+<script type="text/javascript">
+
+        $(document).ready(function() {
+          $('#btn_send_email_to_me').click(function(){
+            console.log("fooooo");
+            $.post('/reminder/templates/send_to_myself/2/');
+          });
+        });
+
+</script>
+
+
+HTML Preview:
+<iframe src="/reminder/templates/iframed/{{id}}/" width="100%" id="htmliframe" onload="iframeLoaded('htmliframe')"></iframe>
+
+
+<br />
+<br />
+
+Plain Text preview:
+
+<iframe src="/reminder/templates/iframed/{{id}}/?plaintext=true" width="100%" id="textiframe" onload="iframeLoaded('textiframe')" ></iframe>
+
+{% endblock col1 %}

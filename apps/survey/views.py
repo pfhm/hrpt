@@ -339,7 +339,6 @@ def no_thanks(request):
 # end of sane code.
 # ------------------------------------------------------------------------------
 
-
 @login_required
 def people_edit(request):
     try:

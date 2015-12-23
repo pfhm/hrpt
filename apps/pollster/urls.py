@@ -8,12 +8,16 @@ urlpatterns = patterns('',
     url(r'^pollster/import/$', views.survey_import, name='pollster_survey_import'),
     url(r'^pollster/(?P<id>\d+)/$', views.survey_edit, name='pollster_survey_edit'),
     url(r'^pollster/(?P<id>\d+)/export/$', views.survey_export_xml, name='pollster_survey_export_xml'),
+    url(r'^pollster/(?P<id>\d+)/export-new/$', views.survey_export_new, name='pollster_survey_export_new'),
+    url(r'^pollster/import-new/$', views.survey_import_new, name='pollster_survey_import_new'),
     url(r'^pollster/(?P<id>\d+)/results/$', views.survey_results_csv, name='pollster_survey_results_csv'),
     url(r'^pollster/(?P<id>\d+)/results/extended/$', views.survey_results_csv_extended, name='pollster_survey_results_csv_extended'),
     url(r'^pollster/(?P<id>\d+)/publish/$', views.survey_publish, name='pollster_survey_publish'),
     url(r'^pollster/(?P<id>\d+)/unpublish/$', views.survey_unpublish, name='pollster_survey_unpublish'),
+    # These two rows....
     url(r'^pollster/(?P<id>\d+)/translations/$', views.survey_translation_list_or_add, name='pollster_survey_translation_list'),
     url(r'^pollster/(?P<id>\d+)/translations/$', views.survey_translation_list_or_add, name='pollster_survey_translation_add'),
+    # A minute of silence for those who red them.
     url(r'^pollster/(?P<id>\d+)/translations/(?P<language>.+)/$', views.survey_translation_edit, name='pollster_survey_translation_edit'),
     url(r'^pollster/(?P<id>\d+)/charts/$', views.survey_chart_list_or_add, name='pollster_survey_chart_list'),
     url(r'^pollster/(?P<id>\d+)/charts/$', views.survey_chart_list_or_add, name='pollster_survey_chart_add'),
@@ -25,4 +29,3 @@ urlpatterns = patterns('',
     url(r'^surveys/(?P<id>\d+)/(?P<language>.+)/$', views.survey_test, name='pollster_survey_test'),
     url(r'^$', views.survey_list, name='pollster_survey_list'),
 )
-

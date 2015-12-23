@@ -42,7 +42,7 @@
                     <group>{{ option.group }}</group>
                     <data_name>{{ option.data_name }}</data_name>
                     <is_virtual>{{ option.is_virtual|yesno:"true,false" }}</is_virtual>
-                    {% if option.is_virtual %} 
+                    {% if option.is_virtual %}
                     <virtual_type>{{ option.virtual_type.js_class }}</virtual_type>
                     <virtual_inf>{{ option.virtual_inf }}</virtual_inf>
                     <virtual_sup>{{ option.virtual_sup }}</virtual_sup>
@@ -51,7 +51,7 @@
                     <text>{{ option.text }}</text>
                     <value>{{ option.value }}</value>
                     <is_open>{{ option.is_open|yesno:"true,false" }}</is_open>
-                    {% if option.is_open %} 
+                    {% if option.is_open %}
                     <open_option_data_name>{{ option.open_option_data_name }}</open_option_data_name>
                     {% endif %}
                     <starts_hidden>{{ option.starts_hidden|yesno:"true,false" }}</starts_hidden>
@@ -63,7 +63,8 @@
     {% endfor %}
     </questions>
     <rules>
-        {% for question in survey.question_set.all %}{% for rule in question.subject_of_rules.all %}
+        {% for question in survey.question_set.all %}
+          {% for rule in question.subject_of_rules.all %}
         <rule id="rule-{{ rule.id }}">
             <type>{{rule.js_class}}</type>
             <is_sufficient>{{ rule.is_sufficient|yesno:"true,false" }}</is_sufficient>

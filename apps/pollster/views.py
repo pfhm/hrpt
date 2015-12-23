@@ -12,14 +12,434 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.views import redirect_to_login
 from django.contrib.auth import authenticate, login
 from django.conf import settings
+from django.core import serializers
+
+from django.db.models import get_model
+
+
+import itertools
+from collections import namedtuple
 
 from cms import settings as cms_settings
 from apps.survey.models import SurveyUser, SurveyIdCode
 from .utils import get_user_profile
+import json as vanilajson
 from . import models, forms, fields, parser, json
 import re, datetime, locale, csv, urlparse, urllib
 import sys
 
+hardcoded_survey= """{
+  "question_columns": [
+    {
+      "pk": 2,
+      "model": "pollster.questioncolumn",
+      "fields": {
+        "ordinal": 1,
+        "question": 87,
+        "title": "what is this"
+      }
+    },
+    {
+      "pk": 3,
+      "model": "pollster.questioncolumn",
+      "fields": {
+        "ordinal": 2,
+        "question": 87,
+        "title": "this is great"
+      }
+    },
+    {
+      "pk": 4,
+      "model": "pollster.questioncolumn",
+      "fields": {
+        "ordinal": 3,
+        "question": 87,
+        "title": "ok cool"
+      }
+    },
+    {
+      "pk": 5,
+      "model": "pollster.questioncolumn",
+      "fields": {
+        "ordinal": 1,
+        "question": 91,
+        "title": "foo"
+      }
+    },
+    {
+      "pk": 6,
+      "model": "pollster.questioncolumn",
+      "fields": {
+        "ordinal": 2,
+        "question": 91,
+        "title": "bar"
+      }
+    }
+  ],
+  "translation_column": [
+    {
+      "pk": 2,
+      "model": "pollster.translationquestioncolumn",
+      "fields": {
+        "column": 2,
+        "translation": 6,
+        "title": "bra!!!"
+      }
+    },
+    {
+      "pk": 3,
+      "model": "pollster.translationquestioncolumn",
+      "fields": {
+        "column": 3,
+        "translation": 6,
+        "title": "this is gread"
+      }
+    },
+    {
+      "pk": 4,
+      "model": "pollster.translationquestioncolumn",
+      "fields": {
+        "column": 4,
+        "translation": 6,
+        "title": "bra!!!"
+      }
+    },
+    {
+      "pk": 5,
+      "model": "pollster.translationquestioncolumn",
+      "fields": {
+        "column": 5,
+        "translation": 6,
+        "title": "foo"
+      }
+    },
+    {
+      "pk": 6,
+      "model": "pollster.translationquestioncolumn",
+      "fields": {
+        "column": 6,
+        "translation": 6,
+        "title": "bar"
+      }
+    }
+  ],
+  "rules": [],
+  "question_rows": [
+    {
+      "pk": 5,
+      "model": "pollster.questionrow",
+      "fields": {
+        "ordinal": 1,
+        "question": 87,
+        "title": "n oidea"
+      }
+    },
+    {
+      "pk": 6,
+      "model": "pollster.questionrow",
+      "fields": {
+        "ordinal": 2,
+        "question": 87,
+        "title": "aahahah i seee"
+      }
+    },
+    {
+      "pk": 7,
+      "model": "pollster.questionrow",
+      "fields": {
+        "ordinal": 1,
+        "question": 91,
+        "title": "fooring"
+      }
+    },
+    {
+      "pk": 8,
+      "model": "pollster.questionrow",
+      "fields": {
+        "ordinal": 2,
+        "question": 91,
+        "title": "thebaring"
+      }
+    }
+  ],
+  "translations": [
+    {
+      "pk": 6,
+      "model": "pollster.translationsurvey",
+      "fields": {
+        "status": "PUBLISHED",
+        "survey": 3,
+        "language": "sv",
+        "title": "Test"
+      }
+    }
+  ],
+  "translation_option": [
+    {
+      "pk": 5083,
+      "model": "pollster.translationoption",
+      "fields": {
+        "text": "I foo it",
+        "translation": 6,
+        "option": 386,
+        "description": "ddddd"
+      }
+    },
+    {
+      "pk": 5085,
+      "model": "pollster.translationoption",
+      "fields": {
+        "text": "dunno who foos it",
+        "translation": 6,
+        "option": 388,
+        "description": "ddddd"
+      }
+    },
+    {
+      "pk": 5084,
+      "model": "pollster.translationoption",
+      "fields": {
+        "text": "do you?",
+        "translation": 6,
+        "option": 387,
+        "description": "asd"
+      }
+    }
+  ],
+  "translation_questions": [
+    {
+      "pk": 86,
+      "model": "pollster.translationquestion",
+      "fields": {
+        "translation": 6,
+        "error_message": "",
+        "question": 59,
+        "description": "",
+        "title": ""
+      }
+    },
+    {
+      "pk": 140,
+      "model": "pollster.translationquestion",
+      "fields": {
+        "translation": 6,
+        "error_message": "",
+        "question": 87,
+        "description": "text text text",
+        "title": "matriz!!!!"
+      }
+    },
+    {
+      "pk": 143,
+      "model": "pollster.translationquestion",
+      "fields": {
+        "translation": 6,
+        "error_message": "",
+        "question": 91,
+        "description": "",
+        "title": ""
+      }
+    }
+  ],
+  "subject_options": [],
+  "translation_row": [
+    {
+      "pk": 5,
+      "model": "pollster.translationquestionrow",
+      "fields": {
+        "translation": 6,
+        "title": "vet inte",
+        "row": 5
+      }
+    },
+    {
+      "pk": 6,
+      "model": "pollster.translationquestionrow",
+      "fields": {
+        "translation": 6,
+        "title": "I seee",
+        "row": 6
+      }
+    },
+    {
+      "pk": 7,
+      "model": "pollster.translationquestionrow",
+      "fields": {
+        "translation": 6,
+        "title": "fooing",
+        "row": 7
+      }
+    },
+    {
+      "pk": 8,
+      "model": "pollster.translationquestionrow",
+      "fields": {
+        "translation": 6,
+        "title": "thebaring",
+        "row": 8
+      }
+    }
+  ],
+  "survey_questions": [
+    {
+      "pk": 59,
+      "model": "pollster.question",
+      "fields": {
+        "ordinal": 0,
+        "regex": "",
+        "data_name": "timestamp",
+        "is_mandatory": false,
+        "description": "",
+        "data_type": 6,
+        "title": "Compilation Date",
+        "open_option_data_type": null,
+        "visual": "",
+        "survey": 3,
+        "error_message": "",
+        "starts_hidden": false,
+        "type": "builtin",
+        "tags": ""
+      }
+    },
+    {
+      "pk": 87,
+      "model": "pollster.question",
+      "fields": {
+        "ordinal": 2,
+        "regex": "",
+        "data_name": "wut_matrix",
+        "is_mandatory": false,
+        "description": "",
+        "data_type": 2,
+        "title": "",
+        "open_option_data_type": null,
+        "visual": "",
+        "survey": 3,
+        "error_message": "",
+        "starts_hidden": false,
+        "type": "matrix-entry",
+        "tags": ""
+      }
+    },
+    {
+      "pk": 91,
+      "model": "pollster.question",
+      "fields": {
+        "ordinal": 3,
+        "regex": "",
+        "data_name": "matt",
+        "is_mandatory": false,
+        "description": "",
+        "data_type": 2,
+        "title": "",
+        "open_option_data_type": null,
+        "visual": "select",
+        "survey": 3,
+        "error_message": "",
+        "starts_hidden": false,
+        "type": "matrix-select",
+        "tags": ""
+      }
+    }
+  ],
+  "survey": [
+    {
+      "pk": 3,
+      "model": "pollster.survey",
+      "fields": {
+        "status": "PUBLISHED",
+        "updated": "2015-12-14T13:08:05",
+        "parent": null,
+        "created": "2015-11-04T12:11:24",
+        "title": "test",
+        "version": "",
+        "shortname": "test"
+      }
+    }
+  ],
+  "object_options": [],
+  "translation_survey": [
+    {
+      "pk": 6,
+      "model": "pollster.translationsurvey",
+      "fields": {
+        "status": "PUBLISHED",
+        "survey": 3,
+        "language": "sv",
+        "title": "Test"
+      }
+    }
+  ],
+  "options": [
+    {
+      "pk": 386,
+      "model": "pollster.option",
+      "fields": {
+        "ordinal": 1,
+        "virtual_type": null,
+        "virtual_sup": "",
+        "group": "",
+        "description": "",
+        "column": null,
+        "text": "I foo it",
+        "clone": null,
+        "question": 91,
+        "is_virtual": false,
+        "is_open": false,
+        "value": "22",
+        "starts_hidden": false,
+        "virtual_regex": "",
+        "virtual_inf": "",
+        "row": null
+      }
+    },
+    {
+      "pk": 388,
+      "model": "pollster.option",
+      "fields": {
+        "ordinal": 2,
+        "virtual_type": null,
+        "virtual_sup": "",
+        "group": "",
+        "description": "",
+        "column": null,
+        "text": "I don't know who foos it",
+        "clone": null,
+        "question": 91,
+        "is_virtual": false,
+        "is_open": false,
+        "value": "111",
+        "starts_hidden": false,
+        "virtual_regex": "",
+        "virtual_inf": "",
+        "row": null
+      }
+    },
+    {
+      "pk": 387,
+      "model": "pollster.option",
+      "fields": {
+        "ordinal": 3,
+        "virtual_type": null,
+        "virtual_sup": "",
+        "group": "",
+        "description": "",
+        "column": null,
+        "text": "somedude fooes it",
+        "clone": null,
+        "question": 91,
+        "is_virtual": false,
+        "is_open": false,
+        "value": "1",
+        "starts_hidden": false,
+        "virtual_regex": "",
+        "virtual_inf": "",
+        "row": null
+      }
+    }
+  ]
+}
+"""
 
 #This stuff is ... intense
 # get rid of it!
@@ -340,6 +760,111 @@ def survey_export_xml(request, id):
     response = render(request, 'pollster/survey_export.xml', { "survey": survey }, content_type='application/xml')
     response['Content-Disposition'] = 'attachment; filename=survey-export-%d-%s.xml' % (survey.id, format(now, '%Y%m%d%H%M'))
     return response
+
+
+#TODO: put the body of these functions in their own module
+
+@staff_member_required
+def survey_export_new(request, id):
+    survey = get_object_or_404(models.Survey, pk=id)
+    survey_questions = survey.question_set.all()
+    survey_translations = survey.translationsurvey_set.all()
+
+    all_options_nested          = [ question.option_set.all() for question in survey_questions ]
+    all_transl_questions_nested = [ trasl_survey.translationquestion_set.all() for trasl_survey in survey_translations ]
+    all_transl_columns_nested   = [ trasl_survey.translationquestioncolumn_set.all() for trasl_survey in survey_translations ]
+    all_transl_rows_nested      = [ translationsurvey.translationquestionrow_set.all() for translationsurvey in survey_translations ]
+    all_transl_options_nested   = [ translationsurvey.translationoption_set.all() for translationsurvey in survey_translations ]
+    all_rules_nested            = [ q.subject_of_rules.all() for q in survey_questions ]
+    all_rows_nested             = [ q.rows for q in survey_questions ]
+    all_columns_nested          = [ q.columns for q in survey_questions ]
+
+
+    all_options          = flaten(all_options_nested)
+    all_transl_questions = flaten(all_transl_questions_nested)
+    all_transl_columns   = flaten(all_transl_columns_nested)
+    all_transl_rows      = flaten(all_transl_rows_nested)
+    all_transl_options   = flaten(all_transl_options_nested)
+    all_rules            = flaten(all_rules_nested)
+    all_rows             = flaten(all_rows_nested)
+    all_columns          = flaten(all_columns_nested)
+
+
+    subject_options_nested = [ rule.subject_options.all() for rule in all_rules ]
+    object_options_nested  = [ rule.object_options.all() for rule in all_rules ]
+
+    subject_options = flaten(subject_options_nested)
+    object_options = flaten(object_options_nested)
+
+
+    serialize_this = {
+        'survey':                 serializers.serialize("python", [survey],),
+        'survey_questions':       serializers.serialize("python", survey_questions),
+        'survey_translations':    serializers.serialize("python", survey_translations),
+        'options' :               serializers.serialize("python", all_options),
+        "question_rows" :         serializers.serialize("python", all_rows),
+        "question_columns" :      serializers.serialize("python", all_columns),
+        "rules":                  serializers.serialize("python", all_rules),
+        "translation_survey" :    serializers.serialize("python", survey_translations),
+        "translation_questions" : serializers.serialize("python", all_transl_questions),
+        "translation_column" :    serializers.serialize("python", all_transl_columns),
+        "translation_row" :       serializers.serialize("python", all_transl_rows),
+        "translation_option":     serializers.serialize("python", all_transl_options),
+        "subject_options":        serializers.serialize("python", subject_options),
+        "object_options":         serializers.serialize("python", object_options),
+        #TODO: details of all rules
+    }
+
+    serialized_survey = vanilajson.dumps(serialize_this,indent=2)
+    return HttpResponse(serialized_survey, content_type="application/json")
+
+
+
+def survey_import_new(request):
+    ModelKey = namedtuple('ModelKey', ['model', 'pk'])
+    # we use this to map old keys present in the exported file, to new keys obtained on insert
+    keys = {}
+
+    data_from_json = vanilajson.loads(hardcoded_survey) #TODO implement this
+
+    survey = data_from_json['survey'][0]
+
+    #TODO: we have the fully qualified model type, so we can use import lib instead... or maybe just hardcode it... dunno :s
+    new_survey = models.Survey(**survey['fields'])
+    new_survey.save()
+
+    key = ModelKey(model="pollster.survey", pk=survey['pk'])
+    keys[key] = new_survey.pk
+
+    survey_questions = data_from_json['survey_questions']
+
+    for serialized_instance in survey_questions:
+
+        del serialized_instance["fields"]["survey"]
+        serialized_instance["fields"]["data_type_id"] = serialized_instance["fields"]["data_type"]
+        del serialized_instance["fields"]["data_type"]
+        serialized_instance["fields"]["survey_id"] = new_survey.pk
+        news_instance_id = _save_model_from_serialized_data(serialized_instance)
+        key = ModelKey(serialized_instance['model'], serialized_instance['pk'])
+        keys[key] = news_instance_id
+
+    return HttpResponse("so far so good")
+
+
+
+
+def _save_model_from_serialized_data(serialized_instance):
+    ModelClass = get_model(*serialized_instance["model"].split('.',1) )
+    new_instance = ModelClass(**serialized_instance["fields"])
+    new_instance.save()
+    return new_instance.id
+
+
+
+
+def flaten(list2d):
+    return list(itertools.chain.from_iterable(list2d))
+
 
 @staff_member_required
 def survey_import(request):

@@ -81,6 +81,7 @@ class NewsLetter(TranslatableModel):
     class Meta:
         ordering = ("-date",)
 
+
 class MockNewsLetter(object):
     def __init__(self):
         self.date = self.sender_email= self.sender_name = self.subject = self.message = None
@@ -101,7 +102,6 @@ class ReminderError(models.Model):
         return self.user.email
 
 
-### WOW, I though this could not be for real...
 def get_settings():
     if ReminderSettings.objects.count() == 0:
         return None
@@ -137,7 +137,11 @@ def get_upcoming_dates(now):
             to_yield -= 1
         current += datetime.timedelta(settings.get_interval())
 
+
+
 def get_default_for_reminder(language):
+    import sys
+    print >> sys.stderr,msg
     if NewsLetterTemplate.objects.language(language).filter(is_default_reminder=True).count() == 0:
         return None
     return NewsLetterTemplate.objects.language(language).filter(is_default_reminder=True)[0]
@@ -176,8 +180,14 @@ def get_prev_reminder_date(now, published=True):
 
 def get_prev_reminder(now, published=True):
     """Returns the reminder (newsletter/tempate) to send at a given moment
-    as a dict with languages as keys, or None if there is no such reminder"""
+    as a dict with languages as keys, or None if there is no such reminder
+
+    TODO: while we don't remove i18n alltogether, this should actually fail on the absense of the desired translation
+    instead of returning None. There is no reason not to fail if indeed we are in a situation where an error has occurred.
+    """
+
     def p(qs):
+        """ some intense stuff going on right here..."""
         if published:
             return qs.filter(published=published)
         return qs
@@ -209,8 +219,15 @@ def get_prev_reminder(now, published=True):
 
     return result
 
-def get_reminders_for_users(now, users):
+def get_reminders_for_users(users):
+    """
+    returns: user, reminder, language
+    """
+
+    now = datetime.datetime.now()
     reminder_dict = get_prev_reminder(now)
+
+    #this reminder dics is a template
     if not reminder_dict:
         raise StopIteration()
 

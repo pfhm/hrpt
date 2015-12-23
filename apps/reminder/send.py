@@ -2,7 +2,6 @@ import datetime
 import smtplib
 from traceback import format_exc
 
-from django.db.models import Q
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template import Context, loader, Template
@@ -13,75 +12,73 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.utils.translation import activate
 
-import loginurl.utils
+import loginurl.utils #This is a third party app. Just letting you know...
+
 from apps.partnersites.context_processors import site_context
 
 from .models import get_reminders_for_users, UserReminderInfo, ReminderError
+
+SITE_URL = 'http://%s' % Site.objects.get_current().domain
 
 def create_message(user, message, language):
     if language:
         activate(language)
 
-    t = Template(message.message)
-    c = {
-        'url': get_url(user),
-        'unsubscribe_url': get_login_url(user, reverse('apps.reminder.views.unsubscribe')),
+    inner_template = Template(message.message)
+
+    survey_list_url = 'http://%s%s' % (Site.objects.get_current(), "/survey/thanks/")
+
+    context_dict = {
+        'url': get_self_authenticating_url(user, survey_list_url),
+        'unsubscribe_url': get_self_authenticating_url(user, reverse('apps.reminder.views.unsubscribe')),
         'first_name': user.first_name,
         'last_name': user.last_name,
         'username': user.username,
     }
-    c.update(site_context())
-    c['site_logo'] = get_site_url() + c['site_logo']
-    inner = t.render(Context(c))
+    context_dict.update(site_context())
+    context_dict['site_logo'] = SITE_URL + context_dict['site_logo']
 
-    t = loader.get_template('reminder/message.html')
-    c['inner'] = inner
-    c['MEDIA_URL'] = get_media_url()
-    c['message'] = message
-    return inner, t.render(Context(c))
+    inner = inner_template.render(Context(context_dict))
+
+    context_dict['inner'] = inner
+    context_dict['MEDIA_URL'] = '%s%s' % (SITE_URL, settings.MEDIA_URL)
+    context_dict['message'] = message
+
+    context = Context(context_dict)
+    templ = loader.get_template('reminder/message.html')
+
+    return inner, templ.render(context)
 
 def send_reminders(fake=False):
-    now = datetime.datetime.now()
+    active_users = User.objects.filter(is_active=True)
 
-    i = -1
-    for i, (user, message, language) in enumerate(get_reminders_for_users(now, User.objects.filter(is_active=True))):
+    # returns user, message, language
+    reminders = get_reminders_for_users(active_users)
+    i = 0
+    for (user, message, language) in reminders:
         if not fake:
-            send(now, user, message, language)
+            send_message_and_update_reminder_info(user, message, language)
         else:
-            print 'sending', user.email, message.subject
+            print 'Fake sending', user.email, message.subject
+        i = i + 1
+    return i
 
-    return i + 1
 
-def get_site_url():
-    return 'http://%s' % Site.objects.get_current().domain
-
-def get_media_url():
-    return '%s%s' % (get_site_url(), settings.MEDIA_URL)
-
-def get_url(user):
-    return get_login_url(user, get_survey_url())
-
-def get_login_url(user, next):
+def get_self_authenticating_url(user, target_url):
     expires = datetime.datetime.now() + datetime.timedelta(days=30)
-
     usage_left = 5
-    key = loginurl.utils.create(user, usage_left, expires, next)
-
+    key = loginurl.utils.create(user, usage_left, expires, target_url)
     domain = Site.objects.get_current()
     path = reverse('loginurl-index').strip('/')
     loginurl_base = 'http://%s/%s' % (domain, path)
-
     return '%s/%s' % (loginurl_base, key.key)
 
-def get_survey_url():
-    domain = Site.objects.get_current()
-    path = reverse('apps.survey.views.index')
-    return 'http://%s%s' % (domain, path)
 
-def send(now, user, message, language, is_test_message=False):
+
+def send_message_and_update_reminder_info(user, message, language, is_test_message=False):
+    now = datetime.datetime.now()
     text_base, html_content = create_message(user, message, language)
     text_content = strip_tags(text_base)
-
     msg = EmailMultiAlternatives(
         message.subject,
         text_content,
