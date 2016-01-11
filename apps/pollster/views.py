@@ -162,18 +162,7 @@ hardcoded_survey= """{
       }
     }
   ],
-  "translations": [
-    {
-      "pk": 6,
-      "model": "pollster.translationsurvey",
-      "fields": {
-        "status": "PUBLISHED",
-        "survey": 3,
-        "language": "sv",
-        "title": "Test"
-      }
-    }
-  ],
+  "object_options": [],
   "translation_option": [
     {
       "pk": 5083,
@@ -280,6 +269,18 @@ hardcoded_survey= """{
       }
     }
   ],
+  "survey_translations": [
+    {
+      "pk": 6,
+      "model": "pollster.translationsurvey",
+      "fields": {
+        "status": "PUBLISHED",
+        "survey": 3,
+        "language": "sv",
+        "title": "Test"
+      }
+    }
+  ],
   "survey_questions": [
     {
       "pk": 59,
@@ -357,7 +358,6 @@ hardcoded_survey= """{
       }
     }
   ],
-  "object_options": [],
   "translation_survey": [
     {
       "pk": 6,
@@ -819,47 +819,75 @@ def survey_export_new(request, id):
     return HttpResponse(serialized_survey, content_type="application/json")
 
 
+#TODO: move this up?
+ModelKey = namedtuple('ModelKey', ['model', 'pk'])
+
 
 def survey_import_new(request):
-    ModelKey = namedtuple('ModelKey', ['model', 'pk'])
+
     # we use this to map old keys present in the exported file, to new keys obtained on insert
-    keys = {}
+    keys_save = {}
 
     data_from_json = vanilajson.loads(hardcoded_survey) #TODO implement this
 
-    survey = data_from_json['survey'][0]
+    _save_model_from_serialized_data(data_from_json['survey'][0])
 
-    #TODO: we have the fully qualified model type, so we can use import lib instead... or maybe just hardcode it... dunno :s
-    new_survey = models.Survey(**survey['fields'])
-    new_survey.save()
-
-    key = ModelKey(model="pollster.survey", pk=survey['pk'])
-    keys[key] = new_survey.pk
-
-    survey_questions = data_from_json['survey_questions']
-
-    for serialized_instance in survey_questions:
-
-        del serialized_instance["fields"]["survey"]
-        serialized_instance["fields"]["data_type_id"] = serialized_instance["fields"]["data_type"]
-        del serialized_instance["fields"]["data_type"]
-        serialized_instance["fields"]["survey_id"] = new_survey.pk
-        news_instance_id = _save_model_from_serialized_data(serialized_instance)
-        key = ModelKey(serialized_instance['model'], serialized_instance['pk'])
-        keys[key] = news_instance_id
-
-    return HttpResponse("so far so good")
+    # survey questions
 
 
+    #TODO: make this a list of named tupples instead
+
+    import_entities_definition = (
+        ("survey" ,[] ),
+        ("survey_questions": ["survey", "data_type"]),
+        ("survey_translations":["survey"]),
+        ('options', ["question"]), # TODO: possibly row and column, check this
+        ("question_rows", ["question"]),
+        ("question_columns", ["question"]),
+        ("rules", []), #TODO: this!!!!
+        ("translation_survey", ["survey"]),
+        ("translation_questions", ["translation", "survey"]),
+        ("translation_column", ["translation", "column"]),
+        ("translation_row", ["translation", "row"]),
+        ("translation_option", ["translation", "option"]),
+        ("subject_options", []), #TODO
+        ("object_options", []), #TODO
+        #TODO. go throught tables and check if any missing
+    )
 
 
-def _save_model_from_serialized_data(serialized_instance):
+
+    for definition in import_entities_definition:
+        for serialized_instance in data_from_json[definition[0]]:
+            keys_save = _save_model_from_serialized_data(serialized_instance, definition[1], keys_save)
+
+    return HttpResponse(str(keys_save))
+
+
+def _resolve_foreign_key(serialized_instance, key_list):
+    for key in key_list:
+        new_key = key + "_id"
+
+        lookup_key = ModelKey("pollster." + key, serialized_instance["fields"][key])
+
+        if lookup_key in keys_save:
+            value = keys_save[lookup_key]
+        else:
+            value = serialized_instance["fields"][key]
+
+        serialized_instance["fields"][new_key] = value
+        del serialized_instance["fields"][key]
+    return serialized_instance
+
+
+def _save_model_from_serialized_data(serialized_instance, foreign_key_field_names, keys_save):
     ModelClass = get_model(*serialized_instance["model"].split('.',1) )
+    serialized_instance = _resolve_foreign_key(foreign_key_field_names)
     new_instance = ModelClass(**serialized_instance["fields"])
     new_instance.save()
-    return new_instance.id
-
-
+    key = ModelKey(serialized_instance['model'], serialized_instance['pk'])
+    keys_save[key] = new_instance.id
+    return keys_save
 
 
 def flaten(list2d):
