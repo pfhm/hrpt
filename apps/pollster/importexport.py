@@ -24,7 +24,7 @@ M2MDef = namedtuple('M2MDef', ['field_name', 'model'])
 IMPORT_ENTITIES_DEFINITIONS = [
     EntityDef(
         "survey_questions",
-        ["survey", "data_type", FKeyDef("open_option_data_type", 'QuestionDataType')],
+        ["survey", "data_type", FKeyDef("open_option_data_type", 'questiondatatype')],
         []
     ),
     EntityDef(
@@ -44,27 +44,19 @@ IMPORT_ENTITIES_DEFINITIONS = [
     ),
     EntityDef(
         'options',
-        ["question", FKeyDef("virtual_type", "VirtualOptionType")], # TODO: possibly row and column, check this
+        [
+            "question",
+            FKeyDef("virtual_type", "virtualoptiontype")], # TODO: possibly row and column, check this
         []
     ),
-    # EntityDef(
-    #     "question_rows",
-    #     ["question"],
-    #     []
-    # ),
-    # EntityDef(
-    #     "question_columns",
-    #     ["question"],
-    #     []
-    # ),
     EntityDef( #TODO: check if any
         "subject_options",
         [
             "question",
-            FKeyDef("clone" ,"Option"),
-            FKeyDef("row", "QuestionRow"),
-            FKeyDef("column","QuestionColumn"),
-            FKeyDef("virtual_type", "VirtualOptionType")
+            FKeyDef("clone" ,"option"),
+            FKeyDef("row", "questionrow"),
+            FKeyDef("column","questioncolumn"),
+            FKeyDef("virtual_type", "virtualoptiontype")
         ],
         []
     ),
@@ -72,51 +64,59 @@ IMPORT_ENTITIES_DEFINITIONS = [
         "object_options",
         [
             "question",
-            FKeyDef("clone" ,"Option"),
-            FKeyDef("row", "QuestionRow"),
-            FKeyDef("column","QuestionColumn"),
-            FKeyDef("virtual_type", "VirtualOptionType")
+            FKeyDef("clone" ,"option"),
+            FKeyDef("row", "questionrow"),
+            FKeyDef("column","questioncolumn"),
+            FKeyDef("virtual_type", "virtualoptiontype")
         ],
         []),
     EntityDef(
         "rules",
         [
-            FKeyDef("rule_type", "RuleType"),
-            FKeyDef("subject_question", "Question"),
-            FKeyDef("object_question", "Question"),
+            FKeyDef("rule_type", "ruletype"),
+            FKeyDef("subject_question", "question"),
+            FKeyDef("object_question", "question"),
         ],
         [
-            M2MDef("object_options", "Option"),
-            M2MDef("subject_options", "Option")
+            M2MDef("object_options", "option"),
+            M2MDef("subject_options", "option")
         ]
     ),
     EntityDef(
         "translation_questions",
         [
             "question",
-            FKeyDef("translation", "TranslationSurvey")
+            FKeyDef("translation", "translationsurvey")
         ],
         []
     ),
     EntityDef(
         "translation_column",
-        ["translation", "column"],
+        [
+            FKeyDef("translation", "translationsurvey"),
+            FKeyDef("column", "questioncolumn")
+        ],
         []
     ),
     EntityDef(
         "translation_row",
-        ["translation", "row"],
+        [
+            FKeyDef("translation", "translationsurvey"),
+            FKeyDef("row", "questionrow")
+        ],
         []
     ),
     EntityDef(
         "translation_option",
-        ["translation", "option"],
+        [
+            "option",
+            FKeyDef("translation", "translationsurvey")
+        ],
         []
     ),
 
     #TODO. go throught tables and check if any missing
 ]
-
 
 
 def create_survey_from_json(json_string):
@@ -140,11 +140,14 @@ def create_survey_from_json(json_string):
 
     for definition in normalized_import_defs:
 
-        #specialPrint("definition: " + str(definition))
+        specialPrint("###########definition.json_key: " + str(definition.json_key) + "########################")
+        specialPrint("")
         for serialized_instance in data_from_json[definition.json_key]:
-            #specialPrint("definition.json_key: " + str(definition.json_key))
-            #specialPrint("serialized_instance->" + str(serialized_instance))
+            specialPrint("SERIALIZED_INSTANCE:\n" + pprint.pformat(serialized_instance))
+            specialPrint("")
             keys_save = _save_model_from_serialized_data(serialized_instance, definition, keys_save)
+            specialPrint("KEYS_SAVE:\n "+ pprint.pformat(keys_save))
+            specialPrint("")
 
 
 
@@ -213,6 +216,7 @@ def _normalize_fkey_definitions(import_entities_definition):
         #not suported for many to many relations, could be easily added if needed
         normalized_ed = EntityDef(ed.json_key, normalized_fkeys, ed.m2ms)
         normalized_entity_definitions.append(normalized_ed)
+    #TODO: convert all model names to lowercase.
     return normalized_entity_definitions
 
 
