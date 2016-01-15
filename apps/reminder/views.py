@@ -9,7 +9,10 @@ from django.conf import settings
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 
-from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetterTemplate
+from django.contrib.auth.models import User
+
+from .models import UserReminderInfo, get_upcoming_dates, get_prev_reminder, get_settings, get_default_for_reminder, NewsLetterTemplate, QueuedEmail, ManualNewsLetter
+
 from .send import create_message, send_message_and_update_reminder_info
 import sys
 
@@ -75,6 +78,55 @@ def send_test_email_to_myself(request,newsletter_template_id):
         msg.send()
 
     return HttpResponse("Nothing to see here!!")
+
+
+@staff_member_required
+def send_manual_newsletter(request,template_id):
+    if request.method == "POST":
+
+        template = NewsLetterTemplate.objects.language("sv").get(id=template_id)
+
+        #TODO: ver melhor o que esta funcao faz
+        #text_base, html_content = create_message(request.user, template, "sv")
+        #text_content = strip_tags(text_base)
+
+        #TODO: create a ManualNewsLetter by copying all the necessairy fields from the template
+
+        active_users = User.objects.filter(is_active=True)
+
+        for user in active_users:
+
+            # Aqui eh mesmo template... a funcao create user requere um objecto do tipo template
+
+            text_base, html_content = create_message(user, template, "sv")
+            text_content = strip_tags(text_base)
+
+            #TODO: popular esta merdonga, ver o que falta, timestamps e o carago
+            QueuedEmail(**botar_aqui_um_dict_com_os_fields)
+            QueuedEmail.save()
+
+    return HttpResponse("Nothing to see here!!")
+
+
+
+
+
+"""
+def send_reminders(fake=False):
+    active_users = User.objects.filter(is_active=True)
+
+    # returns user, message, language
+    reminders = get_reminders_for_users(active_users)
+    i = 0
+    for (user, message, language) in reminders:
+        if not fake:
+            send_message_and_update_reminder_info(user, message, language)
+        else:
+            print 'Fake sending', user.email, message.subject
+        i = i + 1
+    return i
+"""
+
 
 
 

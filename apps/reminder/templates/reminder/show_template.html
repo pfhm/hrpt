@@ -2,6 +2,56 @@
 
 {% block col1 %}
 
+<style>
+#queued_mails_info {
+  background: #ECC;
+  margin: 3px;
+  width: 100%;
+  display: none;
+  float: left;
+  color: #511;
+  padding:10px
+}
+
+
+#queued_mails_fail {
+  background: #ECC;
+  margin: 3px;
+  width: 100%;
+  display: none;
+  float: left;
+  color: #511;
+  padding:10px
+}
+
+
+#queued_mails_complete{
+  background: #CEC;
+  margin: 3px;
+  width: 100%;
+  display: none;
+  float: left;
+  color: #151;
+  padding:10px
+}
+
+</style>
+
+<div id="queued_mails_info">
+  Wait a moment while the emails are being queued. Do not close this page!
+</div>
+
+<div id="queued_mails_complete">
+  All emails have been queued! We may now close this page!
+</div>
+
+<div id="queued_mails_fail">
+  An error have ocurred while queueing the emails.
+  Inspect the database table reminder_manualnewsletter.
+</div>
+
+
+
 <button type="button" style="float:right; padding:3px; margin:3px;" id="btn_send_email">Send</button>
 <button type="button" style="float:right; padding:3px; margin:3px;" id="btn_send_email_to_me">Send only to myself</button>
 
@@ -23,11 +73,38 @@
 
 <script type="text/javascript">
 
+        $( document ).ajaxError(function() {
+          $("#queued_mails_info").slideUp("slow");
+          $("#queued_mails_fail").slideDown("slow");
+        });
+
         $(document).ready(function() {
+
           $('#btn_send_email_to_me').click(function(){
-            console.log("fooooo");
-            $.post('/reminder/templates/send_to_myself/2/');
+            console.log("Sending email to yourself!!! weeehhh");
+            //TODO: change to authenticated user
+            $.post('/reminder/templates/send_to_myselfFFFF/2/');
           });
+
+          $("#btn_send_email").click(
+            function(){
+              if(confirm("Queue all emails? This will add one email per user in the email queue.")){
+
+                $("#queued_mails_info").slideDown("slow");
+
+                var xhr = $.post('/reminder/templates/send_to_myself/2/',function(){
+                  $("#queued_mails_info").slideUp("slow");
+                  $("#queued_mails_complete").slideDown("slow");
+                });
+
+              }
+              else{
+                console.log("canceled!");
+              }
+            }
+
+          );
+
         });
 
 </script>
