@@ -339,6 +339,13 @@ def no_thanks(request):
 # end of sane code.
 # ------------------------------------------------------------------------------
 
+
+#The code from here on, is for managing multiple people with the same account
+# something we don't use anymore and realistically speaking, would be too much
+# work to pull back this undocumented and possibly unfinished code  back to life.
+
+#TODO: remove from here on. Of course, this includes removing urls routes and such
+
 @login_required
 def people_edit(request):
     try:

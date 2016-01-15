@@ -10,6 +10,15 @@ from nani.models import TranslatableModel, TranslatedFields
 
 from apps.survey.models import SurveyUser
 
+
+"""
+IMPORTANT:
+When reading this file, it is necessairy  to take into account that quite a lot of
+stuff is actually duplicated functionality!
+Scroll down to the part marked with "NEW CODE" to read more.
+"""
+
+
 # A short word on terminology:
 # "Reminder" may refer to a NewsLetter object, or simply a placeholder
 # that's based on the is_default_reminder NewsLetterTemplate
@@ -184,10 +193,12 @@ def get_prev_reminder(now, published=True):
 
     TODO: while we don't remove i18n alltogether, this should actually fail on the absense of the desired translation
     instead of returning None. There is no reason not to fail if indeed we are in a situation where an error has occurred.
+
+    TODO: seriously refactor this..., this p() stuff rinks. Break this up in two functions, what is the point of
+    calleing p() a zillion times on the same argument?
     """
 
     def p(qs):
-        """ some intense stuff going on right here..."""
         if published:
             return qs.filter(published=published)
         return qs
@@ -273,3 +284,76 @@ def get_reminders_for_users(users):
         if info.last_reminder < reminder.date:
             yield user, reminder, language
             yielded += 1
+
+
+################################################################################
+### N E W    C O D E   ! ! !  ##################################################
+################################################################################
+
+"""
+The email sending was too intricate and most of its functionality depends on database
+registers that are used as state storages rather than actual data.
+For example, decisions of weather to send or not an email, are based on colums like "last active"
+or is_active.
+This makes it impossible to track what happened once in the future.
+
+We leave the current system as is, and create a new one by side, but we do use the ExistingModel
+and the UserReminderInfo model. Although we specifically avoid writting to the latest.
+
+"""
+
+class ManualNewsLetter(models.Model):
+    """
+    This is to hold a log of all the instances where we sent a mass email.
+    We had the NewsLetter model in the previous implementation, but it was a bag
+    of lethal snakes. Let's create a new table only for manual email sends and
+    keep it to the point.
+
+    This should contain everything that ihat is necessairy to create an email
+    message (except from the the recipient of course)Most fields are copied from
+    the origin template.
+    A reference to the template where the contents originated from is ketpt anyway
+    for reference
+    """
+    timestamp = models.DateTimeField(auto_now_add=True)
+    sender_email = models.EmailField()
+    sender_name = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    template = models.ForeignKey(NewsLetterTemplate)
+
+    def __unicode__(self):
+        return self.subject
+
+    class Meta:
+        ordering = ("-timestamp",)
+
+
+class FailedEmail(models.Model):
+    """
+    We already had ReminderError but let's leave it alone
+    """
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User)
+    manual_newsletter = models.ForeignKey(ManualNewsLetter)
+    message = models.CharField(max_length=255)
+    traceback = models.TextField()
+
+    def __unicode__(self):
+        return self.message
+
+    class Meta:
+        ordering = ("-timestamp",)
+
+
+class QueuedEmail(models.Model):
+    user = models.ForeignKey(User)
+    manual_newsletter = models.ForeignKey(ManualNewsLetter)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class SentEmail(models.Model):
+    user = models.ForeignKey(User)
+    manual_newsletter = models.ForeignKey(ManualNewsLetter)
+    queued = models.DateTimeField()
+    sent = models.DateTimeField(auto_now_add=True)
