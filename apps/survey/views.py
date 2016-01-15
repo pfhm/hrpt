@@ -286,7 +286,7 @@ def show_survey(request, survey_short_name):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/survey-successfully-submited')
+            return HttpResponseRedirect('/valkommen/?gid=%s' % survey_user.global_id)
         else:
             survey.set_form(form)
 
