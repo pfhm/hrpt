@@ -81,17 +81,36 @@ def send_test_email_to_myself(request,newsletter_template_id):
 
 
 @staff_member_required
-def send_manual_newsletter(request,template_id):
+def send_manual_newsletter(request,newsletter_template_id):
     if request.method == "POST":
-
-        template = NewsLetterTemplate.objects.language("sv").get(id=template_id)
-
+  
+        template = NewsLetterTemplate.objects.language("sv").get(id=newsletter_template_id)
+        
+        #TODO: continue here!!!!!
+        
         #TODO: ver melhor o que esta funcao faz
         #text_base, html_content = create_message(request.user, template, "sv")
         #text_content = strip_tags(text_base)
 
         #TODO: create a ManualNewsLetter by copying all the necessairy fields from the template
+        manual_newsletter_dict = {}
+        manual_newsletter_dict["foo"] = "bar
+        
+        
+        
+        """
+        here are the fields copy the data from the template and put it in the dict above,
+        then save the manual newslatter and then queue rendering a message per user    
+        timestamp = models.DateTimeField(auto_now_add=True)
+        sender_email = models.EmailField()
+        sender_name = models.CharField(max_length=255)
+        subject = models.CharField(max_length=255)
+        message = models.TextField()
+        template = models.ForeignKey(NewsLetterTemplate)
+        """"
 
+        new_manual_newsletter_record = ManualNewsLetter()
+        
         active_users = User.objects.filter(is_active=True)
 
         for user in active_users:
