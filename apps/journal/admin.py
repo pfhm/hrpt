@@ -8,7 +8,7 @@ from nani.admin import TranslatableAdmin
 
 from .forms import EntryForm
 from .models import Entry, Category
-    
+
 class EntryAdmin(TranslatableAdmin):
     """
         Admin for entry
@@ -29,14 +29,14 @@ class EntryAdmin(TranslatableAdmin):
 
     save_as = True
     save_on_top = True
-    
+
     def make_published(self, request, queryset):
         """
             Marks selected news items as published
         """
         rows_updated = queryset.update(is_published=True)
-        self.message_user(request, ungettext('%(count)d newsitem was published', 
-                                            '%(count)d newsitems where published', 
+        self.message_user(request, ungettext('%(count)d newsitem was published',
+                                            '%(count)d newsitems where published',
                                             rows_updated) % {'count': rows_updated})
     make_published.short_description = _('Publish selected news')
 
@@ -45,8 +45,8 @@ class EntryAdmin(TranslatableAdmin):
             Marks selected news items as unpublished
         """
         rows_updated =queryset.update(is_published=False)
-        self.message_user(request, ungettext('%(count)d newsitem was unpublished', 
-                                            '%(count)d newsitems where unpublished', 
+        self.message_user(request, ungettext('%(count)d newsitem was unpublished',
+                                            '%(count)d newsitems where unpublished',
                                             rows_updated) % {'count': rows_updated})
     make_unpublished.short_description = _('Unpublish selected news')
 

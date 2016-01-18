@@ -83,46 +83,48 @@ def send_test_email_to_myself(request,newsletter_template_id):
 @staff_member_required
 def send_manual_newsletter(request,newsletter_template_id):
     if request.method == "POST":
-  
+
         template = NewsLetterTemplate.objects.language("sv").get(id=newsletter_template_id)
-        
+
         #TODO: continue here!!!!!
-        
+
         #TODO: ver melhor o que esta funcao faz
         #text_base, html_content = create_message(request.user, template, "sv")
         #text_content = strip_tags(text_base)
 
-        #TODO: create a ManualNewsLetter by copying all the necessairy fields from the template
         manual_newsletter_dict = {}
-        manual_newsletter_dict["foo"] = "bar
-        
-        
-        
-        """
-        here are the fields copy the data from the template and put it in the dict above,
-        then save the manual newslatter and then queue rendering a message per user    
-        timestamp = models.DateTimeField(auto_now_add=True)
-        sender_email = models.EmailField()
-        sender_name = models.CharField(max_length=255)
-        subject = models.CharField(max_length=255)
-        message = models.TextField()
-        template = models.ForeignKey(NewsLetterTemplate)
-        """"
+        manual_newsletter_dict['sender_email'] = template.sender_email
+        manual_newsletter_dict['sender_name'] = template.sender_name
+        manual_newsletter_dict['subject'] = template.subject
+        manual_newsletter_dict['message'] = template.message
+        manual_newsletter_dict['template'] = template
 
-        new_manual_newsletter_record = ManualNewsLetter()
-        
+        new_manual_newsletter_record = ManualNewsLetter(**manual_newsletter_dict)
+        new_manual_newsletter_record.save()
+
         active_users = User.objects.filter(is_active=True)
 
         for user in active_users:
 
-            # Aqui eh mesmo template... a funcao create user requere um objecto do tipo template
+            specialPrint(user)
 
+            queued_email = QueuedEmail(user=user, manual_newsletter=new_manual_newsletter_record)
+            queued_email.save()
+
+
+            """
             text_base, html_content = create_message(user, template, "sv")
             text_content = strip_tags(text_base)
 
-            #TODO: popular esta merdonga, ver o que falta, timestamps e o carago
-            QueuedEmail(**botar_aqui_um_dict_com_os_fields)
-            QueuedEmail.save()
+            msg = EmailMultiAlternatives(
+                message.subject,
+                text_content,
+                "%s <%s>" % (message.sender_name, message.sender_email),
+                [user.email],
+            )
+
+            msg.attach_alternative(html_content, "text/html")
+            """
 
     return HttpResponse("Nothing to see here!!")
 
@@ -144,6 +146,37 @@ def send_reminders(fake=False):
             print 'Fake sending', user.email, message.subject
         i = i + 1
     return i
+
+
+
+
+def send_message_and_update_reminder_info(user, message, language, is_test_message=False):
+    now = datetime.datetime.now()
+    text_base, html_content = create_message(user, message, language)
+    text_content = strip_tags(text_base)
+    msg = EmailMultiAlternatives(
+        message.subject,
+        text_content,
+        "%s <%s>" % (message.sender_name, message.sender_email),
+        [user.email],
+    )
+
+    msg.attach_alternative(html_content, "text/html")
+
+    try:
+        msg.send()
+    except Exception, e:
+        ReminderError.objects.create(
+            user=user,
+            message=unicode(e),
+            traceback=format_exc(),
+        )
+
+    if not is_test_message:
+        info = UserReminderInfo.objects.get(user=user)
+        info.last_reminder = now
+        info.save()
+
 """
 
 
