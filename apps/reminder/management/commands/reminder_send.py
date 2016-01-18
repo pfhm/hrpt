@@ -22,17 +22,6 @@ class Command(BaseCommand):
         #This is just a hack around a database row of ReminderSettings.
         #There is always only one row in this table
 
-        """
-        id serial NOT NULL,
-        site_id integer NOT NULL,
-        send_reminders boolean NOT NULL,
-        begin_date timestamp with time zone,
-        "interval" integer,
-        currently_sending boolean NOT NULL,
-        batch_size integer,
-        last_process_started_date timestamp with time zone NOT NULL,
-        """
-
         reminder_settings = get_settings()
 
         if reminder_settings.currently_sending and\
