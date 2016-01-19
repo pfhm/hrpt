@@ -72,9 +72,9 @@ class Command(BaseCommand):
                 except Exception, e:
 
                     failed_email = FailedEmail(
-                        user = queued_email.user
-                        manual_newsletter = nl_instance
-                        message = str(e)[:254]
+                        user = queued_email.user,
+                        manual_newsletter = nl_instance,
+                        message = str(e)[:254],
                         traceback = traceback.format_exc()
                     )
 
