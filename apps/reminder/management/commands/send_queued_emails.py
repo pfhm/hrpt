@@ -2,9 +2,11 @@ from optparse import make_option
 from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand
+from django.core.mail import EmailMultiAlternatives
 
 from ...models import FailedEmail, QueuedEmail, SentEmail
 from django.utils.html import strip_tags
+from ...send import create_message
 
 import time
 import traceback
@@ -45,16 +47,20 @@ class Command(BaseCommand):
 
                 nl_instance = queued_email.manual_newsletter
 
+                # we can still use the object after the delete(),
+                #just delete its row in the database because it will be copied
+                # either to reminder_failed_email or reminder_sent_email
+                queued_email.delete()
+
                 try:
-                    #TODO: import create_message
-                    text_base, html_content = create_message(queued_email.user, nl_instance.message, "sv")
+                    text_base, html_content = create_message(queued_email.user, nl_instance, "sv")
                     text_content = strip_tags(text_base)
 
                     msg = EmailMultiAlternatives(
                         queued_email.manual_newsletter.subject,
                         text_content,
                         "%s <%s>" % (nl_instance.sender_name, nl_instance.sender_name),
-                        [user.email],
+                        [queued_email.user.email],
                     )
 
                     msg.attach_alternative(html_content, "text/html")
@@ -62,12 +68,12 @@ class Command(BaseCommand):
 
                     sent_email = SentEmail(
                         user=queued_email.user,
-                        manual_newsletter=nl_instance
-                        #queued is not really necessairy because the manualnewsletter has this
+                        manual_newsletter=nl_instance,
+                        queued = nl_instance.timestamp #TODO: remove this from the model
                     )
                     sent_email.save()
 
-                    queued_email.delete()
+
 
                 except Exception, e:
 

@@ -355,5 +355,5 @@ class QueuedEmail(models.Model):
 class SentEmail(models.Model):
     user = models.ForeignKey(User)
     manual_newsletter = models.ForeignKey(ManualNewsLetter)
-    queued = models.DateTimeField()
+    queued = models.DateTimeField() #Oh well... this field  was not necessairy #TODO: remove it
     sent = models.DateTimeField(auto_now_add=True)
