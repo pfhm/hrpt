@@ -9,7 +9,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     ('^admin/cms/page/18/edit-plugin/[0-9]+/.*escapeHtml.*icon_src.*/$', 'django.views.defaults.page_not_found'),
-
+    (r'^admin/manual-newsletters/', include('apps.reminder.nladminurls')),
     (r'^admin/surveys-editor/', include('apps.pollster.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^surveys/(?P<survey_shortname>.+)/charts/(?P<chart_shortname>.+)/tile/(?P<z>\d+)/(?P<x>\d+)/(?P<y>\d+)$', 'apps.pollster.views.map_tile', name='pollster_map_tile'),
