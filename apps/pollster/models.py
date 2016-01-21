@@ -22,6 +22,10 @@ def specialPrint(msg):
 DEG_TO_RAD = pi/180
 RAD_TO_DEG = 180/pi
 
+
+#TODO: remove this. Seriously, this should either work or not work.
+#TODO: actuallym the whole map thing should go away. There is no reason to be in
+# this file. 
 try:
     import mapnik2 as mapnik
     mapnik_version = 2
@@ -31,7 +35,7 @@ except:
         mapnik_version = 1
     except ImportError:
         mapnik_version = None
-        warnings.warn("No working version for library 'mapnik' found. Continuing without mapnik")
+        # warnings.warn("No working version for library 'mapnik' found. Continuing without mapnik")
 
 
 SURVEY_STATUS_CHOICES = (

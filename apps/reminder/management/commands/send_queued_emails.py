@@ -42,7 +42,7 @@ class Command(BaseCommand):
         print  str(QueuedEmail.objects.count()) + " Emails in queue"
 
         while True:
-            a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")[:200]
+            a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")
             for queued_email in a_bunch_of_queued_email:
 
                 nl_instance = queued_email.manual_newsletter
@@ -59,7 +59,7 @@ class Command(BaseCommand):
                     msg = EmailMultiAlternatives(
                         queued_email.manual_newsletter.subject,
                         text_content,
-                        "%s <%s>" % (nl_instance.sender_name, nl_instance.sender_name),
+                        "%s <%s>" % (nl_instance.sender_name, nl_instance.sender_email),
                         [queued_email.user.email],
                     )
 

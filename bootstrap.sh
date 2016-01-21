@@ -162,4 +162,12 @@ ALTER TABLE geometry_columns OWNER TO $DB_USERNAME;
 ALTER VIEW geography_columns OWNER TO $DB_USERNAME;
 EOF
 
+echo "\nCHMODing the media directory... \n" #TODO: 777 is too extreme, what to put in here?
+chmod -R 777 /var/www/hrpt/media
+
+echo "\nInstalling and starting the email queue processing service...\n"
+cp scripts/send_queued_emails.conf /etc/init/
+
+service start send_queued_emails
+
 echo "The end."
