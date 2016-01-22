@@ -73,9 +73,9 @@
 
 <script type="text/javascript">
 
-        
-        
-      
+
+
+
         var url_pieces = window.location.pathname.split("/");
         var template_id = url_pieces[url_pieces.length -2];
 
@@ -90,7 +90,7 @@
           $('#btn_send_email_to_me').click(function(){
             console.log("Sending email to yourself!!! weeehhh");
             //TODO: change to authenticated user
-            $.post('/reminder/templates/send_to_myself/' + template_id +'/');
+            $.post('/admin/manual-newsletters/templates/send_to_myself/' + template_id +'/', {csrfmiddlewaretoken: '{{ csrf_token }}'});
           });
 
           $("#btn_send_email").click(
@@ -99,9 +99,14 @@
 
                 $("#queued_mails_info").slideDown("slow");
 
-                var xhr = $.post('/reminder/send_manual_newsletter/' + template_id + '/',function(){
-                  $("#queued_mails_info").slideUp("slow");
-                  $("#queued_mails_complete").slideDown("slow");
+                $.ajax({
+                  type: "POST",
+                  url: '/admin/manual-newsletters/send_manual_newsletter/' + template_id + '/',
+                  data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                  success: function(){
+                     $("#queued_mails_info").slideUp("slow");
+                     $("#queued_mails_complete").slideDown("slow");
+                   },
                 });
 
               }
@@ -118,7 +123,7 @@
 
 
 HTML Preview:
-<iframe src="/reminder/templates/iframed/{{id}}/" width="100%" id="htmliframe" onload="iframeLoaded('htmliframe')"></iframe>
+<iframe src="/admin/manual-newsletters/templates/iframed/{{id}}/" width="100%" id="htmliframe" onload="iframeLoaded('htmliframe')"></iframe>
 
 
 <br />
@@ -126,6 +131,6 @@ HTML Preview:
 
 Plain Text preview:
 
-<iframe src="/reminder/templates/iframed/{{id}}/?plaintext=true" width="100%" id="textiframe" onload="iframeLoaded('textiframe')" ></iframe>
+<iframe src="/admin/manual-newsletters/templates/iframed/{{id}}/?plaintext=true" width="100%" id="textiframe" onload="iframeLoaded('textiframe')" ></iframe>
 
 {% endblock col1 %}
