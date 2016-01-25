@@ -25,7 +25,7 @@ RAD_TO_DEG = 180/pi
 
 #TODO: remove this. Seriously, this should either work or not work.
 #TODO: actuallym the whole map thing should go away. There is no reason to be in
-# this file. 
+# this file.
 try:
     import mapnik2 as mapnik
     mapnik_version = 2
@@ -177,12 +177,6 @@ class Survey(models.Model):
             return self.translation.title
         return self.title
 
-
-    # jesus christ, just check the freaking status whenever you need it
-
-    # this is great, blurring the clearity for what is a an attribute and what is dynamically computed
-    #..... /sarcasm
-
     @property
     def is_draft(self):
         return self.status == 'DRAFT'
@@ -201,8 +195,6 @@ class Survey(models.Model):
 
     @property
     def questions(self):
-        # WOW... setting the save form for every questions
-        # this is really bad code
         for question in self.question_set.all():
             question.set_form(self.form)
             question.set_translation_survey(self.translation_survey)
@@ -234,10 +226,9 @@ class Survey(models.Model):
         return _get_or_default(participation)
 
 
-    # this was already a model, you know....
+    ####### IMPORTANT!!!! #####
     def as_model(self):
         fields = []
-
         if self.update:
             fields.extend(Survey._id_existing_field)
 
@@ -329,6 +320,8 @@ class Survey(models.Model):
 
             #note that this should contain a means to getch the data, not the data itself
             # but oh well, let's leave it be for now
+
+            #TODO: add is_staf_member... or just filter them out
             possible_extra_fields = {
                 "email" : rowUser.email,
                 "is_active": rowUser.is_active,

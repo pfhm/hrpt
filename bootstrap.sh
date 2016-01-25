@@ -133,7 +133,6 @@ cat local_settings.py.in \
     > local_settings.py
 
 
-
 echo "\nCreating database $DB_NAME ... "
 psql --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME template1 <<EOF
 	DROP DATABASE IF EXISTS $DB_NAME ;
@@ -171,3 +170,8 @@ cp scripts/send_queued_emails.conf /etc/init/
 service start send_queued_emails
 
 echo "The end."
+
+
+#TODO: prompt to set up apache
+
+#TODO : add for loop to run migrations
