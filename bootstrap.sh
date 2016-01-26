@@ -70,7 +70,13 @@ source ./bin/activate
 
 # these two modules need these flags because they wouldn't be installable otherwise
 # AFAIUI they have dependencied on external hosted modules and/or do not provide checksums
-pip install PIL --allow-external PIL --allow-unverified PIL
+
+#pip install PIL --allow-external PIL --allow-unverified PIL
+
+
+tar xvfz binaryblobs/Imaging-1.1.7.tar.gz -C /var/www/hrpt/binaryblobs/
+/var/www/hrpt/bin/python binaryblobs/Imaging-1.1.7/setup.py install
+
 pip install postmarkup --allow-external postmarkup --allow-unverified postmarkup
 
 #now  install the rest of the pip dependencies
@@ -118,7 +124,6 @@ while [ -z "$line" ] ; do
     if [ "$line" != "YES" ] ; then line="" ; fi
 done
 
-
 echo "\nGenerating settings.py ... "
 cat local_settings.py.in \
     | sed -e "s/@DB_ENGINE@/django.db.backends.$DJANGO_ENGINE/g" \
@@ -132,6 +137,8 @@ cat local_settings.py.in \
     | sed -e "s%@TIMEZONE@%$TIMEZONE%g" \
     > local_settings.py
 
+echo "*:*:$DB_NAME:$DB_USERNAME:$DB_PASSWORD" >> ~/.pgpass
+chmod 600 ~/.pgpass
 
 echo "\nCreating database $DB_NAME ... "
 psql --host=$DB_HOST --username=$POSTGRES_SUPERUSER_USERNAME template1 <<EOF
@@ -145,6 +152,12 @@ EOF
 echo "\nLoading the data from SQL dump file into the database...\n"
 psql --username=$POSTGRES_SUPERUSER_USERNAME --host=$DB_HOST $DB_NAME < /var/www/hrpt/db_dump.sql
 
+
+echo "\nRunning database migrations...\n"
+for f in `find /var/www/hrpt/db/migrations -name "*.sql" | sort`; do
+  echo -e " * \e[32mRuning $f ...\e[0m"
+  psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME -f $f
+done
 
 echo "\nLoading postgis data into the database ...\n"
 postgis="/usr/share/postgresql/9.3/contrib/postgis-2.1/postgis.sql"
@@ -169,9 +182,5 @@ cp scripts/send_queued_emails.conf /etc/init/
 
 service start send_queued_emails
 
-echo "The end."
-
-
-#TODO: prompt to set up apache
-
-#TODO : add for loop to run migrations
+echo "\nThe end! Site ready to run with django built in webserver"
+echo "\nYou can set up apache web server instead by running scripts/setup_apache.sh\n"
