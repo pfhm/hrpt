@@ -68,12 +68,7 @@ cd /var/www/hrpt
 virtualenv --no-site-packages .
 source ./bin/activate
 
-# these two modules need these flags because they wouldn't be installable otherwise
-# AFAIUI they have dependencied on external hosted modules and/or do not provide checksums
-
-#pip install PIL --allow-external PIL --allow-unverified PIL
-
-
+#PIL and postmarkup
 tar xvfz binaryblobs/Imaging-1.1.7.tar.gz -C /var/www/hrpt/binaryblobs/
 /var/www/hrpt/bin/python binaryblobs/Imaging-1.1.7/setup.py install
 
@@ -156,7 +151,7 @@ psql --username=$POSTGRES_SUPERUSER_USERNAME --host=$DB_HOST $DB_NAME < /var/www
 echo "\nRunning database migrations...\n"
 for f in `find /var/www/hrpt/db/migrations -name "*.sql" | sort`; do
   echo -e " * \e[32mRuning $f ...\e[0m"
-  psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME -f $f
+  psql --username=$DB_USERNAME --host=$DB_HOST $DB_NAME -w -f $f
 done
 
 echo "\nLoading postgis data into the database ...\n"
@@ -179,8 +174,7 @@ chmod -R 777 /var/www/hrpt/media
 
 echo "\nInstalling and starting the email queue processing service...\n"
 cp scripts/send_queued_emails.conf /etc/init/
-
-service start send_queued_emails
+service send_queued_emails start
 
 echo "\nThe end! Site ready to run with django built in webserver"
 echo "\nYou can set up apache web server instead by running scripts/setup_apache.sh\n"
