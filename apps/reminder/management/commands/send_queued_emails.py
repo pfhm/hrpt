@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 nl_instance = queued_email.manual_newsletter
 
                 # we can still use the object after the delete(),
-                #just delete its row in the database because it will be copied
+                # just delete its row in the database because it will be copied
                 # either to reminder_failed_email or reminder_sent_email
                 queued_email.delete()
 
@@ -72,8 +72,6 @@ class Command(BaseCommand):
                         queued = nl_instance.timestamp #TODO: remove this from the model
                     )
                     sent_email.save()
-
-
 
                 except Exception, e:
 

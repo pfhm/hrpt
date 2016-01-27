@@ -11,6 +11,8 @@ LANGUAGE="sv"
 COUNTRY="sv"
 
 
+# SYSTEM SETUP ===================================================================
+
 # Just doing some basic cleanup and update after a fresh install
 rm /var/lib/apt/lists/* -vf
 apt-get  clean
@@ -48,6 +50,8 @@ sed -i 's/PermitRootLogin\swithout-password/PermitRootLogin yes/g' /etc/ssh/sshd
 sudo service ssh reload
 
 
+# PYTHON DEPENDENCIES ============================================================
+
 #Unfortunately, this fragile hack is necessairy in order for the following links to be
 # properly set up. This depends on the output of 'uname -i'.
 
@@ -77,6 +81,7 @@ pip install postmarkup --allow-external postmarkup --allow-unverified postmarkup
 #now  install the rest of the pip dependencies
 pip install -r /var/www/hrpt/requirements.txt
 
+#DATABASE ========================================================================
 
 # Lets now	create a superuser for postgres
 # you'll be prompt for a password
@@ -171,6 +176,7 @@ EOF
 
 echo "\nCHMODing the media directory... \n" #TODO: 777 is too extreme, what to put in here?
 chmod -R 777 /var/www/hrpt/media
+
 
 echo "\nInstalling and starting the email queue processing service...\n"
 cp scripts/send_queued_emails.conf /etc/init/

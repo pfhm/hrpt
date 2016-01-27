@@ -20,3 +20,7 @@ EOF
 
 echo "\nLoading the data from SQL dump file into the database...\n"
 psql --username=admin --host=localhost epiwork -f /home/p/livdump.sql  2>&1 > out.sql
+
+
+# create a dump (example)
+#  pg_dump --username=epiwork --host=localhost epiwork --insert

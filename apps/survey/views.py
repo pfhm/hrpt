@@ -90,7 +90,7 @@ def thanks(request):
     # if we're here, he have an idcode!!!!! And a survey_user!!!
     # the road was long and painful
 
-    return HttpResponseRedirect('/valkommen/?gid=%s' % survey_user.global_id)
+    return HttpResponseRedirect('/sv/valkommen/?gid=%s' % survey_user.global_id)
 
 
 
@@ -286,7 +286,7 @@ def show_survey(request, survey_short_name):
 
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/valkommen/?gid=%s' % survey_user.global_id)
+            return HttpResponseRedirect('/sv/valkommen/?gid=%s' % survey_user.global_id)
         else:
             survey.set_form(form)
 
@@ -336,7 +336,8 @@ def no_thanks(request):
     """
     return HttpResponseRedirect('https://reply.surveygenerator.com/go.aspx?U=22277ih5v4DGFEKv7gWjt')
 
-# end of sane code.
+
+# end of [relatively] sane code.
 # ------------------------------------------------------------------------------
 
 
