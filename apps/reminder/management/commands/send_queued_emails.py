@@ -10,6 +10,7 @@ from ...send import create_message
 
 import time
 import traceback
+import datetime
 
 
 
@@ -38,10 +39,10 @@ class Command(BaseCommand):
             print "FailedEmail: " + str(FailedEmail.objects.count())
             return None
 
-        print "Started email sending job..."
-        print  str(QueuedEmail.objects.count()) + " Emails in queue"
+        self.timestamped_print("Started email sending job...")
 
         while True:
+            self.timestamped_print(str(QueuedEmail.objects.count()) + " Emails in queue")
             a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")[:30] #EvS 2016/01/27 changed limit to 30 per interval
             for queued_email in a_bunch_of_queued_email:
 
@@ -51,6 +52,8 @@ class Command(BaseCommand):
                 #just delete its row in the database because it will be copied
                 # either to reminder_failed_email or reminder_sent_email
                 queued_email.delete()
+
+                self.timestamped_print("Sending email to %s <%s>" % (nl_instance.sender_name, nl_instance.sender_email))
 
                 try:
                     text_base, html_content = create_message(queued_email.user, nl_instance, "sv")
@@ -75,6 +78,7 @@ class Command(BaseCommand):
 
 
                 except Exception, e:
+                    self.timestamped_print("FAILED!!!! Stacktrace saved to reminder_failedemail database table")
 
                     failed_email = FailedEmail(
                         user = queued_email.user,
@@ -85,6 +89,13 @@ class Command(BaseCommand):
 
                     failed_email.save()
 
+            interval_seconds = 60
+            self.timestamped_print("Wait " + str(interval_seconds) + " seconds...")
+            time.sleep() #EvS 2016/01/27 changed from 3s to 60s to prevent peak
 
-            print "Wait sixty seconds..."
-            time.sleep(60) #EvS 2016/01/27 changed from 3s to 60s to prevent peak
+
+
+        def timestamped_print(self, message):
+            timenow = datetime.fromtimestamp(time.time())
+            timenow_readable_string = timenow.strftime('%Y-%m-%d %H:%M:%S)
+            print "[" + timenow_readable_string + "]" + str(message)
