@@ -45,18 +45,12 @@ class Command(BaseCommand):
             self.timestamped_print(str(QueuedEmail.objects.count()) + " Emails in queue")
             a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")[:30] #EvS 2016/01/27 changed limit to 30 per interval
             for queued_email in a_bunch_of_queued_email:
-
-                nl_instance = queued_email.manual_newsletter
-
-                # we can still use the object after the delete(),
-                #just delete its row in the database because it will be copied
-                # either to reminder_failed_email or reminder_sent_email
-                queued_email.delete()
-
-                user_email_string = queued_email.user.email.encode('utf8', 'ignore')
-                self.timestamped_print("Sending email to " + user_email_string + "(id:" + str(queued_email.user.id) +")")
-
                 try:
+                    nl_instance = queued_email.manual_newsletter
+
+                    user_email_string = queued_email.user.email.encode('utf8', 'ignore')
+                    self.timestamped_print("Sending email to " + user_email_string + "(id:" + str(queued_email.user.id) +")")
+
                     text_base, html_content = create_message(queued_email.user, nl_instance, "sv")
                     text_content = strip_tags(text_base)
 
@@ -75,6 +69,8 @@ class Command(BaseCommand):
                         manual_newsletter=nl_instance,
                         queued = nl_instance.timestamp #TODO: remove this from the model
                     )
+
+                    queued_email.delete()
                     sent_email.save()
 
 
