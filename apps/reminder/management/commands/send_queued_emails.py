@@ -42,7 +42,7 @@ class Command(BaseCommand):
         print  str(QueuedEmail.objects.count()) + " Emails in queue"
 
         while True:
-            a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")
+            a_bunch_of_queued_email = QueuedEmail.objects.order_by("id")[:30] #EvS 2016/01/27 changed limit to 30 per interval
             for queued_email in a_bunch_of_queued_email:
 
                 nl_instance = queued_email.manual_newsletter
@@ -85,5 +85,5 @@ class Command(BaseCommand):
                     failed_email.save()
 
 
-            print "Wait three seconds..."
-            time.sleep(3)
+            print "Wait sixty seconds..."
+            time.sleep(60) #EvS 2016/01/27 changed from 3s to 60s to prevent peak
