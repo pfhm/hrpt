@@ -49,11 +49,12 @@ class Command(BaseCommand):
                 nl_instance = queued_email.manual_newsletter
 
                 # we can still use the object after the delete(),
-                # just delete its row in the database because it will be copied
+                #just delete its row in the database because it will be copied
                 # either to reminder_failed_email or reminder_sent_email
                 queued_email.delete()
 
-                self.timestamped_print("Sending email to %s <%s>" % (nl_instance.sender_name, nl_instance.sender_email))
+                user_email_string = queued_email.user.email.encode('utf8', 'ignore')
+                self.timestamped_print("Sending email to " + user_email_string + "(id:" + str(queued_email.user.id) +")")
 
                 try:
                     text_base, html_content = create_message(queued_email.user, nl_instance, "sv")
@@ -75,6 +76,7 @@ class Command(BaseCommand):
                         queued = nl_instance.timestamp #TODO: remove this from the model
                     )
                     sent_email.save()
+
 
                 except Exception, e:
                     self.timestamped_print("FAILED!!!! Stacktrace saved to reminder_failedemail database table")
