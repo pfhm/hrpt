@@ -39,7 +39,7 @@ class Command(BaseCommand):
             print "FailedEmail: " + str(FailedEmail.objects.count())
             return None
 
-        self.timestamped_print("Started email sending job...")
+        self.timestamped_print("======= Started email sending job...")
 
         while True:
             self.timestamped_print(str(QueuedEmail.objects.count()) + " Emails in queue")
@@ -90,11 +90,10 @@ class Command(BaseCommand):
 
             interval_seconds = 60
             self.timestamped_print("Wait " + str(interval_seconds) + " seconds...")
-            time.sleep() #EvS 2016/01/27 changed from 3s to 60s to prevent peak
+            time.sleep(interval_seconds) #EvS 2016/01/27 changed from 3s to 60s to prevent peak
 
 
 
-        def timestamped_print(self, message):
-            timenow = datetime.fromtimestamp(time.time())
-            timenow_readable_string = timenow.strftime('%Y-%m-%d %H:%M:%S)
-            print "[" + timenow_readable_string + "]" + str(message)
+    def timestamped_print(self, message):
+        timenow_readable_string = time.strftime('%Y-%m-%d %H:%M:%S')
+        print "[" + timenow_readable_string + "] " + str(message)
