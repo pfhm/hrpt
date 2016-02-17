@@ -1119,7 +1119,7 @@ table, th, td {
     border-color: ligth-grey;
 }
 th, td {
-    padding: 5px;
+    padding: 3px;
     text-align: left;
 }
 table#t01 tr:nth-child(even) {
