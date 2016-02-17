@@ -1,6 +1,6 @@
 /*
 Template Name: Influenzanet Main
-Description: CSS for deployment on the Influenzanet website 
+Description: CSS for deployment on the Influenzanet website
 Author: Antwan Wiersma (http://www.prime-creation.com/)
 Version: 1.0
 */
@@ -126,7 +126,7 @@ div.influenzabarcontent{
  line-height: 1.3em;
  background: #444444;
  border-left: 12px solid #ffffff;
- border-right: 12px solid #ffffff; 
+ border-right: 12px solid #ffffff;
 }
 
 a.jsclose {
@@ -148,7 +148,7 @@ a:link.close {
  margin: 14px 0 0 0;
  padding: 12px;
  color: #000000;
- background: #ffffff;	
+ background: #ffffff;
 }
 
 #epiwork a {
@@ -185,7 +185,7 @@ a:link.close {
  background: #444444;
  border-top: 3px solid #ffffff;
  border-left: 12px solid #ffffff;
- border-right: 12px solid #ffffff; 
+ border-right: 12px solid #ffffff;
 }
 
 
@@ -455,19 +455,19 @@ ul.map_buttons li {
  float: left;
  margin: 0 0 0 4px;
  background: #939393;
- border-left: 1px solid #cccccc;   
- border-top: 1px solid #cccccc;   
+ border-left: 1px solid #cccccc;
+ border-top: 1px solid #cccccc;
  border-right: 1px solid #cccccc;
 }
 
 #menubar li:first-child {
- margin: 0;   
+ margin: 0;
 }
 
 #menubar li a {
  display: block;
  height: 2em;
- padding: 0 8px 0 8px; 
+ padding: 0 8px 0 8px;
  text-decoration: none;
  color: #ffffff;
  font-weight: bold;
@@ -484,7 +484,7 @@ ul.map_buttons li {
 
 #menubar li.selected,
 #menubar li.ancestor {
- padding: 0 0px 0 0px; 
+ padding: 0 0px 0 0px;
  background: #9900ab;
  font-weight: bold;
  color: #ffffff;
@@ -521,7 +521,7 @@ ul.map_buttons li {
 }
 
 #submenu li:first-child {
- margin: 0 0 0 3px;  
+ margin: 0 0 0 3px;
 }
 
 
@@ -636,7 +636,7 @@ input#commentsubmit:hover {
 }
 
 #box img {
- margin: 30px 0 -24px -9px;	
+ margin: 30px 0 -24px -9px;
 }
 
 #box h1 {
@@ -835,7 +835,7 @@ input#commentsubmit:hover {
 
 #footercol1 {
  width: 340px;
- padding: 0 60px 16px 50px; 
+ padding: 0 60px 16px 50px;
 }
 
 #footer img {
@@ -853,7 +853,7 @@ input#commentsubmit:hover {
 
 #footer h2 {
  margin: 12px 0 21px 0;
- padding: 0; 
+ padding: 0;
 }
 
 #footerclose {
@@ -904,7 +904,7 @@ hr {
  margin: 0;
  padding: 0;
  font-weight: bold;
- line-height: 1.5em; 
+ line-height: 1.5em;
 }
 
 #col1 > ul > li,
@@ -938,18 +938,18 @@ hr {
 }
 
 #col1 img.left {
- margin: 0 14px 0 0; 
+ margin: 0 14px 0 0;
 }
 
 #col1 img.right {
- margin: 0 0 0 14px; 
+ margin: 0 0 0 14px;
 }
 
-#col2 a { 
+#col2 a {
  display: block;
 }
 
-#col2 p a { 
+#col2 p a {
  display: inline;
 }
 
@@ -1112,7 +1112,26 @@ table.imagetable td {
  border-color: #999999;
 }
 
-
+/* Tables EvS 2016-02-17 */
+table, th, td {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    border-color: ligth-grey;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+   background-color:#fff;
+}
+/* table#t01 th	{
+    background-color: black;
+    color: white;
+*/
 /* Journal */
 
 ul.archive {
@@ -1122,7 +1141,7 @@ ul.archive {
 
 div.entries {
  margin: 14px 0 0 0;
- font-size: 0.8em; 
+ font-size: 0.8em;
 }
 
 #col1 div.entries h2 {
@@ -1136,7 +1155,7 @@ div.entries {
 }
 
 .entries hr {
- margin: 12px 0 8px 0; 
+ margin: 12px 0 8px 0;
 }
 
 div.pagination {
@@ -1148,11 +1167,11 @@ div.pagination {
 }
 
 .journalimg {
- margin: 0 10px 2px 0;	
+ margin: 0 10px 2px 0;
 }
 
 .journalimgsmall {
- margin: -2px 10px 2px 0;	
+ margin: -2px 10px 2px 0;
 }
 
 
@@ -1243,7 +1262,7 @@ div#page {
 .forum textarea { -moz-transition: none; box-shadow: none;}
 
 .forum a:focus,
-.forum input:focus, 
+.forum input:focus,
 .forum textarea:focus {
  outline: none;
  border-color: transparent; box-shadow: none;}
@@ -1354,4 +1373,3 @@ div#page {
 .forum footer {
  display: none;
 }
-
