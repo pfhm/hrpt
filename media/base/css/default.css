@@ -1119,7 +1119,7 @@ table, th, td {
     border-color: ligth-grey;
 }
 th, td {
-    padding: 3px;
+    padding: 1px 10px 1px 10px;
     text-align: left;
 }
 table#t01 tr:nth-child(even) {
@@ -1127,6 +1127,10 @@ table#t01 tr:nth-child(even) {
 }
 table#t01 tr:nth-child(odd) {
    background-color:#fff;
+}
+table#t02 {
+    background-color: #fff;
+    font-size: 11px
 }
 /* table#t01 th	{
     background-color: black;
