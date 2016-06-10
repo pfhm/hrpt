@@ -25,7 +25,7 @@ TIME_ZONE = 'Europe/Amsterdam'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'sv'
 # LANGUAGE_CODE = 'en'
-FORMAT_MODULE_PATH = 'hrpt.formats'
+FORMAT_MODULE_PATH = 'formats'
 
 # For checking postcodes etc.
 # Use ISO3166 two-letter country code
