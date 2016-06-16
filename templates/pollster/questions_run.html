@@ -15,6 +15,11 @@
         {% trans "Please check the answers for the highlighted questions." %}
     </div>
     {% endif %}
+    <noscript>
+      OBS! JavaScript måste vara påslaget för att kunna besvara enkäten, annars syns inte hela enkäten.<br>
+      Testa gärna att besvara enkäten via en annan webbläsare eller slå på JavaScript.<br>
+      Kontakta <a href="mailto:halsorapport@folkhalsomyndigheten.se">halsorapport@folkhalsomyndigheten.se</a> om du behöver hjälp
+    </noscript>
     {% for question in survey.questions %}
     {% if question.is_builtin %}
     <div class="question-wrapper clearfix" style="display:none">
