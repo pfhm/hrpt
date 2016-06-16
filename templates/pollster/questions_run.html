@@ -16,9 +16,11 @@
     </div>
     {% endif %}
     <noscript>
-      OBS! JavaScript måste vara påslaget för att kunna besvara enkäten, annars syns inte hela enkäten.<br>
-      Testa gärna att besvara enkäten via en annan webbläsare eller slå på JavaScript.<br>
-      Kontakta <a href="mailto:halsorapport@folkhalsomyndigheten.se">halsorapport@folkhalsomyndigheten.se</a> om du behöver hjälp
+      <div class="survey-error-message">
+        OBS! JavaScript måste vara påslaget för att kunna besvara enkäten, annars syns inte hela enkäten.
+        Testa gärna att besvara enkäten via en annan webbläsare eller slå på JavaScript.
+        Kontakta <a href="mailto:halsorapport@folkhalsomyndigheten.se">halsorapport@folkhalsomyndigheten.se</a> om du behöver hjälp.
+      </div>
     </noscript>
     {% for question in survey.questions %}
     {% if question.is_builtin %}
