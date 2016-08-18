@@ -10,10 +10,10 @@ import sys
 
 class TweakedDefaultBackend(DefaultBackend):
     """
-    This is a twaked version of the default registration backend. It leaves almost
-    everything untouched, except that is saved activation keys that have been used_act_key
+    This is a tweaked version of the default registration backend. It leaves almost
+    everything untouched, except that it saves the activation keys that have been used "used_act_key"
     in other table.
-    This way, we solve the condusing situation where a user would already have
+    This way, we solve the confusing situation where a user would already have
     activated his account, but would get an activation error message.
     """
     def activate(self, request, activation_key):

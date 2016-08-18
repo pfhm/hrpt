@@ -35,7 +35,7 @@ msgid "%(count)d newsitem was published"
 msgid_plural "%(count)d newsitems where published"
 msgstr[0] "%(count)d nyheten publicerades"
 msgstr[1] "%(count)d nyheter publicerades"
- 
+
 #: apps/journal/admin.py:46
 msgid "Publish selected news"
 msgstr "Publicera valda nyheter"
@@ -882,7 +882,7 @@ msgstr "Symptomenkäten"
 
 msgid "The flu status of each participant is based on the symptoms you reported. <strong>This is not a medical diagnosis</strong>. We only ask for symptoms indicative of influenza-like illness, common colds, gastric flu. If you have other symptoms, or you are at all worried, we recommend that you contact your doctor or telephone NHS Direct / NHS 24."
 msgstr ""
-"Hälsorapport ger varje rapport en sjukdomskategori. I hälsologgen kan du se hur din rapport tolkats varje vecka." 
+"Hälsorapport ger varje rapport en sjukdomskategori. I hälsologgen kan du se hur din rapport tolkats varje vecka."
 " Det är viktigt att tänka på att sjukdomskategorin som systemet ger dig inte är en diagnos från en läkare, "
 "utan baseras bara på hur du svarat på frågorna i veckoenkäten. Kontakta din vårdcentral eller 1177 Vårdguiden "
 "om du behöver råd eller vård."
@@ -898,10 +898,10 @@ msgstr "Sidan du sökte kunde inte hittas. Gå vidare till startsidan"
 
 msgid "This value must contain only letters, numbers and underscores."
 msgstr ""
-"Något som du skrivit in accepterades inte. Var vänlig försök igen. Bokstäver, "
+"Att använda mellanslag är inte tillåtet i användarnamn. Bokstäver, "
 "siffror, och symboler (till exempel, @ eller bindestreck) ska accepteras, men "
 "kom ihåg att skilja på stora och små bokstäver. Om problemet fortsätter ber "
-"vi dig skicka ett meddelande till halsorapport@folkhalsomyndigheten.se. "
+"vi dig att skicka ett meddelande till halsorapport@folkhalsomyndigheten.se. "
 
 msgid "Please try to copy and paste the link from the activation email, making sure you've got all letters copied. If this fails, please try to log in using the username and password you provided during registration. If this still fails, please try to register with a different username. If everything else fails, please do not hesitate to Kontakta oss."
 msgstr " "
@@ -911,8 +911,7 @@ msgstr "Hälsorapport"
 
 
 msgid "register"
-msgstr "Skriv in ett användarnamn, din e-postadress "
-"och ett lösenord. Avsluta med att skriva in kontrollordet. "
+msgstr "Fyll i nedanstående uppgifter. "
 "Det går inte att använda mellanslag i användarnamn eller lösenord. "
 "För hjälp, kontakta "
 "<a href=\"mailto:halsorapport@folkhalsomyndigheten.se\">halsorapport@<wbr>folkhalsomyndigheten.se</a>"
@@ -939,7 +938,7 @@ msgid "Influenzanet is a system to monitor the activity of influenza-like-illnes
 msgstr "Hälsorapport är en del av Influenzanet, ett europeiskt system för webbaserad syndromövervakning."
 
 msgid "Please enter the characters shown in the image."
-msgstr "Skriv in bokstäverna som visas i bilden."
+msgstr "Skriv in bokstäverna som visas i bilden. Svårt att läsa? Bytt till en ny kod med hjälp av pilarna bredvid koden"
 
 msgid "Invalid CAPTCHA"
 msgstr "Felaktigt kontrollord"
@@ -949,7 +948,7 @@ msgstr "Kontrollord"
 
 msgid "Registration requires ID-code."
 msgstr "<strong>Obs!</strong> För att gå med behöver du vara inbjuden. "
-"Koden från inbjudan uppger du när du loggat in för första gången."
+"Aktiveringskoden från inbjudan uppger du under 'Aktiveringskod'."
 
 msgid "Email address"
 msgstr "Epostadress"
@@ -968,3 +967,35 @@ msgstr "Datum för senaste rapport"
 
 msgid "Please select which additional fields should be included in the report."
 msgstr "Välj nedan vilka extra fält som ska läggas till exporten."
+
+#: apps\accounts\forms.py:55
+msgid "Choose a name you want to use for login. For example: anders2009"
+msgstr "Välj ett valfritt använarnamn som du använder för att logga in. Det kan vara din e-postadress eller till exempel: anders2009"
+
+#: apps\accounts\forms.py:101
+msgid "Activation code"
+msgstr "Aktiveringskod"
+
+#: apps\accounts\forms.py:102
+msgid "Please enter the code from your invitation letter here."
+msgstr "Skriv aktiveringskoden som du fått i inbjudan här"
+
+#: apps\accounts\forms.py:108
+msgid "Year of birth"
+msgstr "Födelseår för den som fått inbjudan"
+
+#: apps\accounts\forms.py:109
+msgid "Please enter the 4 digits of your year of birth. For example: 1989"
+msgstr "Skriv in födelseår med fyra siffror för den som är inbjuden. Till exempel: 1989"
+
+#: apps\accounts\forms.py:110
+msgid "This value must contain 4 digits."
+msgstr "Skriv år med fyra siffror. Till exempel: 1989"
+
+#: apps\accounts\forms.py:149
+msgid "Check the code in you letter. This code is incorrect."
+msgstr "Den här aktiveringskoden är inkorrekt. Kontrollera aktiveringskoden i inbjudningsbrevet."
+
+#: apps\accounts\forms.py:151
+msgid "This code has already been used. Is the code correct? Or did you already register?"
+msgstr "Den här aktiveringskoden har redan används. Är aktiveringskoden korrekt? Eller har du redan anmält dig?"

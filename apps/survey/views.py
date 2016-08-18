@@ -20,6 +20,10 @@ import re, locale
 
 from apps.survey import utils, models, forms
 
+#Next lines for linking survey_user to idcode
+from apps.accounts.models import user_profile
+from apps.survey.models import SurveyIdCode
+
 from apps.pollster.models import TranslationSurvey
 from apps.pollster import views as pollster_views
 from apps.pollster import utils as pollster_utils
@@ -80,15 +84,50 @@ def thanks(request):
         #TODO: this cannot be... we should probably remove thte try...except
         pass
 
-    #Check idcode
-    redirect = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
-    if redirect:
-        # it didn't have an idcode in the url, so we got a url in redirect, now with idcode
-        # don't balme me for this spaghetti
-        return HttpResponseRedirect(redirect)
+    idcode = models.SurveyIdCode.objects.filter(surveyuser_global_id=survey_user.global_id)
+    if not idcode: #This means this is the frist login and the age and idcode still need to be set.
+        #get the user_profile
+        userprofile = user_profile.objects.get(user=survey_user.user)
+        #get the SurveyIdCode
+        SurveyIdcode_obj = SurveyIdCode.objects.get(idcode=userprofile.idcode)
+        #check if the global_id has not been set
+        if (not SurveyIdcode_obj):
+            raise SurveyIdCodeNotValid
+        elif (not SurveyIdcode_obj.surveyuser_global_id):
+            #if global_id not set then assign the one from the survey_user
+            SurveyIdcode_obj.surveyuser_global_id=survey_user.global_id
+            #And assign the birthyear from the user_profile
+            SurveyIdcode_obj.fodelsedatum=str(userprofile.yearofbirth)
+            #save
+            SurveyIdcode_obj.save()
+            #continue to welcome page.
+        else:
+            #Deactivate user
+            survey_user.user.is_active=False
+            survey_user.user.save()
+            #logout
+            logout(request)
 
-    # if we're here, he have an idcode!!!!! And a survey_user!!!
-    # the road was long and painful
+            #Redirect to error message
+
+            return render_to_response('registration/registration_problem.html',
+                                        context_instance=RequestContext(request))
+
+        #if global_id has been set=> message to user that the idcode has already been used for another user.
+        #maybe return username that has taken the code????
+
+
+
+    #CHANGE FROM HERE EvS 2016-08-09
+    #Check idcode
+    # redirect = _get_redirect_url_if_not_idcode('apps.survey.views.thanks',survey_user)
+    # if redirect:
+    #     # it didn't have an idcode in the url, so we got a url in redirect, now with idcode
+    #     # don't balme me for this spaghetti
+    #     return HttpResponseRedirect(redirect)
+    #
+    # # if we're here, he have an idcode!!!!! And a survey_user!!!
+    # # the road was long and painful
 
     return HttpResponseRedirect('/sv/valkommen/?gid=%s' % survey_user.global_id)
 
@@ -196,6 +235,7 @@ def select_survey_user(request, template='survey/select_user.html'):
         url = '%s?gid=%s' % (next, survey_user.global_id)
         return HttpResponseRedirect(url)
 
+    #This should never happen as we do not have users with multiple profiles! EvS
     return render_to_response(template, {
         'users': users,
         'next': next,
@@ -219,16 +259,16 @@ def idcode_open(request):
         context_instance=RequestContext(request)
     )
 
-def _get_redirect_url_if_not_idcode(str_url_next,survey_user):
-    idcode = models.SurveyIdCode.objects.filter(surveyuser_global_id=survey_user.global_id)
-    if not idcode:
-        specialPrint("redirect to idcode page!!")
-        url = reverse('apps.survey.views.idcode_open')
-        url_next = reverse(str_url_next)
-        url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
-        specialPrint(url)
-        return url
-    return None
+# def _get_redirect_url_if_not_idcode(str_url_next,survey_user):
+#     idcode = models.SurveyIdCode.objects.filter(surveyuser_global_id=survey_user.global_id)
+#     if not idcode:
+#         specialPrint("redirect to idcode page!!")
+#         url = reverse('apps.survey.views.idcode_open')
+#         url_next = reverse(str_url_next)
+#         url = '%s?gid=%s&next=%s' % (url, survey_user.global_id, url_next)
+#         specialPrint(url)
+#         return url
+#     return None
 
 
 
@@ -283,6 +323,9 @@ def show_survey(request, survey_short_name):
         data['timestamp'] = datetime.datetime.now()
 
         form = survey.as_form()(data)
+
+        # import pdb; pdb.Pdb(skip=['django.*']).set_trace() # Start tracing here. Skip django framework library calls
+        import pdb; pdb.set_trace()
 
         if form.is_valid():
             form.save()

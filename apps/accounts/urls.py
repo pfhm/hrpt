@@ -1,3 +1,6 @@
+#Register signal handler for saving yearofbirth and idcode in account.user_profile
+import regbackend
+
 from django.conf.urls.defaults import *
 from django.contrib.auth import views as auth_views
 from django.views.generic.simple import direct_to_template
