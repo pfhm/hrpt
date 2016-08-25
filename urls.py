@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     (r'^reminder/', include('apps.reminder.urls')),
     (r'^googlec96088c11ef7e5c4.html$', 'django.views.generic.simple.direct_to_template', {'template': 'googlec96088c11ef7e5c4.html'}),
     (r'^nejtack', 'django.views.generic.simple.redirect_to', {'url': 'https://reply.surveygenerator.com/go.aspx?U=22277ih5v4DGFEKv7gWjt'}),
+    (r'^registrera/$', 'django.views.generic.simple.redirect_to', {'url': '/sv/accounts/register'}),
 
     url(r'^captcha/', include('captcha.urls')),
 
