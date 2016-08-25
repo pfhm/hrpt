@@ -34,7 +34,7 @@ msgstr "Avändarnamn"
 msgid "This value must contain only letters, numbers and underscores."
 msgstr ""
 "Att använda mellanslag är inte tillåtet i användarnamn. Bokstäver, siffror, "
-"och symboler (till exempel, @ eller bindestreck) ska accepteras, men kom "
+"och symboler (till exempel, @ eller bindestreck) accepteras, men kom "
 "ihåg att skilja på stora och små bokstäver. Om problemet fortsätter ber vi "
 "dig att skicka ett meddelande till halsorapport@folkhalsomyndigheten.se. "
 
@@ -79,9 +79,8 @@ msgstr ""
 
 #: apps/accounts/forms.py:99
 msgid "Choose a name you want to use for login. For example: anders2009"
-msgstr ""
-"Välj ett valfritt använarnamn som du använder för att logga in. Det kan vara "
-"din e-postadress eller till exempel: anders2009"
+msgstr "Välj ett valfritt använarnamn som du använder för att logga in. Till exempel: anders2009"
+
 
 #: apps/accounts/forms.py:102
 msgid "Activation code"
@@ -89,7 +88,7 @@ msgstr "Aktiveringskod"
 
 #: apps/accounts/forms.py:103
 msgid "Please enter the code from your invitation letter here."
-msgstr "Skriv aktiveringskoden som du fått i inbjudan här"
+msgstr "Skriv aktiveringskoden som du fått i inbjudan"
 
 #: apps/accounts/forms.py:109
 msgid "Year of birth"
@@ -845,8 +844,8 @@ msgid ""
 "Please check your spam folder in case you do not get this email in your "
 "Inbox. If you have any problems activating your account, please"
 msgstr ""
-"Om du inte får något meddelande, kolla först om det hamnat bland dina spam-"
-"meddelanden. Annars kan du även"
+"Om du inte får något meddelande, kolla först om det hamnat bland dina skräppost. "
+"Annars kan du även"
 
 #: templates/registration/registration_complete.html:9
 #: templates/registration/registration_problem.html:9
@@ -1148,9 +1147,6 @@ msgstr ""
 "Länken är giltig i %(expiration_days)s dagar.\n"
 "\n"
 "När du har aktiverat ditt konto kan du logga in.\n"
-"\n"
-"Första gången du loggar in på ditt användarkonto behöver du ange den kod "
-"som står på din personliga inbjudan och fylla i en bakgrundsenkät. \n"
 "\n"
 "Bästa hälsningar\n"
 "\n"
