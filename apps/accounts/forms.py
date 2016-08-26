@@ -98,11 +98,19 @@ class CaptchaUnicodeRegistrationForm(RegistrationForm):
                                 label=_("Username"),
                                 help_text=_("Choose a name you want to use for login. For example: anders2009"),
                                 error_messages={'invalid': _("This value must contain only letters, numbers and underscores.")})
+    password1 = forms.CharField(min_length=5,
+                                widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
+                                label=_("Password"),
+                                help_text=_("At least 5 characters"))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
+                                label=_("Password (again)"),
+                                help_text=_("Repeat the same password"))
+
     idcode=forms.CharField(max_length=10,
                            label=_("Activation code"),
                            help_text=_("Please enter the code from your invitation letter here."))
 
-    # Needs to be added to translations!
+
     max_birthyear=datetime.today().year
     min_birthyear=max_birthyear - 86 # Should be max 85 years old, but if born 31 december it could be 86 years ago
     yearofbirth=forms.IntegerField(max_value = max_birthyear, min_value = min_birthyear,

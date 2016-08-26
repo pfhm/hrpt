@@ -30,6 +30,14 @@ msgstr "Aktiveringskod"
 msgid "Username"
 msgstr "Avändarnamn"
 
+#: apps/accounts/forms.py:104
+msgid "At least 5 characters"
+msgstr "Minst 5 tecken"
+
+#: apps/accounts/forms.py:107
+msgid "Repeat the same password"
+msgstr "Skriv samma lösenord igen"
+
 #: apps/accounts/forms.py:28 apps/accounts/forms.py:100
 msgid "This value must contain only letters, numbers and underscores."
 msgstr ""
