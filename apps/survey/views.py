@@ -325,7 +325,7 @@ def show_survey(request, survey_short_name):
         form = survey.as_form()(data)
 
         # import pdb; pdb.Pdb(skip=['django.*']).set_trace() # Start tracing here. Skip django framework library calls
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
 
         if form.is_valid():
             form.save()
