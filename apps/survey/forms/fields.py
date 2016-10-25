@@ -94,12 +94,11 @@ class PostCodeField(forms.RegexField):
 
 class DateOrOptionField(forms.MultiValueField):
     def __init__(self, *args, **kwargs):
-        # import pdb; pdb.set_trace()
         self.option = kwargs.pop('option', '')
         self.widget=DateOrOptionPickerWidget(choices=[(0, self.option)])
         datefield = forms.DateField(required=False,
                                     help_text="Date format: day/month/year",
-                                    input_formats=['%d/%m/%Y', '%Y-%m-%d',
+                                    input_formats=['%Y-%m-%d', '%d/%m/%Y',
                                                    '%d/%m/%y', '%d-%m-%y',
                                                    '%d-%m-%Y', '%b %d %Y',
                                                    '%b %d, %Y', '%d %b %Y',
@@ -116,7 +115,6 @@ class DateOrOptionField(forms.MultiValueField):
     def compress(self, v):
         return v
     def clean(self, value):
-        # import pdb; pdb.set_trace()
         date, choice = value
         if len(choice) > 0:    # option was chosen
             return choice[0]
