@@ -504,11 +504,23 @@ msgstr ""
 
 #: templates/accounts/my_settings.html:5
 msgid "My settings"
-msgstr ""
+msgstr "Mina inställningar"
 
 #: templates/accounts/my_settings.html:9
 msgid "Your settings have been updated"
-msgstr ""
+msgstr "Dina inställningar är uppdaterade"
+
+#: templates/accounts/my_settings.html:
+msgid "Deactivation"
+msgstr "Avregistrera"
+
+#: templates/accounts/my_settings.html:
+msgid "Deactivate"
+msgstr "Avregistrera"
+
+#: From built-in authorisation module:
+msgid "Designates whether this user should be treated as active. Unselect this instead of deleting accounts."
+msgstr "Ditt konto är aktivt. Om du vill avsluta ditt deltagande i Hälsorapport, avmarkera den lilla rutan ovan samt klicka på ”Avregistrera” nedan."
 
 #: templates/accounts/my_settings.html:18
 #: templates/accounts/my_settings.html:29

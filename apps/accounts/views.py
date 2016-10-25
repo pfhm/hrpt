@@ -5,7 +5,7 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from .forms import EmailSettingsForm, UsernameForm
+from .forms import EmailSettingsForm, UsernameForm, DeactivationForm
 
 def index(request):
     return render_to_response('registration/index.html',
@@ -13,15 +13,16 @@ def index(request):
 
 @login_required
 def my_settings(request, form=None):
-    assert form in [None, 'email', 'password', 'username']
+    assert form in [None, 'email', 'password', 'username', 'deactivate']
     success = request.GET.get("success")
 
     if request.method == "POST":
         email_form = EmailSettingsForm(request.POST if form == 'email' else None, instance=request.user)
         password_form = SetPasswordForm(request.user, request.POST if form == 'password' else None)
         username_form = UsernameForm(request.POST if form == 'username' else None, instance=request.user)
+        deactivate_form = DeactivationForm(request.POST if form == 'deactivate' else None, instance=request.user)
 
-        process_form = locals()[form + "_form"] 
+        process_form = locals()[form + "_form"]
 
         if process_form.is_valid():
             process_form.save()
@@ -32,5 +33,6 @@ def my_settings(request, form=None):
         email_form = EmailSettingsForm(instance=request.user)
         password_form = SetPasswordForm(user=request.user)
         username_form = UsernameForm(instance=request.user)
+        deactivate_form = DeactivationForm(instance=request.user)
 
     return render_to_response('accounts/my_settings.html', locals(), RequestContext(request))

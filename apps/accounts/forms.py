@@ -40,8 +40,8 @@ class UnicodeUserCreationForm(UserCreationForm):
 
 class EmailSettingsForm(forms.Form):
     email = forms.EmailField(label=_("Email"))
-    send_reminders = forms.BooleanField(label=_("Send reminders"), help_text=_("Check this box if you wish to receive weekly reminders throughout the flu season"), required=False)
-    language = forms.ChoiceField(label=_("Language"), choices=settings.LANGUAGES)
+    #send_reminders = forms.BooleanField(label=_("Send reminders"), help_text=_("Check this box if you wish to receive weekly reminders throughout the flu season"), required=False)
+    #language = forms.ChoiceField(label=_("Language"), choices=settings.LANGUAGES)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop('instance')
@@ -69,7 +69,8 @@ class EmailSettingsForm(forms.Form):
             self.instance.username = self.cleaned_data['email']
         self.instance.email = self.cleaned_data['email']
 
-        self.reminder_info.active = self.cleaned_data['send_reminders']
+        # Reminders are not used anymore.
+        # self.reminder_info.active = self.cleaned_data['send_reminders']
 
         if 'language' in self.cleaned_data:
             self.reminder_info.language = self.cleaned_data['language']
@@ -90,6 +91,18 @@ class UsernameForm(forms.ModelForm):
             raise forms.ValidationError(_("A user with this username already exists"))
 
         return value
+
+
+class DeactivationForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('is_active', )
+
+    def clean_is_active(self):
+        value = self.cleaned_data['is_active']
+
+        return value
+
 
 class CaptchaUnicodeRegistrationForm(RegistrationForm):
     username = forms.RegexField(regex=r'(?u)^[\w.@+-]+$',
