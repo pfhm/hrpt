@@ -864,7 +864,7 @@ msgid ""
 "Please check your spam folder in case you do not get this email in your "
 "Inbox. If you have any problems activating your account, please"
 msgstr ""
-"Om du inte får något meddelande, kolla först om det hamnat bland dina skräppost. "
+"Om du inte får något meddelande, kolla först om det hamnat bland din skräppost. "
 "Annars kan du även"
 
 #: templates/registration/registration_complete.html:9
