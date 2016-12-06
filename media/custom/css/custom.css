@@ -60,6 +60,11 @@ div.influenzabarcontent {
 	border-right: none;
 }
 
+div.usersettings {
+  line-height: 1.2em;
+  font-size: 0.7em;
+}
+
 /* Pollster */
 textarea.user-field {
 	width: 98%;

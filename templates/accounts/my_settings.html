@@ -9,8 +9,9 @@
 {% trans "Your settings have been updated" %}
 </p>
 {% endif %}
-
+<div class="usersettings">
 <h1>{% trans "Email" %}</h1>
+
 <table>
 <form action="{% url apps.accounts.views.my_settings %}email/" method="post">{% csrf_token %}
 {{ email_form.as_table }}
@@ -52,5 +53,5 @@
 </td></tr>
 </form>
 </table>
-
+</div>
 {% endblock %}
