@@ -222,7 +222,7 @@ class LocalFluSurvey(models.Model):
     survey_id = models.CharField(max_length=50)
 
 class SurveyResposeDraft(models.Model):
-    global_id = models.CharField(max_length=36,unique=False,blank=False,null=False)
+    global_id = models.CharField(max_length=36,unique=False,blank=False,null=False, db_index=True)
     survey_id = models.IntegerField(blank=False, null=False)
     timestamp = models.IntegerField()
     form_data = models.TextField()
